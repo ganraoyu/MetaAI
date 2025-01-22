@@ -1,0 +1,53 @@
+short regions (SR): NA1, EUW1, KR, BR1, JP1, EUN1, OCE1, LA1, LA2, RU, TR1
+long regions (LR) : Americas, Europe, Asia, SEA
+
+To Start Server: 
+    cd backend
+    nodemon server.js
+
+Routes:
+
+Player PUUID LR
+    http://localhost:3000/player/:region/:gameName/:tagLine 
+        http://localhost:3000/player/americas/yaoyu/77777
+
+Player Match History LR
+    http://localhost:3000/player/:region/:gameName/:tagLine 
+        http://localhost:3000/player/americas/matches/yaoyu/77777
+
+Player Winrates LR
+    http://localhost:3000/player/statistics/:region/:gameName/:tagLine/winrate
+        http://localhost:3000/player/statistics/americas/yaoyu/77777/winrate
+
+Player Most Played Traits LR
+    http://localhost:3000/player/statistics/:region/:gameName/:tagLine/traits
+        http://localhost:3000/player/statistics/americas/yaoyu/77777/traits
+
+Player Most Played augments LR (Depreciated)
+    http://localhost:3000/player/statistics/:region/:gameName/:tagLine/augments
+        http://localhost:3000/player/statistics/americas/yaoyu/77777/augments
+
+Ranked Leaderboards SR
+    modes: solo, duo
+    ranks: challenger, grandmaster, master, diamond, emerald, platinum, gold, silver, bronze
+    divisions:i, ii, iii iv (only below master uses division)
+        http://localhost:3000/leaderboard/:region/:mode/:rank
+            http://localhost:3000/leaderboard/na1/solo/challenger
+
+        http://localhost:3000/leaderboard/:region/:mode/:rank/:division
+            http://localhost:3000/leaderboard/na1/solo/diamond/i
+
+Champion Statistics 
+    http://localhost:3000/statistics/:rank/champions
+    http://localhost:3000/statistics/:rank/traits
+    http://localhost:3000/statistics/:rank/items
+        http://localhost:3000/statistics/challenger/champions
+
+    http://localhost:3000/statistics/:rank/:division/champions
+    http://localhost:3000/statistics/:rank/:division/traits
+    http://localhost:3000/statistics/:rank/:division/items
+        http://localhost:3000/statistics/diamond/i/champions
+
+
+
+
