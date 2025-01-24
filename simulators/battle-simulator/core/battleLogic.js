@@ -5,15 +5,15 @@ const HexCell = require('../utils/HexCell.js');
 const Board = require('./board.js');
 
 const { getChampionByName } = require('../data/champion/champion-data.js');
-
 const { displayStats, Champion } = require('../data/champion/champion.js');
+
 /*
 cd simulators/battle-simulator/core
 nodemon battlelogic
 */
  
 const board = new Board(8, 7);
-
+      
 function placeChampionByName(championName, row, column, starLevel, team) {
     const champion = getChampionByName(championName);
     if (typeof champion === 'string') {
@@ -84,13 +84,16 @@ function saveOriginalStats(player, opponent) {
 }
 
 function simulateRound(battlePlayer, battleOpponent) {
+    let attackOccurred = false;
 
     // Player attacks
     battlePlayer.forEach(champion => {
         if (champion.currentHp > 0) {
             const target = battleOpponent.find(c => c.currentHp > 0);
             if (target) {
-                champion.attack(target);
+                if (champion.attack(target)) {
+                    attackOccurred = true;
+                }
                 champion.useAbility(target);
             }
         }
@@ -101,7 +104,9 @@ function simulateRound(battlePlayer, battleOpponent) {
         if (champion.currentHp > 0) {
             const target = battlePlayer.find(c => c.currentHp > 0);
             if (target) {
-                champion.attack(target);
+                if (champion.attack(target)) {
+                    attackOccurred = true;
+                }
                 champion.useAbility(target);
             }
         }
@@ -111,7 +116,7 @@ function simulateRound(battlePlayer, battleOpponent) {
     battlePlayer = battlePlayer.filter(champion => champion.currentHp > 0);
     battleOpponent = battleOpponent.filter(champion => champion.currentHp > 0);
 
-    return { battlePlayer, battleOpponent };
+    return { battlePlayer, battleOpponent, attackOccurred };
 }
 
 function resetHP(player, opponent, originalPlayerStats, originalOpponentStats) {
@@ -147,12 +152,16 @@ function startBattle() {
 
         // Simulate the battle until one team is defeated
         while (battlePlayer.some(champion => champion.currentHp > 0) && battleOpponent.some(champion => champion.currentHp > 0)) {
-            ({ battlePlayer, battleOpponent } = simulateRound(battlePlayer, battleOpponent));
+            let attackOccurred = false;
+            ({ battlePlayer, battleOpponent, attackOccurred } = simulateRound(battlePlayer, battleOpponent));
 
-            // Log the current status of the battle
-               
+            // Log the current status of the battle if an attack occurred
+            if (attackOccurred) {
+                console.log('Player team:', battlePlayer.map(champion => `${champion.name} (${champion.currentHp} HP)`));
+                console.log('Opponent team:', battleOpponent.map(champion => `${champion.name} (${champion.currentHp} HP)`));
+            }   
         }
-
+   
         // Count the result of the battle
         if (battlePlayer.length > 0) {
             playerWins.push(1); 
@@ -164,9 +173,7 @@ function startBattle() {
 
         // Reset HP after each battle round
         resetHP(player, opponent, originalPlayerStats, originalOpponentStats);
-
         console.log('Round', i + 1, 'ended.');
-        
     }
 
     // Calculate and display win rates
@@ -175,12 +182,12 @@ function startBattle() {
     console.log('Opponent win rate:', opponentWinRate);
     console.log('Battle ended!');
 }
-
-placeChampionByName('Darius', 4, 2, 1, 'player'); 
-placeChampionByName('Akali', 3, 2, 1 , 'opponent');
+ 
+placeChampionByName('Akali', 4, 2, 1, 'player'); 
+placeChampionByName('Darius', 3, 2, 1 , 'opponent');
 
 startBattle();  
 
 board.displayBoard();
 
-module.exports = router;                
+module.exports = router;

@@ -20,13 +20,14 @@ class Champion {
         this.abilityManaCost = abilityManaCost;
         this.attackCritChance = attackCritChance;
         this.attackCritDamage = attackCritDamage;       
-        this.items = items
+        this.items = items;
         this.currentHp = this.statsByStarLevel[this.starLevel].hp;
         this.armor = this.statsByStarLevel[this.starLevel].armor;
         this.magicResist = this.statsByStarLevel[this.starLevel].magicResist; // Initialize current HP
         this.timeUntilAttack = 1 / this.attackSpeed;
-        this.gameTime = 0
+        this.gameTime = 0;
         this.attacks = [];
+        this.timeStep = 0.1;
         this.id = uuidv4();
     }
 
@@ -52,22 +53,22 @@ class Champion {
     }
 
     attack(target) {
-        const timeStep = 0.1; // Time step for the game loop
-        this.gameTime += timeStep; // Increment the game time by the time step
+        // Time step for the game loop
+        this.gameTime += this.timeStep; // Increment the game time by the time step
         
         let championAttackTime = 1 / this.attackSpeed;
-
+    
         const ability = target.getStats().ability;
         const damageReduction = ability.reduction;
         const damage = this.getStats().attackDamage;
         const armor = target.armor; 
         const critRate = this.attackCritChance;
         const critDamageAmp = this.attackCritDamage;
-
+    
         if(this.attacks.length > 0){
-            championAttackTime = this.attacks.length * ( 1 / this.attackSpeed ) 
+            championAttackTime = this.attacks.length * ( 1 / this.attackSpeed );
         } else {
-            championAttackTime = 1 / this.attackSpeed
+            championAttackTime = 0
         }
     
         if (this.gameTime >= 1 / this.attackSpeed) {
@@ -83,20 +84,18 @@ class Champion {
                     let critDamage = Math.round(reducedDamage * critDamageAmp);
                     target.takeDamage(critDamage);
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
-                    this.attacks.push(1)
-                    //  console.log(this.attacks)
+                    this.mana += this.manaPerAttack;
+                    this.attacks.push(1);
+                    return true; // Attack occurred
                 } else {
                     let normalDamage = Math.round(reducedDamage);
                     target.takeDamage(normalDamage);
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
-                    this.attacks.push(1)
-                    //  console.log(this.attacks)
+                    this.mana += this.manaPerAttack;
+                    this.attacks.push(1);
+                    return true; // Attack occurred
                 }
-    
-                this.mana += this.manaPerAttack;
-                return;
             }
-        
             // If damage reduction is 0, proceed with checking armor
             if (armor > 0) {
                 // Calculate damage with armor
@@ -107,33 +106,38 @@ class Champion {
                     let critDamage = Math.round(physicalDamageTaken * critDamageAmp);
                     target.takeDamage(critDamage);
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
-                    this.attacks.push(1)
-                    //  console.log(this.attacks)
+                    this.mana += this.manaPerAttack;
+                    this.attacks.push(1);
+                    return true; // Attack occurred
                 } else {
                     let normalDamage = Math.round(physicalDamageTaken);
                     target.takeDamage(normalDamage);
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
-                    this.attacks.push(1)
-                    //  console.log(this.attacks)
-                }   
+                    this.mana += this.manaPerAttack;
+                    this.attacks.push(1);
+                    return true; // Attack occurred
+                }
             } else {
                 // No armor, full damage
                 if (Math.random() * 100 <= critRate) {
                     let critDamage = Math.round(damage * critDamageAmp);
                     target.takeDamage(critDamage);
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
-                    this.attacks.push(1)
-                    //  console.log(this.attacks)
+                    this.mana += this.manaPerAttack;
+                    this.attacks.push(1);
+                    return true; // Attack occurred
                 } else {
                     let normalDamage = Math.round(damage);
                     target.takeDamage(normalDamage);
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
-                    this.attacks.push(1)
-                    //  console.log(this.attacks)
+                    this.mana += this.manaPerAttack;
+                    this.attacks.push(1);
+                    return true; // Attack occurred
                 }
-                this.mana += this.manaPerAttack;
             }
         }
+
+        return false; // No attack occurred
     }
     
     isAlive() {
@@ -142,7 +146,7 @@ class Champion {
 
     useAbility(target) {
 
-        const currentTime = this.gameTime;
+        let championAttackTime = 1 / this.attackSpeed;
 
         const ability = this.getStats().ability;
         const abilityReduction = this.getStats().ability;
@@ -153,6 +157,11 @@ class Champion {
         const armor = target.armor;
         const magicResist = target.magicResist;
     
+        if(this.attacks.length > 0){
+            championAttackTime = (this.attacks.length * ( 1 / this.attackSpeed ))- ( 1 / this.attackSpeed ) 
+        } else {
+            championAttackTime = 0
+        }
 
         // calculate armor/magic resist first then reduction
 
@@ -163,14 +172,14 @@ class Champion {
                     let physicalDamageTaken = damage - ((damage) * armor / 100);
                     let magicDamageTaken = magicDamage - ((magicDamage) * magicResist / 100);                    
                     target.takeDamage(Math.round(physicalDamageTaken + magicDamageTaken)); 
-                    console.log(`[${currentTime.toFixed(2)}s] ${this.name}'s ability does ${Math.round(physicalDamageTaken + magicDamageTaken)} damage`);                   
+                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${Math.round(physicalDamageTaken + magicDamageTaken)} damage`);                   
                 } else {
                     target.takeDamage(Math.round(damage + magicDamage));
-                    console.log(`[${currentTime.toFixed(2)}s] ${this.name}'s ability does ${Math.round(damage + magicDamage)} damage`);
+                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${Math.round(damage + magicDamage)} damage`);
                 }
             } else {
                 target.takeDamage(Math.round((damage + magicDamage) - ((damage + magicDamage) * damageReduction / 100)));
-                console.log(`[${currentTime.toFixed(2)}s] ${this.name}'s ability does ${Math.round((damage + magicDamage) - ((damage + magicDamage) * damageReduction / 100))} damage`);
+                console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${Math.round((damage + magicDamage) - ((damage + magicDamage) * damageReduction / 100))} damage`);
             }
             this.currentHp += heal; 
         }
