@@ -132,8 +132,6 @@ function calculateWinRates(playerWins, opponentWins) {
 
 function startBattle() {
     console.log('Battle started!');
-    let currentTime = this.gameTime;
-    currentTime += 0.1
 
     let { player, opponent } = initializeTeams();
     const { originalPlayerStats, originalOpponentStats } = saveOriginalStats(player, opponent);
@@ -152,8 +150,7 @@ function startBattle() {
             ({ battlePlayer, battleOpponent } = simulateRound(battlePlayer, battleOpponent));
 
             // Log the current status of the battle
-            console.log('Player team:', battlePlayer.map(champion => `${champion.name} (${champion.currentHp} HP)`));
-            console.log('Opponent team:', battleOpponent.map(champion => `${champion.name} (${champion.currentHp} HP)`));
+               
         }
 
         // Count the result of the battle
@@ -179,8 +176,8 @@ function startBattle() {
     console.log('Battle ended!');
 }
 
-placeChampionByName('Amumu', 4, 2, 1, 'player'); 
-placeChampionByName('Darius', 3, 2, 1 , 'opponent');
+placeChampionByName('Darius', 4, 2, 1, 'player'); 
+placeChampionByName('Akali', 3, 2, 1 , 'opponent');
 
 startBattle();  
 

@@ -6,8 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 
 class Champion {
     constructor(name, cost, traitsList, statsByStarLevel, attackSpeed, abilityName, range, mana, 
-        manaPerAttack, abilityManaCost, attackCritChance, attackCritDamage, items, lastAttackTime ) {
-
+        manaPerAttack, abilityManaCost, attackCritChance, attackCritDamage, items) {
         this.name = name;
         this.cost = cost;
         this.traitsList = traitsList;
@@ -25,11 +24,9 @@ class Champion {
         this.currentHp = this.statsByStarLevel[this.starLevel].hp;
         this.armor = this.statsByStarLevel[this.starLevel].armor;
         this.magicResist = this.statsByStarLevel[this.starLevel].magicResist; // Initialize current HP
-        this.timeBetweenAttacks = 1 / this.attackSpeed;
         this.timeUntilAttack = 1 / this.attackSpeed;
-        this.lastAttackTime = lastAttackTime// Initialize last attack time
         this.gameTime = 0
-
+        this.attacks = [];
         this.id = uuidv4();
     }
 
@@ -55,8 +52,10 @@ class Champion {
     }
 
     attack(target) {
-        const currentTime = this.gameTime; // Get the current simulated game time
-        const timeSinceLastAttack = currentTime - this.lastAttackTime; // Time elapsed since the last attack
+        const timeStep = 0.1; // Time step for the game loop
+        this.gameTime += timeStep; // Increment the game time by the time step
+        
+        let championAttackTime = 1 / this.attackSpeed;
 
         const ability = target.getStats().ability;
         const damageReduction = ability.reduction;
@@ -65,7 +64,16 @@ class Champion {
         const critRate = this.attackCritChance;
         const critDamageAmp = this.attackCritDamage;
 
-        if (timeSinceLastAttack >= this.timeBetweenAttacks) {
+        if(this.attacks.length > 0){
+            championAttackTime = this.attacks.length * ( 1 / this.attackSpeed ) 
+        } else {
+            championAttackTime = 1 / this.attackSpeed
+        }
+    
+        if (this.gameTime >= 1 / this.attackSpeed) {
+            // Reset gameTime for the next attack interval
+            this.gameTime = 0;
+    
             if (damageReduction !== 0) {
                 // Calculate damage with damage reduction
                 let reducedDamage = damage - (damage * damageReduction / 100);
@@ -74,20 +82,22 @@ class Champion {
                 if (Math.random() * 100 <= critRate) {
                     let critDamage = Math.round(reducedDamage * critDamageAmp);
                     target.takeDamage(critDamage);
-                    console.log(`[${currentTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
+                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
+                    this.attacks.push(1)
+                    //  console.log(this.attacks)
                 } else {
                     let normalDamage = Math.round(reducedDamage);
                     target.takeDamage(normalDamage);
-                    console.log(`[${currentTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
+                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
+                    this.attacks.push(1)
+                    //  console.log(this.attacks)
                 }
-
-                this.lastAttackTime = this.gameTime;
+    
                 this.mana += this.manaPerAttack;
                 return;
             }
-        }
-    
-        // If damage reduction is 0, proceed with checking armor
+        
+            // If damage reduction is 0, proceed with checking armor
             if (armor > 0) {
                 // Calculate damage with armor
                 let physicalDamageTaken = damage - (damage * armor / 100);
@@ -96,28 +106,35 @@ class Champion {
                 if (Math.random() * 100 <= critRate) {
                     let critDamage = Math.round(physicalDamageTaken * critDamageAmp);
                     target.takeDamage(critDamage);
-                    console.log(`[${currentTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
+                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
+                    this.attacks.push(1)
+                    //  console.log(this.attacks)
                 } else {
                     let normalDamage = Math.round(physicalDamageTaken);
                     target.takeDamage(normalDamage);
-                    console.log(`[${currentTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
-                }
+                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
+                    this.attacks.push(1)
+                    //  console.log(this.attacks)
+                }   
             } else {
                 // No armor, full damage
                 if (Math.random() * 100 <= critRate) {
                     let critDamage = Math.round(damage * critDamageAmp);
                     target.takeDamage(critDamage);
-                    console.log(`[${this.gameTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
+                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
+                    this.attacks.push(1)
+                    //  console.log(this.attacks)
                 } else {
                     let normalDamage = Math.round(damage);
                     target.takeDamage(normalDamage);
-                    console.log(`[${currentTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
+                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
+                    this.attacks.push(1)
+                    //  console.log(this.attacks)
                 }
+                this.mana += this.manaPerAttack;
             }
-            
-            this.lastAttackTime = currentTime;
-            this.mana += this.manaPerAttack;
         }
+    }
     
     isAlive() {
         return this.currentHp > 0;
