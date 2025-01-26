@@ -72,12 +72,14 @@ function initializeTeams() {
 function saveOriginalStats(player, opponent) {
     const originalPlayerStats = player.map(champion => ({
         name: champion.name,
-        hp: champion.statsByStarLevel[champion.starLevel].hp
+        hp: champion.statsByStarLevel[champion.starLevel].hp,
+        gameTime: champion.gameTime
     }));
 
     const originalOpponentStats = opponent.map(champion => ({
         name: champion.name,
-        hp: champion.statsByStarLevel[champion.starLevel].hp
+        hp: champion.statsByStarLevel[champion.starLevel].hp,
+        gameTime: champion.gameTime    
     })); 
 
     return { originalPlayerStats, originalOpponentStats };
@@ -119,15 +121,15 @@ function simulateRound(battlePlayer, battleOpponent) {
     return { battlePlayer, battleOpponent, attackOccurred };
 }
 
-function resetHP(player, opponent, originalPlayerStats, originalOpponentStats) {
+function resetStats(player, opponent, originalPlayerStats, originalOpponentStats) {
     player.forEach((champion, index) => {
         champion.currentHp = originalPlayerStats[index].hp;
     });
-
     opponent.forEach((champion, index) => {
         champion.currentHp = originalOpponentStats[index].hp;
     });
 }
+
 
 function calculateWinRates(playerWins, opponentWins) {
     const playerWinRate = (playerWins.length / 100) * 100 + '%';
@@ -139,29 +141,34 @@ function startBattle() {
     console.log('Battle started!');
 
     let { player, opponent } = initializeTeams();
-    const { originalPlayerStats, originalOpponentStats } = saveOriginalStats(player, opponent);
-    
     let playerWins = [];
     let opponentWins = [];
 
+    const { originalPlayerStats, originalOpponentStats } = saveOriginalStats(player, opponent);
+    
+
+
     // Start the battle for 100 rounds
-    for (let i = 0; i < 1; i++) {      
+    for (let i = 0; i < 10 ; i++) {      
         // Create copies of the player and opponent teams to track their status during this round
         let battlePlayer = [...player];
         let battleOpponent = [...opponent];     
 
         // Simulate the battle until one team is defeated
+
         while (battlePlayer.some(champion => champion.currentHp > 0) && battleOpponent.some(champion => champion.currentHp > 0)) {
             let attackOccurred = false;
             ({ battlePlayer, battleOpponent, attackOccurred } = simulateRound(battlePlayer, battleOpponent));
 
             // Log the current status of the battle if an attack occurred
-            if (attackOccurred) {
-                console.log('Player team:', battlePlayer.map(champion => `${champion.name} (${champion.currentHp} HP)`));
-                console.log('Opponent team:', battleOpponent.map(champion => `${champion.name} (${champion.currentHp} HP)`));
-            }   
+            if(playerWins.length === 0 || opponentWins.length === 0) {
+                if (attackOccurred) {
+                    console.log('Player team:', battlePlayer.map(champion => `${champion.name} (${champion.currentHp} HP)`));
+                    console.log('Opponent team:', battleOpponent.map(champion => `${champion.name} (${champion.currentHp} HP)`));
+                }   
+            }
         }
-   
+        
         // Count the result of the battle
         if (battlePlayer.length > 0) {
             playerWins.push(1); 
@@ -172,8 +179,9 @@ function startBattle() {
         }
 
         // Reset HP after each battle round
-        resetHP(player, opponent, originalPlayerStats, originalOpponentStats);
+        resetStats(player, opponent, originalPlayerStats, originalOpponentStats);
         console.log('Round', i + 1, 'ended.');
+
     }
 
     // Calculate and display win rates
@@ -182,12 +190,10 @@ function startBattle() {
     console.log('Opponent win rate:', opponentWinRate);
     console.log('Battle ended!');
 }
- 
-placeChampionByName('Akali', 4, 2, 1, 'player'); 
-placeChampionByName('Darius', 3, 2, 1 , 'opponent');
-
-startBattle();  
+  
+placeChampionByName('Darius', 4, 2, 3, 'player'); 
+placeChampionByName('Akali', 3, 2, 3, 'opponent');
 
 board.displayBoard();
 
-module.exports = router;
+module.exports = { router, startBattle };
