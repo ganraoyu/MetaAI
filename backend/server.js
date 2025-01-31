@@ -28,4 +28,4 @@ app.listen(PORT, () => {
 });     
 
 console.log('API-KEY', process.env.RIOT_API_KEY)
-client.connect().then(()=> console.log("PostgreSQL connected"))
+client.connect().then(()=> console.log("PostgreSQL connected")) 
