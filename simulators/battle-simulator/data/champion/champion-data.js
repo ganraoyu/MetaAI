@@ -130,6 +130,6 @@ function getChampionByName(name) {
     return champion;
 }
 
-console.log(getChampionByName('Amumu'))
+// console.log(getChampionByName('Amumu'))
 //console.log(getChampionByName('Amumu'))
 module.exports = { champions, getChampionByName };

@@ -1,4 +1,4 @@
-const itemsClient = require('../../../utils/statisticsUtils/ItemsUtils');
+const itemsClient = require('../../../utils/statisticsUtils/itemsUtils');
 
 const getAboveMasterItemsData = async (req, res) => {
     const { rank } = req.params

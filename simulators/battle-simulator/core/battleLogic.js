@@ -149,7 +149,7 @@ function startBattle() {
 
 
     // Start the battle for 100 rounds
-    for (let i = 0; i < 10 ; i++) {      
+    for (let i = 0; i < 1; i++) {      
         // Create copies of the player and opponent teams to track their status during this round
         let battlePlayer = [...player];
         let battleOpponent = [...opponent];     
@@ -186,14 +186,15 @@ function startBattle() {
 
     // Calculate and display win rates
     const { playerWinRate, opponentWinRate } = calculateWinRates(playerWins, opponentWins);
-    console.log('Player win rate:', playerWinRate);
-    console.log('Opponent win rate:', opponentWinRate);
+
     console.log('Battle ended!');
+
+    return { playerWinRate, opponentWinRate };
 }
   
 placeChampionByName('Darius', 4, 2, 3, 'player'); 
 placeChampionByName('Akali', 3, 2, 3, 'opponent');
-
+ 
 board.displayBoard();
 
 module.exports = { router, startBattle };

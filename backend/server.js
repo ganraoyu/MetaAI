@@ -7,7 +7,8 @@ const userRoutes = require('./routes/player/player.routes.js');
 const leaderboardRoutes = require('./routes/leaderboard/leaderboard.routes.js');
 const playerStatsRoutes = require('./routes/player/playerStatistics.routes.js');
 const statisticsRoutes = require('./routes/statistics/statistics.routes.js');
-//const battleSimulator = require('./battle-simulator/core/battleLogic.js');
+const battleSimulatorRoutes = require('./routes/battle-simulator/statistics/battleSimulator.routes.js');
+
 const { client } = require('./database/db.js')
 
 
@@ -20,7 +21,7 @@ app.use('/leaderboard', leaderboardRoutes);
 app.use('/player/statistics', playerStatsRoutes);   
 app.use('/statistics', statisticsRoutes);                                             
 
-// app.use('/battleSimulator', battleSimulator);
+app.use('/battle-simulator', battleSimulatorRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
