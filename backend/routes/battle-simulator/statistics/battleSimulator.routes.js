@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const { fetchWinRate, attackDamageDelt, abilityDamageDelt } = require('../../../../simulators/battle-simulator/core/battleStatistics.js');
+const { calculateWinRate, calculateAttackDamageDelt, calculateAbilityDamageDelt, calculateAllDamageDelt } = require('../../../../simulators/battle-simulator/core/battleStatistics.js');
 
-router.get('/winRate', fetchWinRate);
-router.get('/attackDamageDelt', attackDamageDelt);
-router.get('/abilityDamageDelt', abilityDamageDelt);
+router.get('/winRate', calculateWinRate);
+router.get('/attackDamageDelt', calculateAttackDamageDelt);
+router.get('/abilityDamageDelt', calculateAbilityDamageDelt);
+router.get('/allDamageDelt', calculateAllDamageDelt);
 
 module.exports = router;

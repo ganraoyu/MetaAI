@@ -20,12 +20,11 @@ app.use('/player', userRoutes);
 app.use('/leaderboard', leaderboardRoutes);      
 app.use('/player/statistics', playerStatsRoutes);   
 app.use('/statistics', statisticsRoutes);                                             
-
 app.use('/battle-simulator', battleSimulatorRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });     
 
-console.log('API-KEY', process.env.RIOT_API_KEY)
+console.log('RIOT-API-KEY', process.env.RIOT_API_KEY)
 client.connect().then(()=> console.log("PostgreSQL connected")) 
