@@ -190,28 +190,43 @@ function startBattle() {
 
     console.log('Battle ended!');
 
-    const playerDamage = player.map(champion => ({
+    const playerAttackDamage = player.map(champion => ({
         name: champion.name,
         damageArray: champion.damageArray
     }))
     
-    const opponentDamage = opponent.map(champion => ({
+    const opponentAttackDamage = opponent.map(champion => ({
         name: champion.name,
         damageArray: champion.damageArray
     }))         
+
+    const playerAbilityDamage = player.map(champion => ({
+        name: champion.name,
+        abilityArray: champion.abilityArray
+    }))
+
+    const opponentAbilityDamage = opponent.map(champion => ({
+        name: champion.name,
+        abilityArray: champion.abilityArray
+    }))
     // console.log(playerDamage);
     // console.log(opponentDamage);
     
-    console.log('Player win rate is1 ' + playerWinRate);
-    console.log('Opponent win rate is1 ' + opponentWinRate);
+    // console.log('Player win rate is ' + playerWinRate);
+    // console.log('Opponent win rate is ' + opponentWinRate);
 
-    return { playerWinRate, opponentWinRate, playerDamage, opponentDamage }; 
+    return { 
+        playerWinRate, 
+        opponentWinRate, 
+        playerAttackDamage, 
+        opponentAttackDamage, 
+        playerAbilityDamage, 
+        opponentAbilityDamage 
+    }; 
 }
   
 placeChampionByName('Akali', 4, 2, 3, 'player'); 
 placeChampionByName('Akali', 3, 2, 3, 'opponent');
-
-startBattle();     
 
 board.displayBoard();
 

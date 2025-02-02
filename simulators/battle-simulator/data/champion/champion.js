@@ -29,6 +29,7 @@ class Champion {
         this.timeStep = 0.1;
         this.id = uuidv4();
         this.damageArray = [];
+        this.abilityArray = [];
     }
 
     getStats() {
@@ -183,18 +184,32 @@ class Champion {
                 if(armor > 0 || magicResist > 0){
                     let physicalDamageTaken = damage - ((damage) * armor / 100);
                     let magicDamageTaken = magicDamage - ((magicDamage) * magicResist / 100);                    
-                    target.takeDamage(Math.round(physicalDamageTaken + magicDamageTaken)); 
+                    const totalDamage = (Math.round(physicalDamageTaken + magicDamageTaken)); 
+                    target.takeDamage(totalDamage);
+
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${Math.round(physicalDamageTaken + magicDamageTaken)} damage`);                   
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
+
+                    this.abilityArray.push(totalDamage);
+                    console.log(this.abilityArray);
                 } else {
-                    target.takeDamage(Math.round(damage + magicDamage));
+                    const totalDamage = (Math.round(damage + magicDamage));
+                    target.takeDamage(totalDamage);
+
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${Math.round(damage + magicDamage)} damage`);
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
+
+                    this.abilityArray.push(totalDamage);
+                    console.log(this.abilityArray);
                 }
             } else {
-                target.takeDamage(Math.round((damage + magicDamage) - ((damage + magicDamage) * damageReduction / 100)));
+                const totalDamage = (Math.round((damage + magicDamage) - ((damage + magicDamage) * damageReduction / 100)));
+                target.takeDamage(totalDamage)
                 console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${Math.round((damage + magicDamage) - ((damage + magicDamage) * damageReduction / 100))} damage`);
                 console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
+
+                this.abilityArray.push(totalDamage);
+                console.log(this.abilityArray);
             }
             this.currentHp += heal; 
         }
