@@ -11,7 +11,7 @@ const { displayStats, Champion } = require('../data/champion/champion.js');
 cd simulators/battle-simulator/core
 nodemon battlelogic
 */
- 
+     
 const board = new Board(8, 7);
       
 function placeChampionByName(championName, row, column, starLevel, team) {
@@ -32,7 +32,8 @@ function placeChampionByName(championName, row, column, starLevel, team) {
             champion.abilityManaCost, 
             champion.attackCritChance, 
             champion.attackCritDamage, 
-            champion.timeUntilAttack);
+            champion.timeUntilAttack,
+            champion.attackArray);
         newChampion.setStarLevel(starLevel);
         newChampion.team = team; // Assign the team to the champion
         board.placeChampion(newChampion, row, column);
@@ -74,7 +75,7 @@ function saveOriginalStats(player, opponent) {
         name: champion.name,
         hp: champion.statsByStarLevel[champion.starLevel].hp,
         gameTime: champion.gameTime
-    }));
+    })); 
 
     const originalOpponentStats = opponent.map(champion => ({
         name: champion.name,
@@ -177,7 +178,7 @@ function startBattle() {
         } else {
             console.log('No champions left standing.');
         }
-
+   
         // Reset HP after each battle round
         resetStats(player, opponent, originalPlayerStats, originalOpponentStats);
         console.log('Round', i + 1, 'ended.');
@@ -189,12 +190,29 @@ function startBattle() {
 
     console.log('Battle ended!');
 
-    return { playerWinRate, opponentWinRate };
+    const playerDamage = player.map(champion => ({
+        name: champion.name,
+        damageArray: champion.damageArray
+    }))
+    
+    const opponentDamage = opponent.map(champion => ({
+        name: champion.name,
+        damageArray: champion.damageArray
+    }))         
+    // console.log(playerDamage);
+    // console.log(opponentDamage);
+    
+    console.log('Player win rate is1 ' + playerWinRate);
+    console.log('Opponent win rate is1 ' + opponentWinRate);
+
+    return { playerWinRate, opponentWinRate, playerDamage, opponentDamage }; 
 }
   
-placeChampionByName('Darius', 4, 2, 3, 'player'); 
+placeChampionByName('Akali', 4, 2, 3, 'player'); 
 placeChampionByName('Akali', 3, 2, 3, 'opponent');
- 
+
+startBattle();     
+
 board.displayBoard();
 
-module.exports = { router, startBattle };
+module.exports = { router, startBattle }; 

@@ -28,6 +28,7 @@ class Champion {
         this.attacks = [1];
         this.timeStep = 0.1;
         this.id = uuidv4();
+        this.damageArray = [];
     }
 
     getStats() {
@@ -85,6 +86,8 @@ class Champion {
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
                     this.mana += this.manaPerAttack;
                     this.attacks.push(1);
+                    this.damageArray.push(critDamage)
+                    console.log(`${this.name}'s damage array`, this.damageArray);
                     return true; // Attack occurred
                 } else {
                     let normalDamage = Math.round(reducedDamage);
@@ -92,6 +95,8 @@ class Champion {
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
                     this.mana += this.manaPerAttack;
                     this.attacks.push(1);
+                    this.damageArray.push(normalDamage);
+                    console.log(`${this.name}'s damage array`, this.damageArray);
                     return true; // Attack occurred
                 }
             }
@@ -107,6 +112,8 @@ class Champion {
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
                     this.mana += this.manaPerAttack;
                     this.attacks.push(1);
+                    this.damageArray.push(critDamage);
+                    console.log(`${this.name}'s damage array`, this.damageArray);
                     return true; // Attack occurred
                 } else {
                     let normalDamage = Math.round(physicalDamageTaken);
@@ -114,6 +121,8 @@ class Champion {
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
                     this.mana += this.manaPerAttack;
                     this.attacks.push(1);
+                    this.damageArray.push(normalDamage);
+                    console.log(`${this.name}'s damage array`, this.damageArray);
                     return true; // Attack occurred
                 }
             } else {
@@ -124,6 +133,8 @@ class Champion {
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
                     this.mana += this.manaPerAttack;
                     this.attacks.push(1);
+                    this.damageArray.push(critDamage);
+                    console.log(`${this.name}'s damage array`, this.damageArray);
                     return true; // Attack occurred
                 } else {
                     let normalDamage = Math.round(damage);
@@ -131,6 +142,8 @@ class Champion {
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
                     this.mana += this.manaPerAttack;
                     this.attacks.push(1);
+                    this.damageArray.push(normalDamage);
+                    console.log(`${this.name}'s damage array`, this.damageArray);
                     return true; // Attack occurred
                 }
             }
