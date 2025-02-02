@@ -2,7 +2,7 @@ const { fullRegionClient } = require('../../utils/generalUtils');
 const { fetchPlayerPuuid, fetchPlayerMatches} = require('../../utils/playerUtils.js')
 const { regionMapping } = require('../../utils/regionData');
 
-const playerPuuid = async (req, res) => {
+const getPlayerPuuid = async (req, res) => {
     const { gameName, tagLine, region } = req.params;
     try {
         const playerPuuid = await fetchPlayerPuuid(gameName, tagLine, region);
@@ -15,7 +15,7 @@ const playerPuuid = async (req, res) => {
     }
 };
 
-const playerMatches = async (req, res) => {
+const getPlayerMatches = async (req, res) => {
     const { gameName, tagLine, region } = req.params;
     
     try {
@@ -29,4 +29,4 @@ const playerMatches = async (req, res) => {
     }
 };
 
-module.exports = { playerPuuid, playerMatches };
+module.exports = { getPlayerPuuid, getPlayerMatches };

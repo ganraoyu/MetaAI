@@ -80,8 +80,8 @@ const calculateAbilityDamageDelt = async (req, res) => {
 
 const calculateAllDamageDelt = async (req, res) => {
     try {
-        const { totalPlayerDamage, totalOpponentDamage } = await attackDamageDelt(req, res);
-        const { totalPlayerAbilityDamage, totalOpponentAbilityDamage } = await abilityDamageDelt(req, res);
+        const { totalPlayerDamage, totalOpponentDamage } = await calculateAttackDamageDelt();
+        const { totalPlayerAbilityDamage, totalOpponentAbilityDamage } = await calculateAbilityDamageDelt();
 
         if(totalPlayerDamage.length === 0 || totalOpponentDamage.length === 0) {
             return res.status(400).json({ error: 'No total damage data available.' });
@@ -104,14 +104,14 @@ const calculateAllDamageDelt = async (req, res) => {
             allDamage: parseInt(champion.totalDamage) + parseInt(opponentAbilityDamageMap)
         }))
 
-        /* 
+        
         console.log(allPlayerDamage);
         console.log(allOpponentDamage);
         console.log(playerAbilityDamageMap)
         console.log(opponentAbilityDamageMap)
         console.log(totalOpponentDamage)
         console.log(totalPlayerDamage)
-        */
+        
         
         return { allPlayerDamage, allOpponentDamage };
     } catch(error){
@@ -120,4 +120,9 @@ const calculateAllDamageDelt = async (req, res) => {
     }
 }
 
-module.exports = { calculateWinRate, calculateAttackDamageDelt, calculateAbilityDamageDelt, calculateAllDamageDelt };
+calculateWinRate();
+calculateAttackDamageDelt();
+calculateAbilityDamageDelt();
+calculateAllDamageDelt();
+
+module.exports = { calculateWinRate, calculateAttackDamageDelt, calculateAbilityDamageDelt, calculateAllDamageDelt }; 
