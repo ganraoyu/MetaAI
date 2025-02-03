@@ -30,6 +30,7 @@ class Champion {
         this.id = uuidv4();
         this.damageArray = [];
         this.abilityArray = [];
+        this.healArray = [];
     }
 
     getStats() {
@@ -191,7 +192,7 @@ class Champion {
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
 
                     this.abilityArray.push(totalDamage);
-                    console.log(this.abilityArray);
+                    console.log(`${this.name}'s ability array`, this.abilityArray);
                 } else {
                     const totalDamage = (Math.round(damage + magicDamage));
                     target.takeDamage(totalDamage);
@@ -200,7 +201,7 @@ class Champion {
                     console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
 
                     this.abilityArray.push(totalDamage);
-                    console.log(this.abilityArray);
+                    console.log(`${this.name}'s ability array`, this.abilityArray);
                 }
             } else {
                 const totalDamage = (Math.round((damage + magicDamage) - ((damage + magicDamage) * damageReduction / 100)));
@@ -209,9 +210,13 @@ class Champion {
                 console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
 
                 this.abilityArray.push(totalDamage);
-                console.log(this.abilityArray);
+                console.log(`${this.name}'s ability array`, this.abilityArray);
             }
             this.currentHp += heal; 
+            if(heal > 0 ){
+                this.healArray.push(heal)
+                console.log(`${this.name}'s healing array `, this.healArray)
+            }
         }
     }
 

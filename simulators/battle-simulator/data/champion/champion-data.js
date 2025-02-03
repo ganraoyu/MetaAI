@@ -73,7 +73,7 @@ const champions = [
         0.7, // attack speed
         'Obsolete Technology: Passive: Amumu reduces all incoming damage. Every second, emit sparks that deal magic damage to adjacent enemies. ', // ability name
         1, // range
-        30, // mana
+        60, // mana
         10, // mana per attack
         70, // ability mana cost
         25, // attack crit chance

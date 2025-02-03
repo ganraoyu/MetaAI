@@ -10,7 +10,8 @@ const { playerWinRate,
         playerAttackDamage, 
         opponentAttackDamage, 
         playerAbilityDamage, 
-        opponentAbilityDamage 
+        opponentAbilityDamage,
+        playerHealing
       } = startBattle();
 
 const calculateWinRate = async (req, res) => {
@@ -120,9 +121,24 @@ const calculateAllDamageDelt = async (req, res) => {
     }
 }
 
+const calculateHealing = async (req, res) => {
+    try{
+        const totalPlayerHealing = playerHealing.map(champion => ({
+            name:champion.name,
+            totalHealing: champion.healArray.reduce((total, heal) =>  total + heal , 0)
+        }))
+
+        console.log('Healing', totalPlayerHealing)
+    } catch(error){
+        console.log('Error' + error);
+        res.status(500).json({ error: 'An error occurred while calculating healing.' });
+    }
+}
+
 calculateWinRate();
 calculateAttackDamageDelt();
 calculateAbilityDamageDelt();
-calculateAllDamageDelt();
+calculateAllDamageDelt(); 
+calculateHealing();
 
 module.exports = { calculateWinRate, calculateAttackDamageDelt, calculateAbilityDamageDelt, calculateAllDamageDelt }; 

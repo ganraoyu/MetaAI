@@ -33,7 +33,9 @@ function placeChampionByName(championName, row, column, starLevel, team) {
             champion.attackCritChance, 
             champion.attackCritDamage, 
             champion.timeUntilAttack,
-            champion.attackArray
+            champion.attackArray,
+            champion.abilityArray,
+            champion.healArray
         );
         newChampion.setStarLevel(starLevel);
         newChampion.team = team; // Assign the team to the champion
@@ -211,6 +213,10 @@ function startBattle() {
         abilityArray: champion.abilityArray
     }))
 
+    const playerHealing = player.map(champion => ({
+        name:champion.name,
+        healArray: champion.healArray
+    }))
     // console.log(playerDamage);
     // console.log(opponentDamage);
     
@@ -223,14 +229,16 @@ function startBattle() {
         playerAttackDamage, 
         opponentAttackDamage, 
         playerAbilityDamage, 
-        opponentAbilityDamage 
+        opponentAbilityDamage,
+        playerHealing 
     }; 
 }
   
-placeChampionByName('Akali', 4, 2, 3, 'player'); 
-placeChampionByName('Akali', 3, 2, 3, 'opponent');
-placeChampionByName('Darius', 4, 1, 3, 'player'); 
-placeChampionByName('Amumu', 3, 1, 3, 'opponent');
+placeChampionByName('Darius', 4, 3, 3, 'player'); 
+placeChampionByName('Akali', 3, 3, 3, 'opponent'); 
+
 board.displayBoard();
+
+startBattle();
 
 module.exports = { router, startBattle }; 
