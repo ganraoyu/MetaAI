@@ -5,7 +5,7 @@ To Start Server:
     cd backend
     nodemon server.js
 
-Routes:
+RIOT GAMES API Routes:
 
 Player PUUID LR
     http://localhost:3000/player/:region/:gameName/:tagLine 
@@ -49,5 +49,6 @@ Champion Statistics
         http://localhost:3000/statistics/diamond/i/champions
 
 
+BATTLE SIMULATOR Routes:
 
 

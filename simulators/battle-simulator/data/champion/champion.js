@@ -213,7 +213,8 @@ class Champion {
                 console.log(`${this.name}'s ability array`, this.abilityArray);
             }
             this.currentHp += heal; 
-            if(heal > 0 ){
+            
+            if(heal >= 0 ){
                 this.healArray.push(heal)
                 console.log(`${this.name}'s healing array `, this.healArray)
             }

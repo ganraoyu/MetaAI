@@ -217,6 +217,12 @@ function startBattle() {
         name:champion.name,
         healArray: champion.healArray
     }))
+
+    const opponentHealing = opponent.map(champion => ({
+        name:champion.name,
+        healArray: champion.healArray
+    }))
+    
     // console.log(playerDamage);
     // console.log(opponentDamage);
     
@@ -230,15 +236,14 @@ function startBattle() {
         opponentAttackDamage, 
         playerAbilityDamage, 
         opponentAbilityDamage,
-        playerHealing 
+        playerHealing,
+        opponentHealing
     }; 
 }
   
-placeChampionByName('Darius', 4, 3, 3, 'player'); 
-placeChampionByName('Akali', 3, 3, 3, 'opponent'); 
+placeChampionByName('Darius', 4, 3, 1, 'player'); 
+placeChampionByName('Akali', 3, 3, 1, 'opponent'); 
 
 board.displayBoard();
-
-startBattle();
 
 module.exports = { router, startBattle }; 
