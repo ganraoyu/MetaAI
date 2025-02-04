@@ -6,13 +6,15 @@ const {
     getAttackDamageDelt, 
     getAbilityDamageDelt, 
     getAllDamageDelt,
-    getHealing
+    getHealing,
+    getAllBattleStatistics
     } = require('../../../controllers/battle-simulator/battle-simulator.controller.js');
 
 router.get('/winRate', getWinRate);
 router.get('/attackDamageDelt', getAttackDamageDelt);
 router.get('/abilityDamageDelt', getAbilityDamageDelt);
 router.get('/allDamageDelt', getAllDamageDelt);
-router.get('/healing', getHealing)
+router.get('/healing', getHealing);
+router.get('/allBattleStatistics', getAllBattleStatistics);
 
 module.exports = router;

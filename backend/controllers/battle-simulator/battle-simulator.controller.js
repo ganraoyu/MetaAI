@@ -3,7 +3,8 @@ const {
     calculateAttackDamageDelt, 
     calculateAbilityDamageDelt, 
     calculateAllDamageDelt,
-    calculateHealing
+    calculateHealing,
+    calculateAllBattleStatistics
     } = require('../../../simulators/battle-simulator/core/battleStatistics')
 
 const getWinRate = async (req, res) => {
@@ -56,5 +57,14 @@ const getHealing = async (req, res) => {
     }
 }
 
+const getAllBattleStatistics = async (req, res) => {
+    try{ 
+         const battleStatistics = await calculateAllBattleStatistics();
+         res.json(battleStatistics)
+    } catch(error){
+        console.log('Error', error)
+        res.status(500).json({ error: 'An error occured while calculating battle statistics '})
+    }
+}
 
-module.exports = { getWinRate, getAttackDamageDelt, getAbilityDamageDelt, getAllDamageDelt, getHealing }
+module.exports = { getWinRate, getAttackDamageDelt, getAbilityDamageDelt, getAllDamageDelt, getHealing, getAllBattleStatistics }

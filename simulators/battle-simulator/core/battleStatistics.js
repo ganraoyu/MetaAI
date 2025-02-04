@@ -151,12 +151,12 @@ const calculateHealing = async (req, res) => {
 
 const calculateAllBattleStatistics = async (req, res) => {
     try {
-        const { playerWinRate, opponentWinRate } = await calculateWinRate(req, res);
-        const { totalPlayerDamage, totalOpponentDamage } = await calculateAttackDamageDelt(req, res);
-        const { totalPlayerAbilityDamage, totalOpponentAbilityDamage } = await calculateAbilityDamageDelt(req, res);
-        const { allPlayerDamage, allOpponentDamage } = await calculateAllDamageDelt(req, res);
+        const { playerWinRate, opponentWinRate } = await calculateWinRate();
+        const { totalPlayerDamage, totalOpponentDamage } = await calculateAttackDamageDelt();
+        const { totalPlayerAbilityDamage, totalOpponentAbilityDamage } = await calculateAbilityDamageDelt();
+        const { allPlayerDamage, allOpponentDamage } = await calculateAllDamageDelt();
 
-        res.json({ 
+        return { 
             playerWinRate, 
             opponentWinRate, 
             totalPlayerDamage, 
@@ -164,8 +164,8 @@ const calculateAllBattleStatistics = async (req, res) => {
             totalPlayerAbilityDamage, 
             totalOpponentAbilityDamage, 
             allPlayerDamage, 
-            allOpponentDamage 
-        });
+            allOpponentDamage
+        };
 
     } catch (error) {
         console.log('Error', error);
