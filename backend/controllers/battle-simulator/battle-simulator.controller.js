@@ -67,4 +67,11 @@ const getAllBattleStatistics = async (req, res) => {
     }
 }
 
-module.exports = { getWinRate, getAttackDamageDelt, getAbilityDamageDelt, getAllDamageDelt, getHealing, getAllBattleStatistics }
+module.exports = { 
+    getWinRate, 
+    getAttackDamageDelt, 
+    getAbilityDamageDelt, 
+    getAllDamageDelt, 
+    getHealing, 
+    getAllBattleStatistics 
+}

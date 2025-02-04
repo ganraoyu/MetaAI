@@ -150,8 +150,6 @@ function startBattle() {
 
     const { originalPlayerStats, originalOpponentStats } = saveOriginalStats(player, opponent);
     
-
-
     // Start the battle for 100 rounds
     for (let i = 0; i < 1; i++) {      
         // Create copies of the player and opponent teams to track their status during this round
@@ -193,56 +191,36 @@ function startBattle() {
 
     console.log('Battle ended!');
 
-    const playerAttackDamage = player.map(champion => ({
+    const playerStatistics = player.map(champion => ({
         name: champion.name,
-        damageArray: champion.damageArray
+        damageArray: champion.damageArray,
+        abilityArray: champion.abilityArray,
+        healArray: champion.healArray
     }))
-    
-    const opponentAttackDamage = opponent.map(champion => ({
+
+    const opponentStatistics = opponent.map(champion => ({
         name: champion.name,
-        damageArray: champion.damageArray
+        damageArray: champion.damageArray,
+        abilityArray: champion.abilityArray,
+        healArray: champion.healArray
     }))         
 
-    const playerAbilityDamage = player.map(champion => ({
-        name: champion.name,
-        abilityArray: champion.abilityArray
-    }))
-
-    const opponentAbilityDamage = opponent.map(champion => ({
-        name: champion.name,
-        abilityArray: champion.abilityArray
-    }))
-
-    const playerHealing = player.map(champion => ({
-        name:champion.name,
-        healArray: champion.healArray
-    }))
-
-    const opponentHealing = opponent.map(champion => ({
-        name:champion.name,
-        healArray: champion.healArray
-    }))
-    
     // console.log(playerDamage);
     // console.log(opponentDamage);
-    
+
     // console.log('Player win rate is ' + playerWinRate);
     // console.log('Opponent win rate is ' + opponentWinRate);
 
     return { 
         playerWinRate, 
         opponentWinRate, 
-        playerAttackDamage, 
-        opponentAttackDamage, 
-        playerAbilityDamage, 
-        opponentAbilityDamage,
-        playerHealing,
-        opponentHealing
+        playerStatistics, 
+        opponentStatistics, 
     }; 
 }
   
-placeChampionByName('Darius', 4, 3, 1, 'player'); 
-placeChampionByName('Akali', 3, 3, 1, 'opponent'); 
+placeChampionByName('Akali', 4, 3, 1, 'player');
+placeChampionByName('Darius', 3, 3, 1, 'opponent'); 
 
 board.displayBoard();
 

@@ -20,19 +20,19 @@ const calculateWinRate = async (req, res) => {
 
 const calculateAttackDamageDelt = async (req, res) => {
     try {
-        const { playerAttackDamage, opponentAttackDamage } = startBattle();
+        const { playerStatistics, opponentStatistics } = startBattle();
 
-        if (playerAttackDamage.length === 0 || opponentAttackDamage.length === 0) {
+        if (playerStatistics.length === 0 || opponentStatistics.length === 0) {
             res.status(400).json({ error: 'No attack damage data available.' });
             throw new Error('No attack damage data available.');
         }
 
-        const totalPlayerDamage = playerAttackDamage.map(champion => ({
+        const totalPlayerDamage = playerStatistics.map(champion => ({
             name: champion.name,
             totalDamage: champion.damageArray.reduce((total, damage) => total + damage, 0)
         }));
         
-        const totalOpponentDamage = opponentAttackDamage.map(champion => ({
+        const totalOpponentDamage = opponentStatistics.map(champion => ({
             name: champion.name,
             totalDamage: champion.damageArray.reduce((total, damage) => total + damage, 0)
         }));
@@ -49,19 +49,19 @@ const calculateAttackDamageDelt = async (req, res) => {
 
 const calculateAbilityDamageDelt = async (req, res) => {
     try {
-        const { playerAbilityDamage, opponentAbilityDamage } = startBattle();
+        const { playerStatistics, opponentStatistics } = startBattle();
 
-        if (playerAbilityDamage.length === 0 || opponentAbilityDamage.length === 0) {
+        if (playerStatistics.length === 0 || opponentStatistics.length === 0) {
             res.status(400).json({ error: 'No ability damage data available.' });
             throw new Error('No ability damage data available.');
         }
 
-        const totalPlayerAbilityDamage = playerAbilityDamage.map(champion => ({
+        const totalPlayerAbilityDamage = playerStatistics.map(champion => ({
             name: champion.name,
             totalAbilityDamage: champion.abilityArray.reduce((total, abilityDamage) => total + abilityDamage, 0)
         }));
 
-        const totalOpponentAbilityDamage = opponentAbilityDamage.map(champion => ({
+        const totalOpponentAbilityDamage = opponentStatistics.map(champion => ({
             name: champion.name,
             totalAbilityDamage: champion.abilityArray.reduce((total, abilityDamage) => total + abilityDamage, 0)
         }));
@@ -78,43 +78,47 @@ const calculateAbilityDamageDelt = async (req, res) => {
 
 const calculateAllDamageDelt = async (req, res) => {
     try {
-        const { playerAttackDamage, opponentAttackDamage, playerAbilityDamage, opponentAbilityDamage } = startBattle();
+        const { playerStatistics, opponentStatistics } = startBattle();
 
-        if (playerAttackDamage.length === 0 || opponentAttackDamage.length === 0) {
+        if (playerStatistics.length === 0 || opponentStatistics.length === 0) {
             return res.status(400).json({ error: 'No total damage data available.' });
         }
 
-        if (playerAbilityDamage.length === 0 || opponentAbilityDamage.length === 0) {
+        if (playerStatistics.length === 0 || opponentStatistics .length === 0) {
             return res.status(400).json({ error: 'No total ability damage data available.' });
         }
 
-        const totalPlayerDamage = playerAttackDamage.map(champion => ({
+        const totalPlayerDamage = playerStatistics.map(champion => ({
             name: champion.name,
             totalDamage: champion.damageArray.reduce((total, damage) => total + damage, 0)
         }));
 
-        const totalOpponentDamage = opponentAttackDamage.map(champion => ({
+        const totalOpponentDamage = opponentStatistics.map(champion => ({
             name: champion.name,
             totalDamage: champion.damageArray.reduce((total, damage) => total + damage, 0)
         }));
 
-        const totalPlayerAbilityDamage = playerAbilityDamage.map(champion => ({
+        const totalPlayerAbilityDamage = playerStatistics.map(champion => ({
             name: champion.name,
             totalAbilityDamage: champion.abilityArray.reduce((total, abilityDamage) => total + abilityDamage, 0)
         }));
 
-        const totalOpponentAbilityDamage = opponentAbilityDamage.map(champion => ({
+        const totalOpponentAbilityDamage = opponentStatistics.map(champion => ({
             name: champion.name,
             totalAbilityDamage: champion.abilityArray.reduce((total, abilityDamage) => total + abilityDamage, 0)
         }));
 
         const allPlayerDamage = totalPlayerDamage.map((champion, index) => ({
             name: champion.name,
+            totalAttackDamage: champion.totalDamage,
+            totalAbilityDamage: totalPlayerAbilityDamage[index].totalAbilityDamage, 
             allDamage: champion.totalDamage + totalPlayerAbilityDamage[index].totalAbilityDamage
         }));
         
         const allOpponentDamage = totalOpponentDamage.map((champion, index) => ({
             name: champion.name,
+            totalAttackDamage: champion.totalDamage,
+            totalAbilityDamage: totalOpponentAbilityDamage[index].totalAbilityDamage,
             allDamage: champion.totalDamage + totalOpponentAbilityDamage[index].totalAbilityDamage
         }));
 
@@ -130,18 +134,20 @@ const calculateAllDamageDelt = async (req, res) => {
 
 const calculateHealing = async (req, res) => {
     try {
-        const { playerHealing, opponentHealing } = startBattle();
+        const { playerStatistics, opponentStatistics } = startBattle();
 
-        const totalPlayerHealing = playerHealing.map(champion => ({
+        const totalPlayerHealing = playerStatistics.map(champion => ({
             name: champion.name,
             totalHealing: champion.healArray.reduce((total, heal) => total + heal, 0)
         }));
 
-        const totalOpponentHealing = opponentHealing.map(champion => ({
+        const totalOpponentHealing = opponentStatistics.map(champion => ({
             name: champion.name,
             totalHealing: champion.healArray.reduce((total, heal) => total + heal, 0)
         }));
 
+        console.log(totalPlayerHealing);
+        console.log(totalOpponentHealing);
         return { totalPlayerHealing, totalOpponentHealing }
     } catch (error) {
         console.log('Error' + error);
@@ -155,6 +161,11 @@ const calculateAllBattleStatistics = async (req, res) => {
         const { totalPlayerDamage, totalOpponentDamage } = await calculateAttackDamageDelt();
         const { totalPlayerAbilityDamage, totalOpponentAbilityDamage } = await calculateAbilityDamageDelt();
         const { allPlayerDamage, allOpponentDamage } = await calculateAllDamageDelt();
+    
+        const playerStatistics = allPlayerDamage.map((champion, index) => ({
+            name: champion.name,
+            totalPlayerDamage: champion.totalDamage,
+        }));
 
         return { 
             playerWinRate, 
@@ -173,14 +184,15 @@ const calculateAllBattleStatistics = async (req, res) => {
     }
 };
 
-/* 
+
 calculateWinRate();
-calculateAttackDamageDelt()
+calculateAttackDamageDelt();
 calculateAbilityDamageDelt();
 calculateAllDamageDelt();
 calculateHealing();
-calculateAllBattleStatistics();
-*/
+// calculateAllBattleStatistics();
+
+
 
 module.exports = { 
     calculateWinRate, 

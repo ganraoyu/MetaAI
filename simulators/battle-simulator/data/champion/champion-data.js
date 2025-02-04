@@ -82,7 +82,7 @@ const champions = [
     ), 
     new Champion(
         'Akali',
-        1, // cost
+        2, // cost
         'Conqueror, Watcher', // traits 
         {
             1: { 
