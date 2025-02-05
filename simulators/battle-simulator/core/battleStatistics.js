@@ -5,9 +5,11 @@ cd simulators/battle-simulator/core
 nodemon battleStatistics
 */
 
+const startBattleData = startBattle();
+
 const calculateWinRate = async (req, res) => {
     try {
-        const { playerWinRate, opponentWinRate } = startBattle();
+        const { playerWinRate, opponentWinRate } = startBattleData;
         console.log('Player win rate is ' + playerWinRate);
         console.log('Opponent win rate is ' + opponentWinRate);
 
@@ -20,7 +22,7 @@ const calculateWinRate = async (req, res) => {
 
 const calculateAttackDamageDelt = async (req, res) => {
     try {
-        const { playerStatistics, opponentStatistics } = startBattle();
+        const { playerStatistics, opponentStatistics } = startBattleData;
 
         if (playerStatistics.length === 0 || opponentStatistics.length === 0) {
             res.status(400).json({ error: 'No attack damage data available.' });
@@ -49,7 +51,7 @@ const calculateAttackDamageDelt = async (req, res) => {
 
 const calculateAbilityDamageDelt = async (req, res) => {
     try {
-        const { playerStatistics, opponentStatistics } = startBattle();
+        const { playerStatistics, opponentStatistics } = startBattleData;
 
         if (playerStatistics.length === 0 || opponentStatistics.length === 0) {
             res.status(400).json({ error: 'No ability damage data available.' });
@@ -78,13 +80,13 @@ const calculateAbilityDamageDelt = async (req, res) => {
 
 const calculateAllDamageDelt = async (req, res) => {
     try {
-        const { playerStatistics, opponentStatistics } = startBattle();
+        const { playerStatistics, opponentStatistics } = startBattleData;
 
         if (playerStatistics.length === 0 || opponentStatistics.length === 0) {
             return res.status(400).json({ error: 'No total damage data available.' });
         }
 
-        if (playerStatistics.length === 0 || opponentStatistics .length === 0) {
+        if (playerStatistics.length === 0 || opponentStatistics.length === 0) {
             return res.status(400).json({ error: 'No total ability damage data available.' });
         }
 
@@ -134,8 +136,8 @@ const calculateAllDamageDelt = async (req, res) => {
 
 const calculateHealing = async (req, res) => {
     try {
-        const { playerStatistics, opponentStatistics } = startBattle();
-
+        const { playerStatistics, opponentStatistics } = startBattleData;
+        
         const totalPlayerHealing = playerStatistics.map(champion => ({
             name: champion.name,
             totalHealing: champion.healArray.reduce((total, heal) => total + heal, 0)
@@ -148,6 +150,7 @@ const calculateHealing = async (req, res) => {
 
         console.log(totalPlayerHealing);
         console.log(totalOpponentHealing);
+
         return { totalPlayerHealing, totalOpponentHealing }
     } catch (error) {
         console.log('Error' + error);
@@ -155,28 +158,64 @@ const calculateHealing = async (req, res) => {
     }
 };
 
+const isAliveOrDead = async (req, res) => {
+    try {
+        const { playerStatistics, opponentStatistics } = startBattleData;
+
+        const checkPlayerChampionAliveOrDead = playerStatistics.map(champion => ({
+            name: champion.name,
+            isAlive: champion.hp > 0 ? true : false,
+        }));
+
+        const checkOpponentChampionAliveOrDead = opponentStatistics.map((champion) => ({
+            name: champion.name,
+            isAlive: champion.hp > 0 ? true : false,
+        }));
+
+        console.log(checkPlayerChampionAliveOrDead);
+
+        return { checkPlayerChampionAliveOrDead, checkOpponentChampionAliveOrDead };
+    } catch(error){
+        console.log('Error', error);
+        res.status(500).json({ error: 'An error occurred while checking if champions are alive or dead.' });
+    }
+};
+
 const calculateAllBattleStatistics = async (req, res) => {
     try {
         const { playerWinRate, opponentWinRate } = await calculateWinRate();
-        const { totalPlayerDamage, totalOpponentDamage } = await calculateAttackDamageDelt();
-        const { totalPlayerAbilityDamage, totalOpponentAbilityDamage } = await calculateAbilityDamageDelt();
         const { allPlayerDamage, allOpponentDamage } = await calculateAllDamageDelt();
-    
-        const playerStatistics = allPlayerDamage.map((champion, index) => ({
-            name: champion.name,
-            totalPlayerDamage: champion.totalDamage,
-        }));
+        const { totalPlayerHealing, totalOpponentHealing } = await calculateHealing();
+        const { checkPlayerChampionAliveOrDead, checkOpponentChampionAliveOrDead } = await isAliveOrDead();
 
-        return { 
-            playerWinRate, 
-            opponentWinRate, 
-            totalPlayerDamage, 
-            totalOpponentDamage, 
-            totalPlayerAbilityDamage, 
-            totalOpponentAbilityDamage, 
-            allPlayerDamage, 
-            allOpponentDamage
-        };
+        const playerChampionStatistics = [{
+            playerWinRate,
+            playerStatistics: allPlayerDamage.map((champion, index) => ({
+                name: champion.name,
+                totalChampionDamage: champion.totalAttackDamage,
+                totalChampionAbilityDamage: champion.totalAbilityDamage,
+                allChampionDamage: champion.allDamage,
+                totalChampionHealing: totalPlayerHealing[index].totalHealing,
+                isAlive: checkPlayerChampionAliveOrDead[index].isAlive
+            }))
+        }];
+
+        const opponentChamionStatistics = [{
+            opponentWinRate,
+            opponentStatistics: allOpponentDamage.map((champion, index) => ({
+                name: champion.name,
+                totalChampionDamage: champion.totalAttackDamage,
+                totalChampionAbilityDamage: champion.totalAbilityDamage,
+                allChampionDamage: champion.allDamage,
+                totalChampionHealing: totalOpponentHealing[index].totalHealing,
+                isAlive: checkOpponentChampionAliveOrDead[index].isAlive
+            }))
+        }];
+
+        console.log(playerChampionStatistics);
+        console.log(opponentChamionStatistics);
+
+        return { playerChampionStatistics, opponentChamionStatistics };
 
     } catch (error) {
         console.log('Error', error);
@@ -184,14 +223,13 @@ const calculateAllBattleStatistics = async (req, res) => {
     }
 };
 
-
 calculateWinRate();
-calculateAttackDamageDelt();
 calculateAbilityDamageDelt();
-calculateAllDamageDelt();
+calculateAttackDamageDelt();
 calculateHealing();
-// calculateAllBattleStatistics();
-
+calculateAllDamageDelt();
+isAliveOrDead();
+calculateAllBattleStatistics();
 
 
 module.exports = { 

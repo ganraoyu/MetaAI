@@ -134,7 +134,6 @@ function resetStats(player, opponent, originalPlayerStats, originalOpponentStats
     });
 }
 
-
 function calculateWinRates(playerWins, opponentWins) {
     const playerWinRate = (playerWins.length / 100) * 100 + '%';
     const opponentWinRate = (opponentWins.length / 100) * 100 + '%';
@@ -193,6 +192,7 @@ function startBattle() {
 
     const playerStatistics = player.map(champion => ({
         name: champion.name,
+        hp: champion.currentHp,
         damageArray: champion.damageArray,
         abilityArray: champion.abilityArray,
         healArray: champion.healArray
@@ -200,6 +200,7 @@ function startBattle() {
 
     const opponentStatistics = opponent.map(champion => ({
         name: champion.name,
+        HP: champion.currentHp,
         damageArray: champion.damageArray,
         abilityArray: champion.abilityArray,
         healArray: champion.healArray
@@ -211,15 +212,18 @@ function startBattle() {
     // console.log('Player win rate is ' + playerWinRate);
     // console.log('Opponent win rate is ' + opponentWinRate);
 
+    
     return { 
         playerWinRate, 
         opponentWinRate, 
         playerStatistics, 
         opponentStatistics, 
+        
     }; 
 }
   
 placeChampionByName('Akali', 4, 3, 1, 'player');
+placeChampionByName('Darius', 4, 2, 1, 'player');
 placeChampionByName('Darius', 3, 3, 1, 'opponent'); 
 
 board.displayBoard();
