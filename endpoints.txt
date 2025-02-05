@@ -3,7 +3,7 @@ long regions (LR) : Americas, Europe, Asia, SEA
 
 To Start Server: 
     cd backend
-    nodemon server.js
+    nodemon server.ts
 
 RIOT GAMES API Routes:
 
@@ -50,5 +50,10 @@ Champion Statistics
 
 
 BATTLE SIMULATOR Routes:
-
+    http://localhost:3000/battle-simulator/winRate
+    http://localhost:3000/battle-simulator/attackDamageDelt
+    http://localhost:3000/battle-simulator/abilityDamageDelt
+    http://localhost:3000/battle-simulator/allDamageDelt
+    http://localhost:3000/battle-simulator/healing
+    http://localhost:3000/battle-simulator/allBattleStatistics
 

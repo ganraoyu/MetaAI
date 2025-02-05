@@ -164,11 +164,13 @@ const isAliveOrDead = async (req, res) => {
 
         const checkPlayerChampionAliveOrDead = playerStatistics.map(champion => ({
             name: champion.name,
+            hp: champion.hp,
             isAlive: champion.hp > 0 ? true : false,
         }));
 
         const checkOpponentChampionAliveOrDead = opponentStatistics.map((champion) => ({
             name: champion.name,
+            hp: champion.hp,
             isAlive: champion.hp > 0 ? true : false,
         }));
 
@@ -192,23 +194,26 @@ const calculateAllBattleStatistics = async (req, res) => {
             playerWinRate,
             playerStatistics: allPlayerDamage.map((champion, index) => ({
                 name: champion.name,
+                hp: checkPlayerChampionAliveOrDead[index].hp,
+                isAlive: checkPlayerChampionAliveOrDead[index].isAlive,
                 totalChampionDamage: champion.totalAttackDamage,
                 totalChampionAbilityDamage: champion.totalAbilityDamage,
                 allChampionDamage: champion.allDamage,
                 totalChampionHealing: totalPlayerHealing[index].totalHealing,
-                isAlive: checkPlayerChampionAliveOrDead[index].isAlive
+
             }))
         }];
 
         const opponentChamionStatistics = [{
             opponentWinRate,
             opponentStatistics: allOpponentDamage.map((champion, index) => ({
-                name: champion.name,
+                name: champion.name,              
+                hp: checkOpponentChampionAliveOrDead[index].hp,  
+                isAlive: checkOpponentChampionAliveOrDead[index].isAlive,
                 totalChampionDamage: champion.totalAttackDamage,
                 totalChampionAbilityDamage: champion.totalAbilityDamage,
                 allChampionDamage: champion.allDamage,
                 totalChampionHealing: totalOpponentHealing[index].totalHealing,
-                isAlive: checkOpponentChampionAliveOrDead[index].isAlive
             }))
         }];
 

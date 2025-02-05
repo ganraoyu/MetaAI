@@ -132,6 +132,8 @@ function resetStats(player, opponent, originalPlayerStats, originalOpponentStats
     opponent.forEach((champion, index) => {
         champion.currentHp = originalOpponentStats[index].hp;
     });
+
+    
 }
 
 function calculateWinRates(playerWins, opponentWins) {
@@ -218,7 +220,6 @@ function startBattle() {
         opponentWinRate, 
         playerStatistics, 
         opponentStatistics, 
-        
     }; 
 }
   
