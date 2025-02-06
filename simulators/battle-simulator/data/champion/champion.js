@@ -5,8 +5,20 @@ nodemon champion.js
 const { v4: uuidv4 } = require('uuid');
 
 class Champion {
-    constructor(name, cost, traitsList, statsByStarLevel, attackSpeed, abilityName, range, mana, 
-        manaPerAttack, abilityManaCost, attackCritChance, attackCritDamage, items) {
+    constructor(
+        name, 
+        cost, 
+        traitsList, 
+        statsByStarLevel, 
+        attackSpeed, 
+        abilityName, 
+        range, mana,
+        manaPerAttack, 
+        abilityManaCost, 
+        attackCritChance, 
+        attackCritDamage, 
+        items
+    ) {
         this.name = name;
         this.cost = cost;
         this.traitsList = traitsList;

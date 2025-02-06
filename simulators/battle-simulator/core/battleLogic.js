@@ -132,8 +132,6 @@ function resetStats(player, opponent, originalPlayerStats, originalOpponentStats
     opponent.forEach((champion, index) => {
         champion.currentHp = originalOpponentStats[index].hp;
     });
-
-    
 }
 
 function calculateWinRates(playerWins, opponentWins) {
@@ -182,7 +180,7 @@ function startBattle() {
         }
    
         // Reset HP after each battle round
-        resetStats(player, opponent, originalPlayerStats, originalOpponentStats);
+
         console.log('Round', i + 1, 'ended.');
 
     }
@@ -194,7 +192,8 @@ function startBattle() {
 
     const playerStatistics = player.map(champion => ({
         name: champion.name,
-        hp: champion.currentHp,
+        HP: champion.currentHp,
+        baseHP: champion.statsByStarLevel[champion.starLevel].hp,
         damageArray: champion.damageArray,
         abilityArray: champion.abilityArray,
         healArray: champion.healArray
@@ -203,6 +202,7 @@ function startBattle() {
     const opponentStatistics = opponent.map(champion => ({
         name: champion.name,
         HP: champion.currentHp,
+        baseHP: champion.statsByStarLevel[champion.starLevel].hp,
         damageArray: champion.damageArray,
         abilityArray: champion.abilityArray,
         healArray: champion.healArray
@@ -214,12 +214,12 @@ function startBattle() {
     // console.log('Player win rate is ' + playerWinRate);
     // console.log('Opponent win rate is ' + opponentWinRate);
 
-    
     return { 
         playerWinRate, 
         opponentWinRate, 
         playerStatistics, 
         opponentStatistics, 
+        
     }; 
 }
   
@@ -229,4 +229,5 @@ placeChampionByName('Darius', 3, 3, 1, 'opponent');
 
 board.displayBoard();
 
+startBattle();
 module.exports = { router, startBattle }; 

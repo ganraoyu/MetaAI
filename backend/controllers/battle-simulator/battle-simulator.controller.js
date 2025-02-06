@@ -4,6 +4,7 @@ const {
     calculateAbilityDamageDelt, 
     calculateAllDamageDelt,
     calculateHealing,
+    isAliveOrDead,
     calculateAllBattleStatistics
     } = require('../../../simulators/battle-simulator/core/battleStatistics')
 
@@ -57,6 +58,15 @@ const getHealing = async (req, res) => {
     }
 }
 
+const getAliveOrDead = async (req, res) => {
+    try{
+        const aliveOrDead = await isAliveOrDead();
+        res.json(aliveOrDead)
+    } catch(error){
+        console.log('Error', error)
+        res.status(500).json({ error: 'An error occurred while calculating alive or dead.' });
+    }
+}
 const getAllBattleStatistics = async (req, res) => {
     try{ 
          const battleStatistics = await calculateAllBattleStatistics();
@@ -67,11 +77,13 @@ const getAllBattleStatistics = async (req, res) => {
     }
 }
 
+
 module.exports = { 
     getWinRate, 
     getAttackDamageDelt, 
     getAbilityDamageDelt, 
     getAllDamageDelt, 
     getHealing, 
+    getAliveOrDead,
     getAllBattleStatistics 
 }

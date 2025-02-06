@@ -164,14 +164,16 @@ const isAliveOrDead = async (req, res) => {
 
         const checkPlayerChampionAliveOrDead = playerStatistics.map(champion => ({
             name: champion.name,
-            hp: champion.hp,
-            isAlive: champion.hp > 0 ? true : false,
+            HP: champion.HP,
+            baseHP: champion.baseHP,
+            isAlive: champion.HP > 0 ? true : false,
         }));
 
         const checkOpponentChampionAliveOrDead = opponentStatistics.map((champion) => ({
             name: champion.name,
-            hp: champion.hp,
-            isAlive: champion.hp > 0 ? true : false,
+            HP: champion.HP,
+            baseHP: champion.baseHP,
+            isAlive: champion.HP > 0 ? true : false,
         }));
 
         console.log(checkPlayerChampionAliveOrDead);
@@ -194,7 +196,7 @@ const calculateAllBattleStatistics = async (req, res) => {
             playerWinRate,
             playerStatistics: allPlayerDamage.map((champion, index) => ({
                 name: champion.name,
-                hp: checkPlayerChampionAliveOrDead[index].hp,
+                hp: checkPlayerChampionAliveOrDead[index].HP,
                 isAlive: checkPlayerChampionAliveOrDead[index].isAlive,
                 totalChampionDamage: champion.totalAttackDamage,
                 totalChampionAbilityDamage: champion.totalAbilityDamage,
@@ -204,11 +206,17 @@ const calculateAllBattleStatistics = async (req, res) => {
             }))
         }];
 
+        checkPlayerChampionAliveOrDead.forEach((champion, index) => {
+            console.log(`Champion ${index + 1} HP:`, champion.HP);
+        });
+
+        console.log('First Champion HP:', checkPlayerChampionAliveOrDead[0]?.HP);
+        
         const opponentChamionStatistics = [{
             opponentWinRate,
             opponentStatistics: allOpponentDamage.map((champion, index) => ({
                 name: champion.name,              
-                hp: checkOpponentChampionAliveOrDead[index].hp,  
+                hp: checkOpponentChampionAliveOrDead[index].HP,                  
                 isAlive: checkOpponentChampionAliveOrDead[index].isAlive,
                 totalChampionDamage: champion.totalAttackDamage,
                 totalChampionAbilityDamage: champion.totalAbilityDamage,
@@ -231,8 +239,8 @@ const calculateAllBattleStatistics = async (req, res) => {
 calculateWinRate();
 calculateAbilityDamageDelt();
 calculateAttackDamageDelt();
-calculateHealing();
 calculateAllDamageDelt();
+calculateHealing();
 isAliveOrDead();
 calculateAllBattleStatistics();
 
@@ -243,5 +251,6 @@ module.exports = {
     calculateAbilityDamageDelt, 
     calculateAllDamageDelt, 
     calculateHealing,
+    isAliveOrDead,
     calculateAllBattleStatistics
 };
