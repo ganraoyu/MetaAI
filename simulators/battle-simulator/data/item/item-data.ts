@@ -1,19 +1,25 @@
-const { Item } = require('.././item/item.js');
+const { Item } = require('.././item/item.ts');
 
 /*
 cd simulators/battle-simulator/data/item
-nodemon item-data.js
+npx nodemon --exec ts-node item-data.ts
+
 */
 
 const items = [
     new Item({
     name:'B.F. Sword',
-    description: 'Lotom',
+    description: 'nothing',
     additionalAttackDamage: 1.1,
+    }), 
+    new Item({
+        name:'Recurve Bow',
+        description:'nothing',
+        additionalAttackSpeed: 1.1,
     })
 ]
 
-function getItemByName(name){
+function getItemByName(name: string){
     if(!name){
         return 'Champion name cannt be Empty'
     }

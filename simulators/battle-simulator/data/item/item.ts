@@ -1,6 +1,40 @@
-
+interface ItemProps {
+    name: string;
+    description: string;
+    additionalAttackDamage?: number;
+    additionalAttackSpeed?: number;
+    additionalManaPerAttack?: number;
+    additionalCritDamage?: number;
+    additionalCritAmp?: number;
+    additionalDamageAmp?: number;
+    reducedMaxMana?: number;
+    additionalStartingMana?: number;
+    additionalArmor?: number;
+    additionalMagicResistance?: number;
+    additionalHealth?: number;
+    additionalAbilityPower?: number;
+    sunder?: number;
+    shred?: number;
+}
 
 class Item {
+    name: string;
+    description: string;
+    additionalAttackDamage: number;
+    additionalAttackSpeed: number;
+    additionalManaPerAttack: number;
+    additionalCritDamage: number;
+    additionalCritAmp: number;
+    additionalDamageAmp: number;
+    reducedMaxMana: number;
+    additionalStartingMana: number;
+    additionalArmor: number;
+    additionalMagicResistance: number;
+    additionalHealth: number;
+    additionalAbilityPower: number;
+    sunder: number;
+    shred: number;
+
     constructor({
         name,
         description,
@@ -11,13 +45,14 @@ class Item {
         additionalCritAmp = 0,
         additionalDamageAmp = 0,
         reducedMaxMana = 0,
+        additionalStartingMana = 0,
         additionalArmor = 0,
         additionalMagicResistance = 0,
         additionalHealth = 0,
         additionalAbilityPower = 0,
         sunder = 0,
         shred = 0
-    }) {
+    }: ItemProps) {
         // Basic attributes
         this.name = name;
         this.description = description;
@@ -26,6 +61,7 @@ class Item {
         this.additionalAttackDamage = additionalAttackDamage;
         this.additionalAttackSpeed = additionalAttackSpeed;
         this.additionalManaPerAttack = additionalManaPerAttack;
+        this.additionalStartingMana = additionalStartingMana;
         this.additionalCritDamage = additionalCritDamage;
         this.additionalCritAmp = additionalCritAmp;
         this.additionalDamageAmp = additionalDamageAmp;
@@ -43,4 +79,4 @@ class Item {
     }
 }
 
-module.exports = { Item };
+export { Item };
