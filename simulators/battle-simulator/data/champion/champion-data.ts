@@ -1,15 +1,16 @@
-const { Champion } = require('.././champion/champion.js');
+// Importing Champion class
+const { Champion } = require('.././champion/champion.ts');
 
 /*
 cd simulators/battle-simulator/data/champion
-nodemon champion-data.js
+nodemon champion-data.ts
 */
 
 const champions = [
     {
         name: 'Amumu',
         cost: 1,
-        traits: 'Automata, Watcher',
+        traitsList: 'Automata, Watcher',
         statsByStarLevel: {
             1: { 
                 hp: 600, 
@@ -46,7 +47,7 @@ const champions = [
     {
         name: 'Darius',
         cost: 1,
-        traits: 'Conqueror, Watcher',
+        traitsList: 'Conqueror, Watcher',
         statsByStarLevel: {
             1: { 
                 hp: 600, 
@@ -83,7 +84,7 @@ const champions = [
     {
         name: 'Akali',
         cost: 2,
-        traits: 'Conqueror, Watcher',
+        traitsList: 'Conqueror, Watcher',
         statsByStarLevel: {
             1: { 
                 hp: 600, 
@@ -119,7 +120,7 @@ const champions = [
     }
 ];
 
-function getChampionByName(name) {
+function getChampionByName(name: string) {
     if (!name) {
         return 'Champion name cannot be empty';
     }
@@ -132,5 +133,6 @@ function getChampionByName(name) {
     return champion;
 }
 
-console.log(getChampionByName('Amumu'));
+console.log(champions);
+
 module.exports = { champions, getChampionByName };

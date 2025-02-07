@@ -1,23 +1,70 @@
 /*
 cd simulators/battle-simulator/data/champion
-nodemon champion.js
+nodemon champion.ts
 */
 const { v4: uuidv4 } = require('uuid');
 
-class Champion {
+interface AbilityStats {
+    reduction: number;
+    damage: number;
+    magicDamage: number;
+    healing: number;
+}
+
+interface StarLevelStats {
+    hp: number;
+    attackDamage: number;
+    armor: number;
+    magicResist: number;
+    ability: AbilityStats;
+}
+
+type StatsByStarLevel = {
+    [starLevel: number]: StarLevelStats;
+};
+
+export class Champion {
+    name: string;
+    cost: number;
+    traitsList: string | string[];
+    statsByStarLevel: StatsByStarLevel;
+    attackSpeed: number;
+    abilityName: string;
+    range: number;
+    starLevel: number;
+    mana: number;
+    manaPerAttack: number;
+    abilityManaCost: number;
+    attackCritChance: number;
+    attackCritDamage: number;
+    items: string | string[];
+    currentHp: number;
+    armor: number;
+    magicResist: number;
+    gameTime: number;
+    attacks: number[];
+    timeStep: number;
+    id: string;
+    damageArray: number[];
+    abilityArray: number[];
+    healArray: number[];
+
     constructor(
-        name, 
-        cost, 
-        traitsList, 
-        statsByStarLevel, 
-        attackSpeed, 
-        abilityName, 
-        range, mana,
-        manaPerAttack, 
-        abilityManaCost, 
-        attackCritChance, 
-        attackCritDamage, 
-        items
+        name: string,
+        cost: number, 
+        traitsList: string | string[],
+        statsByStarLevel: StatsByStarLevel,
+        attackSpeed: number,
+        abilityName: string,
+        range: number,
+        mana: number,
+        manaPerAttack: number,
+        abilityManaCost: number,
+        attackCritChance: number,
+        attackCritDamage: number,
+        items: string | string[],
+        starLevel?: number,
+
     ) {
         this.name = name;
         this.cost = cost;
@@ -26,18 +73,18 @@ class Champion {
         this.attackSpeed = attackSpeed;
         this.abilityName = abilityName;
         this.range = range;
-        this.starLevel = 1;
+        this.starLevel = starLevel ?? 1;
         this.mana = mana;
         this.manaPerAttack = manaPerAttack;
         this.abilityManaCost = abilityManaCost;
         this.attackCritChance = attackCritChance;
-        this.attackCritDamage = attackCritDamage;       
+        this.attackCritDamage = attackCritDamage;
         this.items = items;
         this.currentHp = this.statsByStarLevel[this.starLevel].hp;
         this.armor = this.statsByStarLevel[this.starLevel].armor;
-        this.magicResist = this.statsByStarLevel[this.starLevel].magicResist; // Initialize current HP
+        this.magicResist = this.statsByStarLevel[this.starLevel].magicResist;
         this.gameTime = 0;
-        this.attacks = [1];
+        this.attacks = [];
         this.timeStep = 0.1;
         this.id = uuidv4();
         this.damageArray = [];
@@ -49,7 +96,7 @@ class Champion {
         return this.statsByStarLevel[this.starLevel];
     }
 
-    setStarLevel(starLevel) {
+    setStarLevel(starLevel: number) {
         if (this.statsByStarLevel[starLevel]) {
             this.starLevel = starLevel;
             this.currentHp = this.statsByStarLevel[starLevel].hp; // Update current HP
@@ -58,7 +105,7 @@ class Champion {
         }
     }
 
-    takeDamage(damage) {
+    takeDamage(damage: number) {
         this.currentHp -= damage;
         if (this.currentHp <= 0) {
             this.currentHp = 0;
@@ -66,7 +113,7 @@ class Champion {
         }
     }
 
-    attack(target) {
+    attack(target: any) {
         // Time step for the game loop
         this.gameTime += this.timeStep; // Increment the game time by the time step
         
@@ -170,7 +217,7 @@ class Champion {
         return this.currentHp > 0;
     }
 
-    useAbility(target) {
+    useAbility(target: any) {
 
         let championAttackTime = 1 / this.attackSpeed;
 
@@ -235,7 +282,6 @@ class Champion {
 
     displayStats() {
         const stats = this.getStats(); 
-        
         return `
             Name: ${this.name}
             Cost: ${this.cost}
@@ -266,6 +312,5 @@ class Champion {
     }
 }
 
-// console.log(getChampionByName('Amumu').displayStats())
+//  console.log(getChampionByName('Amumu').displayStats())
 
-module.exports = { Champion };

@@ -4,8 +4,8 @@ const router = express.Router();
 const HexCell = require('../utils/HexCell.js');
 const Board = require('./board.js');
 
-const { getChampionByName } = require('../data/champion/champion-data.js');
-const { displayStats, Champion } = require('../data/champion/champion.js');
+const { getChampionByName } = require('../data/champion/champion-data.ts');
+const { displayStats, Champion } = require('../data/champion/champion.ts');
 
 /*
 cd simulators/battle-simulator/core

@@ -2,8 +2,7 @@ const { Item } = require('.././item/item.ts');
 
 /*
 cd simulators/battle-simulator/data/item
-npx nodemon --exec ts-node item-data.ts
-
+nodemon --exec ts-node item-data.ts
 */
 
 const items = [
