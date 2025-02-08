@@ -1,5 +1,4 @@
 // Importing Champion class
-const { Champion } = require('.././champion/champion.ts');
 
 /*
 cd simulators/battle-simulator/data/champion

@@ -6,6 +6,8 @@ const Board = require('./board.js');
 
 const { getChampionByName } = require('../data/champion/champion-data.ts');
 const { displayStats, Champion } = require('../data/champion/champion.ts');
+const { Item } = require('../data/item/item.ts');
+const { getItemByName } = require('../data/item/item-data.ts');
 
 /*
 cd simulators/battle-simulator/core
@@ -23,7 +25,7 @@ function placeChampionByName(championName, row, column, starLevel, team) {
             champion.name, 
             champion.cost, 
             champion.traitsList, 
-            champion.statsByStarLevel, 
+            champion.statsByStarLevel,
             champion.attackSpeed, 
             champion.abilityName, 
             champion.range, 
@@ -35,7 +37,8 @@ function placeChampionByName(championName, row, column, starLevel, team) {
             champion.timeUntilAttack,
             champion.attackArray,
             champion.abilityArray,
-            champion.healArray
+            champion.healArray,            
+            champion.items,
         );
         newChampion.setStarLevel(starLevel);
         newChampion.team = team; // Assign the team to the champion
@@ -71,6 +74,16 @@ function initializeTeams() {
     console.log('Opponent team:', opponent.map(champion => champion.name));
 
     return { player, opponent };
+}
+
+function addItemByName(champion, itemName) {
+    const item = getItemByName(itemName);
+
+    if (typeof item === 'string') {
+        console.log(item);
+    } else { 
+        champion.items.push(item);
+    }   
 }
 
 function saveOriginalStats(player, opponent) {
@@ -226,8 +239,10 @@ function startBattle() {
 placeChampionByName('Akali', 4, 3, 1, 'player');
 placeChampionByName('Darius', 4, 2, 1, 'player');
 placeChampionByName('Darius', 3, 3, 1, 'opponent'); 
+addItemByName(board.getChampion(4, 3), 'Tear of the Goddess');
+
+// console.log('40192490813489013490143' + board.getChampion(4, 3).items[0].name);
 
 board.displayBoard();
 
-startBattle();
 module.exports = { router, startBattle }; 

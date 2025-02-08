@@ -23,7 +23,7 @@ type StatsByStarLevel = {
     [starLevel: number]: StarLevelStats;
 };
 
-export class Champion {
+class Champion {
     name: string;
     cost: number;
     traitsList: string | string[];
@@ -62,7 +62,7 @@ export class Champion {
         abilityManaCost: number,
         attackCritChance: number,
         attackCritDamage: number,
-        items: string | string[],
+        items: any[] = [],
         starLevel?: number,
 
     ) {
@@ -314,3 +314,4 @@ export class Champion {
 
 //  console.log(getChampionByName('Amumu').displayStats())
 
+module.exports = { Champion };

@@ -2,34 +2,62 @@ const { Item } = require('.././item/item.ts');
 
 /*
 cd simulators/battle-simulator/data/item
-nodemon --exec ts-node item-data.ts
+nodemon item-data.ts
 */
 
-const items = [
+const basicItems = [
     new Item({
     name:'B.F. Sword',
     description: 'nothing',
-    additionalAttackDamage: 1.1,
+    additionalAttackDamage: 10, // 10 attack damage
     }), 
     new Item({
         name:'Recurve Bow',
         description:'nothing',
-        additionalAttackSpeed: 1.1,
+        additionalAttackSpeed: 1.1, // 10% attack speed
+    }),
+    new Item({
+        name:'Tear of the Goddess',
+        description:'nothing',
+        additionalStartingMana: 15, // 15 starting mana
+    }), 
+    new Item({
+        name: 'Needlessly Large Rod',
+        description: 'nothing',
+        additionalAbilityPower: 10 // 10 ability power
     })
 ]
 
-function getItemByName(name: string){
+const combinedItems = [
+    new Item({
+        name: 'Guinsoo\'s Rageblade',
+        description: 'nothing',
+        additionalAttackSpeed: 1.1, // 10% attack speed
+        additionalAbilityPower: 10 // 10 ability power
+    }),
+]
+
+ export function getItemByName(name: string){
     if(!name){
         return 'Champion name cannt be Empty'
     }
 
-    const item = items.find(item => item.name === name)
+    const basicItem = basicItems.find(basicItems => basicItems.name === name)
+    const combinedItem = combinedItems.find(combinedItems => combinedItems.name === name)
 
-    if(!item){
+    if(basicItem){
+        return basicItem
+    } else if(combinedItem){
+        return combinedItem
+    }
+
+    if(!basicItems){
         return 'Item not found'
     }
-    return item
 }
 
-console.log(getItemByName('B.F. Sword'))
+console.log(getItemByName('Tear of the Goddess'))
 
+console.log(getItemByName('Guinsoo\'s Rageblade'))
+
+module.exports = { getItemByName }

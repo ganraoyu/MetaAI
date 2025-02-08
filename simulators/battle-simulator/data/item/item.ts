@@ -17,7 +17,7 @@ interface ItemProps {
     shred?: number;
 }
 
-class Item {
+export class Item {
     name: string;
     description: string;
     additionalAttackDamage: number;
@@ -53,11 +53,8 @@ class Item {
         sunder = 0,
         shred = 0
     }: ItemProps) {
-        // Basic attributes
         this.name = name;
         this.description = description;
-
-        // Offensive stats
         this.additionalAttackDamage = additionalAttackDamage;
         this.additionalAttackSpeed = additionalAttackSpeed;
         this.additionalManaPerAttack = additionalManaPerAttack;
@@ -65,18 +62,15 @@ class Item {
         this.additionalCritDamage = additionalCritDamage;
         this.additionalCritAmp = additionalCritAmp;
         this.additionalDamageAmp = additionalDamageAmp;
-
-        // Defensive stats
         this.reducedMaxMana = reducedMaxMana;
         this.additionalArmor = additionalArmor;
         this.additionalMagicResistance = additionalMagicResistance;
         this.additionalHealth = additionalHealth;
-
-        // Ability-related stats
         this.additionalAbilityPower = additionalAbilityPower;
         this.sunder = sunder;
         this.shred = shred;
     }
 }
 
-export { Item };
+// Export the Item class using module.exports
+module.exports = { Item };
