@@ -84,7 +84,7 @@ class Champion {
         this.armor = this.statsByStarLevel[this.starLevel].armor;
         this.magicResist = this.statsByStarLevel[this.starLevel].magicResist;
         this.gameTime = 0;
-        this.attacks = [];
+        this.attacks = [1];
         this.timeStep = 0.1;
         this.id = uuidv4();
         this.damageArray = [];
@@ -113,7 +113,7 @@ class Champion {
         }
     }
 
-    attack(target: any) {
+    attack(target: Champion) {
         // Time step for the game loop
         this.gameTime += this.timeStep; // Increment the game time by the time step
         
@@ -217,7 +217,7 @@ class Champion {
         return this.currentHp > 0;
     }
 
-    useAbility(target: any) {
+    useAbility(target: Champion) {
 
         let championAttackTime = 1 / this.attackSpeed;
 

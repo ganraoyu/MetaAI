@@ -20,6 +20,27 @@ const calculateWinRate = async (req, res) => {
     }
 };
 
+const calculateChampionItems = async (req, res) => {
+    try{
+        const { playerStatistics, opponentStatistics } = startBattleData; 
+
+        const playerChampionItems = playerStatistics.map(champion => ({
+            name: champion.name,
+            items: champion.items
+        }));
+
+        const opponentChampionItems = opponentStatistics.map(champion => ({
+            name: champion.name,
+            items: champion.items   
+        }));
+
+        return { playerChampionItems, opponentChampionItems };
+    } catch(error){
+        console.error('Error: ' + error);
+        res.status(500).json({ error: 'An error occurred while fetching champion items.' });
+    }
+}
+
 const calculateAttackDamageDelt = async (req, res) => {
     try {
         const { playerStatistics, opponentStatistics } = startBattleData;
@@ -158,7 +179,7 @@ const calculateHealing = async (req, res) => {
     }
 };
 
-const isAliveOrDead = async (req, res) => {
+const calculateIsAliveOrDead = async (req, res) => {
     try {
         const { playerStatistics, opponentStatistics } = startBattleData;
 
@@ -190,12 +211,13 @@ const calculateAllBattleStatistics = async (req, res) => {
         const { playerWinRate, opponentWinRate } = await calculateWinRate();
         const { allPlayerDamage, allOpponentDamage } = await calculateAllDamageDelt();
         const { totalPlayerHealing, totalOpponentHealing } = await calculateHealing();
-        const { checkPlayerChampionAliveOrDead, checkOpponentChampionAliveOrDead } = await isAliveOrDead();
+        const { checkPlayerChampionAliveOrDead, checkOpponentChampionAliveOrDead } = await calculateIsAliveOrDead();
 
         const playerChampionStatistics = [{
             playerWinRate,
             playerStatistics: allPlayerDamage.map((champion, index) => ({
                 name: champion.name,
+                items: champion.items,
                 hp: checkPlayerChampionAliveOrDead[index].HP,
                 isAlive: checkPlayerChampionAliveOrDead[index].isAlive,
                 totalChampionDamage: champion.totalAttackDamage,
@@ -215,7 +237,8 @@ const calculateAllBattleStatistics = async (req, res) => {
         const opponentChamionStatistics = [{
             opponentWinRate,
             opponentStatistics: allOpponentDamage.map((champion, index) => ({
-                name: champion.name,              
+                name: champion.name,       
+                items: champion.items,   
                 hp: checkOpponentChampionAliveOrDead[index].HP,                  
                 isAlive: checkOpponentChampionAliveOrDead[index].isAlive,
                 totalChampionDamage: champion.totalAttackDamage,
@@ -236,21 +259,35 @@ const calculateAllBattleStatistics = async (req, res) => {
     }
 };
 
+const calculateBattleHistory = async (req, res) => {
+    try {
+        const battleHistory = startBattleData;
+        
+        return battleHistory;
+    } catch(error){
+        console.log('Error', error);
+        res.status(500).json({ error: 'An error occurred while fetching battle history.' });
+    }
+}
+
+/* 
 calculateWinRate();
 calculateAbilityDamageDelt();
 calculateAttackDamageDelt();
 calculateAllDamageDelt();
 calculateHealing();
-isAliveOrDead();
+calculateIsAliveOrDead();
 calculateAllBattleStatistics();
-
+*/
 
 module.exports = { 
     calculateWinRate, 
+    calculateChampionItems,
     calculateAttackDamageDelt, 
     calculateAbilityDamageDelt, 
     calculateAllDamageDelt, 
     calculateHealing,
-    isAliveOrDead,
-    calculateAllBattleStatistics
+    calculateIsAliveOrDead,
+    calculateAllBattleStatistics,
+    calculateBattleHistory,
 };

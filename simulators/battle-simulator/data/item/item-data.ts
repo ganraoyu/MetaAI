@@ -25,7 +25,26 @@ export const basicItems = [
         name: 'Needlessly Large Rod',
         description: 'nothing',
         additionalAbilityPower: 10 // 10 ability power
-    })
+    }),
+    new Item({
+        name: 'Chain Vest',
+        description: 'nothing',
+        additionalArmor: 20 // 20 armor
+    }),
+    new Item({
+        name: 'Negatron Cloak',
+        description: 'nothing',
+        additionalMagicResist: 20 // 20 magic resist
+    }),
+    new Item({
+        name: 'Giant\'s Belt',
+        description: 'nothing',
+        additionalHealth: 200 // 200 health
+    }),
+    new Item({
+        name: 'Sparring Gloves',
+        description: 'nothing',
+    }),
 ]
 
 export const combinedItems = [

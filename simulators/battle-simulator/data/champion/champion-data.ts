@@ -132,6 +132,6 @@ function getChampionByName(name: string) {
     return champion;
 }
 
-console.log(champions);
+// console.log(champions);
 
 module.exports = { champions, getChampionByName };

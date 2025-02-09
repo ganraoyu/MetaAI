@@ -83,20 +83,21 @@ function addItemByName(champion, itemName) {
         throw new Error(item);
     } else { 
         champion.items.push(item);
-        console.log(item);
     }   
 }
 
 function addAddtionalItemStatistics(champion){
-    if(champion.items.length > 0){
+    if(3 >= champion.items.length > 0){
         console.log(champion.items);  
         
         champion.items.forEach(item =>{
             champion.statsByStarLevel[champion.starLevel].attackDamage += parseInt(item.additionalAttackDamage);
-        })
-
+        });
+        
+    } else if(champion.items.length === 0){
+        console.log('No items equipped');
     } else {
-        console.log('No items');
+        console.log('Max 3 items can be equipped');
     }
 }
 
@@ -219,6 +220,7 @@ function startBattle() {
 
     const playerStatistics = player.map(champion => ({
         name: champion.name,
+        items: champion.items,
         HP: champion.currentHp,
         baseHP: champion.statsByStarLevel[champion.starLevel].hp,
         damageArray: champion.damageArray,
@@ -228,6 +230,7 @@ function startBattle() {
 
     const opponentStatistics = opponent.map(champion => ({
         name: champion.name,
+        items: champion.items,
         HP: champion.currentHp,
         baseHP: champion.statsByStarLevel[champion.starLevel].hp,
         damageArray: champion.damageArray,
@@ -251,9 +254,8 @@ function startBattle() {
 }
   
 placeChampionByName('Akali', 4, 3, 1, 'player');
-placeChampionByName('Darius', 4, 2, 1, 'player');
+// placeChampionByName('Darius', 4, 2, 1, 'player');
 placeChampionByName('Darius', 3, 3, 1, 'opponent'); 
-
 addItemByName(board.getChampion(4, 3), 'B.F. Sword');
 
 console.log(board.getChampion(4, 3));
