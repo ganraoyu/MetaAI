@@ -5,7 +5,7 @@ cd simulators/battle-simulator/data/item
 nodemon item-data.ts
 */
 
-const basicItems = [
+export const basicItems = [
     new Item({
     name:'B.F. Sword',
     description: 'nothing',
@@ -28,7 +28,7 @@ const basicItems = [
     })
 ]
 
-const combinedItems = [
+export const combinedItems = [
     new Item({
         name: 'Guinsoo\'s Rageblade',
         description: 'nothing',
@@ -56,8 +56,4 @@ const combinedItems = [
     }
 }
 
-console.log(getItemByName('Tear of the Goddess'))
-
-console.log(getItemByName('Guinsoo\'s Rageblade'))
-
-module.exports = { getItemByName }
+module.exports = { getItemByName, basicItems, combinedItems }

@@ -80,10 +80,24 @@ function addItemByName(champion, itemName) {
     const item = getItemByName(itemName);
 
     if (typeof item === 'string') {
-        console.log(item);
+        throw new Error(item);
     } else { 
         champion.items.push(item);
+        console.log(item);
     }   
+}
+
+function addAddtionalItemStatistics(champion){
+    if(champion.items.length > 0){
+        console.log(champion.items);  
+        
+        champion.items.forEach(item =>{
+            champion.statsByStarLevel[champion.starLevel].attackDamage += parseInt(item.additionalAttackDamage);
+        })
+
+    } else {
+        console.log('No items');
+    }
 }
 
 function saveOriginalStats(player, opponent) {
@@ -239,10 +253,13 @@ function startBattle() {
 placeChampionByName('Akali', 4, 3, 1, 'player');
 placeChampionByName('Darius', 4, 2, 1, 'player');
 placeChampionByName('Darius', 3, 3, 1, 'opponent'); 
-addItemByName(board.getChampion(4, 3), 'Tear of the Goddess');
 
-// console.log('40192490813489013490143' + board.getChampion(4, 3).items[0].name);
+addItemByName(board.getChampion(4, 3), 'B.F. Sword');
 
+console.log(board.getChampion(4, 3));
+
+addAddtionalItemStatistics(board.getChampion(4, 3));
 board.displayBoard();
 
 module.exports = { router, startBattle }; 
+
