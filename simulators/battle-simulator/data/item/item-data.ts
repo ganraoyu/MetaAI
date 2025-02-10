@@ -44,7 +44,7 @@ export const basicItems = [
     new Item({
         name: 'Sparring Gloves',
         description: 'nothing',
-    }),
+    })
 ]
 
 export const combinedItems = [
@@ -70,7 +70,7 @@ export const combinedItems = [
         return combinedItem
     }
 
-    if(!basicItems){
+    if(!basicItems || !combinedItems){
         return 'Item not found'
     }
 }
