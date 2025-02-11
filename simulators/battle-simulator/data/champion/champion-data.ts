@@ -9,7 +9,7 @@ const champions = [
     {
         name: 'Amumu',
         cost: 1,
-        traitsList: 'Automata, Watcher',
+        traitsList: ['Automata', 'Watcher'],
         statsByStarLevel: {
             1: { 
                 hp: 600, 
@@ -41,12 +41,14 @@ const champions = [
         abilityManaCost: 0,
         attackCritChance: 50,
         attackCritDamage: 1.40,
+        durability: 0,
+        omnivamp: 0,
         items: []
     },
     {
         name: 'Darius',
         cost: 1,
-        traitsList: 'Conqueror, Watcher',
+        traitsList: ['Conqueror', 'Watcher'],
         statsByStarLevel: {
             1: { 
                 hp: 600, 
@@ -78,12 +80,14 @@ const champions = [
         abilityManaCost: 70,
         attackCritChance: 25,
         attackCritDamage: 1.40,
+        durability: 0, 
+        omnivamp: 0,
         items: []
     },
     {
         name: 'Akali',
         cost: 2,
-        traitsList: 'Conqueror, Watcher',
+        traitsList: ['Automata', 'Watcher'],
         statsByStarLevel: {
             1: { 
                 hp: 600, 
@@ -115,11 +119,15 @@ const champions = [
         abilityManaCost: 70,
         attackCritChance: 25,
         attackCritDamage: 1.40,
+        durability: 10,
+        omnivamp: 10,
         items: []
     }
 ];
 
-function getChampionByName(name: string) {
+console.log(champions)
+
+export function getChampionByName(name: string) {
     if (!name) {
         return 'Champion name cannot be empty';
     }

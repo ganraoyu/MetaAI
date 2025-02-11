@@ -12,26 +12,50 @@ export const traits = [
         statsByLevel: {
             2:{
                 description: 'nothing',
-                additionalArmor: 10,
+                additionalArmor: 15, // percentage
             },
             4:{
                 description: 'nothing',
-                additionalArmor: 20,
+                additionalArmor: 25, // percentage
             },
             6:{
-                decription: 'nothing',
-                additionalArmor: 60,
+                decription: 'nothing', 
+                additionalArmor: 35, // percentage
+            },
+        }
+    }),
+    new Trait({
+        name: 'Automata',
+        level: 0,
+        statsByLevel: {
+            2:{
+                description: 'nothing',
+                additionalArmor: 25,
+                additionalMagicResist: 25,
+            },
+            4:{
+                description: 'nothing',
+                additionalArmor: 55,
+                additionalMagicResist: 55,
+            },
+            6:{
+                description: 'nothing',
+                additionalArmor: 100,
+                additionalMagicResist: 100,
             },
         }
     })
 ]
 
-function getTraitByName(name: string){
+traits[1].level += 2;
+
+export function getTraitByName(name: string){
     if(!name){
         return null;
     }
 
     const itemStats = traits.find(trait => trait.name === name);
+
     return {
         name: itemStats.name, 
         level: itemStats.level,
@@ -39,6 +63,6 @@ function getTraitByName(name: string){
     }
 }
 
-console.log(getTraitByName('Watcher'));
+console.log(getTraitByName('Automata'));
 
-module.exports = { traits }
+module.exports = { traits, getTraitByName }

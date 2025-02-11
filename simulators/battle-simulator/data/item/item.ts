@@ -10,11 +10,13 @@ interface ItemProps {
     reducedMaxMana?: number;
     additionalStartingMana?: number;
     additionalArmor?: number;
-    additionalMagicResistance?: number;
+    additionalMagicResist?: number;
     additionalHealth?: number;
     additionalAbilityPower?: number;
     sunder?: number;
     shred?: number;
+    sunderRadius?: number;
+    shredRadius?: number;
 }
 
 export class Item {
@@ -29,11 +31,13 @@ export class Item {
     reducedMaxMana: number;
     additionalStartingMana: number;
     additionalArmor: number;
-    additionalMagicResistance: number;
+    additionalMagicResist: number;
     additionalHealth: number;
     additionalAbilityPower: number;
     sunder: number;
     shred: number;
+    sunderRadius: number;
+    shredRadius: number;
 
     constructor({
         name,
@@ -47,11 +51,13 @@ export class Item {
         reducedMaxMana = 0,
         additionalStartingMana = 0,
         additionalArmor = 0,
-        additionalMagicResistance = 0,
+        additionalMagicResist = 0,
         additionalHealth = 0,
         additionalAbilityPower = 0,
         sunder = 0,
-        shred = 0
+        shred = 0,
+        sunderRadius = 0,
+        shredRadius = 0,
     }: ItemProps) {
         this.name = name;
         this.description = description;
@@ -64,11 +70,13 @@ export class Item {
         this.additionalDamageAmp = additionalDamageAmp;
         this.reducedMaxMana = reducedMaxMana;
         this.additionalArmor = additionalArmor;
-        this.additionalMagicResistance = additionalMagicResistance;
+        this.additionalMagicResist = additionalMagicResist;
         this.additionalHealth = additionalHealth;
         this.additionalAbilityPower = additionalAbilityPower;
         this.sunder = sunder;
         this.shred = shred;
+        this.sunderRadius = sunderRadius;
+        this.shredRadius = shredRadius;
     }
 }
 

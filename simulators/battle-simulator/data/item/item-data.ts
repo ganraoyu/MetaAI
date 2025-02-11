@@ -75,4 +75,6 @@ export const combinedItems = [
     }
 }
 
+console.log(basicItems)
+
 module.exports = { getItemByName, basicItems, combinedItems }

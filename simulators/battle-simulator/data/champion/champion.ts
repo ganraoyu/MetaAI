@@ -1,3 +1,4 @@
+const { getChampionByName } = require('../champion/champion-data.ts');
 /*
 cd simulators/battle-simulator/data/champion
 nodemon champion.ts
@@ -26,7 +27,7 @@ type StatsByStarLevel = {
 class Champion {
     name: string;
     cost: number;
-    traitsList: string | string[];
+    traitsList: string[];
     statsByStarLevel: StatsByStarLevel;
     attackSpeed: number;
     abilityName: string;
@@ -36,7 +37,9 @@ class Champion {
     manaPerAttack: number;
     abilityManaCost: number;
     attackCritChance: number;
-    attackCritDamage: number;
+    attackCritDamage: number;    
+    omnivamp: number;
+    durability: number;
     items: string | string[];
     currentHp: number;
     armor: number;
@@ -49,10 +52,11 @@ class Champion {
     abilityArray: number[];
     healArray: number[];
 
+
     constructor(
         name: string,
         cost: number, 
-        traitsList: string | string[],
+        traitsList: string[],
         statsByStarLevel: StatsByStarLevel,
         attackSpeed: number,
         abilityName: string,
@@ -61,9 +65,12 @@ class Champion {
         manaPerAttack: number,
         abilityManaCost: number,
         attackCritChance: number,
-        attackCritDamage: number,
+        attackCritDamage: number,        
+        omnivamp: number,
+        durability: number,
         items: any[] = [],
-        starLevel?: number,
+
+        starLevel?: number 
 
     ) {
         this.name = name;
@@ -78,7 +85,9 @@ class Champion {
         this.manaPerAttack = manaPerAttack;
         this.abilityManaCost = abilityManaCost;
         this.attackCritChance = attackCritChance;
-        this.attackCritDamage = attackCritDamage;
+        this.attackCritDamage = attackCritDamage;        
+        this.omnivamp = omnivamp;
+        this.durability = durability;
         this.items = items;
         this.currentHp = this.statsByStarLevel[this.starLevel].hp;
         this.armor = this.statsByStarLevel[this.starLevel].armor;
@@ -90,6 +99,7 @@ class Champion {
         this.damageArray = [];
         this.abilityArray = [];
         this.healArray = [];
+
     }
 
     getStats() {
@@ -293,7 +303,9 @@ class Champion {
             Magic Resist: ${stats.magicResist}
             Attack Speed: ${this.attackSpeed}
             Crit Chance: ${this.attackCritChance}
-            Crit Damage: ${this.attackCritDamage}
+            Crit Damage: ${this.attackCritDamage}            
+            Durability: ${this.durability}
+            Omnivamp: ${this.omnivamp}
             Star Level: ${this.starLevel}
             Stats:
                 HP: ${stats.hp}
@@ -312,6 +324,6 @@ class Champion {
     }
 }
 
-//  console.log(getChampionByName('Amumu').displayStats())
+// console.log(getChampionByName('Amumu').displayStats())
 
 module.exports = { Champion };

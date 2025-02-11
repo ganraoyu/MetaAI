@@ -8,6 +8,8 @@ const { getChampionByName } = require('../data/champion/champion-data.ts');
 const { displayStats, Champion } = require('../data/champion/champion.ts');
 const { Item } = require('../data/item/item.ts');
 const { getItemByName } = require('../data/item/item-data.ts');
+const { Trait } = require('../data/trait/trait.ts');
+const { getTraitByName } = require('../data/trait/trait-data.ts');
 
 /*
 cd simulators/battle-simulator/core
@@ -34,6 +36,8 @@ function placeChampionByName(championName, row, column, starLevel, team) {
             champion.abilityManaCost, 
             champion.attackCritChance, 
             champion.attackCritDamage, 
+            champion.durability,
+            champion.omnivamp,
             champion.timeUntilAttack,
             champion.attackArray,
             champion.abilityArray,
@@ -88,8 +92,7 @@ function addItemByName(champion, itemName) {
 
 function addAddtionalItemStatistics(champion){
     if(3 >= champion.items.length > 0){
-        console.log(champion.items);  
-        
+        // console.log(champion.items);  
         champion.items.forEach(item =>{
             champion.statsByStarLevel[champion.starLevel].attackDamage += parseInt(item.additionalAttackDamage);
         });
@@ -98,6 +101,42 @@ function addAddtionalItemStatistics(champion){
         console.log('No items equipped');
     } else {
         console.log('Max 3 items can be equipped');
+    }
+}
+
+function checkChampionTraits(champion) {
+    let combinedTraitsObject = {
+        name: champion.name,
+        traits: []  
+    };
+
+    const traits = champion.traitsList;
+
+    for (let i = 0; i < traits.length; i++) {
+        const trait = getTraitByName(traits[i]);
+
+        if (trait) {
+            combinedTraitsObject.traits.push({
+                trait: trait.name,
+                numberOfTrait: 1,  
+            });
+        } else {
+            console.log('Trait not found');
+        }
+    }
+
+    console.log(combinedTraitsObject);
+    
+    return combinedTraitsObject;
+}
+
+
+function addAdditionalTraitStatistics(champion){
+    if(traitsArray > 0){
+        const traits = traitsArray.reduce((accumulator, currentValue) =>{
+            return accumulator + currentValue.numberOfTrait;
+        }, 0)
+        console.log(traits);
     }
 }
 
@@ -184,7 +223,6 @@ function startBattle() {
         let battleOpponent = [...opponent];     
 
         // Simulate the battle until one team is defeated
-
         while (battlePlayer.some(champion => champion.currentHp > 0) && battleOpponent.some(champion => champion.currentHp > 0)) {
             let attackOccurred = false;
             ({ battlePlayer, battleOpponent, attackOccurred } = simulateRound(battlePlayer, battleOpponent));
@@ -261,6 +299,8 @@ addItemByName(board.getChampion(4, 3), 'B.F. Sword');
 console.log(board.getChampion(4, 3));
 
 addAddtionalItemStatistics(board.getChampion(4, 3));
+checkChampionTraits(board.getChampion(4, 3));
+
 board.displayBoard();
 
 module.exports = { router, startBattle }; 

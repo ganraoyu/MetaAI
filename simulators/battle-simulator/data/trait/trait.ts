@@ -10,13 +10,14 @@ interface TraitStats {
     reducedMaxMana?: number;
     additionalStartingMana?: number;
     additionalArmor?: number;
-    additionalMagicResistance?: number;
+    additionalMagicResist?: number;
     additionalDamageReduction?: number;
     additionalHealth?: number;
     additionalAbilityPower?: number;
     sunder?: number;
     shred?: number;
-
+    sunderRadius?: number;
+    shredRadius?: number;
 }
 
 interface TraitProps {
@@ -31,7 +32,6 @@ type StatsByLevel = {
 
 export class Trait {
     name: string;
-
     level: number;
     statsByLevel: StatsByLevel;
     
@@ -41,7 +41,7 @@ export class Trait {
         this.statsByLevel = statsByLevel;
     }
     
-    getCurrentLevelStats(): TraitStats {
+    getCurrentLevelStats() {
         const defaultStats: TraitStats = {
             description: undefined,
             additionalAttackDamage: 0,
@@ -54,7 +54,7 @@ export class Trait {
             reducedMaxMana: 0,
             additionalStartingMana: 0,
             additionalArmor: 0,
-            additionalMagicResistance: 0,
+            additionalMagicResist: 0,
             additionalDamageReduction: 0,
             additionalHealth: 0,
             additionalAbilityPower: 0,
