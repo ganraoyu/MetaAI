@@ -87,7 +87,7 @@ const champions = [
     {
         name: 'Akali',
         cost: 2,
-        traitsList: ['Automata', 'Watcher'],
+        traitsList: ['Watcher', 'Automata'],
         statsByStarLevel: {
             1: { 
                 hp: 600, 

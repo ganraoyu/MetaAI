@@ -93,7 +93,7 @@ function addItemByName(champion, itemName) {
 function addAddtionalItemStatistics(champion){
     if(3 >= champion.items.length > 0){
         // console.log(champion.items);  
-        champion.items.forEach(item =>{
+        champion.items.forEach(item =>{ 
             champion.statsByStarLevel[champion.starLevel].attackDamage += parseInt(item.additionalAttackDamage);
         });
         
@@ -124,21 +124,54 @@ function checkChampionTraits(champion) {
             console.log('Trait not found');
         }
     }
-
-    console.log(combinedTraitsObject);
     
     return combinedTraitsObject;
 }
 
+function addAdditionalTraitStatistics(champion) {
+    let traitCounts = {};
 
-function addAdditionalTraitStatistics(champion){
-    if(traitsArray > 0){
-        const traits = traitsArray.reduce((accumulator, currentValue) =>{
-            return accumulator + currentValue.numberOfTrait;
-        }, 0)
-        console.log(traits);
-    }
+    // Get combined traits object
+    const combinedTraitsObject = checkChampionTraits(champion);
+    console.log('combinedTraitsObject:',combinedTraitsObject);
+
+    // Extract trait names and their corresponding stats
+    const traitStats = combinedTraitsObject.traits.map(trait => getTraitByName(trait.trait));
+
+    const automata = getTraitByName('Automata');
+    console.log('automata:',automata);
+    console.log('traitStats:',traitStats); 
+
+    // Count occurrences of each trait
+    combinedTraitsObject.traits.forEach(trait => {
+        if (traitCounts[trait.trait]) {
+            traitCounts[trait.trait]++;
+            traitStats[trait.level] = traitCounts[trait.trait];
+            console.log(traitStats[trait.level]);
+        } else {
+            traitCounts[trait.trait] = 1;
+        }         
+    });
+
+    console.log(traitCounts);
+    console.log(combinedTraitsObject)
+
+    // Apply additional stats for each trait
+    combinedTraitsObject.traits.forEach((trait) => {
+        // Find the correct trait stats based on the trait name
+        const traitStatsForTrait = traitStats.find(t => t.name === trait.trait);
+
+        // Example of adding stats for Automata trait
+        if (trait.trait === 'Automata' && traitCounts['Automata'] >= 1) {
+            champion.statsByStarLevel[champion.starLevel].armor += traitStatsForTrait.stats.additionalArmor || 0;
+            console.log(traitStatsForTrait.stats.additionalAttackDamage)
+            champion.statsByStarLevel[champion.starLevel].attackDamage += parseInt(traitStatsForTrait.stats.additionalAttackDamage) || 0;
+        } else {
+            console.log('Error: Trait not processed correctly');
+        }
+    });
 }
+
 
 function saveOriginalStats(player, opponent) {
     const originalPlayerStats = player.map(champion => ({
@@ -300,8 +333,8 @@ console.log(board.getChampion(4, 3));
 
 addAddtionalItemStatistics(board.getChampion(4, 3));
 checkChampionTraits(board.getChampion(4, 3));
+addAdditionalTraitStatistics(board.getChampion(4, 3));
 
 board.displayBoard();
 
-module.exports = { router, startBattle }; 
-
+module.exports = { router, startBattle };
