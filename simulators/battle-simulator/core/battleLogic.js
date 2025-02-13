@@ -124,7 +124,7 @@ function checkChampionTraits(champion) {
             console.log('Trait not found');
         }
     }
-    
+
     return combinedTraitsObject;
 }
 
@@ -158,17 +158,16 @@ function addAdditionalTraitStatistics(champion) {
 
     // Apply additional stats for each trait
     combinedTraitsObject.traits.forEach((trait) => {
-        // Find the correct trait stats based on the trait name
         const traitStatsForTrait = traitStats.find(t => t.name === trait.trait);
 
-        // Example of adding stats for Automata trait
-        if (trait.trait === 'Automata' && traitCounts['Automata'] >= 1) {
-            champion.statsByStarLevel[champion.starLevel].armor += traitStatsForTrait.stats.additionalArmor || 0;
-            console.log(traitStatsForTrait.stats.additionalAttackDamage)
-            champion.statsByStarLevel[champion.starLevel].attackDamage += parseInt(traitStatsForTrait.stats.additionalAttackDamage) || 0;
-        } else {
-            console.log('Error: Trait not processed correctly');
-        }
+            if (trait.trait === traitStatsForTrait.name && traitCounts[traitStatsForTrait.name] >= 1) {                
+                champion.statsByStarLevel[champion.starLevel].armor += traitStatsForTrait.stats.additionalArmor || 0;
+                console.log(traitStatsForTrait.stats.additionalArmor)
+                console.log(traitStatsForTrait.stats.additionalAttackDamage)
+                champion.statsByStarLevel[champion.starLevel].attackDamage += parseInt(traitStatsForTrait.stats.additionalAttackDamage) || 0;
+            } else {
+                console.log('Error: Trait not processed correctly');
+            }
     });
 }
 

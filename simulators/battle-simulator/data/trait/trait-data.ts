@@ -8,12 +8,12 @@ nodemon trait-data.ts
 export const traits = [
     new Trait({
         name: 'Watcher',
-        level: 0,
+        level: 2,
         statsByLevel: {
             2:{
                 description: 'nothing',
-                additionalArmor: 20034134, // percentage
-                additionalAttackDamage: 200, // percentage   
+                additionalArmor: 15, // percentage
+                additionalAttackDamage: 10, // percentage   
             },
             4:{
                 description: 'nothing',
@@ -33,7 +33,7 @@ export const traits = [
                 description: 'nothing',
                 additionalArmor: 25,
                 additionalMagicResist: 25,
-                additionalAttackDamage: 202220,
+                additionalAttackDamage: 10,
             },
             4:{
                 description: 'nothing',
