@@ -17,7 +17,8 @@ nodemon battlelogic
 */
      
 const board = new Board(8, 7);
-      
+
+
 function placeChampionByName(championName, row, column, starLevel, team) {
     const champion = getChampionByName(championName);
     if (typeof champion === 'string') {
@@ -36,6 +37,7 @@ function placeChampionByName(championName, row, column, starLevel, team) {
             champion.abilityManaCost, 
             champion.attackCritChance, 
             champion.attackCritDamage, 
+            champion.abilityPower,
             champion.durability,
             champion.omnivamp,
             champion.timeUntilAttack,
@@ -92,9 +94,21 @@ function addItemByName(champion, itemName) {
 
 function addAddtionalItemStatistics(champion){
     if(3 >= champion.items.length > 0){
-        // console.log(champion.items);  
-        champion.items.forEach(item =>{ 
-            champion.statsByStarLevel[champion.starLevel].attackDamage += parseInt(item.additionalAttackDamage);
+        champion.items.forEach(item =>{            
+            champion.currentHp += parseInt(item.additionalHealth) || 0;      
+            champion.statsByStarLevel[champion.starLevel].armor += parseInt(item.additionalArmor) || 0;
+            champion.statsByStarLevel[champion.starLevel].magicResist += parseInt(item.additionalMagicResist) || 0;
+            champion.statsByStarLevel[champion.starLevel].attackDamage += parseInt(item.additionalAttackDamage) || 0;
+            champion.attackSpeed *= parseInt(item.additionalAttackSpeed) || 0;
+            champion.manaperAttack += parseInt(item.additionalManaPerAttack) || 0;
+            champion.range += parseInt(item.additionalAttackRange) || 0;
+            champion.attackCritChance += parseInt(item.additionalCritChance) || 0;
+            champion.attackCritDamage += parseInt(item.additionalCritDamage) || 0;
+            champion.omnivamp += parseInt(item.additinalOmnivamp) || 0;
+            champion.durability += parseInt(item.additionalDurability) || 0;
+            champion.abilityPower += parseInt(item.additionalAbilityPower) ||0;            
+            champion.mana += parseInt(item.additionalArmor) || 0;
+            champion.abilityManaCost -= parseInt(item.reducedMaxMana) || 0;
         });
         
     } else if(champion.items.length === 0){
@@ -128,49 +142,44 @@ function checkChampionTraits(champion) {
     return combinedTraitsObject;
 }
 
+
 function addAdditionalTraitStatistics(champion) {
     let traitCounts = {};
 
-    // Get combined traits object
-    const combinedTraitsObject = checkChampionTraits(champion);
-    console.log('combinedTraitsObject:',combinedTraitsObject);
+    const combinedTraitsObject = checkChampionTraits(champion); // Get combined traits object
+    const traitStats = combinedTraitsObject.traits.map(trait => getTraitByName(trait.trait)); // Extract trait names and their corresponding stats
 
-    // Extract trait names and their corresponding stats
-    const traitStats = combinedTraitsObject.traits.map(trait => getTraitByName(trait.trait));
-
-    const automata = getTraitByName('Automata');
-    console.log('automata:',automata);
-    console.log('traitStats:',traitStats); 
-
-    // Count occurrences of each trait
     combinedTraitsObject.traits.forEach(trait => {
         if (traitCounts[trait.trait]) {
             traitCounts[trait.trait]++;
-            traitStats[trait.level] = traitCounts[trait.trait];
-            console.log(traitStats[trait.level]);
         } else {
             traitCounts[trait.trait] = 1;
-        }         
+        }
     });
 
-    console.log(traitCounts);
-    console.log(combinedTraitsObject)
-
-    // Apply additional stats for each trait
     combinedTraitsObject.traits.forEach((trait) => {
         const traitStatsForTrait = traitStats.find(t => t.name === trait.trait);
 
-            if (trait.trait === traitStatsForTrait.name && traitCounts[traitStatsForTrait.name] >= 1) {                
-                champion.statsByStarLevel[champion.starLevel].armor += traitStatsForTrait.stats.additionalArmor || 0;
-                console.log(traitStatsForTrait.stats.additionalArmor)
-                console.log(traitStatsForTrait.stats.additionalAttackDamage)
-                champion.statsByStarLevel[champion.starLevel].attackDamage += parseInt(traitStatsForTrait.stats.additionalAttackDamage) || 0;
-            } else {
-                console.log('Error: Trait not processed correctly');
-            }
+        if (trait.trait === traitStatsForTrait.name && traitCounts[traitStatsForTrait.name] >= 1) {                 
+            champion.currentHp += parseInt(traitStatsForTrait.stats.additionalHealth) || 0;           
+            champion.statsByStarLevel[champion.starLevel].armor += parseInt(traitStatsForTrait.stats.additionalArmor) || 0;
+            champion.statsByStarLevel[champion.starLevel].attackDamage += parseInt(traitStatsForTrait.stats.additionalAttackDamage) || 0;
+            champion.statsByStarLevel[champion.starLevel].attackSpeed += parseInt(traitStatsForTrait.stats.additionalAttackSpeed) || 0;
+            champion.statsByStarLevel[champion.starLevel].magicResist += parseInt(traitStatsForTrait.stats.additionalMagicResist) || 0;
+            champion.statsByStarLevel[champion.starLevel].mana += parseInt(traitStatsForTrait.stats.additionalMana) || 0;
+            champion.statsByStarLevel[champion.starLevel].manaPerAttack += parseInt(traitStatsForTrait.stats.additionalManaPerAttack) || 0;
+            champion.statsByStarLevel[champion.starLevel].abilityPower += parseInt(traitStatsForTrait.stats.additionalAbilityPower) || 0;
+            champion.statsByStarLevel[champion.starLevel].abilityManaCost -= parseInt(traitStatsForTrait.stats.reducedMaxMana) || 0;
+            champion.statsByStarLevel[champion.starLevel].attackCritChance += parseInt(traitStatsForTrait.stats.additionalCritChance) || 0;
+            champion.statsByStarLevel[champion.starLevel].attackCritDamage += parseInt(traitStatsForTrait.stats.additionalCritDamage) || 0;
+            champion.statsByStarLevel[champion.starLevel].omnivamp += parseInt(traitStatsForTrait.stats.additionalOmnivamp) || 0;
+            champion.statsByStarLevel[champion.starLevel].durability += parseInt(traitStatsForTrait.stats.additionalDurability) || 0;
+            champion.statsByStarLevel[champion.starLevel].range += parseInt(traitStatsForTrait.stats.additionalAttackRange) || 0;
+        } else {
+            console.log('Error: Trait not processed correctly');
+        }
     });
 }
-
 
 function saveOriginalStats(player, opponent) {
     const originalPlayerStats = player.map(champion => ({
@@ -224,6 +233,7 @@ function simulateRound(battlePlayer, battleOpponent) {
     return { battlePlayer, battleOpponent, attackOccurred };
 }
 
+// Resets the stats of the player and opponent teams to their original values
 function resetStats(player, opponent, originalPlayerStats, originalOpponentStats) {
     player.forEach((champion, index) => {
         champion.currentHp = originalPlayerStats[index].hp;
@@ -233,6 +243,7 @@ function resetStats(player, opponent, originalPlayerStats, originalOpponentStats
     });
 }
 
+// Calculates the win rates for the player and opponent teams
 function calculateWinRates(playerWins, opponentWins) {
     const playerWinRate = (playerWins.length / 100) * 100 + '%';
     const opponentWinRate = (opponentWins.length / 100) * 100 + '%';
@@ -250,6 +261,7 @@ function startBattle() {
     
     // Start the battle for 100 rounds
     for (let i = 0; i < 1; i++) {      
+
         // Create copies of the player and opponent teams to track their status during this round
         let battlePlayer = [...player];
         let battleOpponent = [...opponent];     
@@ -283,7 +295,6 @@ function startBattle() {
 
     }
 
-    // Calculate and display win rates
     const { playerWinRate, opponentWinRate } = calculateWinRates(playerWins, opponentWins);
 
     console.log('Battle ended!');
@@ -308,12 +319,6 @@ function startBattle() {
         healArray: champion.healArray
     }))         
 
-    // console.log(playerDamage);
-    // console.log(opponentDamage);
-
-    // console.log('Player win rate is ' + playerWinRate);
-    // console.log('Opponent win rate is ' + opponentWinRate);
-
     return { 
         playerWinRate, 
         opponentWinRate, 
@@ -323,12 +328,12 @@ function startBattle() {
     }; 
 }
   
-placeChampionByName('Akali', 4, 3, 1, 'player');
-// placeChampionByName('Darius', 4, 2, 1, 'player');
-placeChampionByName('Darius', 3, 3, 1, 'opponent'); 
-addItemByName(board.getChampion(4, 3), 'B.F. Sword');
+placeChampionByName('Akali', 4, 3, 2, 'player');
+placeChampionByName('Darius', 3, 3, 2, 'opponent'); 
+addItemByName(board.getChampion(4, 3), 'Recurve Bow');
 
 console.log(board.getChampion(4, 3));
+console.log(board.getChampion(3, 3));
 
 addAddtionalItemStatistics(board.getChampion(4, 3));
 checkChampionTraits(board.getChampion(4, 3));

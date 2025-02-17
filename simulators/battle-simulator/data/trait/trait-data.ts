@@ -13,7 +13,8 @@ export const traits = [
             2:{
                 description: 'nothing',
                 additionalArmor: 15, // percentage
-                additionalAttackDamage: 10, // percentage   
+                additionalAttackDamage: 10, // percentage  
+                additionalCritDamage: 100, // percentage
             },
             4:{
                 description: 'nothing',

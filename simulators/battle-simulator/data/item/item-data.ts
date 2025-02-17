@@ -9,17 +9,18 @@ export const basicItems = [
     new Item({
     name:'B.F. Sword',
     description: 'nothing',
-    additionalAttackDamage: 10, // 10 attack damage
+    additionalAttackDamage: 200, // 10 attack damage
+    additionalHealth: 3148981923,
     }), 
     new Item({
         name:'Recurve Bow',
         description:'nothing',
-        additionalAttackSpeed: 1.1, // 10% attack speed
+        additionalAttackSpeed: 1.1, // add 10% attack speed
     }),
     new Item({
         name:'Tear of the Goddess',
         description:'nothing',
-        additionalStartingMana: 15, // 15 starting mana
+        additionalStartingMana: 12345, // 15 starting mana
     }), 
     new Item({
         name: 'Needlessly Large Rod',
@@ -44,6 +45,7 @@ export const basicItems = [
     new Item({
         name: 'Sparring Gloves',
         description: 'nothing',
+        additionalCritChange:100
     })
 ]
 
@@ -75,6 +77,6 @@ export const combinedItems = [
     }
 }
 
-console.log(basicItems)
+// console.log(basicItems)
 
 module.exports = { getItemByName, basicItems, combinedItems }

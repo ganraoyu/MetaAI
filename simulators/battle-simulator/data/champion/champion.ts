@@ -38,6 +38,7 @@ class Champion {
     abilityManaCost: number;
     attackCritChance: number;
     attackCritDamage: number;    
+    abilityPower: number;
     omnivamp: number;
     durability: number;
     items: string | string[];
@@ -65,7 +66,8 @@ class Champion {
         manaPerAttack: number,
         abilityManaCost: number,
         attackCritChance: number,
-        attackCritDamage: number,        
+        attackCritDamage: number,      
+        abilityPower: number,  
         omnivamp: number,
         durability: number,
         items: any[] = [],
@@ -86,6 +88,7 @@ class Champion {
         this.abilityManaCost = abilityManaCost;
         this.attackCritChance = attackCritChance;
         this.attackCritDamage = attackCritDamage;        
+        this.abilityPower = abilityPower;
         this.omnivamp = omnivamp;
         this.durability = durability;
         this.items = items;
@@ -185,7 +188,7 @@ class Champion {
                     this.attacks.push(1);
                     this.damageArray.push(critDamage);
                     console.log(`${this.name}'s damage array`, this.damageArray);
-                    return true; // Attack occurred
+                    return true; 
                 } else {
                     let normalDamage = Math.round(physicalDamageTaken);
                     target.takeDamage(normalDamage);
@@ -194,7 +197,7 @@ class Champion {
                     this.attacks.push(1);
                     this.damageArray.push(normalDamage);
                     console.log(`${this.name}'s damage array`, this.damageArray);
-                    return true; // Attack occurred
+                    return true;
                 }
             } else {
                 // No armor, full damage
@@ -206,7 +209,7 @@ class Champion {
                     this.attacks.push(1);
                     this.damageArray.push(critDamage);
                     console.log(`${this.name}'s damage array`, this.damageArray);
-                    return true; // Attack occurred
+                    return true; 
                 } else {
                     let normalDamage = Math.round(damage);
                     target.takeDamage(normalDamage);
@@ -215,7 +218,7 @@ class Champion {
                     this.attacks.push(1);
                     this.damageArray.push(normalDamage);
                     console.log(`${this.name}'s damage array`, this.damageArray);
-                    return true; // Attack occurred
+                    return true; 
                 }
             }
         }
@@ -285,6 +288,9 @@ class Champion {
             
             if(heal >= 0 ){
                 this.healArray.push(heal)
+                if(this.currentHp > this.statsByStarLevel[this.starLevel].hp){
+                    this.currentHp = this.statsByStarLevel[this.starLevel].hp;
+                }
                 console.log(`${this.name}'s healing array `, this.healArray)
             }
         }
@@ -303,7 +309,8 @@ class Champion {
             Magic Resist: ${stats.magicResist}
             Attack Speed: ${this.attackSpeed}
             Crit Chance: ${this.attackCritChance}
-            Crit Damage: ${this.attackCritDamage}            
+            Crit Damage: ${this.attackCritDamage}        
+            Ability Power: ${this.abilityPower}    
             Durability: ${this.durability}
             Omnivamp: ${this.omnivamp}
             Star Level: ${this.starLevel}

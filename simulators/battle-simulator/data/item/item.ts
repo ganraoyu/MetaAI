@@ -5,7 +5,7 @@ interface ItemProps {
     additionalAttackSpeed?: number;
     additionalManaPerAttack?: number;
     additionalCritDamage?: number;
-    additionalCritAmp?: number;
+    additionalCritChance?: number;
     additionalDamageAmp?: number;
     reducedMaxMana?: number;
     additionalStartingMana?: number;
@@ -13,6 +13,9 @@ interface ItemProps {
     additionalMagicResist?: number;
     additionalHealth?: number;
     additionalAbilityPower?: number;
+    additionalOmniVamp?: number;
+    additionalDurability?: number;
+    additionalAttackRange?: number;
     sunder?: number;
     shred?: number;
     sunderRadius?: number;
@@ -26,7 +29,7 @@ export class Item {
     additionalAttackSpeed: number;
     additionalManaPerAttack: number;
     additionalCritDamage: number;
-    additionalCritAmp: number;
+    additionalCritChance: number;
     additionalDamageAmp: number;
     reducedMaxMana: number;
     additionalStartingMana: number;
@@ -34,6 +37,9 @@ export class Item {
     additionalMagicResist: number;
     additionalHealth: number;
     additionalAbilityPower: number;
+    additionalOmniVamp: number;
+    additionalDurability: number;
+    additionalAttackRange: number;  
     sunder: number;
     shred: number;
     sunderRadius: number;
@@ -46,7 +52,7 @@ export class Item {
         additionalAttackSpeed = 0,
         additionalManaPerAttack = 0,
         additionalCritDamage = 0,
-        additionalCritAmp = 0,
+        additionalCritChance = 0,
         additionalDamageAmp = 0,
         reducedMaxMana = 0,
         additionalStartingMana = 0,
@@ -54,6 +60,9 @@ export class Item {
         additionalMagicResist = 0,
         additionalHealth = 0,
         additionalAbilityPower = 0,
+        additionalOmniVamp = 0,
+        additionalDurability = 0,
+        additionalAttackRange = 0,
         sunder = 0,
         shred = 0,
         sunderRadius = 0,
@@ -66,13 +75,16 @@ export class Item {
         this.additionalManaPerAttack = additionalManaPerAttack;
         this.additionalStartingMana = additionalStartingMana;
         this.additionalCritDamage = additionalCritDamage;
-        this.additionalCritAmp = additionalCritAmp;
+        this.additionalCritChance = additionalCritChance;
         this.additionalDamageAmp = additionalDamageAmp;
         this.reducedMaxMana = reducedMaxMana;
         this.additionalArmor = additionalArmor;
         this.additionalMagicResist = additionalMagicResist;
         this.additionalHealth = additionalHealth;
         this.additionalAbilityPower = additionalAbilityPower;
+        this.additionalOmniVamp = additionalOmniVamp;
+        this.additionalDurability = additionalDurability;
+        this.additionalAttackRange = additionalAttackRange
         this.sunder = sunder;
         this.shred = shred;
         this.sunderRadius = sunderRadius;

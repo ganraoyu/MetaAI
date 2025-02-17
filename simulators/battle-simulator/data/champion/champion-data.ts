@@ -41,6 +41,7 @@ const champions = [
         abilityManaCost: 0,
         attackCritChance: 50,
         attackCritDamage: 1.40,
+        abilityPower: 100,
         durability: 0,
         omnivamp: 0,
         items: []
@@ -75,11 +76,12 @@ const champions = [
         attackSpeed: 0.7,
         abilityDescription: 'Darius swings his axe in a powerful strike, dealing damage and healing based on missing health.',
         range: 1,
-        mana: 60,
+        mana: 30,
         manaPerAttack: 10,
         abilityManaCost: 70,
         attackCritChance: 25,
         attackCritDamage: 1.40,
+        abilityPower: 100,
         durability: 0, 
         omnivamp: 0,
         items: []
@@ -111,21 +113,22 @@ const champions = [
                 ability: { reduction: 20, damage: 180, magicDamage: 540, healing: 0 },
             }
         },
-        attackSpeed: 1,
+        attackSpeed: 0.6,
         abilityDescription: 'Akali dashes through enemies, dealing damage to each target she passes.',
         range: 1,
-        mana: 60,
+        mana: 30,
         manaPerAttack: 10,
         abilityManaCost: 70,
         attackCritChance: 25,
         attackCritDamage: 1.40,
+        abilityPower: 100,
         durability: 10,
         omnivamp: 10,
         items: []
     }
 ];
 
-console.log(champions)
+// console.log(champions)
 
 export function getChampionByName(name: string) {
     if (!name) {
