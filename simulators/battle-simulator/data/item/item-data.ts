@@ -8,44 +8,47 @@ nodemon item-data.ts
 export const basicItems = [
     new Item({
     name:'B.F. Sword',
-    description: 'nothing',
-    additionalAttackDamage: 200, // 10 attack damage
-    additionalHealth: 3148981923,
+    description: 'Grants 10% bonus Attack Damage.',
+    additionalAttackDamage: 1.1, // 10% attack damag
     }), 
     new Item({
         name:'Recurve Bow',
-        description:'nothing',
-        additionalAttackSpeed: 1.1, // add 10% attack speed
+        description:'Increases Attack Speed by 10%.',
+        additionalAttackSpeed: 1.1 // 10% attack speed
     }),
     new Item({
         name:'Tear of the Goddess',
-        description:'nothing',
-        additionalStartingMana: 12345, // 15 starting mana
+        description:'Provides 15 bonus Starting Mana',
+        additionalStartingMana: 15, // 15 starting mana
     }), 
     new Item({
         name: 'Needlessly Large Rod',
-        description: 'nothing',
+        description: 'Increases Ability Power by 10.',
         additionalAbilityPower: 10 // 10 ability power
     }),
     new Item({
         name: 'Chain Vest',
-        description: 'nothing',
+        description: 'Grants 20 Armor',
         additionalArmor: 20 // 20 armor
     }),
     new Item({
         name: 'Negatron Cloak',
-        description: 'nothing',
+        description: 'Grants 20 Magic Resist',
         additionalMagicResist: 20 // 20 magic resist
     }),
     new Item({
         name: 'Giant\'s Belt',
-        description: 'nothing',
+        description: 'Increases Health by 200',
         additionalHealth: 200 // 200 health
     }),
     new Item({
         name: 'Sparring Gloves',
-        description: 'nothing',
-        additionalCritChange:100
+        description: 'Increases Critical Chance by 15',
+        additionalCritChange: 1.2 // 20% crit chance
+    }),
+    new Item({
+        name: 'Spatula',
+        description: 'It must do something...',
     })
 ]
 

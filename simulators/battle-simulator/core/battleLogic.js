@@ -95,20 +95,20 @@ function addItemByName(champion, itemName) {
 function addAddtionalItemStatistics(champion){
     if(3 >= champion.items.length > 0){
         champion.items.forEach(item =>{            
-            champion.currentHp += parseInt(item.additionalHealth) || 0;      
-            champion.statsByStarLevel[champion.starLevel].armor += parseInt(item.additionalArmor) || 0;
-            champion.statsByStarLevel[champion.starLevel].magicResist += parseInt(item.additionalMagicResist) || 0;
-            champion.statsByStarLevel[champion.starLevel].attackDamage += parseInt(item.additionalAttackDamage) || 0;
-            champion.attackSpeed *= parseInt(item.additionalAttackSpeed) || 0;
-            champion.manaperAttack += parseInt(item.additionalManaPerAttack) || 0;
-            champion.range += parseInt(item.additionalAttackRange) || 0;
-            champion.attackCritChance += parseInt(item.additionalCritChance) || 0;
-            champion.attackCritDamage += parseInt(item.additionalCritDamage) || 0;
-            champion.omnivamp += parseInt(item.additinalOmnivamp) || 0;
-            champion.durability += parseInt(item.additionalDurability) || 0;
-            champion.abilityPower += parseInt(item.additionalAbilityPower) ||0;            
-            champion.mana += parseInt(item.additionalArmor) || 0;
-            champion.abilityManaCost -= parseInt(item.reducedMaxMana) || 0;
+            champion.currentHp += parseFloat(item.additionalHealth) || 0;      
+            champion.statsByStarLevel[champion.starLevel].armor += parseFloat(item.additionalArmor) || 0;
+            champion.statsByStarLevel[champion.starLevel].magicResist += parseFloat(item.additionalMagicResist) || 0;
+            champion.statsByStarLevel[champion.starLevel].attackDamage += parseFloat(item.additionalAttackDamage) || 0;
+            champion.attackSpeed *= parseFloat(item.additionalAttackSpeed) || 0;
+            champion.manaperAttack += parseFloat(item.additionalManaPerAttack) || 0;
+            champion.range += parseFloat(item.additionalAttackRange) || 0;
+            champion.attackCritChance += parseFloat(item.additionalCritChance) || 0;
+            champion.attackCritDamage += parseFloat(item.additionalCritDamage) || 0;
+            champion.omnivamp += parseFloat(item.additinalOmnivamp) || 0;
+            champion.durability += parseFloat(item.additionalDurability) || 0;
+            champion.abilityPower += parseFloat(item.additionalAbilityPower) ||0;            
+            champion.mana += parseFloat(item.additionalArmor) || 0;
+            champion.abilityManaCost -= parseFloat(item.reducedMaxMana) || 0;
         });
         
     } else if(champion.items.length === 0){
@@ -160,21 +160,22 @@ function addAdditionalTraitStatistics(champion) {
     combinedTraitsObject.traits.forEach((trait) => {
         const traitStatsForTrait = traitStats.find(t => t.name === trait.trait);
 
-        if (trait.trait === traitStatsForTrait.name && traitCounts[traitStatsForTrait.name] >= 1) {                 
-            champion.currentHp += parseInt(traitStatsForTrait.stats.additionalHealth) || 0;           
-            champion.statsByStarLevel[champion.starLevel].armor += parseInt(traitStatsForTrait.stats.additionalArmor) || 0;
-            champion.statsByStarLevel[champion.starLevel].attackDamage += parseInt(traitStatsForTrait.stats.additionalAttackDamage) || 0;
-            champion.statsByStarLevel[champion.starLevel].attackSpeed += parseInt(traitStatsForTrait.stats.additionalAttackSpeed) || 0;
-            champion.statsByStarLevel[champion.starLevel].magicResist += parseInt(traitStatsForTrait.stats.additionalMagicResist) || 0;
-            champion.statsByStarLevel[champion.starLevel].mana += parseInt(traitStatsForTrait.stats.additionalMana) || 0;
-            champion.statsByStarLevel[champion.starLevel].manaPerAttack += parseInt(traitStatsForTrait.stats.additionalManaPerAttack) || 0;
-            champion.statsByStarLevel[champion.starLevel].abilityPower += parseInt(traitStatsForTrait.stats.additionalAbilityPower) || 0;
-            champion.statsByStarLevel[champion.starLevel].abilityManaCost -= parseInt(traitStatsForTrait.stats.reducedMaxMana) || 0;
-            champion.statsByStarLevel[champion.starLevel].attackCritChance += parseInt(traitStatsForTrait.stats.additionalCritChance) || 0;
-            champion.statsByStarLevel[champion.starLevel].attackCritDamage += parseInt(traitStatsForTrait.stats.additionalCritDamage) || 0;
-            champion.statsByStarLevel[champion.starLevel].omnivamp += parseInt(traitStatsForTrait.stats.additionalOmnivamp) || 0;
-            champion.statsByStarLevel[champion.starLevel].durability += parseInt(traitStatsForTrait.stats.additionalDurability) || 0;
-            champion.statsByStarLevel[champion.starLevel].range += parseInt(traitStatsForTrait.stats.additionalAttackRange) || 0;
+        if (trait.trait === traitStatsForTrait.name && traitCounts[traitStatsForTrait.name] >= 1) {       
+            champion.statsByStarLevel[champion.starLevel].hp += parseFloat(traitStatsForTrait.stats.additionalHealth) || 0;          
+            champion.currentHp += parseFloat(traitStatsForTrait.stats.additionalHealth) || 0;           
+            champion.statsByStarLevel[champion.starLevel].armor += parseFloat(traitStatsForTrait.stats.additionalArmor) || 0;
+            champion.statsByStarLevel[champion.starLevel].attackDamage += parseFloat(traitStatsForTrait.stats.additionalAttackDamage) || 0;
+            champion.statsByStarLevel[champion.starLevel].attackSpeed += parseFloat(traitStatsForTrait.stats.additionalAttackSpeed) || 0;
+            champion.statsByStarLevel[champion.starLevel].magicResist += parseFloat(traitStatsForTrait.stats.additionalMagicResist) || 0;
+            champion.statsByStarLevel[champion.starLevel].mana += parseFloat(traitStatsForTrait.stats.additionalMana) || 0;
+            champion.statsByStarLevel[champion.starLevel].manaPerAttack += parseFloat(traitStatsForTrait.stats.additionalManaPerAttack) || 0;
+            champion.statsByStarLevel[champion.starLevel].abilityPower += parseFloat(traitStatsForTrait.stats.additionalAbilityPower) || 0;
+            champion.statsByStarLevel[champion.starLevel].abilityManaCost -= parseFloat(traitStatsForTrait.stats.reducedMaxMana) || 0;
+            champion.statsByStarLevel[champion.starLevel].attackCritChance += parseFloat(traitStatsForTrait.stats.additionalCritChance) || 0;
+            champion.statsByStarLevel[champion.starLevel].attackCritDamage += parseFloat(traitStatsForTrait.stats.additionalCritDamage) || 0;
+            champion.statsByStarLevel[champion.starLevel].omnivamp += parseFloat(traitStatsForTrait.stats.additionalOmnivamp) || 0;
+            champion.statsByStarLevel[champion.starLevel].durability += parseFloat(traitStatsForTrait.stats.additionalDurability) || 0;
+            champion.statsByStarLevel[champion.starLevel].range += parseFloat(traitStatsForTrait.stats.additionalAttackRange) || 0;
         } else {
             console.log('Error: Trait not processed correctly');
         }

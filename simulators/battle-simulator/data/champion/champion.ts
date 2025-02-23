@@ -135,7 +135,7 @@ class Champion {
         const ability = target.getStats().ability;
         const damageReduction = ability.reduction;
         const damage = this.getStats().attackDamage;
-        const armor = target.armor; 
+        const armor = target.getStats().armor; 
         const critRate = this.attackCritChance;
         const critDamageAmp = this.attackCritDamage;
     
@@ -154,6 +154,30 @@ class Champion {
                 let reducedDamage = damage - (damage * damageReduction / 100);
                 reducedDamage = Math.max(0, reducedDamage); // Ensure no negative damage
                 
+                if(armor > 0){
+                    let physicalDamageTaken = reducedDamage - (reducedDamage * armor / 100);
+                    physicalDamageTaken = Math.max(0, physicalDamageTaken); // Ensure no negative damage
+                    
+                    if (Math.random() * 100 <= critRate) {
+                        let critDamage = Math.round(physicalDamageTaken * critDamageAmp);
+                        target.takeDamage(critDamage);
+                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
+                        this.mana += this.manaPerAttack;
+                        this.attacks.push(1);
+                        this.damageArray.push(critDamage);
+                        console.log(`${this.name}'s damage array`, this.damageArray);
+                        return true; // Attack occurred
+                    } else {
+                        let normalDamage = Math.round(physicalDamageTaken);
+                        target.takeDamage(normalDamage);
+                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
+                        this.mana += this.manaPerAttack;
+                        this.attacks.push(1);
+                        this.damageArray.push(normalDamage);
+                        console.log(`${this.name}'s damage array`, this.damageArray);
+                        return true; // Attack occurred
+                    }
+                }
                 if (Math.random() * 100 <= critRate) {
                     let critDamage = Math.round(reducedDamage * critDamageAmp);
                     target.takeDamage(critDamage);

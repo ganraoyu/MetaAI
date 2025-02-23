@@ -12,9 +12,7 @@ export const traits = [
         statsByLevel: {
             2:{
                 description: 'nothing',
-                additionalArmor: 15, // percentage
-                additionalAttackDamage: 10, // percentage  
-                additionalCritDamage: 100, // percentage
+                additionalArmor: 0, // percentage
             },
             4:{
                 description: 'nothing',
@@ -32,7 +30,7 @@ export const traits = [
         statsByLevel: {
             2:{
                 description: 'nothing',
-                additionalArmor: 25,
+                additionalArmor: 0,
                 additionalMagicResist: 25,
                 additionalAttackDamage: 10,
             },
