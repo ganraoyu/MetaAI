@@ -96,7 +96,7 @@ const champions = [
                 attackDamage: 55, 
                 armor: 40, 
                 magicResist: 40,  
-                ability: { reduction: 12, damage: 0, magicDamage: 10, healing: 0 },
+                ability: { reduction: 12, damage: 0, magicDamage: 120, healing: 0 },
             },
             2: { 
                 hp: 1100, 

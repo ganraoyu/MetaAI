@@ -1,0 +1,65 @@
+Default Stats:
+    All champion have a base of 100 ability power (100% ability damage of set damage)
+    reduction = durability 
+    DamageAMP and reduction effects both attackDamage and abilityDamageDelt
+
+Example Champion: {
+        name: 'Akali',
+        cost: 2,
+        traitsList: ['Watcher', 'Automata'],
+        statsByStarLevel: {
+            1: { 
+                hp: 600, 
+                attackDamage: 55, 
+                armor: 40, 
+                magicResist: 40,  
+                ability: { reduction: 12, damage: 0, magicDamage: 120, healing: 0 },
+            }
+        },
+        attackSpeed: 0.6,
+        abilityDescription: 'Akali dashes through enemies, dealing damage to each target she passes.',
+        range: 1,
+        mana: 30,
+        manaPerAttack: 10,
+        abilityManaCost: 70,
+        attackCritChance: 25,
+        attackCritDamage: 1.40,
+        abilityPower: 100,
+        durability: 10,
+        omnivamp: 10,
+        items: []
+    }
+
+Attacking Damage Formula:
+    Base Damage: 
+        attackDamage 
+            55
+
+    Apply Damage AMP: 
+        attackDamage * damageAMP = AMPedMG
+            55 * 1.2 = 66
+
+    Apply Armor Mitigation: 
+        AMPedMG / (1 + armor / 100) = ArmoredDMG
+            66 / (1 + 40 / 100) = 47.12
+
+    Apply Damage Reduction: 
+        ArmoredDMG * (1 - 0.reduction)
+            47.12 * (1 - 0.12) = 41.48
+
+Ability Damage Formula:
+    Base Ability Damage:
+        magicDamage
+            120
+
+    Apply Damage AMP:
+        magicDamage * damageAMP = AMPedDMG
+            120 * 1.2 = 144
+    
+    Apply magicArmor Mitigation:
+        AMPedDMG / (1 + magicArmor / 100) = ArmoredDMG
+            144 / ( 1 + 40 / 100) = 102.85
+
+    Apply Damage Reduction
+        ArmoredDMG * (1 - 0.reduction)
+            102.85 * (1 - 0.12) = 90.50
