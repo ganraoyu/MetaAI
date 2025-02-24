@@ -1,9 +1,36 @@
 const { getChampionByName } = require('../champion/champion-data.ts');
+const { getItemByName } = require('../item/item-data.ts');
 /*
 cd simulators/battle-simulator/data/champion
 nodemon champion.ts
 */
 const { v4: uuidv4 } = require('uuid');
+
+interface ItemProperties {
+    name: string;
+    description: string;
+    additionalAttackDamage?: number;
+    additionalAttackSpeed?: number;
+    additionalManaPerAttack?: number;
+    additionalCritDamage?: number;
+    additionalCritChance?: number;
+    additionalDamageAmp?: number;
+    reducedMaxMana?: number;
+    additionalStartingMana?: number;
+    additionalArmor?: number;
+    additionalMagicResist?: number;
+    additionalHealth?: number;
+    additionalAbilityPower?: number;
+    additionalOmniVamp?: number;
+    additionalDurability?: number;
+    additionalAttackRange?: number;
+    sunder?: number;
+    shred?: number;
+    sunderRadius?: number;
+    shredRadius?: number;
+    attackSpeedStacking?: boolean;
+    additionalAttackSpeedPerStack?: number;
+}
 
 interface AbilityStats {
     reduction: number;
@@ -41,7 +68,7 @@ class Champion {
     abilityPower: number;
     omnivamp: number;
     durability: number;
-    items: string | string[];
+    items: ItemProperties[];
     currentHp: number;
     armor: number;
     magicResist: number;
@@ -70,8 +97,7 @@ class Champion {
         abilityPower: number,  
         omnivamp: number,
         durability: number,
-        items: any[] = [],
-
+        items: ItemProperties[] = [],
         starLevel?: number 
 
     ) {
@@ -118,6 +144,10 @@ class Champion {
         }
     }
 
+    private calculateChampionAttackTime(): number {
+        return this.attacks.length / this.attackSpeed;
+    }
+    
     takeDamage(damage: number) {
         this.currentHp -= damage;
         if (this.currentHp <= 0) {
@@ -148,6 +178,15 @@ class Champion {
         if (this.gameTime >= 1 / this.attackSpeed) {
             // Reset gameTime for the next attack interval
             this.gameTime = 0;
+
+            if (this.items) {
+                this.items.forEach(item => {
+                    if (item.attackSpeedStacking) {
+                        this.attackSpeed *= item.additionalAttackSpeedPerStack || 0;
+                        console.log(`${this.name}'s attack speed increased to ${this.attackSpeed.toFixed(2)}`);
+                    } // else if
+                });
+            }
     
             if (damageReduction !== 0) {
                 // Calculate damage with damage reduction
@@ -198,6 +237,7 @@ class Champion {
                     return true; // Attack occurred
                 }
             }
+            
             // If damage reduction is 0, proceed with checking armor
             if (armor > 0) {
                 // Calculate damage with armor
@@ -274,7 +314,6 @@ class Champion {
         }
 
         // calculate armor/magic resist first then reduction
-
         if(this.mana >= this.abilityManaCost) {
             this.mana -= this.abilityManaCost;
             if(damageReduction === 0 ){

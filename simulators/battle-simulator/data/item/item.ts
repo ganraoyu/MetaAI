@@ -20,6 +20,8 @@ interface ItemProps {
     shred?: number;
     sunderRadius?: number;
     shredRadius?: number;
+    attackSpeedStacking?: boolean;
+    additionalAttackSpeedPerStack?: number;
 }
 
 export class Item {
@@ -44,6 +46,8 @@ export class Item {
     shred: number;
     sunderRadius: number;
     shredRadius: number;
+    attackSpeedStacking: boolean;
+    additionalAttackSpeedPerStack: number;
 
     constructor({
         name,
@@ -67,6 +71,8 @@ export class Item {
         shred = 0,
         sunderRadius = 0,
         shredRadius = 0,
+        attackSpeedStacking = false,
+        additionalAttackSpeedPerStack = 0
     }: ItemProps) {
         this.name = name;
         this.description = description;
@@ -89,6 +95,8 @@ export class Item {
         this.shred = shred;
         this.sunderRadius = sunderRadius;
         this.shredRadius = shredRadius;
+        this.attackSpeedStacking = attackSpeedStacking;
+        this.additionalAttackSpeedPerStack = additionalAttackSpeedPerStack;
     }
 }
 

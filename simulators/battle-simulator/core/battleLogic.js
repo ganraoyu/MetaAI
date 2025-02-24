@@ -109,6 +109,7 @@ function addAddtionalItemStatistics(champion){
             champion.abilityPower += parseFloat(item.additionalAbilityPower) ||0;            
             champion.mana += parseFloat(item.additionalArmor) || 0;
             champion.abilityManaCost -= parseFloat(item.reducedMaxMana) || 0;
+            console.log('champion.attacks.length', champion.attacks.length);
         });
         
     } else if(champion.items.length === 0){
@@ -331,8 +332,7 @@ function startBattle() {
   
 placeChampionByName('Akali', 4, 3, 2, 'player');
 placeChampionByName('Darius', 3, 3, 2, 'opponent'); 
-addItemByName(board.getChampion(4, 3), 'Recurve Bow');
-
+addItemByName(board.getChampion(4, 3), "Guinsoo's Rageblade");
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
 

@@ -57,7 +57,9 @@ export const combinedItems = [
         name: 'Guinsoo\'s Rageblade',
         description: 'nothing',
         additionalAttackSpeed: 1.1, // 10% attack speed
-        additionalAbilityPower: 10 // 10 ability power
+        additionalAbilityPower: 10, // 10 ability power  
+        attackSpeedStacking: true,
+        additionalAttackSpeedPerStack: 1.05 //5% attack speed per stack
     }),
 ]
 
