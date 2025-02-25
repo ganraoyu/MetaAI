@@ -37,6 +37,8 @@ function placeChampionByName(championName, row, column, starLevel, team) {
             champion.abilityManaCost, 
             champion.attackCritChance, 
             champion.attackCritDamage, 
+            champion.abilityCritChance,
+            champion.abilityCritDamage,
             champion.abilityPower,
             champion.durability,
             champion.omnivamp,
@@ -332,7 +334,7 @@ function startBattle() {
   
 placeChampionByName('Akali', 4, 3, 2, 'player');
 placeChampionByName('Darius', 3, 3, 2, 'opponent'); 
-addItemByName(board.getChampion(4, 3), "Guinsoo's Rageblade");
+addItemByName(board.getChampion(4, 3), 'Infinity Edge');
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
 

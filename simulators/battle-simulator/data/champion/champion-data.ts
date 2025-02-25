@@ -41,6 +41,8 @@ const champions = [
         abilityManaCost: 0,
         attackCritChance: 50,
         attackCritDamage: 1.40,
+        abilityCritChance: 0,
+        abilityCritDamage: 0,
         abilityPower: 100,
         durability: 0,
         omnivamp: 0,
@@ -81,6 +83,8 @@ const champions = [
         abilityManaCost: 70,
         attackCritChance: 25,
         attackCritDamage: 1.40,
+        abilityCritChance: 0,
+        abilityCritDamage: 0,
         abilityPower: 100,
         durability: 0, 
         omnivamp: 0,
@@ -121,6 +125,8 @@ const champions = [
         abilityManaCost: 70,
         attackCritChance: 25,
         attackCritDamage: 1.40,
+        abilityCritChance: 100,
+        abilityCritDamage: 100,
         abilityPower: 100,
         durability: 10,
         omnivamp: 10,
@@ -128,7 +134,7 @@ const champions = [
     }
 ];
 
-// console.log(champions)
+// console.log(champions) 
 
 export function getChampionByName(name: string) {
     if (!name) {

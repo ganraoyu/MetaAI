@@ -24,27 +24,27 @@ export const basicItems = [
     new Item({
         name: 'Needlessly Large Rod',
         description: 'Increases Ability Power by 10.',
-        additionalAbilityPower: 10 // 10 ability power
+        additionalAbilityPower: 10 // 10 more ability power
     }),
     new Item({
         name: 'Chain Vest',
         description: 'Grants 20 Armor',
-        additionalArmor: 20 // 20 armor
+        additionalArmor: 20 // 20 more armor
     }),
     new Item({
         name: 'Negatron Cloak',
         description: 'Grants 20 Magic Resist',
-        additionalMagicResist: 20 // 20 magic resist
+        additionalMagicResist: 20 // 20 more magic resist
     }),
     new Item({
         name: 'Giant\'s Belt',
         description: 'Increases Health by 200',
-        additionalHealth: 200 // 200 health
+        additionalHealth: 200 // 200 more health
     }),
     new Item({
         name: 'Sparring Gloves',
         description: 'Increases Critical Chance by 15',
-        additionalCritChange: 1.2 // 20% crit chance
+        additionalCritChance: 0.2 // 20% crit chance
     }),
     new Item({
         name: 'Spatula',
@@ -61,6 +61,13 @@ export const combinedItems = [
         attackSpeedStacking: true,
         additionalAttackSpeedPerStack: 1.05 //5% attack speed per stack
     }),
+    new Item({
+        name: 'Infinity Edge',
+        description: 'nothing',
+        additionalAttackDamage: 1.35, // 35% more attack damage
+        additionalCritChance: 1000, // 35% crit chance
+        abilityCritStrike: true
+    })
 ]
 
  export function getItemByName(name: string){

@@ -30,6 +30,7 @@ interface ItemProperties {
     shredRadius?: number;
     attackSpeedStacking?: boolean;
     additionalAttackSpeedPerStack?: number;
+    abilityCritStrike?: boolean;
 }
 
 interface AbilityStats {
@@ -66,6 +67,8 @@ class Champion {
     attackCritChance: number;
     attackCritDamage: number;    
     abilityPower: number;
+    abilityCritChance: number;
+    abilityCritDamage: number;
     omnivamp: number;
     durability: number;
     items: ItemProperties[];
@@ -80,7 +83,6 @@ class Champion {
     abilityArray: number[];
     healArray: number[];
 
-
     constructor(
         name: string,
         cost: number, 
@@ -93,7 +95,9 @@ class Champion {
         manaPerAttack: number,
         abilityManaCost: number,
         attackCritChance: number,
-        attackCritDamage: number,      
+        attackCritDamage: number,  
+        abilityCritChance: number,    
+        abilityCritDamage: number,
         abilityPower: number,  
         omnivamp: number,
         durability: number,
@@ -113,7 +117,9 @@ class Champion {
         this.manaPerAttack = manaPerAttack;
         this.abilityManaCost = abilityManaCost;
         this.attackCritChance = attackCritChance;
-        this.attackCritDamage = attackCritDamage;        
+        this.attackCritDamage = attackCritDamage;     
+        this.abilityCritChance = abilityCritChance;   
+        this.abilityCritDamage = abilityCritDamage;
         this.abilityPower = abilityPower;
         this.omnivamp = omnivamp;
         this.durability = durability;
@@ -128,7 +134,6 @@ class Champion {
         this.damageArray = [];
         this.abilityArray = [];
         this.healArray = [];
-
     }
 
     getStats() {
@@ -138,7 +143,7 @@ class Champion {
     setStarLevel(starLevel: number) {
         if (this.statsByStarLevel[starLevel]) {
             this.starLevel = starLevel;
-            this.currentHp = this.statsByStarLevel[starLevel].hp; // Update current HP
+            this.currentHp = this.statsByStarLevel[starLevel].hp; 
         } else {
             console.log(`Invalid star level: ${starLevel} for ${this.name}`);
         }
@@ -175,6 +180,7 @@ class Champion {
             championAttackTime = 1 / this.attackSpeed;
         }
     
+        
         if (this.gameTime >= 1 / this.attackSpeed) {
             // Reset gameTime for the next attack interval
             this.gameTime = 0;
@@ -184,7 +190,11 @@ class Champion {
                     if (item.attackSpeedStacking) {
                         this.attackSpeed *= item.additionalAttackSpeedPerStack || 0;
                         console.log(`${this.name}'s attack speed increased to ${this.attackSpeed.toFixed(2)}`);
-                    } // else if
+                    } else if (item.abilityCritStrike){
+                        this.attackCritChance += item.additionalCritChance || 0;
+                        this.attackCritDamage += item.additionalCritDamage || 0;
+                        console.log(`${this.name}'s crit chance increased to ${this.attackCritChance}%`);
+                    }
                 });
             }
     
@@ -295,71 +305,108 @@ class Champion {
     }
 
     useAbility(target: Champion) {
-
         let championAttackTime = 1 / this.attackSpeed;
-
+    
         const ability = this.getStats().ability;
         const abilityReduction = this.getStats().ability;
         const damage = ability.damage;
         const magicDamage = ability.magicDamage;
-        const damageReduction = abilityReduction.reduction
+        const damageReduction = abilityReduction.reduction;
         const heal = ability.healing;
         const armor = target.armor;
         const magicResist = target.magicResist;
     
-        if(this.attacks.length > 0){
-            championAttackTime = (this.attacks.length * ( 1 / this.attackSpeed )) - ( 1 / this.attackSpeed );
+        if (this.attacks.length > 0) {
+            championAttackTime = this.attacks.length * (1 / this.attackSpeed);
         } else {
             championAttackTime = 1 / this.attackSpeed;
         }
-
-        // calculate armor/magic resist first then reduction
-        if(this.mana >= this.abilityManaCost) {
-            this.mana -= this.abilityManaCost;
-            if(damageReduction === 0 ){
-                if(armor > 0 || magicResist > 0){
-                    let physicalDamageTaken = damage - ((damage) * armor / 100);
-                    let magicDamageTaken = magicDamage - ((magicDamage) * magicResist / 100);                    
-                    const totalDamage = (Math.round(physicalDamageTaken + magicDamageTaken)); 
-                    target.takeDamage(totalDamage);
-
-                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${Math.round(physicalDamageTaken + magicDamageTaken)} damage`);                   
-                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
-
-                    this.abilityArray.push(totalDamage);
-                    console.log(`${this.name}'s ability array`, this.abilityArray);
-                } else {
-                    const totalDamage = (Math.round(damage + magicDamage));
-                    target.takeDamage(totalDamage);
-
-                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${Math.round(damage + magicDamage)} damage`);
-                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
-
-                    this.abilityArray.push(totalDamage);
-                    console.log(`${this.name}'s ability array`, this.abilityArray);
+    
+        if (this.items) {
+            this.items.forEach(item => {
+                if(item.abilityCritStrike) {
+                    this.abilityCritChance = 190000
+                    this.abilityCritDamage = 23511235
+                    console.log(`${this.name}'s ability crit chance increased to ${this.abilityCritChance}%`);
+                    console.log(`${this.name}'s ability crit damage increased to ${this.abilityCritDamage}`);
                 }
-            } else {
-                const totalDamage = (Math.round((damage + magicDamage) - ((damage + magicDamage) * damageReduction / 100)));
-                target.takeDamage(totalDamage)
-                console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${Math.round((damage + magicDamage) - ((damage + magicDamage) * damageReduction / 100))} damage`);
-                console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
+            });
+        }
 
-                this.abilityArray.push(totalDamage);
-                console.log(`${this.name}'s ability array`, this.abilityArray);
+        const critRate = this.abilityCritChance;
+        const critDamage = this.attackCritDamage;  
+
+        if (this.mana >= this.abilityManaCost) {
+            this.mana -= this.abilityManaCost;
+            if (damageReduction === 0) {
+                if (armor > 0 || magicResist > 0) {
+                    if (Math.random() * 100 <= critRate) {                   
+                        let physicalDamageTaken = damage - ((damage) * armor / 100);
+                        let magicDamageTaken = magicDamage - ((magicDamage) * magicResist / 100);                    
+                        const totalCritDamage = (Math.round(physicalDamageTaken + magicDamageTaken) * critDamage); 
+                        target.takeDamage(totalCritDamage);
+    
+                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${totalCritDamage} Crit damage`);                   
+                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
+    
+                        this.abilityArray.push(totalCritDamage);
+                        console.log(`${this.name}'s ability array`, this.abilityArray);
+                    } else {
+                        let physicalDamageTaken = damage - ((damage) * armor / 100);
+                        let magicDamageTaken = magicDamage - ((magicDamage) * magicResist / 100);
+                        const totalDamage = (Math.round(physicalDamageTaken + magicDamageTaken));
+                        target.takeDamage(totalDamage);
+    
+                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${totalDamage} damage`);
+                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
+    
+                        this.abilityArray.push(totalDamage);
+                        console.log(`${this.name}'s ability array`, this.abilityArray);
+                    }
+                }
             }
-            this.currentHp += heal; 
-            
-            if(heal >= 0 ){
-                this.healArray.push(heal)
-                if(this.currentHp > this.statsByStarLevel[this.starLevel].hp){
+    
+            if (damageReduction !== 0) {
+                if (armor > 0 || magicResist > 0) {
+                    if (Math.random() * 100 <= critRate) {
+                        let physicalDamageTaken = damage - ((damage) * armor / 100);
+                        let magicDamageTaken = magicDamage - ((magicDamage) * magicResist / 100);
+                        const totalCritDamage = (Math.round(physicalDamageTaken + magicDamageTaken) * critDamage); 
+                        const totalDamage = (Math.round(totalCritDamage - (totalCritDamage * damageReduction / 100)));
+                        target.takeDamage(totalDamage);
+    
+                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${totalDamage} Crit damage`);
+                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
+    
+                        this.abilityArray.push(totalDamage);
+                        console.log(`${this.name}'s ability array`, this.abilityArray);
+                    } else {
+                        let physicalDamageTaken = damage - ((damage) * armor / 100);
+                        let magicDamageTaken = magicDamage - ((magicDamage) * magicResist / 100);
+                        const totalDamage = (Math.round((physicalDamageTaken + magicDamageTaken) - ((physicalDamageTaken + magicDamageTaken) * damageReduction / 100)));
+                        target.takeDamage(totalDamage);
+    
+                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${totalDamage} damage`);
+                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
+    
+                        this.abilityArray.push(totalDamage);
+                        console.log(`${this.name}'s ability array`, this.abilityArray);
+                    }
+                }
+            }
+
+            if (heal > 0) {
+                this.currentHp += heal;
+                if(this.currentHp > this.statsByStarLevel[this.starLevel].hp) {
                     this.currentHp = this.statsByStarLevel[this.starLevel].hp;
                 }
-                console.log(`${this.name}'s healing array `, this.healArray)
+                this.healArray.push(heal);
+                console.log(`${this.name}'s healing array`, this.healArray);
             }
         }
     }
 
-    displayStats() {
+    displayStats(){
         const stats = this.getStats(); 
         return `
             Name: ${this.name}

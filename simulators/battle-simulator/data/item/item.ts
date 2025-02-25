@@ -22,6 +22,7 @@ interface ItemProps {
     shredRadius?: number;
     attackSpeedStacking?: boolean;
     additionalAttackSpeedPerStack?: number;
+    abilityCritStrike: boolean;
 }
 
 export class Item {
@@ -48,6 +49,7 @@ export class Item {
     shredRadius: number;
     attackSpeedStacking: boolean;
     additionalAttackSpeedPerStack: number;
+    abilityCritStrike: boolean;
 
     constructor({
         name,
@@ -72,7 +74,8 @@ export class Item {
         sunderRadius = 0,
         shredRadius = 0,
         attackSpeedStacking = false,
-        additionalAttackSpeedPerStack = 0
+        additionalAttackSpeedPerStack = 0,
+        abilityCritStrike = false
     }: ItemProps) {
         this.name = name;
         this.description = description;
@@ -97,6 +100,7 @@ export class Item {
         this.shredRadius = shredRadius;
         this.attackSpeedStacking = attackSpeedStacking;
         this.additionalAttackSpeedPerStack = additionalAttackSpeedPerStack;
+        this.abilityCritStrike = abilityCritStrike
     }
 }
 
