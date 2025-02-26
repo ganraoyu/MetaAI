@@ -125,16 +125,14 @@ const champions = [
         abilityManaCost: 70,
         attackCritChance: 25,
         attackCritDamage: 1.40,
-        abilityCritChance: 100,
-        abilityCritDamage: 100,
+        abilityCritChance: 0,
+        abilityCritDamage: 0,
         abilityPower: 100,
         durability: 10,
         omnivamp: 10,
         items: []
     }
 ];
-
-// console.log(champions) 
 
 export function getChampionByName(name: string) {
     if (!name) {

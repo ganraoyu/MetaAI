@@ -149,10 +149,6 @@ class Champion {
         }
     }
 
-    private calculateChampionAttackTime(): number {
-        return this.attacks.length / this.attackSpeed;
-    }
-    
     takeDamage(damage: number) {
         this.currentHp -= damage;
         if (this.currentHp <= 0) {
@@ -163,6 +159,7 @@ class Champion {
 
     attack(target: Champion) {
         // Time step for the game loop
+  
         this.gameTime += this.timeStep; // Increment the game time by the time step
         
         let championAttackTime = 1 / this.attackSpeed;
@@ -180,23 +177,24 @@ class Champion {
             championAttackTime = 1 / this.attackSpeed;
         }
     
-        
+        if (this.items) {
+            this.items.forEach(item => {
+                if (item.attackSpeedStacking && item.additionalAttackSpeedPerStack) {
+                    this.attackSpeed *= item.additionalAttackSpeedPerStack;
+                    console.log(`${this.name}'s attack speed increased to ${this.attackSpeed.toFixed(2)}`);
+                }
+            });
+        } else {
+            this.attackSpeed = this.attackSpeed;
+            console.log('attackSpeed', this.attackSpeed);
+        }
+      
         if (this.gameTime >= 1 / this.attackSpeed) {
+
             // Reset gameTime for the next attack interval
             this.gameTime = 0;
 
-            if (this.items) {
-                this.items.forEach(item => {
-                    if (item.attackSpeedStacking) {
-                        this.attackSpeed *= item.additionalAttackSpeedPerStack || 0;
-                        console.log(`${this.name}'s attack speed increased to ${this.attackSpeed.toFixed(2)}`);
-                    } else if (item.abilityCritStrike){
-                        this.attackCritChance += item.additionalCritChance || 0;
-                        this.attackCritDamage += item.additionalCritDamage || 0;
-                        console.log(`${this.name}'s crit chance increased to ${this.attackCritChance}%`);
-                    }
-                });
-            }
+            console.log('attackSpeed', this.attackSpeed);
     
             if (damageReduction !== 0) {
                 // Calculate damage with damage reduction
@@ -321,23 +319,22 @@ class Champion {
         } else {
             championAttackTime = 1 / this.attackSpeed;
         }
-    
-        if (this.items) {
-            this.items.forEach(item => {
-                if(item.abilityCritStrike) {
-                    this.abilityCritChance = 190000
-                    this.abilityCritDamage = 23511235
-                    console.log(`${this.name}'s ability crit chance increased to ${this.abilityCritChance}%`);
-                    console.log(`${this.name}'s ability crit damage increased to ${this.abilityCritDamage}`);
-                }
-            });
-        }
 
         const critRate = this.abilityCritChance;
         const critDamage = this.attackCritDamage;  
-
+        
         if (this.mana >= this.abilityManaCost) {
             this.mana -= this.abilityManaCost;
+            
+            if (this.items) {
+                this.items.forEach(item => {
+                    if(item.abilityCritStrike) {
+                        this.abilityCritChance = this.attackCritChance
+                        this.abilityCritDamage = this.attackCritDamage
+                    }
+                });
+            }
+            
             if (damageReduction === 0) {
                 if (armor > 0 || magicResist > 0) {
                     if (Math.random() * 100 <= critRate) {                   

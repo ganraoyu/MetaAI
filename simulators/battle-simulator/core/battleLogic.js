@@ -18,7 +18,6 @@ nodemon battlelogic
      
 const board = new Board(8, 7);
 
-
 function placeChampionByName(championName, row, column, starLevel, team) {
     const champion = getChampionByName(championName);
     if (typeof champion === 'string') {
@@ -101,7 +100,7 @@ function addAddtionalItemStatistics(champion){
             champion.statsByStarLevel[champion.starLevel].armor += parseFloat(item.additionalArmor) || 0;
             champion.statsByStarLevel[champion.starLevel].magicResist += parseFloat(item.additionalMagicResist) || 0;
             champion.statsByStarLevel[champion.starLevel].attackDamage += parseFloat(item.additionalAttackDamage) || 0;
-            champion.attackSpeed *= parseFloat(item.additionalAttackSpeed) || 0;
+            champion.attackSpeed *= parseFloat(item.additionalAttackSpeed) || 1;
             champion.manaperAttack += parseFloat(item.additionalManaPerAttack) || 0;
             champion.range += parseFloat(item.additionalAttackRange) || 0;
             champion.attackCritChance += parseFloat(item.additionalCritChance) || 0;
@@ -112,6 +111,7 @@ function addAddtionalItemStatistics(champion){
             champion.mana += parseFloat(item.additionalArmor) || 0;
             champion.abilityManaCost -= parseFloat(item.reducedMaxMana) || 0;
             console.log('champion.attacks.length', champion.attacks.length);
+            console.log('additionalAttackDamage', item.additionalAttackDamage);
         });
         
     } else if(champion.items.length === 0){
@@ -331,7 +331,7 @@ function startBattle() {
         
     }; 
 }
-  
+
 placeChampionByName('Akali', 4, 3, 2, 'player');
 placeChampionByName('Darius', 3, 3, 2, 'opponent'); 
 addItemByName(board.getChampion(4, 3), 'Infinity Edge');

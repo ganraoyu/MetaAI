@@ -65,8 +65,8 @@ export const combinedItems = [
         name: 'Infinity Edge',
         description: 'nothing',
         additionalAttackDamage: 1.35, // 35% more attack damage
-        additionalCritChance: 1000, // 35% crit chance
-        abilityCritStrike: true
+        additionalCritChance: 35, // 35% crit chance
+        abilityCritStrike: true,
     })
 ]
 
