@@ -334,7 +334,7 @@ function startBattle() {
 
 placeChampionByName('Akali', 4, 3, 2, 'player');
 placeChampionByName('Darius', 3, 3, 2, 'opponent'); 
-addItemByName(board.getChampion(4, 3), 'Infinity Edge');
+addItemByName(board.getChampion(4, 3), 'Jeweled Gauntlet');
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
 

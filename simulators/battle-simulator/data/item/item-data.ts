@@ -63,12 +63,28 @@ export const combinedItems = [
     }),
     new Item({
         name: 'Infinity Edge',
-        description: 'nothing',
+        description: 'nothing',        
+        abilityCritStrike: true,
         additionalAttackDamage: 1.35, // 35% more attack damage
         additionalCritChance: 35, // 35% crit chance
+    }),
+    new Item({
+        name:'Jeweled Gauntlet',
+        description: 'nothing',        
         abilityCritStrike: true,
-    })
-]
+        additionalAbilityPower: 35, // 35 base ability power
+        additionalCritChance: 35, // 35% crit chance
+    }),
+    new Item({
+        name: 'Last Whisper',
+        description: 'nothing',
+        sunder: true, 
+        sunderRadius: 3, // 3 hexes
+        additionalAttackDamage: 1.15, // 15% more attack damage
+        additionalAttackSpeed: 1.2, // 20% more attack speed
+        additionalCritChance: 20 // 20% crit chance
+    }),
+]   
 
  export function getItemByName(name: string){
     if(!name){

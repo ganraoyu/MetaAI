@@ -320,21 +320,20 @@ class Champion {
             championAttackTime = 1 / this.attackSpeed;
         }
 
+        if (this.items) {
+            this.items.forEach(item => {
+                if(item.abilityCritStrike) {
+                    this.abilityCritChance = this.attackCritChance
+                    this.abilityCritDamage = this.attackCritDamage
+                }
+            });
+        }
+
         const critRate = this.abilityCritChance;
         const critDamage = this.attackCritDamage;  
         
         if (this.mana >= this.abilityManaCost) {
             this.mana -= this.abilityManaCost;
-            
-            if (this.items) {
-                this.items.forEach(item => {
-                    if(item.abilityCritStrike) {
-                        this.abilityCritChance = this.attackCritChance
-                        this.abilityCritDamage = this.attackCritDamage
-                    }
-                });
-            }
-            
             if (damageReduction === 0) {
                 if (armor > 0 || magicResist > 0) {
                     if (Math.random() * 100 <= critRate) {                   
