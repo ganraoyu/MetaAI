@@ -55,7 +55,7 @@ export const basicItems = [
 export const combinedItems = [
     new Item({
         name: 'Guinsoo\'s Rageblade',
-        description: 'nothing',
+        description: 'Attacks grant 5% Attack Speed. Stacks infinitely.',
         additionalAttackSpeed: 1.1, // 10% attack speed
         additionalAbilityPower: 10, // 10 ability power  
         attackSpeedStacking: true,
@@ -63,14 +63,14 @@ export const combinedItems = [
     }),
     new Item({
         name: 'Infinity Edge',
-        description: 'nothing',        
+        description: 'Ability can critically strike. If the holder already has a critical strike, gain 10% critical strike damage instead.',        
         abilityCritStrike: true,
         additionalAttackDamage: 1.35, // 35% more attack damage
         additionalCritChance: 35, // 35% crit chance
     }),
     new Item({
         name:'Jeweled Gauntlet',
-        description: 'nothing',        
+        description: 'Ability can critically strike. If the holder already has a critical strike, gain 10% critical strike damage instead.',        
         abilityCritStrike: true,
         additionalAbilityPower: 35, // 35 base ability power
         additionalCritChance: 35, // 35% crit chance
@@ -84,6 +84,52 @@ export const combinedItems = [
         additionalAttackSpeed: 1.2, // 20% more attack speed
         additionalCritChance: 20 // 20% crit chance
     }),
+    new Item({
+        name: 'Warmog\'s Armor',
+        description: 'nothing',
+        additionalHealth: 600, // 600 more health
+        additionalPercentageHealth: 1.12, // 50% more health
+    }),
+    new Item({
+        name: 'Spear of Shojin',
+        description: 'nothing',
+        additionalAttackSpeed: 1.15, // 15% more attack speed
+        additionalStartingMana: 15, // 15 starting mana
+        additionalManaPerAttack: 5, // 5 mana per attack
+        additionalAbilityPower: 15, // 15 ability power
+    }),
+    new Item({
+        name: 'Death Blade',
+        decription: 'nothing',
+        additionalAttackDamage: 1.3, // 30% more attack damage
+        additionalDamageAmp: 1.1, // 30% more damage
+    }),
+    new Item({
+        name: 'Bloodthirster',
+        description: 'nothing',
+        additionalAttackDamage: 1.15, // 15% more attack damage
+        additionalAbilityPower: 15, // 15 ability power
+        additionalMagicResist: 20, // 20 more magic resist
+        omnivamp: 25, // 25% omnivamp
+    }),
+    new Item({
+        name: 'Rabadon\'s Deathcap',
+        description: 'nothing',
+        additionalAbilityPower: 50, // 50 ability power
+        additionalDamageAmp: 1.15, // 50% more damage
+    }),
+    new Item({
+        name: 'Dragon\'s Claw',
+        description: 'nothing',
+        additionalMagicResist: 70, // 60 more magic resist
+        additionalPercentageHealth: 1.07, // 7% more health
+    }),
+    new Item({
+        name: 'Bramble Vest',
+        description: 'nothing',
+        additionalArmor: 60, // 60 more armor
+        additonalPercentageHealth: 1.07, // 7% more health
+    })
 ]   
 
  export function getItemByName(name: string){

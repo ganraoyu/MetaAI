@@ -69,6 +69,7 @@ class Champion {
     abilityPower: number;
     abilityCritChance: number;
     abilityCritDamage: number;
+    damageAmp: number;
     omnivamp: number;
     durability: number;
     items: ItemProperties[];
@@ -98,6 +99,7 @@ class Champion {
         attackCritDamage: number,  
         abilityCritChance: number,    
         abilityCritDamage: number,
+        damageAmp: number,
         abilityPower: number,  
         omnivamp: number,
         durability: number,
@@ -120,6 +122,7 @@ class Champion {
         this.attackCritDamage = attackCritDamage;     
         this.abilityCritChance = abilityCritChance;   
         this.abilityCritDamage = abilityCritDamage;
+        this.damageAmp = damageAmp;
         this.abilityPower = abilityPower;
         this.omnivamp = omnivamp;
         this.durability = durability;
@@ -177,22 +180,22 @@ class Champion {
             championAttackTime = 1 / this.attackSpeed;
         }
     
-        if (this.items) {
-            this.items.forEach(item => {
-                if (item.attackSpeedStacking && item.additionalAttackSpeedPerStack) {
-                    this.attackSpeed *= item.additionalAttackSpeedPerStack;
-                    console.log(`${this.name}'s attack speed increased to ${this.attackSpeed.toFixed(2)}`);
-                }
-            });
-        } else {
-            this.attackSpeed = this.attackSpeed;
-            console.log('attackSpeed', this.attackSpeed);
-        }
-      
         if (this.gameTime >= 1 / this.attackSpeed) {
 
             // Reset gameTime for the next attack interval
             this.gameTime = 0;
+
+            if (this.items) {
+                this.items.forEach(item => {
+                    if (item.name === 'Guinsoo\'s Rageblade') {
+                        this.attackSpeed *= item.additionalAttackSpeedPerStack || 1;
+                        console.log(`${this.name}'s attack speed increased to ${this.attackSpeed.toFixed(2)}`);
+                    } 
+                });
+            } else {
+                this.attackSpeed = this.attackSpeed;
+                console.log('attackSpeed', this.attackSpeed);
+            }
 
             console.log('attackSpeed', this.attackSpeed);
     

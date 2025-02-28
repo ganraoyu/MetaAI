@@ -9,6 +9,7 @@ interface CombatStats {
 
 interface DefensiveStats {
     additionalHealth?: number;
+    additionalPercentageHealth?: number;
     additionalArmor?: number;
     additionalMagicResist?: number;
     additionalDurability?: number;
@@ -53,6 +54,7 @@ export class Item {
 
     // Defensive stats
     readonly additionalHealth: number;
+    readonly additionalPercentageHealth: number;
     readonly additionalArmor: number;
     readonly additionalMagicResist: number;
     readonly additionalDurability: number;
@@ -89,6 +91,7 @@ export class Item {
         
         // Defensive stats
         additionalHealth = 0,
+        additionalPercentageHealth = 0,
         additionalArmor = 0,
         additionalMagicResist = 0,
         additionalDurability = 0,
@@ -124,6 +127,7 @@ export class Item {
 
         // Defensive stats
         this.additionalHealth = additionalHealth;
+        this.additionalPercentageHealth = additionalPercentageHealth;
         this.additionalArmor = additionalArmor;
         this.additionalMagicResist = additionalMagicResist;
         this.additionalDurability = additionalDurability;
