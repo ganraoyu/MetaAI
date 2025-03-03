@@ -120,7 +120,7 @@ const champions = [
         attackSpeed: 0.6,
         abilityDescription: 'Akali dashes through enemies, dealing damage to each target she passes.',
         range: 1,
-        mana: 140,
+        mana: 30,
         manaPerAttack: 10,
         abilityManaCost: 70,
         attackCritChance: 25,

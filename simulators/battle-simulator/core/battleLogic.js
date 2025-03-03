@@ -185,47 +185,31 @@ function addAdditionalTraitStatistics(champion) {
     });
 }
 
-function saveOriginalStats(player, opponent) {
-    const originalPlayerStats = player.map(champion => ({
-        name: champion.name,
-        hp: champion.statsByStarLevel[champion.starLevel].hp,
-        gameTime: champion.gameTime
-    })); 
-
-    const originalOpponentStats = opponent.map(champion => ({
-        name: champion.name,
-        hp: champion.statsByStarLevel[champion.starLevel].hp,
-        gameTime: champion.gameTime    
-    })); 
-
-    return { originalPlayerStats, originalOpponentStats };
-}
-
-function simulateRound(battlePlayer, battleOpponent) {
+function simulateRound(battlePlayer, battleOpponent, battleTime) {
     let attackOccurred = false;
 
-    // Player attacks
+    // Player attacks - only try to attack if it's time for their next attack
     battlePlayer.forEach(champion => {
         if (champion.currentHp > 0) {
             const target = battleOpponent.find(c => c.currentHp > 0);
             if (target) {
-                if (champion.attack(target)) {
+                // The attack method will check internally if it's time to attack
+                if (champion.attack(target, battleTime)) {
                     attackOccurred = true;
                 }
-                champion.useAbility(target);
             }
         }
     });
      
-    // Opponent attacks
+    // Opponent attacks - only try to attack if it's time for their next attack
     battleOpponent.forEach(champion => {
         if (champion.currentHp > 0) {
             const target = battlePlayer.find(c => c.currentHp > 0);
             if (target) {
-                if (champion.attack(target)) {
+                // The attack method will check internally if it's time to attack
+                if (champion.attack(target, battleTime)) {
                     attackOccurred = true;
                 }
-                champion.useAbility(target);
             }
         }
     });
@@ -237,17 +221,6 @@ function simulateRound(battlePlayer, battleOpponent) {
     return { battlePlayer, battleOpponent, attackOccurred };
 }
 
-// Resets the stats of the player and opponent teams to their original values
-function resetStats(player, opponent, originalPlayerStats, originalOpponentStats) {
-    player.forEach((champion, index) => {
-        champion.currentHp = originalPlayerStats[index].hp;
-    });
-    opponent.forEach((champion, index) => {
-        champion.currentHp = originalOpponentStats[index].hp;
-    });
-}
-
-// Calculates the win rates for the player and opponent teams
 function calculateWinRates(playerWins, opponentWins) {
     const playerWinRate = (playerWins.length / 100) * 100 + '%';
     const opponentWinRate = (opponentWins.length / 100) * 100 + '%';
@@ -261,80 +234,97 @@ function startBattle() {
     let playerWins = [];
     let opponentWins = [];
 
-    const { originalPlayerStats, originalOpponentStats } = saveOriginalStats(player, opponent);
+    let battlePlayer = [...player];
+    let battleOpponent = [...opponent];
     
-    // Start the battle for 100 rounds
-    for (let i = 0; i < 1; i++) {      
-
-        // Create copies of the player and opponent teams to track their status during this round
-        let battlePlayer = [...player];
-        let battleOpponent = [...opponent];     
-
-        // Simulate the battle until one team is defeated
-        while (battlePlayer.some(champion => champion.currentHp > 0) && battleOpponent.some(champion => champion.currentHp > 0)) {
-            let attackOccurred = false;
-            ({ battlePlayer, battleOpponent, attackOccurred } = simulateRound(battlePlayer, battleOpponent));
-
-            // Log the current status of the battle if an attack occurred
-            if(playerWins.length === 0 || opponentWins.length === 0) {
-                if (attackOccurred) {
-                    console.log('Player team:', battlePlayer.map(champion => `${champion.name} (${champion.currentHp} HP)`));
-                    console.log('Opponent team:', battleOpponent.map(champion => `${champion.name} (${champion.currentHp} HP)`));
-                }   
-            }
-        }
+    console.log("Starting battle with champions:");
+    console.log("Player:", battlePlayer.map(c => `${c.name} (Attack Speed: ${c.attackSpeed.toFixed(2)})`));
+    console.log("Opponent:", battleOpponent.map(c => `${c.name} (Attack Speed: ${c.attackSpeed.toFixed(2)})`));
+    
+    let battleTime = 0;
+    const BATTLE_STEP = 1; 
+    const MAX_BATTLE_TIME = 30000; 
+    
+    while (
+        battlePlayer.some(champion => champion.currentHp > 0) && 
+        battleOpponent.some(champion => champion.currentHp > 0) && 
+        battleTime <= MAX_BATTLE_TIME
+    ) {
+        battleTime += BATTLE_STEP;
         
-        // Count the result of the battle
-        if (battlePlayer.length > 0) {
-            playerWins.push(1); 
-        } else if (battleOpponent.length > 0) {
-            opponentWins.push(1);
-        } else {
-            console.log('No champions left standing.');
+        const { attackOccurred } = simulateRound(battlePlayer, battleOpponent, battleTime);
+        
+        if (battleTime % 100 === 0) {
+            console.log(`Battle time: ${battleTime/100} seconds`);
+            console.log('Player team:', battlePlayer.map(champion => 
+                `${champion.name} (${champion.currentHp} HP, ${champion.mana}/${champion.abilityManaCost} mana), (Attack Speed: ${champion.attackSpeed.toFixed(2)})`),);
+            console.log('Opponent team:', battleOpponent.map(champion => 
+                `${champion.name} (${champion.currentHp} HP, ${champion.mana}/${champion.abilityManaCost} mana), (Attack Speed: ${champion.attackSpeed.toFixed(2)})`));
         }
-   
-        // Reset HP after each battle round
-
-        console.log('Round', i + 1, 'ended.');
-
     }
-
+    
+    if (battlePlayer.some(champion => champion.currentHp > 0)) {
+        playerWins.push(1);
+        console.log("Player team wins!");
+    } else if (battleOpponent.some(champion => champion.currentHp > 0)) {
+        opponentWins.push(1);
+        console.log("Opponent team wins!");
+    } else {
+        console.log('No champions left standing - Draw!');
+    }
+    
+    console.log('Battle ended after', battleTime/100, 'seconds of simulated time.');
+    
     const { playerWinRate, opponentWinRate } = calculateWinRates(playerWins, opponentWins);
 
-    console.log('Battle ended!');
+    const playerStatistics = player.map((champion, index) => {
+        if (index < battlePlayer.length) {
+            champion.damageArray = battlePlayer[index].damageArray || [];
+            champion.abilityArray = battlePlayer[index].abilityArray || [];
+            champion.healArray = battlePlayer[index].healArray || [];
+        }
+        
+        return {
+            name: champion.name,
+            items: champion.items,
+            HP: index < battlePlayer.length ? battlePlayer[index].currentHp : 0,
+            baseHP: champion.statsByStarLevel[champion.starLevel].hp,
+            damageArray: champion.damageArray,
+            abilityArray: champion.abilityArray,
+            healArray: champion.healArray
+        };
+    });
 
-    const playerStatistics = player.map(champion => ({
-        name: champion.name,
-        items: champion.items,
-        HP: champion.currentHp,
-        baseHP: champion.statsByStarLevel[champion.starLevel].hp,
-        damageArray: champion.damageArray,
-        abilityArray: champion.abilityArray,
-        healArray: champion.healArray
-    }))
-
-    const opponentStatistics = opponent.map(champion => ({
-        name: champion.name,
-        items: champion.items,
-        HP: champion.currentHp,
-        baseHP: champion.statsByStarLevel[champion.starLevel].hp,
-        damageArray: champion.damageArray,
-        abilityArray: champion.abilityArray,
-        healArray: champion.healArray
-    }))         
-
+    const opponentStatistics = opponent.map((champion, index) => {
+        if (index < battleOpponent.length) {
+            champion.damageArray = battleOpponent[index].damageArray || [];
+            champion.abilityArray = battleOpponent[index].abilityArray || [];
+            champion.healArray = battleOpponent[index].healArray || [];
+        }
+        
+        return {
+            name: champion.name,
+            items: champion.items,
+            HP: index < battleOpponent.length ? battleOpponent[index].currentHp : 0,
+            baseHP: champion.statsByStarLevel[champion.starLevel].hp,
+            damageArray: champion.damageArray,
+            abilityArray: champion.abilityArray,
+            healArray: champion.healArray
+        };
+    });
+    
     return { 
         playerWinRate, 
         opponentWinRate, 
         playerStatistics, 
-        opponentStatistics, 
-        
+        opponentStatistics,
+        battleDuration: battleTime/100 
     }; 
 }
 
 placeChampionByName('Akali', 4, 3, 2, 'player');
 placeChampionByName('Darius', 3, 3, 2, 'opponent'); 
-addItemByName(board.getChampion(4, 3), 'Jeweled Gauntlet');
+addItemByName(board.getChampion(4, 3), 'Guinsoo\'s Rageblade');
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
 

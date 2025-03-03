@@ -23,8 +23,10 @@ interface AbilityStats {
 }
 
 interface SpecialEffects {
+    heal?: boolean;
     sunder?: boolean;
     shred?: boolean;
+    healAmount?: number;
     sunderAmount?: number;
     shredAmount?: number;
     sunderRadius?: number;
@@ -65,8 +67,10 @@ export class Item {
     readonly abilityCritStrike: boolean;
 
     // Special effects
+    readonly heal: boolean;
     readonly sunder: boolean;
     readonly shred: boolean;
+    readonly healAmount: number;
     readonly sunderAmount: number;
     readonly shredAmount: number;
     readonly sunderRadius: number;
@@ -101,8 +105,10 @@ export class Item {
         abilityCritStrike = false,
         
         // Special effects
+        heal = false,
         sunder = false,
         shred = false,
+        healAmount = 0,
         sunderAmount = 0,
         shredAmount = 0,
         sunderRadius = 0,
@@ -136,8 +142,10 @@ export class Item {
         this.abilityCritStrike = abilityCritStrike;
 
         // Special effects
+        this.heal = heal;
         this.sunder = sunder;
         this.shred = shred;
+        this.healAmount = healAmount;
         this.sunderAmount = sunderAmount;
         this.shredAmount = shredAmount;
         this.sunderRadius = sunderRadius;

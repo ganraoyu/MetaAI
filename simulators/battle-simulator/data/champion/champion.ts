@@ -82,6 +82,10 @@ class Champion {
     damageArray: number[];
     abilityArray: number[];
     healArray: number[];
+    lastAttackTime: number = 0;
+    nextAttackTime: number = 0;
+    nextAttackReady: boolean = true;
+    battleTime: number = 0;
 
     constructor(
         name: string,
@@ -134,6 +138,11 @@ class Champion {
         this.damageArray = [];
         this.abilityArray = [];
         this.healArray = [];
+        this.lastAttackTime = 0;
+        const firstAttackDelay = 1 / this.attackSpeed * 100;
+        this.nextAttackTime = firstAttackDelay; 
+        this.nextAttackReady = false;
+        this.battleTime = 0;
     }
 
     getStats() {
@@ -157,12 +166,12 @@ class Champion {
         }
     }
 
-    attack(target: Champion) {
-        // Time step for the game loop
-  
-        this.gameTime += this.timeStep; // Increment the game time by the time step
+    attack(target: Champion, currentTime: number) {
+        this.battleTime = currentTime;
         
-        let championAttackTime = 1 / this.attackSpeed;
+        if (this.battleTime < this.nextAttackTime) {
+            return false;
+        }
     
         const ability = target.getStats().ability;
         const damageReduction = ability.reduction;
@@ -171,233 +180,120 @@ class Champion {
         const critRate = this.attackCritChance;
         const critDamageAmp = this.attackCritDamage;
     
-        if(this.attacks.length > 0){
-            championAttackTime = this.attacks.length * ( 1 / this.attackSpeed );
-        } else {
-            championAttackTime = 1 / this.attackSpeed;
-        }
-    
+        const mins = Math.floor(this.battleTime / 6000);
+        const secs = Math.floor((this.battleTime % 6000) / 100);
+        const cents = this.battleTime % 100;
+        const formattedTime = `${mins}:${secs.toString().padStart(2, '0')}:${cents.toString().padStart(2, '0')}`;
+        
         if (this.items) {
             this.items.forEach(item => {
                 if (item.attackSpeedStacking && item.additionalAttackSpeedPerStack) {
-                    this.attackSpeed *= item.additionalAttackSpeedPerStack;
-                    console.log(`${this.name}'s attack speed increased to ${this.attackSpeed.toFixed(2)}`);
+                    this.attackSpeed *= item.additionalAttackSpeedPerStack || 1;
+                    console.log(`[${formattedTime}] ${this.name}'s attack speed increased from ${this.attackSpeed.toFixed(2)} to ${this.attackSpeed.toFixed(2)}`);
                 }
             });
-        } else {
-            this.attackSpeed = this.attackSpeed;
-            console.log('attackSpeed', this.attackSpeed);
-        }
-      
-        if (this.gameTime >= 1 / this.attackSpeed) {
-
-            // Reset gameTime for the next attack interval
-            this.gameTime = 0;
-
-            console.log('attackSpeed', this.attackSpeed);
-    
-            if (damageReduction !== 0) {
-                // Calculate damage with damage reduction
-                let reducedDamage = damage - (damage * damageReduction / 100);
-                reducedDamage = Math.max(0, reducedDamage); // Ensure no negative damage
-                
-                if(armor > 0){
-                    let physicalDamageTaken = reducedDamage - (reducedDamage * armor / 100);
-                    physicalDamageTaken = Math.max(0, physicalDamageTaken); // Ensure no negative damage
-                    
-                    if (Math.random() * 100 <= critRate) {
-                        let critDamage = Math.round(physicalDamageTaken * critDamageAmp);
-                        target.takeDamage(critDamage);
-                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
-                        this.mana += this.manaPerAttack;
-                        this.attacks.push(1);
-                        this.damageArray.push(critDamage);
-                        console.log(`${this.name}'s damage array`, this.damageArray);
-                        return true; // Attack occurred
-                    } else {
-                        let normalDamage = Math.round(physicalDamageTaken);
-                        target.takeDamage(normalDamage);
-                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
-                        this.mana += this.manaPerAttack;
-                        this.attacks.push(1);
-                        this.damageArray.push(normalDamage);
-                        console.log(`${this.name}'s damage array`, this.damageArray);
-                        return true; // Attack occurred
-                    }
-                }
-                if (Math.random() * 100 <= critRate) {
-                    let critDamage = Math.round(reducedDamage * critDamageAmp);
-                    target.takeDamage(critDamage);
-                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
-                    this.mana += this.manaPerAttack;
-                    this.attacks.push(1);
-                    this.damageArray.push(critDamage)
-                    console.log(`${this.name}'s damage array`, this.damageArray);
-                    return true; // Attack occurred
-                } else {
-                    let normalDamage = Math.round(reducedDamage);
-                    target.takeDamage(normalDamage);
-                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
-                    this.mana += this.manaPerAttack;
-                    this.attacks.push(1);
-                    this.damageArray.push(normalDamage);
-                    console.log(`${this.name}'s damage array`, this.damageArray);
-                    return true; // Attack occurred
-                }
-            }
-            
-            // If damage reduction is 0, proceed with checking armor
-            if (armor > 0) {
-                // Calculate damage with armor
-                let physicalDamageTaken = damage - (damage * armor / 100);
-                physicalDamageTaken = Math.max(0, physicalDamageTaken); // Ensure no negative damage
-            
-                if (Math.random() * 100 <= critRate) {
-                    let critDamage = Math.round(physicalDamageTaken * critDamageAmp);
-                    target.takeDamage(critDamage);
-                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
-                    this.mana += this.manaPerAttack;
-                    this.attacks.push(1);
-                    this.damageArray.push(critDamage);
-                    console.log(`${this.name}'s damage array`, this.damageArray);
-                    return true; 
-                } else {
-                    let normalDamage = Math.round(physicalDamageTaken);
-                    target.takeDamage(normalDamage);
-                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
-                    this.mana += this.manaPerAttack;
-                    this.attacks.push(1);
-                    this.damageArray.push(normalDamage);
-                    console.log(`${this.name}'s damage array`, this.damageArray);
-                    return true;
-                }
-            } else {
-                // No armor, full damage
-                if (Math.random() * 100 <= critRate) {
-                    let critDamage = Math.round(damage * critDamageAmp);
-                    target.takeDamage(critDamage);
-                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for Crit ${critDamage}`);
-                    this.mana += this.manaPerAttack;
-                    this.attacks.push(1);
-                    this.damageArray.push(critDamage);
-                    console.log(`${this.name}'s damage array`, this.damageArray);
-                    return true; 
-                } else {
-                    let normalDamage = Math.round(damage);
-                    target.takeDamage(normalDamage);
-                    console.log(`[${championAttackTime.toFixed(2)}s] ${this.name} attacks ${target.name} for ${normalDamage}`);
-                    this.mana += this.manaPerAttack;
-                    this.attacks.push(1);
-                    this.damageArray.push(normalDamage);
-                    console.log(`${this.name}'s damage array`, this.damageArray);
-                    return true; 
-                }
-            }
         }
 
-        return false; // No attack occurred
+        let finalDamage = damage;
+        if (damageReduction !== 0) {
+            finalDamage *= (1 - damageReduction / 100);
+        }
+        
+        if (armor > 0) {
+            finalDamage *= (1 - armor / 100);
+        }
+        
+        let isCritical = Math.random() * 100 <= critRate;
+        if (isCritical) {
+            finalDamage *= critDamageAmp;
+        }
+        
+        finalDamage = Math.round(finalDamage);
+        
+        target.takeDamage(finalDamage);
+
+        const attackTypeMsg = isCritical ? `Crit ${finalDamage}` : finalDamage;
+        console.log(`[${formattedTime}] ${this.name} attacks ${target.name} for ${attackTypeMsg}`);
+        
+        this.mana += this.manaPerAttack;
+        this.attacks.push(1);
+        this.damageArray.push(finalDamage);
+        
+        this.lastAttackTime = this.battleTime;
+        const attackDelay = 1 / this.attackSpeed * 100; 
+        this.nextAttackTime = this.battleTime + attackDelay;
+        
+        if (this.mana >= this.abilityManaCost) {
+            this.useAbility(target, this.battleTime);
+        }
+        
+        return true;
     }
     
     isAlive() {
         return this.currentHp > 0;
     }
 
-    useAbility(target: Champion) {
-        let championAttackTime = 1 / this.attackSpeed;
-    
+    useAbility(target: Champion, currentTime: number) {
+        const mins = Math.floor(currentTime / 6000);
+        const secs = Math.floor((currentTime % 6000) / 100);
+        const cents = currentTime % 100;
+        const formattedTime = `${mins}:${secs.toString().padStart(2, '0')}:${cents.toString().padStart(2, '0')}`;
+        
         const ability = this.getStats().ability;
-        const abilityReduction = this.getStats().ability;
         const damage = ability.damage;
         const magicDamage = ability.magicDamage;
-        const damageReduction = abilityReduction.reduction;
+        const damageReduction = ability.reduction;
         const heal = ability.healing;
         const armor = target.armor;
         const magicResist = target.magicResist;
-    
-        if (this.attacks.length > 0) {
-            championAttackTime = this.attacks.length * (1 / this.attackSpeed);
-        } else {
-            championAttackTime = 1 / this.attackSpeed;
-        }
-
+        
         if (this.items) {
             this.items.forEach(item => {
                 if(item.abilityCritStrike) {
-                    this.abilityCritChance = this.attackCritChance
-                    this.abilityCritDamage = this.attackCritDamage
+                    this.abilityCritChance = this.attackCritChance;
+                    this.abilityCritDamage = this.attackCritDamage;
                 }
             });
         }
-
+        
         const critRate = this.abilityCritChance;
         const critDamage = this.attackCritDamage;  
         
         if (this.mana >= this.abilityManaCost) {
             this.mana -= this.abilityManaCost;
-            if (damageReduction === 0) {
-                if (armor > 0 || magicResist > 0) {
-                    if (Math.random() * 100 <= critRate) {                   
-                        let physicalDamageTaken = damage - ((damage) * armor / 100);
-                        let magicDamageTaken = magicDamage - ((magicDamage) * magicResist / 100);                    
-                        const totalCritDamage = (Math.round(physicalDamageTaken + magicDamageTaken) * critDamage); 
-                        target.takeDamage(totalCritDamage);
-    
-                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${totalCritDamage} Crit damage`);                   
-                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
-    
-                        this.abilityArray.push(totalCritDamage);
-                        console.log(`${this.name}'s ability array`, this.abilityArray);
-                    } else {
-                        let physicalDamageTaken = damage - ((damage) * armor / 100);
-                        let magicDamageTaken = magicDamage - ((magicDamage) * magicResist / 100);
-                        const totalDamage = (Math.round(physicalDamageTaken + magicDamageTaken));
-                        target.takeDamage(totalDamage);
-    
-                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${totalDamage} damage`);
-                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
-    
-                        this.abilityArray.push(totalDamage);
-                        console.log(`${this.name}'s ability array`, this.abilityArray);
-                    }
-                }
-            }
-    
-            if (damageReduction !== 0) {
-                if (armor > 0 || magicResist > 0) {
-                    if (Math.random() * 100 <= critRate) {
-                        let physicalDamageTaken = damage - ((damage) * armor / 100);
-                        let magicDamageTaken = magicDamage - ((magicDamage) * magicResist / 100);
-                        const totalCritDamage = (Math.round(physicalDamageTaken + magicDamageTaken) * critDamage); 
-                        const totalDamage = (Math.round(totalCritDamage - (totalCritDamage * damageReduction / 100)));
-                        target.takeDamage(totalDamage);
-    
-                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${totalDamage} Crit damage`);
-                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
-    
-                        this.abilityArray.push(totalDamage);
-                        console.log(`${this.name}'s ability array`, this.abilityArray);
-                    } else {
-                        let physicalDamageTaken = damage - ((damage) * armor / 100);
-                        let magicDamageTaken = magicDamage - ((magicDamage) * magicResist / 100);
-                        const totalDamage = (Math.round((physicalDamageTaken + magicDamageTaken) - ((physicalDamageTaken + magicDamageTaken) * damageReduction / 100)));
-                        target.takeDamage(totalDamage);
-    
-                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability does ${totalDamage} damage`);
-                        console.log(`[${championAttackTime.toFixed(2)}s] ${this.name}'s ability heals for ${heal} health`);
-    
-                        this.abilityArray.push(totalDamage);
-                        console.log(`${this.name}'s ability array`, this.abilityArray);
-                    }
-                }
-            }
+            
+            let physicalDamageTaken = damage - ((damage) * armor / 100);
+            let magicDamageTaken = magicDamage - ((magicDamage) * magicResist / 100);
+            
 
+            let totalDamage;
+            if (Math.random() * 100 <= critRate) {
+                totalDamage = Math.round((physicalDamageTaken + magicDamageTaken) * critDamage);
+                console.log(`[${formattedTime}] ${this.name}'s ability does ${totalDamage} Crit damage`);
+            } else {
+                totalDamage = Math.round(physicalDamageTaken + magicDamageTaken);
+                console.log(`[${formattedTime}] ${this.name}'s ability does ${totalDamage} damage`);
+            }
+            
+            if (damageReduction !== 0) {
+                totalDamage = Math.round(totalDamage * (1 - damageReduction / 100));
+            }
+            
+            target.takeDamage(totalDamage);
+            this.abilityArray.push(totalDamage);
+            
             if (heal > 0) {
+                const oldHp = this.currentHp;
                 this.currentHp += heal;
-                if(this.currentHp > this.statsByStarLevel[this.starLevel].hp) {
+                
+                if (this.currentHp > this.statsByStarLevel[this.starLevel].hp) {
                     this.currentHp = this.statsByStarLevel[this.starLevel].hp;
                 }
-                this.healArray.push(heal);
-                console.log(`${this.name}'s healing array`, this.healArray);
+                
+                const actualHeal = this.currentHp - oldHp;
+                this.healArray.push(actualHeal);
+                console.log(`[${formattedTime}] ${this.name}'s ability heals for ${actualHeal} health`);
             }
         }
     }
