@@ -38,6 +38,7 @@ function placeChampionByName(championName, row, column, starLevel, team) {
             champion.attackCritDamage, 
             champion.abilityCritChance,
             champion.abilityCritDamage,
+            champion.damageAmp,
             champion.abilityPower,
             champion.durability,
             champion.omnivamp,
@@ -93,25 +94,36 @@ function addItemByName(champion, itemName) {
     }   
 }
 
-function addAddtionalItemStatistics(champion){
+function addAddtionalItemStatistics(champion){ // reuseable basic stats, non-reuseable ones are in champion class
     if(3 >= champion.items.length > 0){
         champion.items.forEach(item =>{            
+            // Health and defensive stats
             champion.currentHp += parseFloat(item.additionalHealth) || 0;      
             champion.statsByStarLevel[champion.starLevel].armor += parseFloat(item.additionalArmor) || 0;
             champion.statsByStarLevel[champion.starLevel].magicResist += parseFloat(item.additionalMagicResist) || 0;
-            champion.statsByStarLevel[champion.starLevel].attackDamage += parseFloat(item.additionalAttackDamage) || 0;
+            champion.durability += parseFloat(item.additionalDurability) || 0;
+
+            // Attack stats
+            champion.statsByStarLevel[champion.starLevel].attackDamage *= parseFloat(item.additionalAttackDamage) || 1;
+            champion.damageAmp *= parseFloat(item.additionalDamageAmp) || 1;
             champion.attackSpeed *= parseFloat(item.additionalAttackSpeed) || 1;
-            champion.manaperAttack += parseFloat(item.additionalManaPerAttack) || 0;
             champion.range += parseFloat(item.additionalAttackRange) || 0;
             champion.attackCritChance += parseFloat(item.additionalCritChance) || 0;
             champion.attackCritDamage += parseFloat(item.additionalCritDamage) || 0;
-            champion.omnivamp += parseFloat(item.additinalOmnivamp) || 0;
-            champion.durability += parseFloat(item.additionalDurability) || 0;
-            champion.abilityPower += parseFloat(item.additionalAbilityPower) ||0;            
+
+            // Ability stats
+            champion.abilityPower += parseFloat(item.additionalAbilityPower) || 0;
             champion.mana += parseFloat(item.additionalArmor) || 0;
+            champion.manaPerAttack += parseFloat(item.additionalManaPerAttack) || 0;
             champion.abilityManaCost -= parseFloat(item.reducedMaxMana) || 0;
-            console.log('champion.attacks.length', champion.attacks.length);
-            console.log('additionalAttackDamage', item.additionalAttackDamage);
+
+            // Sustain
+            champion.omnivamp += parseFloat(item.additinalOmnivamp) || 0;
+
+            // if(item.name === 'Dragon\'s Claw'){
+                
+            // }
+
         });
         
     } else if(champion.items.length === 0){

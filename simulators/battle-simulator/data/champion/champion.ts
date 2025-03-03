@@ -69,6 +69,7 @@ class Champion {
     abilityPower: number;
     abilityCritChance: number;
     abilityCritDamage: number;
+    damageAmp: number;
     omnivamp: number;
     durability: number;
     items: ItemProperties[];
@@ -102,6 +103,7 @@ class Champion {
         attackCritDamage: number,  
         abilityCritChance: number,    
         abilityCritDamage: number,
+        damageAmp: number,
         abilityPower: number,  
         omnivamp: number,
         durability: number,
@@ -124,6 +126,7 @@ class Champion {
         this.attackCritDamage = attackCritDamage;     
         this.abilityCritChance = abilityCritChance;   
         this.abilityCritDamage = abilityCritDamage;
+        this.damageAmp = damageAmp;
         this.abilityPower = abilityPower;
         this.omnivamp = omnivamp;
         this.durability = durability;
