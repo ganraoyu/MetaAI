@@ -21,8 +21,11 @@ export function addAdditionalItemStatistics(champion: any) {
             champion.abilityPower += item.additionalAbilityPower || 0;            
             champion.mana += item.additionalStartingMana || 0;  
             champion.abilityManaCost -= item.reducedMaxMana || 0;
+
+            if(item.heal && item.healAmount) {
+                
+            }
         });
-        
     } else if(champion.items.length === 0){
         console.log('No items equipped');
     } else {

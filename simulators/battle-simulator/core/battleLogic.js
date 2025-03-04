@@ -16,9 +16,7 @@ const { getTraitByName } = require('../data/trait/trait-data.ts');
 cd simulators/battle-simulator/core
 nodemon battlelogic
 */
-
-let battleTime = 0; // in centiseconds     
-let time = battleTime;
+   
 const board = new Board(8, 7);
 
 function placeChampionByName(championName, row, column, starLevel, team) {
@@ -168,7 +166,6 @@ function simulateRound(battlePlayer, battleOpponent, battleTime) {
         if (champion.currentHp > 0) {
             const target = battleOpponent.find(c => c.currentHp > 0);
             if (target) {
-                // The attack method will check internally if it's time to attack
                 if (champion.attack(target, battleTime)) {
                     attackOccurred = true;
                 }
@@ -181,7 +178,6 @@ function simulateRound(battlePlayer, battleOpponent, battleTime) {
         if (champion.currentHp > 0) {
             const target = battlePlayer.find(c => c.currentHp > 0);
             if (target) {
-                // The attack method will check internally if it's time to attack
                 if (champion.attack(target, battleTime)) {
                     attackOccurred = true;
                 }
@@ -220,6 +216,7 @@ function startBattle() {
     const BATTLE_STEP = 1; 
     const MAX_BATTLE_TIME = 30000; 
     
+    let battleTime = 0; // in centiseconds 
     while (
         battlePlayer.some(champion => champion.currentHp > 0) && 
         battleOpponent.some(champion => champion.currentHp > 0) && 
@@ -235,6 +232,13 @@ function startBattle() {
                 `${champion.name} (${champion.currentHp} HP, ${champion.mana}/${champion.abilityManaCost} mana), (Attack Speed: ${champion.attackSpeed.toFixed(2)})`),);
             console.log('Opponent team:', battleOpponent.map(champion => 
                 `${champion.name} (${champion.currentHp} HP, ${champion.mana}/${champion.abilityManaCost} mana), (Attack Speed: ${champion.attackSpeed.toFixed(2)})`));
+        }
+
+        if (battleTime % 2000 === 0 && battleTime > 0){
+          battlePlayer.map(champion =>{
+            champion.currentHp += 10123;          
+            console.log('Champion HP:', champion.currentHp);
+          }); 
         }
     }
     
