@@ -34,6 +34,7 @@ const champions = [
             }
         },
         attackSpeed: 0.6,
+        abilityName: 'Obsolete Technology',
         abilityDescription: 'Obsolete Technology: Passive: Amumu reduces all incoming damage. Every second, emit sparks that deal magic damage to adjacent enemies.',
         range: 1,
         mana: 1,
@@ -77,6 +78,7 @@ const champions = [
             }
         },
         attackSpeed: 0.7,
+        abilityName: 'Decimate',
         abilityDescription: 'Darius swings his axe in a powerful strike, dealing damage and healing based on missing health.',
         range: 1,
         mana: 30,
@@ -107,7 +109,7 @@ const champions = [
             2: { 
                 hp: 1100, 
                 attackDamage: 83, 
-                armor: 40,  
+                armor: 100,  
                 magicResist: 40,  
                 ability: { reduction: 15, damage: 120, magicDamage: 360, healing: 0 },
             },
@@ -120,6 +122,7 @@ const champions = [
             }
         },
         attackSpeed: 0.6,
+        abilityName: 'Shuriken Flip',
         abilityDescription: 'Akali dashes through enemies, dealing damage to each target she passes.',
         range: 1,
         mana: 30,

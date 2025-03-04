@@ -1,37 +1,12 @@
-const { getChampionByName } = require('../champion/champion-data.ts');
-const { getItemByName } = require('../item/item-data.ts');
+const { getChampionByName } = require('../champion/champion-data');
+const { getItemByName } = require('../item/item-data');
+const { ItemProps } = require('../item/item');
+type ItemProps = typeof ItemProps;
 /*
 cd simulators/battle-simulator/data/champion
 nodemon champion.ts
 */
 const { v4: uuidv4 } = require('uuid');
-
-interface ItemProperties {
-    name: string;
-    description: string;
-    additionalAttackDamage?: number;
-    additionalAttackSpeed?: number;
-    additionalManaPerAttack?: number;
-    additionalCritDamage?: number;
-    additionalCritChance?: number;
-    additionalDamageAmp?: number;
-    reducedMaxMana?: number;
-    additionalStartingMana?: number;
-    additionalArmor?: number;
-    additionalMagicResist?: number;
-    additionalHealth?: number;
-    additionalAbilityPower?: number;
-    additionalOmniVamp?: number;
-    additionalDurability?: number;
-    additionalAttackRange?: number;
-    sunder?: number;
-    shred?: number;
-    sunderRadius?: number;
-    shredRadius?: number;
-    attackSpeedStacking?: boolean;
-    additionalAttackSpeedPerStack?: number;
-    abilityCritStrike?: boolean;
-}
 
 interface AbilityStats {
     reduction: number;
@@ -72,7 +47,7 @@ class Champion {
     damageAmp: number;
     omnivamp: number;
     durability: number;
-    items: ItemProperties[];
+    items: typeof ItemProps[];
     currentHp: number;
     armor: number;
     magicResist: number;
@@ -107,7 +82,7 @@ class Champion {
         abilityPower: number,  
         omnivamp: number,
         durability: number,
-        items: ItemProperties[] = [],
+        items: typeof ItemProps[] = [],
         starLevel?: number 
 
     ) {
@@ -173,7 +148,7 @@ class Champion {
         this.battleTime = currentTime;
         
         if (this.battleTime < this.nextAttackTime) {
-            return false;
+            return false; // didn't attack yet
         }
     
         const ability = target.getStats().ability;
@@ -189,25 +164,26 @@ class Champion {
         const formattedTime = `${mins}:${secs.toString().padStart(2, '0')}:${cents.toString().padStart(2, '0')}`;
         
         if (this.items) {
-            this.items.forEach(item => {
+            this.items.forEach(item => {    
                 if (item.attackSpeedStacking && item.additionalAttackSpeedPerStack) {
+                    let prevAttackSpeed = this.attackSpeed;
                     this.attackSpeed *= item.additionalAttackSpeedPerStack || 1;
-                    console.log(`[${formattedTime}] ${this.name}'s attack speed increased from ${this.attackSpeed.toFixed(2)} to ${this.attackSpeed.toFixed(2)}`);
+                    console.log(`[${formattedTime}] ${this.name}'s attack speed increased from ${prevAttackSpeed.toFixed(2)} to ${this.attackSpeed.toFixed(2)}`);
                 }
             });
         }
 
-        let finalDamage = damage;
-        if (damageReduction !== 0) {
-            finalDamage *= (1 - damageReduction / 100);
-        }
-        
+        let finalDamage = damage;    
+
         if (armor > 0) {
-            finalDamage *= (1 - armor / 100);
+            finalDamage = finalDamage / (1 + (armor / 100));
         }
-        
-        let isCritical = Math.random() * 100 <= critRate;
-        if (isCritical) {
+
+        if (damageReduction !== 0) {
+            finalDamage = finalDamage * (1 - damageReduction / 100);
+        }
+
+        if (Math.random() * 100 <= critRate) {
             finalDamage *= critDamageAmp;
         }
         
@@ -215,7 +191,7 @@ class Champion {
         
         target.takeDamage(finalDamage);
 
-        const attackTypeMsg = isCritical ? `Crit ${finalDamage}` : finalDamage;
+        const attackTypeMsg = Math.random() * 100 <= critRate ? `*Crit* ${finalDamage}` : finalDamage;
         console.log(`[${formattedTime}] ${this.name} attacks ${target.name} for ${attackTypeMsg}`);
         
         this.mana += this.manaPerAttack;
@@ -223,14 +199,14 @@ class Champion {
         this.damageArray.push(finalDamage);
         
         this.lastAttackTime = this.battleTime;
-        const attackDelay = 1 / this.attackSpeed * 100; 
+        const attackDelay = 1 / this.attackSpeed * 100;  
         this.nextAttackTime = this.battleTime + attackDelay;
         
         if (this.mana >= this.abilityManaCost) {
             this.useAbility(target, this.battleTime);
         }
         
-        return true;
+        return true; // attack was successful
     }
     
     isAlive() {
@@ -269,20 +245,19 @@ class Champion {
             let physicalDamageTaken = damage - ((damage) * armor / 100);
             let magicDamageTaken = magicDamage - ((magicDamage) * magicResist / 100);
             
+            let totalDamage = physicalDamageTaken + magicDamageTaken;
 
-            let totalDamage;
-            if (Math.random() * 100 <= critRate) {
-                totalDamage = Math.round((physicalDamageTaken + magicDamageTaken) * critDamage);
-                console.log(`[${formattedTime}] ${this.name}'s ability does ${totalDamage} Crit damage`);
-            } else {
-                totalDamage = Math.round(physicalDamageTaken + magicDamageTaken);
-                console.log(`[${formattedTime}] ${this.name}'s ability does ${totalDamage} damage`);
-            }
-            
             if (damageReduction !== 0) {
                 totalDamage = Math.round(totalDamage * (1 - damageReduction / 100));
             }
+
+            if (Math.random() * 100 <= critRate) {
+                totalDamage = totalDamage * critDamage;
+            } 
             
+            const attackTypeMsg = Math.random() * 100 <= critRate ? `*Crit* ${totalDamage}` : totalDamage;
+            console.log(`[${formattedTime}] ${this.name} uses <${this.abilityName}> on ${target.name} for ${attackTypeMsg} damage`);
+
             target.takeDamage(totalDamage);
             this.abilityArray.push(totalDamage);
             

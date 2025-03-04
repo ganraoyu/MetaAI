@@ -121,8 +121,10 @@ export const combinedItems = [
     new Item({
         name: 'Dragon\'s Claw',
         description: 'nothing',
-        additionalMagicResist: 70, // 60 more magic resist
+        additionalMagicResist: 60, // 60 more magic resist
         additionalPercentageHealth: 1.07, // 7% more health
+        heal: true,
+        healAmount: 1.025 // 2.5% healing of max health every 2 seconds
     }),
     new Item({
         name: 'Bramble Vest',

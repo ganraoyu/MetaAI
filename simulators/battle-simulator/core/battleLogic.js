@@ -4,6 +4,7 @@ const router = express.Router();
 const HexCell = require('../utils/HexCell.js');
 const Board = require('./board.js');
 
+const { addAddtionalItemStatistics } = require('../data/item/itemLogic.ts');   
 const { getChampionByName } = require('../data/champion/champion-data.ts');
 const { displayStats, Champion } = require('../data/champion/champion.ts');
 const { Item } = require('../data/item/item.ts');
@@ -15,7 +16,9 @@ const { getTraitByName } = require('../data/trait/trait-data.ts');
 cd simulators/battle-simulator/core
 nodemon battlelogic
 */
-     
+
+let battleTime = 0; // in centiseconds     
+let time = battleTime;
 const board = new Board(8, 7);
 
 function placeChampionByName(championName, row, column, starLevel, team) {
@@ -38,7 +41,6 @@ function placeChampionByName(championName, row, column, starLevel, team) {
             champion.attackCritDamage, 
             champion.abilityCritChance,
             champion.abilityCritDamage,
-            champion.damageAmp,
             champion.abilityPower,
             champion.durability,
             champion.omnivamp,
@@ -92,45 +94,6 @@ function addItemByName(champion, itemName) {
     } else { 
         champion.items.push(item);
     }   
-}
-
-function addAddtionalItemStatistics(champion){ // reuseable basic stats, non-reuseable ones are in champion class
-    if(3 >= champion.items.length > 0){
-        champion.items.forEach(item =>{            
-            // Health and defensive stats
-            champion.currentHp += parseFloat(item.additionalHealth) || 0;      
-            champion.statsByStarLevel[champion.starLevel].armor += parseFloat(item.additionalArmor) || 0;
-            champion.statsByStarLevel[champion.starLevel].magicResist += parseFloat(item.additionalMagicResist) || 0;
-            champion.durability += parseFloat(item.additionalDurability) || 0;
-
-            // Attack stats
-            champion.statsByStarLevel[champion.starLevel].attackDamage *= parseFloat(item.additionalAttackDamage) || 1;
-            champion.damageAmp *= parseFloat(item.additionalDamageAmp) || 1;
-            champion.attackSpeed *= parseFloat(item.additionalAttackSpeed) || 1;
-            champion.range += parseFloat(item.additionalAttackRange) || 0;
-            champion.attackCritChance += parseFloat(item.additionalCritChance) || 0;
-            champion.attackCritDamage += parseFloat(item.additionalCritDamage) || 0;
-
-            // Ability stats
-            champion.abilityPower += parseFloat(item.additionalAbilityPower) || 0;
-            champion.mana += parseFloat(item.additionalArmor) || 0;
-            champion.manaPerAttack += parseFloat(item.additionalManaPerAttack) || 0;
-            champion.abilityManaCost -= parseFloat(item.reducedMaxMana) || 0;
-
-            // Sustain
-            champion.omnivamp += parseFloat(item.additinalOmnivamp) || 0;
-
-            // if(item.name === 'Dragon\'s Claw'){
-                
-            // }
-
-        });
-        
-    } else if(champion.items.length === 0){
-        console.log('No items equipped');
-    } else {
-        console.log('Max 3 items can be equipped');
-    }
 }
 
 function checkChampionTraits(champion) {
@@ -253,7 +216,7 @@ function startBattle() {
     console.log("Player:", battlePlayer.map(c => `${c.name} (Attack Speed: ${c.attackSpeed.toFixed(2)})`));
     console.log("Opponent:", battleOpponent.map(c => `${c.name} (Attack Speed: ${c.attackSpeed.toFixed(2)})`));
     
-    let battleTime = 0;
+
     const BATTLE_STEP = 1; 
     const MAX_BATTLE_TIME = 30000; 
     
@@ -336,7 +299,7 @@ function startBattle() {
 
 placeChampionByName('Akali', 4, 3, 2, 'player');
 placeChampionByName('Darius', 3, 3, 2, 'opponent'); 
-addItemByName(board.getChampion(4, 3), 'Guinsoo\'s Rageblade');
+addItemByName(board.getChampion(4, 3), 'Dragon\'s Claw');
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
 
