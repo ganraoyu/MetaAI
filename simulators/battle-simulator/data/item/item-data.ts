@@ -124,7 +124,7 @@ export const combinedItems = [
         additionalMagicResist: 60, // 60 more magic resist
         additionalPercentageHealth: 1.07, // 7% more health
         heal: true,
-        healAmount: 1.025 // 2.5% healing of max health every 2 seconds
+        healAmount: 0.025 // 2.5% healing of max health every 2 seconds
     }),
     new Item({
         name: 'Bramble Vest',

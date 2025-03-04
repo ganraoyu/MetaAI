@@ -234,12 +234,16 @@ function startBattle() {
                 `${champion.name} (${champion.currentHp} HP, ${champion.mana}/${champion.abilityManaCost} mana), (Attack Speed: ${champion.attackSpeed.toFixed(2)})`));
         }
 
-        if (battleTime % 2000 === 0 && battleTime > 0){
-          battlePlayer.map(champion =>{
-            champion.currentHp += 10123;          
-            console.log('Champion HP:', champion.currentHp);
-          }); 
-        }
+        battlePlayer.forEach(champion => {
+            champion.items.forEach(item => {
+                if (item.heal && item.healAmount && battleTime % 200 === 0 && battleTime > 0) {
+                    const healedHP = champion.statsByStarLevel[champion.starLevel].hp * item.healAmount;
+                    champion.currentHp += Math.round(healedHP);
+                    champion.healArray.push(item.healAmount);
+                    console.log(`${champion.name} healed for ${Math.round(champion.statsByStarLevel[champion.starLevel].hp * item.healAmount)} HP`);
+                }
+            });
+        });
     }
     
     if (battlePlayer.some(champion => champion.currentHp > 0)) {
@@ -251,7 +255,9 @@ function startBattle() {
     } else {
         console.log('No champions left standing - Draw!');
     }
-    
+  
+
+    if(battleTime )
     console.log('Battle ended after', battleTime/100, 'seconds of simulated time.');
     
     const { playerWinRate, opponentWinRate } = calculateWinRates(playerWins, opponentWins);
