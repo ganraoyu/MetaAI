@@ -112,6 +112,7 @@ export const combinedItems = [
         additionalMagicResist: 20, // 20 more magic resist
         shield:true,
         shieldAmount: 0.25, // 25% max health shield
+        shieldDuration: 5, // 5 seconds
         omnivamp: 25, // 25% omnivamp
     }),
     new Item({

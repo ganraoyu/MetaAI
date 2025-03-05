@@ -4,7 +4,7 @@ const router = express.Router();
 const HexCell = require('../utils/HexCell.js');
 const Board = require('./board.js');
 
-const { addAddtionalItemStatistics, updateHealingEffects } = require('../data/item/itemLogic.ts');   
+const { addAdditionalItemStatistics, gainHealingEffects, gainShieldEffect } = require('../data/item/itemLogic.ts');   
 const { getChampionByName } = require('../data/champion/champion-data.ts');
 const { displayStats, Champion } = require('../data/champion/champion.ts');
 const { Item } = require('../data/item/item.ts');
@@ -235,18 +235,39 @@ function startBattle() {
         
         if (battleTime % 100 === 0) {
             console.log(`Battle time: ${battleTime/100} seconds`);
-            console.log('Player team:', battlePlayer.map(champion => 
-                `${champion.name} (${champion.currentHp} HP, ${champion.shield} shield, ${champion.mana}/${champion.abilityManaCost} mana),  (Attack Speed: ${champion.attackSpeed.toFixed(2)})`),);
-            console.log('Opponent team:', battleOpponent.map(champion => 
-                `${champion.name} (${champion.currentHp} HP, ${champion.shield} shield, ${champion.mana}/${champion.abilityManaCost} mana), (Attack Speed: ${champion.attackSpeed.toFixed(2)})`));
-        };
+            
+            const playerTeamStats = battlePlayer.map(champion => {
+                return [
+                    `${champion.name}`,
+                    `(${champion.currentHp} HP,`,
+                    `${champion.shield} shield,`,
+                    `${champion.mana}/${champion.abilityManaCost} mana),`,
+                    `(Attack Speed: ${champion.attackSpeed.toFixed(2)})`
+                ].join(' ');
+            });
+            
+            const opponentTeamStats = battleOpponent.map(champion => {
+                return [
+                    `${champion.name}`,
+                    `(${champion.currentHp} HP,`,
+                    `${champion.shield} shield,`,
+                    `${champion.mana}/${champion.abilityManaCost} mana),`,
+                    `(Attack Speed: ${champion.attackSpeed.toFixed(2)})`
+                ].join(' ');
+            });
+            
+            console.log('Player team:', playerTeamStats);
+            console.log('Opponent team:', opponentTeamStats);
+        }
 
         battlePlayer.forEach(champion =>{
-            updateHealingEffects(champion, battleTime);
+            gainHealingEffects(champion, battleTime);
+            gainShieldEffect(champion, battleTime);
         });
 
         battleOpponent.forEach(champion =>{
-            updateHealingEffects(champion, battleTime);
+            gainHealingEffects(champion, battleTime);
+            gainShieldEffect(champion, battleTime);
         });
     }
     
@@ -313,11 +334,11 @@ function startBattle() {
 
 placeChampionByName('Akali', 4, 3, 2, 'player');
 placeChampionByName('Darius', 3, 3, 2, 'opponent'); 
-addItemByName(board.getChampion(4, 3), 'Dragon\'s Claw');
+addItemByName(board.getChampion(4, 3), 'Bloodthirster');
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
 
-addAddtionalItemStatistics(board.getChampion(4, 3));
+addAdditionalItemStatistics(board.getChampion(4, 3));
 checkChampionTraits(board.getChampion(4, 3));
 addAdditionalTraitStatistics(board.getChampion(4, 3));
 
