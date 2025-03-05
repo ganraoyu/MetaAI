@@ -77,7 +77,7 @@ export const combinedItems = [
     }),
     new Item({
         name: 'Last Whisper',
-        description: 'nothing',
+        description: 'Physical damage 30% Sunders the target for 3 seconds. This effect does not stack.',
         sunder: true, 
         sunderRadius: 3, // 3 hexes
         additionalAttackDamage: 1.15, // 15% more attack damage
@@ -86,13 +86,13 @@ export const combinedItems = [
     }),
     new Item({
         name: 'Warmog\'s Armor',
-        description: 'nothing',
+        description: 'Gain 12% max health',
         additionalHealth: 600, // 600 more health
         additionalPercentageHealth: 1.12, // 50% more health
     }),
     new Item({
         name: 'Spear of Shojin',
-        description: 'nothing',
+        description: 'Attacks grant 5 bonus Mana.',
         additionalAttackSpeed: 1.15, // 15% more attack speed
         additionalStartingMana: 15, // 15 starting mana
         additionalManaPerAttack: 5, // 5 mana per attack
@@ -100,27 +100,29 @@ export const combinedItems = [
     }),
     new Item({
         name: 'Death Blade',
-        decription: 'nothing',
+        decription: 'Perfect peace and calm for the holder - and all who face it.',
         additionalAttackDamage: 1.3, // 30% more attack damage
         additionalDamageAmp: 1.1, // 30% more damage
     }),
     new Item({
         name: 'Bloodthirster',
-        description: 'nothing',
+        description: 'Once per combat at 40% Health, gain a 25% max Health Shield that lasts up to 5 seconds.',
         additionalAttackDamage: 1.15, // 15% more attack damage
         additionalAbilityPower: 15, // 15 ability power
         additionalMagicResist: 20, // 20 more magic resist
+        shield:true,
+        shieldAmount: 0.25, // 25% max health shield
         omnivamp: 25, // 25% omnivamp
     }),
     new Item({
         name: 'Rabadon\'s Deathcap',
-        description: 'nothing',
+        description: 'This humble hat can help you make, or unmake, the world itself.',
         additionalAbilityPower: 50, // 50 ability power
         additionalDamageAmp: 1.15, // 50% more damage
     }),
     new Item({
         name: 'Dragon\'s Claw',
-        description: 'nothing',
+        description: 'Gain 9% max health. Every 2 seconds, heal 2.5% max Health.',
         additionalMagicResist: 60, // 60 more magic resist
         additionalPercentageHealth: 1.07, // 7% more health
         heal: true,
@@ -128,13 +130,13 @@ export const combinedItems = [
     }),
     new Item({
         name: 'Bramble Vest',
-        description: 'nothing',
+        description: 'Gain 7% max health.Take 8% reduced damage from attacks. When struck by any attack, deal 100 magic damage to all adjacent enemies. (Cooldown: 2 seconds)',
         additionalArmor: 60, // 60 more armor
         additonalPercentageHealth: 1.07, // 7% more health
     })
 ]   
 
- export function getItemByName(name: string){
+export function getItemByName(name: string){
     if(!name){
         return 'Champion name cannt be Empty'
     }

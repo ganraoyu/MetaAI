@@ -31,6 +31,7 @@ class Champion {
     name: string;
     cost: number;
     traitsList: string[];
+    shield: number;
     statsByStarLevel: StatsByStarLevel;
     attackSpeed: number;
     abilityName: string;
@@ -55,6 +56,8 @@ class Champion {
     attacks: number[];
     timeStep: number;
     id: string;
+    damageTakenArray: number[];
+    shieldDamageTakenAray: number[];
     damageArray: number[];
     abilityArray: number[];
     healArray: number[];
@@ -67,6 +70,7 @@ class Champion {
         name: string,
         cost: number, 
         traitsList: string[],
+        shield: number = 0,
         statsByStarLevel: StatsByStarLevel,
         attackSpeed: number,
         abilityName: string,
@@ -89,6 +93,7 @@ class Champion {
         this.name = name;
         this.cost = cost;
         this.traitsList = traitsList;
+        this.shield = shield;
         this.statsByStarLevel = statsByStarLevel;
         this.attackSpeed = attackSpeed;
         this.abilityName = abilityName;
@@ -109,10 +114,12 @@ class Champion {
         this.currentHp = this.statsByStarLevel[this.starLevel].hp;
         this.armor = this.statsByStarLevel[this.starLevel].armor;
         this.magicResist = this.statsByStarLevel[this.starLevel].magicResist;
-        this.gameTime = 0;
+        this.gameTime = 0; 
         this.attacks = [1];
         this.timeStep = 0.1;
         this.id = uuidv4();
+        this.damageTakenArray = [];
+        this.shieldDamageTakenAray = [];
         this.damageArray = [];
         this.abilityArray = [];
         this.healArray = [];
@@ -137,7 +144,23 @@ class Champion {
     }
 
     takeDamage(damage: number) {
-        this.currentHp -= damage;
+        if(this.shield > 0){
+            this.shield -= damage;
+            this.shieldDamageTakenAray.push(damage);
+        }
+
+        if(this.shield < 0){
+            const remainingDamage = Math.abs(this.shield);
+            this.currentHp -= remainingDamage;
+            this.shieldDamageTakenAray.push(remainingDamage);
+            this.shield = 0;
+        }
+       
+        if(this.shield === 0){
+            this.currentHp -= damage;
+            this.damageTakenArray.push(damage);
+        }
+
         if (this.currentHp <= 0) {
             this.currentHp = 0;
             console.log(`${this.name} has died.`);

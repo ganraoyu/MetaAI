@@ -9,6 +9,7 @@ const champions = [
     {
         name: 'Amumu',
         cost: 1,
+        shield: 0,
         traitsList: ['Automata', 'Watcher'],
         statsByStarLevel: {
             1: { 
@@ -53,6 +54,7 @@ const champions = [
     {
         name: 'Darius',
         cost: 1,
+        shield: 100,
         traitsList: ['Conqueror', 'Watcher'],
         statsByStarLevel: {
             1: { 
@@ -97,6 +99,7 @@ const champions = [
     {
         name: 'Akali',
         cost: 2,
+        shield: 1000,
         traitsList: ['Watcher', 'Automata'],
         statsByStarLevel: {
             1: { 

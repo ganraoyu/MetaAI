@@ -1,6 +1,8 @@
 import { ItemProps } from './item'; 
 
-export function addAdditionalItemStatistics(champion: any) {
+export function addAdditionalItemStatistics(champion: any) { // basic stats
+    if (!champion || !champion.items || !champion.items.length) return 'No items equipped';
+
     if(champion.items.length > 0 && champion.items.length <= 3){
         champion.items.forEach((item: ItemProps) => {            
             champion.currentHp += item.additionalHealth || 0;      
@@ -27,6 +29,25 @@ export function addAdditionalItemStatistics(champion: any) {
     } else {
         console.log('Max 3 items can be equipped');
     }
+}
+
+export function updateHealingEffects(champion:any, battleTime: number){
+    if (!champion || !champion.items || !champion.items.length || !battleTime) return 'No items equipped';
+
+    const mins = Math.floor(champion.battleTime / 6000);
+    const secs = Math.floor((champion.battleTime % 6000) / 100);
+    const cents = champion.battleTime % 100;
+    const formattedTime = `${mins}:${secs.toString().padStart(2, '0')}:${cents.toString().padStart(2, '0')}`;
+    
+
+    champion.items.forEach((item: ItemProps) => {
+        if(item.heal && item.healAmount && battleTime % 200 === 0 && battleTime > 0){
+            const healAmount = Math.round(champion.statsByStarLevel[champion.starLevel].hp * item.healAmount);
+            champion.currentHp += healAmount;
+            champion.healArray.push(healAmount);
+            console.log(`[${formattedTime}] ${champion.name} healed for ${healAmount} hp`);
+        }
+    })
 }
 
 export { addAdditionalItemStatistics as addAddtionalItemStatistics };

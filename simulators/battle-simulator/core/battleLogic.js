@@ -4,7 +4,7 @@ const router = express.Router();
 const HexCell = require('../utils/HexCell.js');
 const Board = require('./board.js');
 
-const { addAddtionalItemStatistics } = require('../data/item/itemLogic.ts');   
+const { addAddtionalItemStatistics, updateHealingEffects } = require('../data/item/itemLogic.ts');   
 const { getChampionByName } = require('../data/champion/champion-data.ts');
 const { displayStats, Champion } = require('../data/champion/champion.ts');
 const { Item } = require('../data/item/item.ts');
@@ -28,6 +28,7 @@ function placeChampionByName(championName, row, column, starLevel, team) {
             champion.name, 
             champion.cost, 
             champion.traitsList, 
+            champion.shield,
             champion.statsByStarLevel,
             champion.attackSpeed, 
             champion.abilityName, 
@@ -215,8 +216,9 @@ function startBattle() {
 
     const BATTLE_STEP = 1; 
     const MAX_BATTLE_TIME = 30000; 
-    
+
     let battleTime = 0; // in centiseconds 
+
     while (
         battlePlayer.some(champion => champion.currentHp > 0) && 
         battleOpponent.some(champion => champion.currentHp > 0) && 
@@ -224,25 +226,27 @@ function startBattle() {
     ) {
         battleTime += BATTLE_STEP;
         
+        const mins = Math.floor(this.battleTime / 6000);
+        const secs = Math.floor((this.battleTime % 6000) / 100);
+        const cents = this.battleTime % 100;
+        const formattedTime = `${mins}:${secs.toString().padStart(2, '0')}:${cents.toString().padStart(2, '0')}`;
+        
         const { attackOccurred } = simulateRound(battlePlayer, battleOpponent, battleTime);
         
         if (battleTime % 100 === 0) {
             console.log(`Battle time: ${battleTime/100} seconds`);
             console.log('Player team:', battlePlayer.map(champion => 
-                `${champion.name} (${champion.currentHp} HP, ${champion.mana}/${champion.abilityManaCost} mana), (Attack Speed: ${champion.attackSpeed.toFixed(2)})`),);
+                `${champion.name} (${champion.currentHp} HP, ${champion.shield} shield, ${champion.mana}/${champion.abilityManaCost} mana),  (Attack Speed: ${champion.attackSpeed.toFixed(2)})`),);
             console.log('Opponent team:', battleOpponent.map(champion => 
-                `${champion.name} (${champion.currentHp} HP, ${champion.mana}/${champion.abilityManaCost} mana), (Attack Speed: ${champion.attackSpeed.toFixed(2)})`));
-        }
+                `${champion.name} (${champion.currentHp} HP, ${champion.shield} shield, ${champion.mana}/${champion.abilityManaCost} mana), (Attack Speed: ${champion.attackSpeed.toFixed(2)})`));
+        };
 
-        battlePlayer.forEach(champion => {
-            champion.items.forEach(item => {
-                if (item.heal && item.healAmount && battleTime % 200 === 0 && battleTime > 0) {
-                    const healedHP = champion.statsByStarLevel[champion.starLevel].hp * item.healAmount;
-                    champion.currentHp += Math.round(healedHP);
-                    champion.healArray.push(item.healAmount);
-                    console.log(`${champion.name} healed for ${Math.round(champion.statsByStarLevel[champion.starLevel].hp * item.healAmount)} HP`);
-                }
-            });
+        battlePlayer.forEach(champion =>{
+            updateHealingEffects(champion, battleTime);
+        });
+
+        battleOpponent.forEach(champion =>{
+            updateHealingEffects(champion, battleTime);
         });
     }
     
