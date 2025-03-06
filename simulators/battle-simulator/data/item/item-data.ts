@@ -100,9 +100,9 @@ export const combinedItems = [
     }),
     new Item({
         name: 'Death Blade',
-        decription: 'Perfect peace and calm for the holder - and all who face it.',
+        description: 'Perfect peace and calm for the holder - and all who face it.',
         additionalAttackDamage: 1.3, // 30% more attack damage
-        additionalDamageAmp: 1.1, // 30% more damage
+        additionalDamageAmp: 1.1, // 10% more damage
     }),
     new Item({
         name: 'Bloodthirster',
@@ -131,9 +131,12 @@ export const combinedItems = [
     }),
     new Item({
         name: 'Bramble Vest',
-        description: 'Gain 7% max health.Take 8% reduced damage from attacks. When struck by any attack, deal 100 magic damage to all adjacent enemies. (Cooldown: 2 seconds)',
+        description: 'Gain 7% max health. Take 8% reduced damage from attacks. When struck by any attack, deal 100 magic damage to all adjacent enemies. (Cooldown: 2 seconds)',
         additionalArmor: 60, // 60 more armor
         additonalPercentageHealth: 1.07, // 7% more health
+        reduction: true,
+        reductionAmount: 8, // 8% reduced damage
+        externalMagicDamage: 100
     })
 ]   
 
@@ -156,6 +159,6 @@ export function getItemByName(name: string){
     }
 }
 
-// console.log(basicItems)
+console.log(combinedItems[6])
 
 module.exports = { getItemByName, basicItems, combinedItems }

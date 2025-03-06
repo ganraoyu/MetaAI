@@ -24,15 +24,21 @@ interface AbilityStats {
 }
 
 interface SpecialEffects {
+    externalAttackDamage?: number;
+    externalMagicDamage?: number;
+
+    reduction?: boolean;
     heal?: boolean;
     shield?: boolean;
     sunder?: boolean;
     shred?: boolean;
+    reductionAmount?: number;
     healAmount?: number;
     shieldAmount?: number;
     shieldDuration?: number;
     sunderAmount?: number;
     shredAmount?: number;
+
     sunderRadius?: number;
     shredRadius?: number;
     attackSpeedStacking?: boolean;
@@ -72,10 +78,15 @@ export class Item {
     readonly abilityCritStrike: boolean;
 
     // Special effects
+    readonly externalAttackDamage: number;
+    readonly externalMagicDamage: number;
+
+    readonly reduction: boolean;
     readonly heal: boolean;
     readonly shield: boolean;
     readonly sunder: boolean;
     readonly shred: boolean;
+    readonly reductionAmount: number;
     readonly healAmount: number;
     readonly shieldAmount: number;
     readonly shieldDuration: number;
@@ -114,10 +125,15 @@ export class Item {
         abilityCritStrike = false,
         
         // Special effects
+        externalAttackDamage = 0,
+        externalMagicDamage = 0,
+        
+        reduction = false,
         heal = false,
         shield = false,
         sunder = false,
         shred = false,
+        reductionAmount = 0,
         healAmount = 0,
         shieldAmount = 0,
         shieldDuration = 0,
@@ -155,10 +171,14 @@ export class Item {
         this.abilityCritStrike = abilityCritStrike;
 
         // Special effects
+        this.externalAttackDamage = externalAttackDamage;
+        this.externalMagicDamage = externalMagicDamage;
+        this.reduction = reduction;
         this.heal = heal;
         this.shield = shield;
         this.sunder = sunder;
         this.shred = shred;
+        this.reductionAmount = reductionAmount;
         this.healAmount = healAmount;
         this.shieldAmount = shieldAmount;
         this.shieldDuration = shieldDuration;

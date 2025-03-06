@@ -4,7 +4,7 @@ const router = express.Router();
 const HexCell = require('../utils/HexCell.js');
 const Board = require('./board.js');
 
-const { addAdditionalItemStatistics, gainHealingEffects, gainShieldEffect } = require('../data/item/itemLogic.ts');   
+const { addAdditionalItemStatistics, gainHealingEffects, gainShieldEffect, externalMagicDamageEffect } = require('../data/item/itemLogic.ts');   
 const { getChampionByName } = require('../data/champion/champion-data.ts');
 const { displayStats, Champion } = require('../data/champion/champion.ts');
 const { Item } = require('../data/item/item.ts');
@@ -40,6 +40,7 @@ function placeChampionByName(championName, row, column, starLevel, team) {
             champion.attackCritDamage, 
             champion.abilityCritChance,
             champion.abilityCritDamage,
+            champion.damageAmp,
             champion.abilityPower,
             champion.durability,
             champion.omnivamp,
@@ -169,6 +170,7 @@ function simulateRound(battlePlayer, battleOpponent, battleTime) {
             if (target) {
                 if (champion.attack(target, battleTime)) {
                     attackOccurred = true;
+                    return target;
                 }
             }
         }
@@ -181,6 +183,7 @@ function simulateRound(battlePlayer, battleOpponent, battleTime) {
             if (target) {
                 if (champion.attack(target, battleTime)) {
                     attackOccurred = true;
+                    return target;
                 }
             }
         }
@@ -260,9 +263,14 @@ function startBattle() {
             console.log('Opponent team:', opponentTeamStats);
         }
 
-        battlePlayer.forEach(champion =>{
+        battlePlayer.forEach(champion =>{            
+            const target = battleOpponent.find(c => c.currentHp > 0);
             gainHealingEffects(champion, battleTime);
             gainShieldEffect(champion, battleTime);
+
+            if (target) {
+                externalMagicDamageEffect(champion, target, battleTime);
+            }
         });
 
         battleOpponent.forEach(champion =>{
@@ -334,7 +342,9 @@ function startBattle() {
 
 placeChampionByName('Akali', 4, 3, 2, 'player');
 placeChampionByName('Darius', 3, 3, 2, 'opponent'); 
-addItemByName(board.getChampion(4, 3), 'Bloodthirster');
+addItemByName(board.getChampion(4, 3), 'Death Blade');
+addItemByName(board.getChampion(4, 3), 'Bramble Vest');
+
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
 

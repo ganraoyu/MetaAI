@@ -1,6 +1,7 @@
 const { getChampionByName } = require('../champion/champion-data');
 const { getItemByName } = require('../item/item-data');
 const { ItemProps } = require('../item/item');
+const { externalMagicDamageEffect } = require('../item/itemLogic');
 type ItemProps = typeof ItemProps;
 /*
 cd simulators/battle-simulator/data/champion
@@ -144,6 +145,7 @@ class Champion {
     }
 
     takeDamage(damage: number) {
+
         if(this.shield > 0){
             this.shield -= damage;
             this.shieldDamageTakenAray.push(damage);
@@ -180,6 +182,7 @@ class Champion {
         const armor = target.getStats().armor; 
         const critRate = this.attackCritChance;
         const critDamageAmp = this.attackCritDamage;
+        const damageAmp = this.damageAmp
     
         const mins = Math.floor(this.battleTime / 6000);
         const secs = Math.floor((this.battleTime % 6000) / 100);
@@ -206,7 +209,12 @@ class Champion {
             finalDamage = finalDamage * (1 - damageReduction / 100);
         }
 
-        if (Math.random() * 100 <= critRate) {
+        if(damageAmp > 0){
+            finalDamage *= damageAmp;
+        }
+        
+        let critChance = Math.random() * 100 <= critRate
+        if (critChance) {
             finalDamage *= critDamageAmp;
         }
         
@@ -214,7 +222,7 @@ class Champion {
         
         target.takeDamage(finalDamage);
 
-        const attackTypeMsg = Math.random() * 100 <= critRate ? `*Crit* ${finalDamage}` : finalDamage;
+        const attackTypeMsg = critChance ? `*Crit* ${finalDamage}` : finalDamage;
         console.log(`[${formattedTime}] ${this.name} attacks ${target.name} for ${attackTypeMsg}`);
         
         this.mana += this.manaPerAttack;
