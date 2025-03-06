@@ -38,11 +38,14 @@ interface SpecialEffects {
     shieldDuration?: number;
     sunderAmount?: number;
     shredAmount?: number;
+    abilityPowerStackInterval?: number;
 
     sunderRadius?: number;
     shredRadius?: number;
     attackSpeedStacking?: boolean;
+    abilityPowerStacking?: boolean;
     additionalAttackSpeedPerStack?: number;
+    additionalAbilityPowerPerStack?: number;
     additionalAttackRange?: number;
 }
 
@@ -92,10 +95,14 @@ export class Item {
     readonly shieldDuration: number;
     readonly sunderAmount: number;
     readonly shredAmount: number;
+    readonly abilityPowerStackInterval: number;
+
     readonly sunderRadius: number;
     readonly shredRadius: number;
     readonly attackSpeedStacking: boolean;
+    readonly abilityPowerStacking: boolean;
     readonly additionalAttackSpeedPerStack: number;
+    readonly additionalAbilityPowerPerStack: number;
     readonly additionalAttackRange: number;
 
     constructor({
@@ -139,10 +146,14 @@ export class Item {
         shieldDuration = 0,
         sunderAmount = 0,
         shredAmount = 0,
+        abilityPowerStackInterval = 0,
+
         sunderRadius = 0,
         shredRadius = 0,
         attackSpeedStacking = false,
+        abilityPowerStacking = false,
         additionalAttackSpeedPerStack = 0,
+        additionalAbilityPowerPerStack = 0,
         additionalAttackRange = 0
     }: ItemProps) {
         // Basic properties
@@ -184,10 +195,13 @@ export class Item {
         this.shieldDuration = shieldDuration;
         this.sunderAmount = sunderAmount;
         this.shredAmount = shredAmount;
+        this.abilityPowerStackInterval = abilityPowerStackInterval;
         this.sunderRadius = sunderRadius;
         this.shredRadius = shredRadius;
         this.attackSpeedStacking = attackSpeedStacking;
+        this.abilityPowerStacking = abilityPowerStacking
         this.additionalAttackSpeedPerStack = additionalAttackSpeedPerStack;
+        this.additionalAbilityPowerPerStack = additionalAbilityPowerPerStack;
         this.additionalAttackRange = additionalAttackRange;
     }
 }

@@ -201,6 +201,17 @@ class Champion {
 
         let finalDamage = damage;    
 
+
+        if(damageAmp > 0){
+            finalDamage *= damageAmp;
+        }
+        
+        let critChance = Math.random() * 100 <= critRate
+
+        if (critChance) {
+            finalDamage *= critDamageAmp;
+        }
+        
         if (armor > 0) {
             finalDamage = finalDamage / (1 + (armor / 100));
         }
@@ -209,15 +220,6 @@ class Champion {
             finalDamage = finalDamage * (1 - damageReduction / 100);
         }
 
-        if(damageAmp > 0){
-            finalDamage *= damageAmp;
-        }
-        
-        let critChance = Math.random() * 100 <= critRate
-        if (critChance) {
-            finalDamage *= critDamageAmp;
-        }
-        
         finalDamage = Math.round(finalDamage);
         
         target.takeDamage(finalDamage);
@@ -251,8 +253,10 @@ class Champion {
         const formattedTime = `${mins}:${secs.toString().padStart(2, '0')}:${cents.toString().padStart(2, '0')}`;
         
         const ability = this.getStats().ability;
-        const damage = ability.damage;
-        const magicDamage = ability.magicDamage;
+        const abilityPower = this.abilityPower;
+        let damage = ability.damage;
+        let magicDamage = ability.magicDamage;
+        const damageAmp = this.damageAmp
         const damageReduction = ability.reduction;
         const heal = ability.healing;
         const armor = target.armor;
@@ -273,20 +277,37 @@ class Champion {
         if (this.mana >= this.abilityManaCost) {
             this.mana -= this.abilityManaCost;
             
-            let physicalDamageTaken = damage - ((damage) * armor / 100);
-            let magicDamageTaken = magicDamage - ((magicDamage) * magicResist / 100);
-            
-            let totalDamage = physicalDamageTaken + magicDamageTaken;
+                        
+            if(abilityPower > 0){
+                magicDamage = (1 + (abilityPower / 100)) * magicDamage;
+            }
+
+            if(damageAmp > 0){
+                magicDamage *= damageAmp;
+                damage *= damageAmp;
+            }
+
+            if (armor > 0) {
+                damage = damage / (1 + (armor / 100));
+            }
+
+            if (magicResist > 0) {
+                magicDamage = magicDamage / (1 + (magicResist / 100));
+            }
+
+            let totalDamage = Math.round(damage + magicDamage);
 
             if (damageReduction !== 0) {
                 totalDamage = Math.round(totalDamage * (1 - damageReduction / 100));
             }
 
-            if (Math.random() * 100 <= critRate) {
+            let critChance = Math.random() * 100 <= critRate;
+
+            if (critChance) {
                 totalDamage = totalDamage * critDamage;
             } 
             
-            const attackTypeMsg = Math.random() * 100 <= critRate ? `*Crit* ${totalDamage}` : totalDamage;
+            const attackTypeMsg = critChance ? `*Crit* ${totalDamage}` : totalDamage;
             console.log(`[${formattedTime}] ${this.name} uses <${this.abilityName}> on ${target.name} for ${attackTypeMsg} damage`);
 
             target.takeDamage(totalDamage);

@@ -4,7 +4,7 @@ const router = express.Router();
 const HexCell = require('../utils/HexCell.js');
 const Board = require('./board.js');
 
-const { addAdditionalItemStatistics, gainHealingEffects, gainShieldEffect, externalMagicDamageEffect } = require('../data/item/itemLogic.ts');   
+const { addAdditionalItemStatistics, gainHealingEffects, gainShieldEffect, externalMagicDamageEffect, abilityPowerStacking } = require('../data/item/itemLogic.ts');   
 const { getChampionByName } = require('../data/champion/champion-data.ts');
 const { displayStats, Champion } = require('../data/champion/champion.ts');
 const { Item } = require('../data/item/item.ts');
@@ -245,6 +245,7 @@ function startBattle() {
                     `(${champion.currentHp} HP,`,
                     `${champion.shield} shield,`,
                     `${champion.mana}/${champion.abilityManaCost} mana),`,
+                    
                     `(Attack Speed: ${champion.attackSpeed.toFixed(2)})`
                 ].join(' ');
             });
@@ -267,6 +268,7 @@ function startBattle() {
             const target = battleOpponent.find(c => c.currentHp > 0);
             gainHealingEffects(champion, battleTime);
             gainShieldEffect(champion, battleTime);
+            abilityPowerStacking(champion, battleTime);
 
             if (target) {
                 externalMagicDamageEffect(champion, target, battleTime);
@@ -343,7 +345,7 @@ function startBattle() {
 placeChampionByName('Akali', 4, 3, 2, 'player');
 placeChampionByName('Darius', 3, 3, 2, 'opponent'); 
 addItemByName(board.getChampion(4, 3), 'Death Blade');
-addItemByName(board.getChampion(4, 3), 'Bramble Vest');
+addItemByName(board.getChampion(4, 3), 'Archangel\'s Staff');
 
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));

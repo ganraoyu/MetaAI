@@ -51,15 +51,19 @@ Ability Damage Formula:
     Base Ability Damage:
         magicDamage
             120
+            
+    Apply Ability Power Mitigation:
+        (1 + (AP / 100)) * magicDamage = APDMG
+            (1 + (100 / 100)) * 120 = 240
 
     Apply Damage AMP:
-        magicDamage * damageAMP = AMPedDMG
-            120 * 1.2 = 144
+        APDMG * damageAMP = AMPedDMG
+            240 * 1.2 = 288
     
     Apply magicArmor Mitigation:
         AMPedDMG / (1 + magicArmor / 100) = ArmoredDMG
-            144 / ( 1 + 40 / 100) = 102.85
+            288 / ( 1 + 40 / 100) = 205.71
 
     Apply Damage Reduction
         ArmoredDMG * (1 - 0.reduction)
-            102.85 * (1 - 0.12) = 90.50
+            205.71 * (1 - 0.12) = 181.03

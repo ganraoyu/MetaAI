@@ -20,7 +20,7 @@ export function addAdditionalItemStatistics(champion: any) { // basic stats
             champion.statsByStarLevel[champion.starLevel].hp *= item.additionalPercentageHealth || 1;           
             champion.statsByStarLevel[champion.starLevel].armor += item.additionalArmor || 0;   
             champion.statsByStarLevel[champion.starLevel].magicResist += item.additionalMagicResist || 0;
-            champion.statsByStarLevel[champion.starLevel].attackDamage *= item.additionalAttackDamage || 0;
+            champion.statsByStarLevel[champion.starLevel].attackDamage *= item.additionalAttackDamage || 1;
             champion.damageAmp += item.additionalDamageAmp || 0;
             console.log('additionalAttackDamage', item.additionalAttackDamage)
             champion.attackSpeed *= item.additionalAttackSpeed || 1;
@@ -104,6 +104,21 @@ export function externalMagicDamageEffect(champion: any, target: any, battleTime
                     cooldown = timeSinceLastExternalMagicDamage + battleTime + 200;
                     console.log(`[${formattedTime}] ${champion.name} dealt ${item.externalMagicDamage} magic damage to ${target.name}`);
                 }
+            }
+        }
+    })
+}
+
+export function abilityPowerStacking(champion: any, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length || !battleTime) return 'No items equipped';
+
+    const formattedTime = getFormattedTime(champion);
+
+    champion.items.forEach((item: ItemProps) => {
+        if(item.abilityPowerStacking){
+            if(battleTime % 500 === 0){
+                champion.abilityPower += item.additionalAbilityPowerPerStack; 
+                console.log(`[${formattedTime}] ${champion.name} gained ${item.additionalAbilityPowerPerStack} ability power`);
             }
         }
     })

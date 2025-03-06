@@ -137,6 +137,15 @@ export const combinedItems = [
         reduction: true,
         reductionAmount: 8, // 8% reduced damage
         externalMagicDamage: 100
+    }),
+    new Item({
+        name: 'Archangel\'s Staff',
+        description: 'Grant 20 bonus Ability Power. Combat start: Grant 30 Ability Power every 5 seconds.',
+        additionlAbilityPower: 20, // 20 ability power
+        additionalStartingMana: 20, // 20 starting mana
+        abilityPowerStacking: true,
+        abilityPowerStackInterval: 5, // every 5 seconds
+        additionalAbilityPowerPerStack: 30 // 30 ability power
     })
 ]   
 
