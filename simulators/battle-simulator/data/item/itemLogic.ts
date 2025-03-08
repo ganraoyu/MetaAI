@@ -33,6 +33,10 @@ export function addAdditionalItemStatistics(champion: any) { // basic stats
             champion.abilityPower += item.additionalAbilityPower || 0;            
             champion.mana += item.additionalStartingMana || 0;  
             champion.abilityManaCost -= item.reducedMaxMana || 0;
+
+            if(item.name === 'Giant Slayer'){
+                champion.damageAmp += 0.2 // 20% damage Amp
+            }
         });
     } else if(champion.items.length === 0){
         console.log('No items equipped');
@@ -115,7 +119,7 @@ export function abilityPowerStacking(champion: any, battleTime: number){
     const formattedTime = getFormattedTime(champion);
 
     champion.items.forEach((item: ItemProps) => {
-        if(item.abilityPowerStacking){
+        if(item.name === 'Archangel\'s Staff' && item.abilityPowerStacking){
             if(battleTime % 500 === 0){
                 champion.abilityPower += item.additionalAbilityPowerPerStack; 
                 console.log(`[${formattedTime}] ${champion.name} gained ${item.additionalAbilityPowerPerStack} ability power`);

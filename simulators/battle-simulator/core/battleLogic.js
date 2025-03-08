@@ -266,10 +266,10 @@ function startBattle() {
 
         battlePlayer.forEach(champion =>{            
             const target = battleOpponent.find(c => c.currentHp > 0);
+
             gainHealingEffects(champion, battleTime);
             gainShieldEffect(champion, battleTime);
             abilityPowerStacking(champion, battleTime);
-
             if (target) {
                 externalMagicDamageEffect(champion, target, battleTime);
             }
@@ -344,9 +344,6 @@ function startBattle() {
 
 placeChampionByName('Akali', 4, 3, 2, 'player');
 placeChampionByName('Darius', 3, 3, 2, 'opponent'); 
-addItemByName(board.getChampion(4, 3), 'Death Blade');
-addItemByName(board.getChampion(4, 3), 'Archangel\'s Staff');
-
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
 

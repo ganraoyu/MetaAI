@@ -102,7 +102,7 @@ export const combinedItems = [
         name: 'Death Blade',
         description: 'Perfect peace and calm for the holder - and all who face it.',
         additionalAttackDamage: 1.3, // 30% more attack damage
-        additionalDamageAmp: 1.1, // 10% more damage
+        additionalDamageAmp: 0.1, // 10% more damage
     }),
     new Item({
         name: 'Bloodthirster',
@@ -119,7 +119,7 @@ export const combinedItems = [
         name: 'Rabadon\'s Deathcap',
         description: 'This humble hat can help you make, or unmake, the world itself.',
         additionalAbilityPower: 50, // 50 ability power
-        additionalDamageAmp: 1.15, // 50% more damage
+        additionalDamageAmp: 0.15, // 15% more damage
     }),
     new Item({
         name: 'Dragon\'s Claw',
@@ -146,6 +146,14 @@ export const combinedItems = [
         abilityPowerStacking: true,
         abilityPowerStackInterval: 5, // every 5 seconds
         additionalAbilityPowerPerStack: 30 // 30 ability power
+    }),
+    new Item({
+        name: 'Giant Slayer', 
+        description: 'Gain 20% additional Damage Amp against enemies with more than 1750 max Health.',
+        additionalAttackSpeed: 1.1, // 10% attack speed
+        additionalAbilityPower: 25, // 25 flat AP
+        additionalAttackDamage: 1.25, // 25% attack damage
+        additionalDamageAmp: 0.2, // 20% damage amp
     })
 ]   
 

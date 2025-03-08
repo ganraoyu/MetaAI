@@ -28,6 +28,13 @@ type StatsByStarLevel = {
     [starLevel: number]: StarLevelStats;
 };
 
+function getFormattedTime(champion: Champion) {
+    const mins = Math.floor(champion.battleTime / 6000);
+    const secs = Math.floor((champion.battleTime % 6000) / 100);
+    const cents = champion.battleTime % 100;
+    const formattedTime = `${mins}:${secs.toString().padStart(2, '0')}:${cents.toString().padStart(2, '0')}`;
+    return formattedTime
+}
 class Champion {
     name: string;
     cost: number;
@@ -175,20 +182,18 @@ class Champion {
         if (this.battleTime < this.nextAttackTime) {
             return false; // didn't attack yet
         }
-    
+
+        const armor = target.getStats().armor;
         const ability = target.getStats().ability;
         const damageReduction = ability.reduction;
+
+
         const damage = this.getStats().attackDamage;
-        const armor = target.getStats().armor; 
         const critRate = this.attackCritChance;
         const critDamageAmp = this.attackCritDamage;
-        const damageAmp = this.damageAmp
-    
-        const mins = Math.floor(this.battleTime / 6000);
-        const secs = Math.floor((this.battleTime % 6000) / 100);
-        const cents = this.battleTime % 100;
-        const formattedTime = `${mins}:${secs.toString().padStart(2, '0')}:${cents.toString().padStart(2, '0')}`;
-        
+        const damageAmp = this.damageAmp;
+
+        const formattedTime = getFormattedTime(this);
         if (this.items) {
             this.items.forEach(item => {    
                 if (item.attackSpeedStacking && item.additionalAttackSpeedPerStack) {
@@ -200,7 +205,6 @@ class Champion {
         }
 
         let finalDamage = damage;    
-
 
         if(damageAmp > 0){
             finalDamage *= damageAmp;
@@ -247,20 +251,20 @@ class Champion {
     }
 
     useAbility(target: Champion, currentTime: number) {
-        const mins = Math.floor(currentTime / 6000);
-        const secs = Math.floor((currentTime % 6000) / 100);
-        const cents = currentTime % 100;
-        const formattedTime = `${mins}:${secs.toString().padStart(2, '0')}:${cents.toString().padStart(2, '0')}`;
-        
+
         const ability = this.getStats().ability;
         const abilityPower = this.abilityPower;
+        const damageAmp = this.damageAmp;
         let damage = ability.damage;
         let magicDamage = ability.magicDamage;
-        const damageAmp = this.damageAmp
-        const damageReduction = ability.reduction;
         const heal = ability.healing;
+
         const armor = target.armor;
         const magicResist = target.magicResist;
+        const targetAbility = target.getStats().ability;
+        const damageReduction = targetAbility.reduction;
+
+        const formattedTime = getFormattedTime(this);
         
         if (this.items) {
             this.items.forEach(item => {
