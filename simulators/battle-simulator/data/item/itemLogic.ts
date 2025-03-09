@@ -22,7 +22,6 @@ export function addAdditionalItemStatistics(champion: any) { // basic stats
             champion.statsByStarLevel[champion.starLevel].magicResist += item.additionalMagicResist || 0;
             champion.statsByStarLevel[champion.starLevel].attackDamage *= item.additionalAttackDamage || 1;
             champion.damageAmp += item.additionalDamageAmp || 0;
-            console.log('additionalAttackDamage', item.additionalAttackDamage)
             champion.attackSpeed *= item.additionalAttackSpeed || 1;
             champion.manaPerAttack += item.additionalManaPerAttack || 0;
             champion.range += item.additionalAttackRange || 0;
@@ -33,10 +32,6 @@ export function addAdditionalItemStatistics(champion: any) { // basic stats
             champion.abilityPower += item.additionalAbilityPower || 0;            
             champion.mana += item.additionalStartingMana || 0;  
             champion.abilityManaCost -= item.reducedMaxMana || 0;
-
-            if(item.name === 'Giant Slayer'){
-                champion.damageAmp += 0.2 // 20% damage Amp
-            }
         });
     } else if(champion.items.length === 0){
         console.log('No items equipped');
@@ -91,7 +86,7 @@ let timeSinceLastExternalMagicDamage = 0;
 let attackedArray = [];
 let cooldown = 0; // 200 centiseconds, 2 seconds
 
-export function externalMagicDamageEffect(champion: any, target: any, battleTime: number){
+export function externalMagicDamageEffect(champion: any, target: any, battleTime: number){ // unfinished
     if(!champion || !champion.items || !champion.items.length || !battleTime) return 'No items equipped';
 
     let formattedTime = getFormattedTime(champion);
@@ -109,6 +104,22 @@ export function externalMagicDamageEffect(champion: any, target: any, battleTime
                     console.log(`[${formattedTime}] ${champion.name} dealt ${item.externalMagicDamage} magic damage to ${target.name}`);
                 }
             }
+        }
+    })
+}
+
+let damageAmpEffectUsed = false
+
+export function damageAmpEffect(champion: any, target: any, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length || !battleTime) return 'No items equipped';
+    
+    const formattedTime = getFormattedTime(champion);
+    
+    champion.items.forEach((item: ItemProps) => {
+        if(item.name === 'Giant Slayer' && target.currentHp > 1750 && !damageAmpEffectUsed){
+            champion.damageAmp += item.additionalDamageAmp;
+            // console.log(`[${formattedTime}] ${champion.name} gained 20% damage amp against ${target.name}`);
+            damageAmpEffectUsed = true
         }
     })
 }

@@ -4,7 +4,7 @@ const router = express.Router();
 const HexCell = require('../utils/HexCell.js');
 const Board = require('./board.js');
 
-const { addAdditionalItemStatistics, gainHealingEffects, gainShieldEffect, externalMagicDamageEffect, abilityPowerStacking } = require('../data/item/itemLogic.ts');   
+const { addAdditionalItemStatistics, gainHealingEffects, gainShieldEffect, externalMagicDamageEffect, abilityPowerStacking, damageAmpEffect } = require('../data/item/itemLogic.ts');   
 const { getChampionByName } = require('../data/champion/champion-data.ts');
 const { displayStats, Champion } = require('../data/champion/champion.ts');
 const { Item } = require('../data/item/item.ts');
@@ -271,6 +271,7 @@ function startBattle() {
             gainShieldEffect(champion, battleTime);
             abilityPowerStacking(champion, battleTime);
             if (target) {
+                damageAmpEffect(champion, target, battleTime);
                 externalMagicDamageEffect(champion, target, battleTime);
             }
         });
@@ -343,7 +344,8 @@ function startBattle() {
 }
 
 placeChampionByName('Akali', 4, 3, 2, 'player');
-placeChampionByName('Darius', 3, 3, 2, 'opponent'); 
+placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
+addItemByName(board.getChampion(4,3), 'Giant Slayer')
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
 
