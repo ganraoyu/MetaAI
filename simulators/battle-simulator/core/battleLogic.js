@@ -4,7 +4,7 @@ const router = express.Router();
 const HexCell = require('../utils/HexCell.js');
 const Board = require('./board.js');
 
-const { addAdditionalItemStatistics, gainHealingEffects, gainShieldEffect, externalMagicDamageEffect, abilityPowerStacking, damageAmpEffect } = require('../data/item/itemLogic.ts');   
+const { addAdditionalItemStatistics, dragonsClawEffect, brambleVestEffect, bloodthristerEffect, archangelsStaffEffect, giantSlayerEffect, steraksGageEffect, runnansHurricaneEffect } = require('../data/item/itemLogic.ts');   
 const { getChampionByName } = require('../data/champion/champion-data.ts');
 const { displayStats, Champion } = require('../data/champion/champion.ts');
 const { Item } = require('../data/item/item.ts');
@@ -267,18 +267,29 @@ function startBattle() {
         battlePlayer.forEach(champion =>{            
             const target = battleOpponent.find(c => c.currentHp > 0);
 
-            gainHealingEffects(champion, battleTime);
-            gainShieldEffect(champion, battleTime);
-            abilityPowerStacking(champion, battleTime);
+            dragonsClawEffect(champion, battleTime);
+            bloodthristerEffect(champion, battleTime);
+            archangelsStaffEffect(champion, battleTime);
+            runnansHurricaneEffect(champion);
+            steraksGageEffect(champion);
             if (target) {
-                damageAmpEffect(champion, target, battleTime);
-                externalMagicDamageEffect(champion, target, battleTime);
+                giantSlayerEffect(champion, target, battleTime);
+                brambleVestEffect(champion, target, battleTime);
             }
         });
 
         battleOpponent.forEach(champion =>{
-            gainHealingEffects(champion, battleTime);
-            gainShieldEffect(champion, battleTime);
+            const target = battleOpponent.find(c => c.currentHp > 0);
+
+            dragonsClawEffect(champion, battleTime);
+            bloodthristerEffect(champion, battleTime);
+            archangelsStaffEffect(champion, battleTime);
+            runnansHurricaneEffect(champion);
+            steraksGageEffect(champion);
+            if (target) {
+                giantSlayerEffect(champion, target, battleTime);
+                brambleVestEffect(champion, target, battleTime);
+            }
         });
     }
     

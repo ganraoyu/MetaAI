@@ -154,6 +154,19 @@ export const combinedItems = [
         additionalAbilityPower: 25, // 25 flat AP
         additionalAttackDamage: 1.25, // 25% attack damage
         additionalDamageAmp: 0.2, // 20% damage amp
+    }),
+    new Item({
+        name: 'Runaan\'s Hurricane',
+        description: 'Attacks fire a bolt at a nearby enemy, dealing 55% Attack Damage as physical damage.',
+        additionalAttacKSpeed: 1.1, // 10% attack speed
+        additionalAttackDamage: 1.1, // 10% attack damage
+        additonalMagicResist: 20, // 20 more magic resist
+    }),
+    new Item({
+        name: 'Sterak\'s Gage',
+        description: 'Once per combat at 60% Health, gain 25% max Health and 35% Attack Damage.',
+        additionalHealth: 200, // 200 more health
+        additionalAttackDamage: 1.15, // 15% more attack damage
     })
 ]   
 
