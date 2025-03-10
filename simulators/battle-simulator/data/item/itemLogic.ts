@@ -239,3 +239,30 @@ export function steadfastHeartEffect(champion: any, battleTime: number){
         }
     });
 };
+
+let crownguardEffectUsed = false;
+let crownguardEffectExpired = false;
+
+export function crownguardEffect(champion: any, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+
+    champion.items.forEach((item: ItemProps) => {
+        if(item.name === 'Crownguard' && 
+            item.shield && 
+            item.shieldAmount && 
+            item.shieldDuration && 
+            !crownguardEffectUsed
+        ){
+            champion.shield += (champion.statsByStarLevel[champion.starLevel].hp * item.shieldAmount);  
+            crownguardEffectUsed = true;
+            console.log(`[${formattedTime}] ${champion.name} gained ${champion.statsByStarLevel[champion.starLevel].hp * item.shieldAmount} shield`)
+        } 
+        if(item.name === 'Crownguard' && battleTime >= 800 && !crownguardEffectExpired){
+            crownguardEffectExpired = true;
+            champion.shield = 0;
+            console.log(`[${formattedTime}] ${champion.name} lost their shield`)
+        }
+    })
+}

@@ -182,6 +182,16 @@ export const combinedItems = [
         additionalHealth: 200, // 200 more health
         additionalArmor: 20, // 20 more armor
         additionalCritChance: 15, // 15% crit damage
+    }),
+    new Item({
+        name: 'Crownguard',
+        description: 'Combat start: Shields the holder for 25% of their max health for 8 seconds. When the shield breaks or expires, gain 40 Ability Power.',
+        additionalHealth: 200, // 200 more health
+        additionalMagicResist: 20, // 20 more magic resist
+        additionalAbilityPower: 20, // 20 ability power
+        shield: true,
+        shieldAmount: 0.30, // 30% max health shield
+        shieldDuration: 8, // 8 seconds
     })
 ]   
 

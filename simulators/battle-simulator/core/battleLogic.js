@@ -13,7 +13,8 @@ const { addAdditionalItemStatistics,
     steraksGageEffect, 
     runnansHurricaneEffect,
     titansResolveEffect,
-    steadfastHeartEffect
+    steadfastHeartEffect,
+    crownguardEffect
 } = require('../data/item/itemLogic.ts');   
 const { getChampionByName } = require('../data/champion/champion-data.ts');
 const { displayStats, Champion } = require('../data/champion/champion.ts');
@@ -284,6 +285,7 @@ function startBattle() {
             steraksGageEffect(champion, battleTime);
             titansResolveEffect(champion, battleTime);
             steadfastHeartEffect(champion, battleTime);
+            crownguardEffect(champion, battleTime);
 
             if (target) {
                 giantSlayerEffect(champion, target, battleTime);
@@ -300,6 +302,8 @@ function startBattle() {
             runnansHurricaneEffect(champion, battleTime);
             steraksGageEffect(champion, battleTime);
             titansResolveEffect(champion, battleTime);
+            steadfastHeartEffect(champion, battleTime);
+            crownguardEffect(champion, battleTime);
 
             if (target) {
                 giantSlayerEffect(champion, target, battleTime);
@@ -371,8 +375,7 @@ function startBattle() {
 
 placeChampionByName('Akali', 4, 3, 2, 'player');
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
-addItemByName(board.getChampion(4,3), 'Sterak\'s Gage')
-addItemByName(board.getChampion(4,3), 'Steadfast Heart')
+addItemByName(board.getChampion(4,3), 'Crownguard')
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
 
