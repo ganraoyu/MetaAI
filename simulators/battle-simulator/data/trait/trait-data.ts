@@ -64,6 +64,4 @@ export function getTraitByName(name: string){
     }
 }
 
-console.log(getTraitByName('Watcher'));
-
 module.exports = { traits, getTraitByName }

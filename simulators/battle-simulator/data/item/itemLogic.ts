@@ -210,3 +210,32 @@ export function titansResolveEffect(champion: any, battleTime: number){
         };
     });
 };
+
+let steadfastHeartEffectUsed = true;
+let steadFastHeartAfterEffectUsed = false;
+
+export function steadfastHeartEffect(champion: any, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+
+    champion.items.forEach((item: ItemProps) =>{
+        if(item.name === 'Steadfast Heart' && 
+            steadfastHeartEffectUsed && 
+            champion.currentHp > champion.statsByStarLevel[champion.starLevel].hp * 0.5 &&
+            steadfastHeartEffectUsed
+        ){
+            champion.durability += 15;
+            console.log(`[${formattedTime}] ${champion.name} gained 15 durability`);
+            steadfastHeartEffectUsed = false;
+        } else if(item.name === 'Steadfast Heart' && 
+            champion.currentHp <= champion.statsByStarLevel[champion.starLevel].hp * 0.5 && 
+            !steadfastHeartEffectUsed &&
+            !steadFastHeartAfterEffectUsed
+        ){
+            champion.durability -= 7;
+            steadFastHeartAfterEffectUsed = true;
+            console.log(`[${formattedTime}] ${champion.name} lost 7 durability`);
+        }
+    });
+};

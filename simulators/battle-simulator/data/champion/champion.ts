@@ -186,6 +186,7 @@ class Champion {
         const armor = target.getStats().armor;
         const ability = target.getStats().ability;
         const damageReduction = ability.reduction;
+        let durability = target.durability;
 
 
         const damage = this.getStats().attackDamage;
@@ -220,8 +221,8 @@ class Champion {
             finalDamage = finalDamage / (1 + (armor / 100));
         }
 
-        if (damageReduction !== 0) {
-            finalDamage = finalDamage * (1 - damageReduction / 100);
+        if (damageReduction !== 0 || durability !== 0) {
+            finalDamage = Math.max(0, (finalDamage * (1 - ((damageReduction + durability) / 100))));
         }
 
         finalDamage = Math.round(finalDamage);
@@ -263,6 +264,7 @@ class Champion {
         const magicResist = target.magicResist;
         const targetAbility = target.getStats().ability;
         const damageReduction = targetAbility.reduction;
+        let durability = target.durability;
 
         const formattedTime = getFormattedTime(this);
         
@@ -301,8 +303,8 @@ class Champion {
 
             let totalDamage = Math.round(damage + magicDamage);
 
-            if (damageReduction !== 0) {
-                totalDamage = Math.round(totalDamage * (1 - damageReduction / 100));
+            if (damageReduction !== 0 || durability !== 0) {
+                totalDamage = Math.max(0, Math.round(totalDamage * (1 - ((damageReduction + durability) / 100))));
             }
 
             let critChance = Math.random() * 100 <= critRate;

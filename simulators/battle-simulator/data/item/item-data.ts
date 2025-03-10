@@ -175,6 +175,13 @@ export const combinedItems = [
         additionalArmor: 20, // 20 more armor
         abilityPowerStacking: true,
         additionalAbilityPowerPerStack: 30
+    }),
+    new Item({
+        name: 'Steadfast Heart',
+        description: 'Take 8% less damage. While above 50% Health, take 15% less damage instead.',
+        additionalHealth: 200, // 200 more health
+        additionalArmor: 20, // 20 more armor
+        additionalCritChance: 15, // 15% crit damage
     })
 ]   
 

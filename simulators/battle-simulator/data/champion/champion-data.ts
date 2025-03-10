@@ -92,8 +92,8 @@ const champions = [
         abilityCritDamage: 0,
         damageAmp: 1,
         abilityPower: 100,
-        durability: 0, 
-        omnivamp: 0,
+        omnivamp: 0, 
+        durability: 0,
         items: []
     },
     {
