@@ -192,9 +192,14 @@ export const combinedItems = [
         shield: true,
         shieldAmount: 0.30, // 30% max health shield
         shieldDuration: 8, // 8 seconds
+    }),
+    new Item({
+        name: 'Hand of Justice',
+        description: 'Gain 2 effects: • 15% Attack Damage and 15 Ability Power. • 15% Omnivamp. Each round, randomly double 1 of these effects. Omnivamp: heal for some of damage dealt',
+        additionalStartingMana: 15,
+        additionalCritChance: 20,
     })
 ]   
-
 export function getItemByName(name: string){
     if(!name){
         return 'Champion name cannt be Empty'

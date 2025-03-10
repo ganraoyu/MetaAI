@@ -14,8 +14,10 @@ const { addAdditionalItemStatistics,
     runnansHurricaneEffect,
     titansResolveEffect,
     steadfastHeartEffect,
-    crownguardEffect
+    crownguardEffect,
+    handOfJusticeEffect
 } = require('../data/item/itemLogic.ts');   
+
 const { getChampionByName } = require('../data/champion/champion-data.ts');
 const { displayStats, Champion } = require('../data/champion/champion.ts');
 const { Item } = require('../data/item/item.ts');
@@ -286,6 +288,7 @@ function startBattle() {
             titansResolveEffect(champion, battleTime);
             steadfastHeartEffect(champion, battleTime);
             crownguardEffect(champion, battleTime);
+            handOfJusticeEffect(champion, battleTime);
 
             if (target) {
                 giantSlayerEffect(champion, target, battleTime);
@@ -304,6 +307,7 @@ function startBattle() {
             titansResolveEffect(champion, battleTime);
             steadfastHeartEffect(champion, battleTime);
             crownguardEffect(champion, battleTime);
+            handOfJusticeEffect(champion, battleTime);
 
             if (target) {
                 giantSlayerEffect(champion, target, battleTime);
@@ -375,7 +379,7 @@ function startBattle() {
 
 placeChampionByName('Akali', 4, 3, 2, 'player');
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
-addItemByName(board.getChampion(4,3), 'Crownguard')
+addItemByName(board.getChampion(4,3), 'Hand of Justice')
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
 

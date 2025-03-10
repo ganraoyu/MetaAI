@@ -139,12 +139,15 @@ export function archangelsStaffEffect(champion: any, battleTime: number){
     })
 }
 
+let runnansHurricaneEffectUsed = false;
+
 export function runnansHurricaneEffect(champion: any, battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return 'No items equipped';
 
     champion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Runaan\s Hurricane'){
+        if(item.name === 'Runaan\s Hurricane' && !runnansHurricaneEffectUsed){
             champion.attackDamage += champion.attackDamage * 0.55;
+            runnansHurricaneEffectUsed = true;
         }
     })
 }
@@ -263,6 +266,34 @@ export function crownguardEffect(champion: any, battleTime: number){
             crownguardEffectExpired = true;
             champion.shield = 0;
             console.log(`[${formattedTime}] ${champion.name} lost their shield`)
+        }
+    })
+}
+
+let handOfJusticeEffectUsed = false;
+
+export function handOfJusticeEffect(champion: any, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+
+    champion.items.forEach((item: ItemProps) => {
+        if(item.name === 'Hand of Justice' && !handOfJusticeEffectUsed ){
+            champion.attackDamage += 15;
+            champion.abilityPower += 15;
+            champion.omnivamp += 15;
+            handOfJusticeEffectUsed = true;
+            
+            console.log(`[${formattedTime}] ${champion.name} used HOJ effect`)
+
+            if(Math.random() * 100 < 50){
+                champion.attackDamage += 15;
+                champion.abilityPower += 15;
+                console.log(`[${formattedTime}] ${champion.name} gained 30 attack damage and omnivamp.`)
+            } else{
+                champion.omnivamp += 15;
+                console.log(`[${formattedTime}] ${champion.name} gained 30 omnivamp.`)
+            }
         }
     })
 }
