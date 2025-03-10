@@ -4,7 +4,16 @@ const router = express.Router();
 const HexCell = require('../utils/HexCell.js');
 const Board = require('./board.js');
 
-const { addAdditionalItemStatistics, dragonsClawEffect, brambleVestEffect, bloodthristerEffect, archangelsStaffEffect, giantSlayerEffect, steraksGageEffect, runnansHurricaneEffect } = require('../data/item/itemLogic.ts');   
+const { addAdditionalItemStatistics, 
+    dragonsClawEffect, 
+    brambleVestEffect, 
+    bloodthristerEffect, 
+    archangelsStaffEffect, 
+    giantSlayerEffect, 
+    steraksGageEffect, 
+    runnansHurricaneEffect,
+    titansResolveEffect
+} = require('../data/item/itemLogic.ts');   
 const { getChampionByName } = require('../data/champion/champion-data.ts');
 const { displayStats, Champion } = require('../data/champion/champion.ts');
 const { Item } = require('../data/item/item.ts');
@@ -270,8 +279,10 @@ function startBattle() {
             dragonsClawEffect(champion, battleTime);
             bloodthristerEffect(champion, battleTime);
             archangelsStaffEffect(champion, battleTime);
-            runnansHurricaneEffect(champion);
-            steraksGageEffect(champion);
+            runnansHurricaneEffect(champion, battleTime);
+            steraksGageEffect(champion, battleTime);
+            titansResolveEffect(champion, battleTime);
+
             if (target) {
                 giantSlayerEffect(champion, target, battleTime);
                 brambleVestEffect(champion, target, battleTime);
@@ -284,8 +295,10 @@ function startBattle() {
             dragonsClawEffect(champion, battleTime);
             bloodthristerEffect(champion, battleTime);
             archangelsStaffEffect(champion, battleTime);
-            runnansHurricaneEffect(champion);
-            steraksGageEffect(champion);
+            runnansHurricaneEffect(champion, battleTime);
+            steraksGageEffect(champion, battleTime);
+            titansResolveEffect(champion, battleTime);
+
             if (target) {
                 giantSlayerEffect(champion, target, battleTime);
                 brambleVestEffect(champion, target, battleTime);
@@ -356,7 +369,8 @@ function startBattle() {
 
 placeChampionByName('Akali', 4, 3, 2, 'player');
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
-addItemByName(board.getChampion(4,3), 'Giant Slayer')
+addItemByName(board.getChampion(4,3), 'Sterak\'s Gage')
+addItemByName(board.getChampion(4,3), 'Titan\'s Resolve')
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
 

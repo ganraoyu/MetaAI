@@ -118,7 +118,7 @@ export function giantSlayerEffect(champion: any, target: any, battleTime: number
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Giant Slayer' && target.statsByStarLevel[target.starLevel].hp > 1750 && !giantSlayerEffectUsed){
             champion.damageAmp += item.additionalDamageAmp;
-            // console.log(`[${formattedTime}] ${champion.name} gained 20% damage amp against ${target.name}`);
+            console.log(`[${formattedTime}] ${champion.name} gained 20% damage amp against ${target.name}`);
             giantSlayerEffectUsed = true
         }
     })
@@ -139,31 +139,74 @@ export function archangelsStaffEffect(champion: any, battleTime: number){
     })
 }
 
-export function runnansHurricaneEffect(champion: any){
+export function runnansHurricaneEffect(champion: any, battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return 'No items equipped';
 
-    const formattedTime = getFormattedTime(champion);
-
-    champion.items.forEach((items: ItemProps) => {
-        if(items.name === 'Runaan\s Hurricane'){
-            champion.attackDamage = champion.attackDamage + (champion.attackDamage * 0.55);
+    champion.items.forEach((item: ItemProps) => {
+        if(item.name === 'Runaan\s Hurricane'){
+            champion.attackDamage += champion.attackDamage * 0.55;
         }
     })
 }
 
 let steraksGageEffectUsed = false;
 
-export function steraksGageEffect(champion: any){
-    if(!champion || !champion.items || champion.items.length)
+export function steraksGageEffect(champion: any, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
     
-    champion.items.forEach((items: ItemProps) =>{
-        if(items.name ==='Sterak\'s Gage' &&
+    const formattedTime = getFormattedTime(champion);
+
+    champion.items.forEach((item: ItemProps) =>{
+        if(item.name ==='Sterak\'s Gage' &&
             !steraksGageEffectUsed &&
             champion.currentHp <= champion.statsByStarLevel[champion.starLevel].hp * 0.6
         ){
             champion.currentHp += champion.statsByStarLevel[champion.starLevel].hp *  0.25;
             champion.attackDamage *= 1.35 ;
+            console.log(`[${formattedTime}] ${champion.name} gained ${champion.statsByStarLevel[champion.starLevel].hp *  0.25} health`);
             steraksGageEffectUsed = true;
         }
     })
 }
+
+let titansResolveEffectUsed = false;
+let titansResolveFullStackEffectUsed = false;
+let titansResolveStacks = 0;
+let damageTakenArray = [];
+let damageTaken = false;
+
+export function titansResolveEffect(champion: any, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+
+    if(champion.damageTakenArray && champion.damageTakenArray.length > damageTakenArray.length){
+        damageTaken = true;
+        damageTakenArray.push(battleTime);
+    };
+
+    champion.items.forEach((item: ItemProps) =>{
+        if(item.name === 'Titan\'s Resolve' &&             
+            !titansResolveEffectUsed &&
+            item.abilityPowerStacking && 
+            titansResolveStacks < 25 &&
+            damageTaken
+        ){            
+            champion.abilityPower += 1;
+            champion.attackDamage *= 1.02;
+            titansResolveStacks += 1;
+            console.log(`[${formattedTime}] ${champion.name} gained 2% attack damage and 1 ability power (Stack ${titansResolveStacks}/25)`);
+            damageTaken = false; 
+            return;
+        };
+
+        if(titansResolveStacks === 25 && !titansResolveFullStackEffectUsed){
+            titansResolveEffectUsed = true;      
+            titansResolveFullStackEffectUsed = true;
+            champion.armor += 20;
+            champion.magicResist += 20;
+            console.log(`[${formattedTime}] ${champion.name} gained 20 armor and 20 magic resist`);
+            return;
+        };
+    });
+};

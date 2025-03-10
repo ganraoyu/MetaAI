@@ -167,6 +167,14 @@ export const combinedItems = [
         description: 'Once per combat at 60% Health, gain 25% max Health and 35% Attack Damage.',
         additionalHealth: 200, // 200 more health
         additionalAttackDamage: 1.15, // 15% more attack damage
+    }),
+    new Item({
+        name: 'Titan\'s Resolve',
+        description: 'Gain 2% Attack Damage and 1 Ability Power when attacking or taking damage, stacking up to 25 times.',
+        additionalAttackSpeed: 1.1, // 10% attack speed
+        additionalArmor: 20, // 20 more armor
+        abilityPowerStacking: true,
+        additionalAbilityPowerPerStack: 30
     })
 ]   
 
