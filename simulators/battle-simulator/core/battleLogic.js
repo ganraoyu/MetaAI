@@ -15,7 +15,8 @@ const { addAdditionalItemStatistics,
     titansResolveEffect,
     steadfastHeartEffect,
     crownguardEffect,
-    handOfJusticeEffect
+    handOfJusticeEffect,
+    guardBreakerEffect
 } = require('../data/item/itemLogic.ts');   
 
 const { getChampionByName } = require('../data/champion/champion-data.ts');
@@ -54,6 +55,8 @@ function placeChampionByName(championName, row, column, starLevel, team) {
             champion.abilityCritChance,
             champion.abilityCritDamage,
             champion.damageAmp,
+            champion.sunder,
+            champion.shred,
             champion.abilityPower,
             champion.omnivamp,
             champion.durability,
@@ -62,6 +65,7 @@ function placeChampionByName(championName, row, column, starLevel, team) {
             champion.abilityArray,
             champion.healArray,            
             champion.items,
+
         );
         newChampion.setStarLevel(starLevel);
         newChampion.team = team; // Assign the team to the champion
@@ -255,10 +259,9 @@ function startBattle() {
             const playerTeamStats = battlePlayer.map(champion => {
                 return [
                     `${champion.name}`,
-                    `(${champion.currentHp} HP,`,
+                    `(${champion.currentHp.toFixed(2)} HP,`,
                     `${champion.shield} shield,`,
-                    `${champion.mana}/${champion.abilityManaCost} mana),`,
-                    
+                    `${champion.mana}/${champion.abilityManaCost} mana),`,  
                     `(Attack Speed: ${champion.attackSpeed.toFixed(2)})`
                 ].join(' ');
             });
@@ -266,7 +269,7 @@ function startBattle() {
             const opponentTeamStats = battleOpponent.map(champion => {
                 return [
                     `${champion.name}`,
-                    `(${champion.currentHp} HP,`,
+                    `(${champion.currentHp.toFixed(2)} HP,`,
                     `${champion.shield} shield,`,
                     `${champion.mana}/${champion.abilityManaCost} mana),`,
                     `(Attack Speed: ${champion.attackSpeed.toFixed(2)})`
@@ -291,6 +294,7 @@ function startBattle() {
             handOfJusticeEffect(champion, battleTime);
 
             if (target) {
+                guardBreakerEffect(champion, target, battleTime);
                 giantSlayerEffect(champion, target, battleTime);
                 brambleVestEffect(champion, target, battleTime);
             }
@@ -379,7 +383,7 @@ function startBattle() {
 
 placeChampionByName('Akali', 4, 3, 2, 'player');
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
-addItemByName(board.getChampion(4,3), 'Hand of Justice')
+
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
 

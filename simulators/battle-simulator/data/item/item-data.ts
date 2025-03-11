@@ -198,6 +198,14 @@ export const combinedItems = [
         description: 'Gain 2 effects: • 15% Attack Damage and 15 Ability Power. • 15% Omnivamp. Each round, randomly double 1 of these effects. Omnivamp: heal for some of damage dealt',
         additionalStartingMana: 15,
         additionalCritChance: 20,
+    }),
+    new Item({
+        name: 'Guardbreaker',
+        description: 'After damaging a Shield, deal 25% more damage for 3 seconds.',
+        additionalHealth: 200,
+        additionalAttackSpeed: 1.2,
+        additionalCritChance: 20,
+        additionalAbilityPower:20,
     })
 ]   
 export function getItemByName(name: string){

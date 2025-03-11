@@ -46,10 +46,12 @@ const champions = [
         abilityCritChance: 0,
         abilityCritDamage: 0,
         damageAmp: 1,
+        sunder: 0,
+        shred: 0,
         abilityPower: 100,
         durability: 0,
         omnivamp: 0,
-        items: []
+        items: [],
     },
     {
         name: 'Darius',
@@ -92,14 +94,16 @@ const champions = [
         abilityCritDamage: 0,
         damageAmp: 1,
         abilityPower: 100,
+        sunder: true,
+        shred: true,
         omnivamp: 0, 
         durability: 0,
-        items: []
+        items: [],
     },
     {
         name: 'Akali',
         cost: 2,
-        shield: 0,
+        shield: 200,
         traitsList: ['Watcher', 'Automata'],
         statsByStarLevel: {
             1: { 
@@ -119,7 +123,7 @@ const champions = [
             3: { 
                 hp: 2100, 
                 attackDamage: 124, 
-                armor: 40,  
+                armor: 40,
                 magicResist: 40,
                 ability: { reduction: 0, damage: 0, magicDamage: 540, healing: 0 },
             }
@@ -137,9 +141,11 @@ const champions = [
         abilityCritDamage: 0,
         damageAmp: 1,
         abilityPower: 100,
+        sunder: false,
+        shred: false,
         durability: 0,
-        omnivamp: 0,
-        items: []
+        omnivamp: 12,
+        items: [],
     }
 ];
 

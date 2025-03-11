@@ -289,11 +289,43 @@ export function handOfJusticeEffect(champion: any, battleTime: number){
             if(Math.random() * 100 < 50){
                 champion.attackDamage += 15;
                 champion.abilityPower += 15;
-                console.log(`[${formattedTime}] ${champion.name} gained 30 attack damage and omnivamp.`)
+                console.log(`[${formattedTime}] ${champion.name} gained 30 attack damage and ability power.`)
             } else{
                 champion.omnivamp += 15;
                 console.log(`[${formattedTime}] ${champion.name} gained 30 omnivamp.`)
             }
+        }
+    })
+}
+
+let guardBreakerEffectUsed = false;
+let attackShield = false;
+let attackShieldArray = [];
+let timeSinceLastEffectUsed = 0
+
+export function guardBreakerEffect(champion: any, target: any, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+
+    if(target.shieldDamageTakenAray.length > attackShieldArray.length){
+        attackShield = true;
+        attackShieldArray.push(battleTime);
+    }
+
+    champion.items.forEach((item: ItemProps) => {
+        if(item.name === 'Guardbreaker' && !guardBreakerEffectUsed && attackShield){
+            champion.damageAmp += 0.25;
+            timeSinceLastEffectUsed = battleTime;
+            guardBreakerEffectUsed = true;
+            console.log(console.log(`[${formattedTime}] ${champion.name} gained 25% damage amp.`));
+        }
+
+        if(item.name === 'Guardbreaker' && attackShield && guardBreakerEffectUsed && (battleTime - timeSinceLastEffectUsed) >= 300){
+            champion.damageAmp -= 0.25;
+            guardBreakerEffectUsed = false;
+            attackShield = false;
+            console.log(console.log(`[${formattedTime}] ${champion.name} lost 25% damage amp.`));
         }
     })
 }
