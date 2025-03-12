@@ -1,4 +1,5 @@
 import { ItemProps } from './item'; 
+import { Champion } from '../champion/champion';
 
 function getFormattedTime(champion: any){
     const mins = Math.floor(champion.battleTime / 6000);
@@ -8,7 +9,7 @@ function getFormattedTime(champion: any){
     return formattedTime;
 }
 
-export function addAdditionalItemStatistics(champion: any) { // basic stats
+export function addAdditionalItemStatistics(champion: Champion) { // basic stats
     if (!champion || !champion.items || !champion.items.length) return 'No items equipped';
 
     if(champion.items.length > 0 && champion.items.length <= 3){
@@ -40,7 +41,7 @@ export function addAdditionalItemStatistics(champion: any) { // basic stats
     }
 }
 
-export function dragonsClawEffect(champion: any, battleTime: number){
+export function dragonsClawEffect(champion: Champion, battleTime: number){
     if (!champion || !champion.items || !champion.items.length || !battleTime) return 'No items equipped';
 
     let formattedTime = getFormattedTime(champion);
@@ -61,7 +62,7 @@ export function dragonsClawEffect(champion: any, battleTime: number){
 
 let bloodthristerEffectUsed = false
 
-export function bloodthristerEffect(champion: any, battleTime: number ){   
+export function bloodthristerEffect(champion: Champion, battleTime: number ){   
     if(!champion || !champion.items || !champion.items.length || !battleTime) return 'No items equipped';
 
     let formattedTime = getFormattedTime(champion);
@@ -86,7 +87,7 @@ let timeSinceLastExternalMagicDamage = 0;
 let attackedArray = [];
 let cooldown = 0; // 200 centiseconds, 2 seconds
 
-export function brambleVestEffect(champion: any, target: any, battleTime: number){ // unfinished
+export function brambleVestEffect(champion: Champion, target: Champion, battleTime: number){ // unfinished
     if(!champion || !champion.items || !champion.items.length || !battleTime) return 'No items equipped';
 
     let formattedTime = getFormattedTime(champion);
@@ -110,21 +111,21 @@ export function brambleVestEffect(champion: any, target: any, battleTime: number
 
 let giantSlayerEffectUsed = false
 
-export function giantSlayerEffect(champion: any, target: any, battleTime: number){
+export function giantSlayerEffect(champion: Champion, target: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length || !battleTime) return 'No items equipped';
     
     const formattedTime = getFormattedTime(champion);
     
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Giant Slayer' && target.statsByStarLevel[target.starLevel].hp > 1750 && !giantSlayerEffectUsed){
-            champion.damageAmp += item.additionalDamageAmp;
+            champion.damageAmp += item.additionalDamageAmp || 0;
             console.log(`[${formattedTime}] ${champion.name} gained 20% damage amp against ${target.name}`);
             giantSlayerEffectUsed = true
         }
     })
 }
 
-export function archangelsStaffEffect(champion: any, battleTime: number){
+export function archangelsStaffEffect(champion: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length || !battleTime) return 'No items equipped';
 
     const formattedTime = getFormattedTime(champion);
@@ -132,7 +133,7 @@ export function archangelsStaffEffect(champion: any, battleTime: number){
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Archangel\'s Staff' && item.abilityPowerStacking){
             if(battleTime % 500 === 0){
-                champion.abilityPower += item.additionalAbilityPowerPerStack; 
+                champion.abilityPower += item.additionalAbilityPowerPerStack || 0; 
                 console.log(`[${formattedTime}] ${champion.name} gained ${item.additionalAbilityPowerPerStack} ability power`);
             }
         }
@@ -141,12 +142,12 @@ export function archangelsStaffEffect(champion: any, battleTime: number){
 
 let runnansHurricaneEffectUsed = false;
 
-export function runnansHurricaneEffect(champion: any){
+export function runnansHurricaneEffect(champion: Champion){
     if(!champion || !champion.items || !champion.items.length) return 'No items equipped';
 
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Runaan\s Hurricane' && !runnansHurricaneEffectUsed){
-            champion.attackDamage += champion.attackDamage * 0.55;
+            champion.statsByStarLevel[champion.starLevel].attackDamage += champion.statsByStarLevel[champion.starLevel].attackDamage * 0.55;
             runnansHurricaneEffectUsed = true;
         }
     })
@@ -154,7 +155,7 @@ export function runnansHurricaneEffect(champion: any){
 
 let steraksGageEffectUsed = false;
 
-export function steraksGageEffect(champion: any){
+export function steraksGageEffect(champion: Champion){
     if(!champion || !champion.items || !champion.items.length) return;
     
     const formattedTime = getFormattedTime(champion);
@@ -165,7 +166,7 @@ export function steraksGageEffect(champion: any){
             champion.currentHp <= champion.statsByStarLevel[champion.starLevel].hp * 0.6
         ){
             champion.currentHp += champion.statsByStarLevel[champion.starLevel].hp *  0.25;
-            champion.attackDamage *= 1.35 ;
+            champion.statsByStarLevel[champion.starLevel].attackDamage *= 1.35;
             console.log(`[${formattedTime}] ${champion.name} gained ${champion.statsByStarLevel[champion.starLevel].hp *  0.25} health`);
             steraksGageEffectUsed = true;
         }
@@ -178,7 +179,7 @@ let titansResolveStacks = 0;
 let damageTakenArray = [];
 let damageTaken = false;
 
-export function titansResolveEffect(champion: any, battleTime: number){
+export function titansResolveEffect(champion: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -196,14 +197,12 @@ export function titansResolveEffect(champion: any, battleTime: number){
             damageTaken
         ){            
             champion.abilityPower += 1;
-            champion.attackDamage *= 1.02;
+            champion.statsByStarLevel[champion.starLevel].attackDamage *= 1.02;
             titansResolveStacks += 1;
             console.log(`[${formattedTime}] ${champion.name} gained 2% attack damage and 1 ability power (Stack ${titansResolveStacks}/25)`);
             damageTaken = false; 
             return;
-        };
-
-        if(titansResolveStacks === 25 && !titansResolveFullStackEffectUsed){
+        } else if(titansResolveStacks === 25 && !titansResolveFullStackEffectUsed){
             titansResolveEffectUsed = true;      
             titansResolveFullStackEffectUsed = true;
             champion.armor += 20;
@@ -217,7 +216,7 @@ export function titansResolveEffect(champion: any, battleTime: number){
 let steadfastHeartEffectUsed = true;
 let steadFastHeartAfterEffectUsed = false;
 
-export function steadfastHeartEffect(champion: any){
+export function steadfastHeartEffect(champion: Champion){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -246,7 +245,7 @@ export function steadfastHeartEffect(champion: any){
 let crownguardEffectUsed = false;
 let crownguardEffectExpired = false;
 
-export function crownguardEffect(champion: any, battleTime: number){
+export function crownguardEffect(champion: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -261,8 +260,7 @@ export function crownguardEffect(champion: any, battleTime: number){
             champion.shield += (champion.statsByStarLevel[champion.starLevel].hp * item.shieldAmount);  
             crownguardEffectUsed = true;
             console.log(`[${formattedTime}] ${champion.name} gained ${champion.statsByStarLevel[champion.starLevel].hp * item.shieldAmount} shield`)
-        } 
-        if(item.name === 'Crownguard' && battleTime >= 800 && !crownguardEffectExpired){
+        } else if(item.name === 'Crownguard' && battleTime >= 800 && !crownguardEffectExpired){
             crownguardEffectExpired = true;
             champion.shield = 0;
             console.log(`[${formattedTime}] ${champion.name} lost their shield`)
@@ -272,14 +270,14 @@ export function crownguardEffect(champion: any, battleTime: number){
 
 let handOfJusticeEffectUsed = false;
 
-export function handOfJusticeEffect(champion: any){
+export function handOfJusticeEffect(champion: Champion){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
 
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Hand of Justice' && !handOfJusticeEffectUsed ){
-            champion.attackDamage += 15;
+            champion.statsByStarLevel[champion.starLevel].attackDamage += 15;
             champion.abilityPower += 15;
             champion.omnivamp += 15;
             handOfJusticeEffectUsed = true;
@@ -287,7 +285,7 @@ export function handOfJusticeEffect(champion: any){
             console.log(`[${formattedTime}] ${champion.name} used HOJ effect`)
 
             if(Math.random() * 100 < 50){
-                champion.attackDamage += 15;
+                champion.statsByStarLevel[champion.starLevel].attackDamage += 15;
                 champion.abilityPower += 15;
                 console.log(`[${formattedTime}] ${champion.name} gained 30 attack damage and ability power.`)
             } else{
@@ -303,7 +301,7 @@ let attackShield = false;
 let attackShieldArray = [];
 let timeSinceLastguardBreakerEffectUsed = 0
 
-export function guardBreakerEffect(champion: any, target: any, battleTime: number){
+export function guardBreakerEffect(champion: Champion, target: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -319,8 +317,7 @@ export function guardBreakerEffect(champion: any, target: any, battleTime: numbe
             timeSinceLastguardBreakerEffectUsed = battleTime;
             guardBreakerEffectUsed = true;
             console.log(`[${formattedTime}] ${champion.name} gained 25% damage amp.`);
-        } 
-        if(item.name === 'Guardbreaker' && 
+        } else if(item.name === 'Guardbreaker' && 
             attackShield && 
             guardBreakerEffectUsed && 
             (battleTime - timeSinceLastguardBreakerEffectUsed) >= 300
@@ -334,37 +331,64 @@ export function guardBreakerEffect(champion: any, target: any, battleTime: numbe
 };
 
 let nashorsToothEffectUsed = false;
-let abilityUsed = false;
-let abilityArray = [];
+let abilityNashorsToothUsed = false;
+let abilityNashorsToothUsedArray = [];
 let timeSinceLastNashorsToothEffectUsed = 0;
 
-export function nashorsToothEffect(champion: any, battleTime: number){
+export function nashorsToothEffect(champion: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
 
-    if(champion.abilityArray.length > abilityArray.length){
+    if(champion.abilityArray.length > abilityNashorsToothUsedArray.length){
         nashorsToothEffectUsed = true;
-        abilityUsed = true;
+        abilityNashorsToothUsed = true;
         timeSinceLastNashorsToothEffectUsed = battleTime;
-        abilityArray.push(battleTime) 
+        abilityNashorsToothUsedArray.push(battleTime) 
     }
 
     champion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Nashor\'s Tooth' && nashorsToothEffectUsed && abilityUsed ){
+        if(item.name === 'Nashor\'s Tooth' && nashorsToothEffectUsed && abilityNashorsToothUsed ){
             champion.attackSpeed *= 1.6 
-            abilityUsed = false;
+            abilityNashorsToothUsed = false;
             console.log(`[${formattedTime}] ${champion.name} gained 60% attack speed.`);
-        }  
-        if(item.name === 'Nashor\'s Tooth' && 
+        }  else if(item.name === 'Nashor\'s Tooth' && 
             nashorsToothEffectUsed && 
-            !abilityUsed && 
+            !abilityNashorsToothUsed && 
             (battleTime - timeSinceLastNashorsToothEffectUsed) >= 500
         ){
             champion.attackSpeed /= 1.6 
             nashorsToothEffectUsed = false;
-            abilityUsed = false;
+            abilityNashorsToothUsed = false;
             console.log(`[${formattedTime}] ${champion.name} lost 60% attack speed.`);
         }
     })
 };
+
+let hextechGunbladeEffectUsed = false;
+let abilityHextechGunbladeUsed = false;
+let abilityHextechGunbladeUsedArray = [];
+
+export function hextechGunbladeEffect(champion: Champion, ally: Champion, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+    const healedHp =  champion.statsByStarLevel[champion.starLevel].attackDamage * 0.25
+
+    if(champion.abilityArray.length > abilityHextechGunbladeUsedArray.length){
+        hextechGunbladeEffectUsed = true
+        abilityHextechGunbladeUsed = true;  
+        abilityHextechGunbladeUsedArray.push(battleTime);
+    }
+
+    champion.items.forEach((item: ItemProps) => {
+        if(item.name === 'Hextech Gunblade' && item.heal && hextechGunbladeEffectUsed){
+            if(abilityHextechGunbladeUsed){
+                ally.currentHp += healedHp
+                hextechGunbladeEffectUsed = false;
+                console.log(`[${formattedTime}] ${champion.name} healed ${ally.name} for ${healedHp}`);
+            };
+        };
+    });
+};
+

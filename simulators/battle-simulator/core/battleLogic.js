@@ -17,7 +17,8 @@ const { addAdditionalItemStatistics,
     crownguardEffect,
     handOfJusticeEffect,
     guardBreakerEffect,
-    nashorsToothEffect
+    nashorsToothEffect,
+    hextechGunbladeEffect
 } = require('../data/item/itemLogic.ts');   
 
 const { getChampionByName } = require('../data/champion/champion-data.ts');
@@ -283,6 +284,7 @@ function startBattle() {
 
         battlePlayer.forEach(champion =>{            
             const target = battleOpponent.find(c => c.currentHp > 0);
+            const ally = battlePlayer.reduce((max, c) => (c.currentHp > max.currentHp ? c : max), battlePlayer[0]);
 
             dragonsClawEffect(champion, battleTime);
             bloodthristerEffect(champion, battleTime);
@@ -293,7 +295,12 @@ function startBattle() {
             steadfastHeartEffect(champion, battleTime);
             crownguardEffect(champion, battleTime);
             handOfJusticeEffect(champion, battleTime);
-            nashorsToothEffect(champion, battleTime)
+            nashorsToothEffect(champion, battleTime);
+
+            if(ally){
+                hextechGunbladeEffect(champion, ally, battleTime);
+
+            }
 
             if (target) {
                 guardBreakerEffect(champion, target, battleTime);
@@ -384,12 +391,14 @@ function startBattle() {
 }
 
 placeChampionByName('Akali', 4, 3, 2, 'player');
+placeChampionByName('Darius', 4, 2, 3, 'player'); 
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
 
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
-addItemByName(board.getChampion(4,3), 'Nashor\'s Tooth')
+addItemByName(board.getChampion(4,3), 'Hextech Gunblade')
 addAdditionalItemStatistics(board.getChampion(4, 3));
+
 checkChampionTraits(board.getChampion(4, 3));
 addAdditionalTraitStatistics(board.getChampion(4, 3));
 

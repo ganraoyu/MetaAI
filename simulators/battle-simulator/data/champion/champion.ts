@@ -22,6 +22,7 @@ interface StarLevelStats {
     armor: number;
     magicResist: number;
     ability: AbilityStats;
+    reduction: number
 }
 
 type StatsByStarLevel = {
@@ -35,7 +36,7 @@ function getFormattedTime(champion: Champion) {
     const formattedTime = `${mins}:${secs.toString().padStart(2, '0')}:${cents.toString().padStart(2, '0')}`;
     return formattedTime
 }
-class Champion {
+export class Champion {
     name: string;
     cost: number;
     traitsList: string[];
@@ -323,7 +324,7 @@ class Champion {
             }
 
             if (magicResist > 0) {
-                if(sunder){
+                if(shred){
                     magicDamage = magicDamage / (1 + ((magicResist * 0.7) / 100));
                 }
                 magicDamage = magicDamage / (1 + (magicResist / 100));

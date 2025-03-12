@@ -213,6 +213,14 @@ export const combinedItems = [
         additionalHealth: 150, // 150 more health
         additionalAbilityPower: 10, // 10 ability power
         additionalAttackSpeed: 1.1, // 10% attack speed
+    }),
+    new Item({
+        name: 'Hextech Gunblade',
+        description: 'Heal the lowest percent Health ally for 25% of damage dealt.',
+        additionalAttackSpeed: 1.2, // 20% attack speed
+        additionalAbilityPower: 20,
+        heal: true,
+        healAmount: 0.25 // 25% healing of damage dealt
     })
 ]   
 export function getItemByName(name: string){
