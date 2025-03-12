@@ -18,7 +18,8 @@ const { addAdditionalItemStatistics,
     handOfJusticeEffect,
     guardBreakerEffect,
     nashorsToothEffect,
-    hextechGunbladeEffect
+    hextechGunbladeEffect,
+    protectorsVowEffect
 } = require('../data/item/itemLogic.ts');   
 
 const { getChampionByName } = require('../data/champion/champion-data.ts');
@@ -296,6 +297,7 @@ function startBattle() {
             crownguardEffect(champion, battleTime);
             handOfJusticeEffect(champion, battleTime);
             nashorsToothEffect(champion, battleTime);
+            protectorsVowEffect(champion, battleTime);
 
             if(ally){
                 hextechGunbladeEffect(champion, ally, battleTime);
@@ -391,12 +393,11 @@ function startBattle() {
 }
 
 placeChampionByName('Akali', 4, 3, 2, 'player');
-placeChampionByName('Darius', 4, 2, 3, 'player'); 
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
 
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
-addItemByName(board.getChampion(4,3), 'Hextech Gunblade')
+addItemByName(board.getChampion(4,3), 'Protector\'s Vow')
 addAdditionalItemStatistics(board.getChampion(4, 3));
 
 checkChampionTraits(board.getChampion(4, 3));

@@ -392,3 +392,34 @@ export function hextechGunbladeEffect(champion: Champion, ally: Champion, battle
     });
 };
 
+let protectorsVowEffectUsed = false;
+let protectorsVowEffectExpired = false;
+let timeSinceLastProtectorsVowEffectUsed = 0;
+let protectorsVowEffectShiedLeft = 0;
+
+export function protectorsVowEffect(champion: Champion, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+    
+    champion.items.forEach((item: ItemProps) => {
+        if(item.name === 'Protector\'s Vow' && 
+            !protectorsVowEffectUsed && 
+            !protectorsVowEffectExpired &&
+            champion.currentHp <= champion.statsByStarLevel[champion.starLevel].hp * 0.4
+        ){
+            champion.shield += (champion.statsByStarLevel[champion.starLevel].hp * 0.25);
+            champion.armor += 20;
+            champion.magicResist += 20;
+            timeSinceLastProtectorsVowEffectUsed = battleTime
+            protectorsVowEffectUsed = true
+            console.log(`[${formattedTime}] ${champion.name} gained ${champion.statsByStarLevel[champion.starLevel].hp * 0.25} shield, 20 armor and 20 magic resist`);
+        } else if(item.name === 'Protector\'s Vow' && 
+            protectorsVowEffectUsed && 
+            battleTime - timeSinceLastProtectorsVowEffectUsed >= 500
+        ){
+            champion.shield = 0;
+            console.log(`[${formattedTime}] ${champion.name} lost their Protector's Vow shield and stats`);
+        }
+    })
+}

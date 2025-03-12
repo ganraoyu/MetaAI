@@ -221,6 +221,12 @@ export const combinedItems = [
         additionalAbilityPower: 20,
         heal: true,
         healAmount: 0.25 // 25% healing of damage dealt
+    }),
+    new Item({
+        name: 'Protector\'s Vow',
+        description: 'Once per combat at 40% Health, gain a 25% max Health Shield that lasts 5 seconds and gain 20 Armor and 20 Magic Resist.',
+        additionalArmor: 20,
+        additionalStartingMana: 30
     })
 ]   
 export function getItemByName(name: string){
