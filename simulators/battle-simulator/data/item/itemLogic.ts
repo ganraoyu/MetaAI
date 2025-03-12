@@ -141,7 +141,7 @@ export function archangelsStaffEffect(champion: any, battleTime: number){
 
 let runnansHurricaneEffectUsed = false;
 
-export function runnansHurricaneEffect(champion: any, battleTime: number){
+export function runnansHurricaneEffect(champion: any){
     if(!champion || !champion.items || !champion.items.length) return 'No items equipped';
 
     champion.items.forEach((item: ItemProps) => {
@@ -154,7 +154,7 @@ export function runnansHurricaneEffect(champion: any, battleTime: number){
 
 let steraksGageEffectUsed = false;
 
-export function steraksGageEffect(champion: any, battleTime: number){
+export function steraksGageEffect(champion: any){
     if(!champion || !champion.items || !champion.items.length) return;
     
     const formattedTime = getFormattedTime(champion);
@@ -217,7 +217,7 @@ export function titansResolveEffect(champion: any, battleTime: number){
 let steadfastHeartEffectUsed = true;
 let steadFastHeartAfterEffectUsed = false;
 
-export function steadfastHeartEffect(champion: any, battleTime: number){
+export function steadfastHeartEffect(champion: any){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -272,7 +272,7 @@ export function crownguardEffect(champion: any, battleTime: number){
 
 let handOfJusticeEffectUsed = false;
 
-export function handOfJusticeEffect(champion: any, battleTime: number){
+export function handOfJusticeEffect(champion: any){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -301,7 +301,7 @@ export function handOfJusticeEffect(champion: any, battleTime: number){
 let guardBreakerEffectUsed = false;
 let attackShield = false;
 let attackShieldArray = [];
-let timeSinceLastEffectUsed = 0
+let timeSinceLastguardBreakerEffectUsed = 0
 
 export function guardBreakerEffect(champion: any, target: any, battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
@@ -316,16 +316,55 @@ export function guardBreakerEffect(champion: any, target: any, battleTime: numbe
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Guardbreaker' && !guardBreakerEffectUsed && attackShield){
             champion.damageAmp += 0.25;
-            timeSinceLastEffectUsed = battleTime;
+            timeSinceLastguardBreakerEffectUsed = battleTime;
             guardBreakerEffectUsed = true;
-            console.log(console.log(`[${formattedTime}] ${champion.name} gained 25% damage amp.`));
-        }
-
-        if(item.name === 'Guardbreaker' && attackShield && guardBreakerEffectUsed && (battleTime - timeSinceLastEffectUsed) >= 300){
+            console.log(`[${formattedTime}] ${champion.name} gained 25% damage amp.`);
+        } 
+        if(item.name === 'Guardbreaker' && 
+            attackShield && 
+            guardBreakerEffectUsed && 
+            (battleTime - timeSinceLastguardBreakerEffectUsed) >= 300
+        ){
             champion.damageAmp -= 0.25;
             guardBreakerEffectUsed = false;
             attackShield = false;
-            console.log(console.log(`[${formattedTime}] ${champion.name} lost 25% damage amp.`));
+            console.log(`[${formattedTime}] ${champion.name} lost 25% damage amp.`);
+        };
+    });
+};
+
+let nashorsToothEffectUsed = false;
+let abilityUsed = false;
+let abilityArray = [];
+let timeSinceLastNashorsToothEffectUsed = 0;
+
+export function nashorsToothEffect(champion: any, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+
+    if(champion.abilityArray.length > abilityArray.length){
+        nashorsToothEffectUsed = true;
+        abilityUsed = true;
+        timeSinceLastNashorsToothEffectUsed = battleTime;
+        abilityArray.push(battleTime) 
+    }
+
+    champion.items.forEach((item: ItemProps) => {
+        if(item.name === 'Nashor\'s Tooth' && nashorsToothEffectUsed && abilityUsed ){
+            champion.attackSpeed *= 1.6 
+            abilityUsed = false;
+            console.log(`[${formattedTime}] ${champion.name} gained 60% attack speed.`);
+        }  
+        if(item.name === 'Nashor\'s Tooth' && 
+            nashorsToothEffectUsed && 
+            !abilityUsed && 
+            (battleTime - timeSinceLastNashorsToothEffectUsed) >= 500
+        ){
+            champion.attackSpeed /= 1.6 
+            nashorsToothEffectUsed = false;
+            abilityUsed = false;
+            console.log(`[${formattedTime}] ${champion.name} lost 60% attack speed.`);
         }
     })
-}
+};

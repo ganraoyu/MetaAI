@@ -206,6 +206,13 @@ export const combinedItems = [
         additionalAttackSpeed: 1.2,
         additionalCritChance: 20,
         additionalAbilityPower:20,
+    }),
+    new Item({
+        name: 'Nashor\'s Tooth',
+        description: 'After casting an ability, gain 60% Attack Speed for 5 seconds.',
+        additionalHealth: 150, // 150 more health
+        additionalAbilityPower: 10, // 10 ability power
+        additionalAttackSpeed: 1.1, // 10% attack speed
     })
 ]   
 export function getItemByName(name: string){

@@ -16,7 +16,8 @@ const { addAdditionalItemStatistics,
     steadfastHeartEffect,
     crownguardEffect,
     handOfJusticeEffect,
-    guardBreakerEffect
+    guardBreakerEffect,
+    nashorsToothEffect
 } = require('../data/item/itemLogic.ts');   
 
 const { getChampionByName } = require('../data/champion/champion-data.ts');
@@ -292,6 +293,7 @@ function startBattle() {
             steadfastHeartEffect(champion, battleTime);
             crownguardEffect(champion, battleTime);
             handOfJusticeEffect(champion, battleTime);
+            nashorsToothEffect(champion, battleTime)
 
             if (target) {
                 guardBreakerEffect(champion, target, battleTime);
@@ -386,7 +388,7 @@ placeChampionByName('Darius', 3, 3, 3, 'opponent');
 
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
-
+addItemByName(board.getChampion(4,3), 'Nashor\'s Tooth')
 addAdditionalItemStatistics(board.getChampion(4, 3));
 checkChampionTraits(board.getChampion(4, 3));
 addAdditionalTraitStatistics(board.getChampion(4, 3));
