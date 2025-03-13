@@ -226,7 +226,17 @@ export const combinedItems = [
         name: 'Protector\'s Vow',
         description: 'Once per combat at 40% Health, gain a 25% max Health Shield that lasts 5 seconds and gain 20 Armor and 20 Magic Resist.',
         additionalArmor: 20,
-        additionalStartingMana: 30
+        additionalStartingMana: 30,
+        shield:true,
+        shieldAmount: 0.30
+    }),
+    new Item({
+        name: 'Red Buff',
+        description: 'Deal 6% bonus damage. Attacks and Abilities 1% Burn and 33% Wound enemies for 5 seconds.',
+        additionalAttackSpeed: 1.4,
+        additionalDamageAmp: 0.06,
+        burn: true,
+        wound: true
     })
 ]   
 export function getItemByName(name: string){

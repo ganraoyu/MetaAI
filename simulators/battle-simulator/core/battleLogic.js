@@ -19,7 +19,8 @@ const { addAdditionalItemStatistics,
     guardBreakerEffect,
     nashorsToothEffect,
     hextechGunbladeEffect,
-    protectorsVowEffect
+    protectorsVowEffect,
+    redBuffEffect
 } = require('../data/item/itemLogic.ts');   
 
 const { getChampionByName } = require('../data/champion/champion-data.ts');
@@ -60,6 +61,8 @@ function placeChampionByName(championName, row, column, starLevel, team) {
             champion.damageAmp,
             champion.sunder,
             champion.shred,
+            champion.wound,
+            champion.burn,
             champion.abilityPower,
             champion.omnivamp,
             champion.durability,
@@ -308,6 +311,7 @@ function startBattle() {
                 guardBreakerEffect(champion, target, battleTime);
                 giantSlayerEffect(champion, target, battleTime);
                 brambleVestEffect(champion, target, battleTime);
+                redBuffEffect(champion, target, battleTime)
             }
         });
 
@@ -397,7 +401,7 @@ placeChampionByName('Darius', 3, 3, 3, 'opponent');
 
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
-addItemByName(board.getChampion(4,3), 'Protector\'s Vow')
+addItemByName(board.getChampion(4,3), 'Red Buff')
 addAdditionalItemStatistics(board.getChampion(4, 3));
 
 checkChampionTraits(board.getChampion(4, 3));

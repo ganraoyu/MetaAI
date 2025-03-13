@@ -32,6 +32,8 @@ interface SpecialEffects {
     shield?: boolean;
     sunder?: boolean;
     shred?: boolean;
+    wound?: boolean;
+    burn?: boolean;
     reductionAmount?: number;
     healAmount?: number;
     shieldAmount?: number;
@@ -89,6 +91,8 @@ export class Item {
     readonly shield: boolean;
     readonly sunder: boolean;
     readonly shred: boolean;
+    readonly wound: boolean;
+    readonly burn: boolean;
     readonly reductionAmount: number;
     readonly healAmount: number;
     readonly shieldAmount: number;
@@ -140,6 +144,8 @@ export class Item {
         shield = false,
         sunder = false,
         shred = false,
+        wound = false,
+        burn = false,
         reductionAmount = 0,
         healAmount = 0,
         shieldAmount = 0,
@@ -189,6 +195,8 @@ export class Item {
         this.shield = shield;
         this.sunder = sunder;
         this.shred = shred;
+        this.wound = wound;
+        this.burn = burn;
         this.reductionAmount = reductionAmount;
         this.healAmount = healAmount;
         this.shieldAmount = shieldAmount;

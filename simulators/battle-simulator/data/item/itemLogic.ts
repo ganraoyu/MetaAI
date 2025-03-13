@@ -1,6 +1,7 @@
 import { ItemProps } from './item'; 
 import { Champion } from '../champion/champion';
 
+
 function getFormattedTime(champion: any){
     const mins = Math.floor(champion.battleTime / 6000);
     const secs = Math.floor((champion.battleTime % 6000) / 100);
@@ -205,8 +206,8 @@ export function titansResolveEffect(champion: Champion, battleTime: number){
         } else if(titansResolveStacks === 25 && !titansResolveFullStackEffectUsed){
             titansResolveEffectUsed = true;      
             titansResolveFullStackEffectUsed = true;
-            champion.armor += 20;
-            champion.magicResist += 20;
+            champion.statsByStarLevel[champion.starLevel].armor += 20;
+            champion.statsByStarLevel[champion.starLevel].magicResist += 20;
             console.log(`[${formattedTime}] ${champion.name} gained 20 armor and 20 magic resist`);
             return;
         };
@@ -395,7 +396,7 @@ export function hextechGunbladeEffect(champion: Champion, ally: Champion, battle
 let protectorsVowEffectUsed = false;
 let protectorsVowEffectExpired = false;
 let timeSinceLastProtectorsVowEffectUsed = 0;
-let protectorsVowEffectShiedLeft = 0;
+let protectorsVowShieldAmount = 0; 
 
 export function protectorsVowEffect(champion: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
@@ -404,22 +405,74 @@ export function protectorsVowEffect(champion: Champion, battleTime: number){
     
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Protector\'s Vow' && 
+            champion.shield &&
             !protectorsVowEffectUsed && 
             !protectorsVowEffectExpired &&
             champion.currentHp <= champion.statsByStarLevel[champion.starLevel].hp * 0.4
         ){
-            champion.shield += (champion.statsByStarLevel[champion.starLevel].hp * 0.25);
-            champion.armor += 20;
-            champion.magicResist += 20;
-            timeSinceLastProtectorsVowEffectUsed = battleTime
-            protectorsVowEffectUsed = true
-            console.log(`[${formattedTime}] ${champion.name} gained ${champion.statsByStarLevel[champion.starLevel].hp * 0.25} shield, 20 armor and 20 magic resist`);
+            const shieldAmount = champion.statsByStarLevel[champion.starLevel].hp * 0.25;
+            champion.shield += shieldAmount;
+            protectorsVowShieldAmount = shieldAmount; 
+            
+            champion.statsByStarLevel[champion.starLevel].armor += 20;
+            champion.statsByStarLevel[champion.starLevel].magicResist += 20;
+            timeSinceLastProtectorsVowEffectUsed = battleTime;
+            protectorsVowEffectUsed = true;
+            console.log(`[${formattedTime}] ${champion.name} gained ${shieldAmount} shield, 20 armor and 20 magic resist`);
         } else if(item.name === 'Protector\'s Vow' && 
             protectorsVowEffectUsed && 
+            !protectorsVowEffectExpired &&
             battleTime - timeSinceLastProtectorsVowEffectUsed >= 500
         ){
-            champion.shield = 0;
+            protectorsVowEffectExpired = true;
+
+            const shieldToRemove = Math.min(champion.shield, protectorsVowShieldAmount);
+            
+            if(champion.shield > 0){
+                champion.shield -= shieldToRemove;
+                console.log(`[${formattedTime}] ${champion.name} lost ${shieldToRemove} shield`);
+            } else {
+                return 'No shield to remove';
+            }
+
             console.log(`[${formattedTime}] ${champion.name} lost their Protector's Vow shield and stats`);
+        }
+    })
+}
+
+let redBuffEffectUsed = false;
+let isTargetBurned = false;
+let isTargetWounded = false;
+let timeSinceRedBuffEffectUsed = 0;
+let attackRedBuffArray: number[] = []
+let timeSinceLastRedBuffEffect = 0;
+
+export function redBuffEffect(champion: Champion, target: Champion, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+    const burnDamage = target.statsByStarLevel[target.starLevel].hp * 0.01
+
+    if(champion.damageArray.length > attackRedBuffArray.length){
+        redBuffEffectUsed = true;
+        isTargetWounded = true;
+        isTargetBurned = true;
+        timeSinceRedBuffEffectUsed = battleTime;
+        attackRedBuffArray.push(battleTime);
+    };
+
+    champion.items.forEach((item: ItemProps) => {
+        if(item.name === 'Red Buff' && item.burn && item.wound && redBuffEffectUsed){
+
+            if(isTargetBurned && !target.burn){
+                target.burn = true;
+                console.log(`[${formattedTime}] ${target.name} is being burnt by ${champion.name}'s Red Buff`);
+            }
+            
+            if(target.burn && battleTime - timeSinceRedBuffEffectUsed >= 1000){
+                target.currentHp -= burnDamage
+                console.log(`[${formattedTime}] ${target.name} burned for ${burnDamage} damage`)
+            }
         }
     })
 }

@@ -9,6 +9,7 @@ nodemon champion.ts
 */
 const { v4: uuidv4 } = require('uuid');
 
+// Interfaces
 interface AbilityStats {
     reduction: number;
     damage: number;
@@ -29,53 +30,72 @@ type StatsByStarLevel = {
     [starLevel: number]: StarLevelStats;
 };
 
+// Helper Functions
 function getFormattedTime(champion: Champion) {
     const mins = Math.floor(champion.battleTime / 6000);
     const secs = Math.floor((champion.battleTime % 6000) / 100);
     const cents = champion.battleTime % 100;
-    const formattedTime = `${mins}:${secs.toString().padStart(2, '0')}:${cents.toString().padStart(2, '0')}`;
-    return formattedTime
+    return `${mins}:${secs.toString().padStart(2, '0')}:${cents.toString().padStart(2, '0')}`;
 }
+
+// Champion Class
 export class Champion {
-    name: string;
-    cost: number;
+    // Basic Properties
+    readonly id: string = uuidv4();
+    readonly name: string;
+    readonly cost: number;
+    readonly abilityName: string;     
     traitsList: string[];
-    shield: number;
-    statsByStarLevel: StatsByStarLevel;
-    attackSpeed: number;
-    abilityName: string;
     range: number;
-    starLevel: number;
-    mana: number;
-    manaPerAttack: number;
-    abilityManaCost: number;
-    attackCritChance: number;
-    attackCritDamage: number;    
+
+    // Stats
+    currentHp: number;
+    shield: number;
+    armor: number;
+    magicResist: number;
+    attackSpeed: number;
+    durability: number;
     abilityPower: number;
+    
+    // Combat Stats
+    attackCritChance: number;
+    attackCritDamage: number;
     abilityCritChance: number;
     abilityCritDamage: number;
     damageAmp: number;
     sunder: boolean;
     shred: boolean;
+    wound: boolean;
+    burn: boolean;
     omnivamp: number;
-    durability: number;
-    items: typeof ItemProps[];
-    currentHp: number;
-    armor: number;
-    magicResist: number;
-    gameTime: number;
-    attacks: number[];
-    timeStep: number;
-    id: string;
-    damageTakenArray: number[];
-    shieldDamageTakenAray: number[];
-    damageArray: number[];
-    abilityArray: number[];
-    healArray: number[];
+
+    // Mana System
+    mana: number;
+    manaPerAttack: number;
+    abilityManaCost: number;
+
+    // Star Level
+    starLevel: number;
+    statsByStarLevel: StatsByStarLevel;
+
+    // Battle State
+    battleTime: number = 0;
     lastAttackTime: number = 0;
     nextAttackTime: number = 0;
     nextAttackReady: boolean = true;
-    battleTime: number = 0;
+    gameTime: number = 0;
+    timeStep: number = 0.1;
+
+    // Items
+    items: typeof ItemProps[];
+
+    // Combat Tracking Arrays
+    attacks: number[] = [1];
+    damageTakenArray: number[] = [];
+    shieldDamageTakenAray: number[] = [];
+    damageArray: number[] = [];
+    abilityArray: number[] = [];
+    healArray: number[] = [];
 
     constructor(
         name: string,
@@ -96,13 +116,13 @@ export class Champion {
         damageAmp: number,
         sunder: boolean,
         shred: boolean,
+        wound: boolean,
+        burn: boolean,
         abilityPower: number,  
         omnivamp: number,
         durability: number,
         items: typeof ItemProps[] = [],
-
-        starLevel?: number,
-
+        starLevel: number = 1,
     ) {
         this.name = name;
         this.cost = cost;
@@ -112,7 +132,7 @@ export class Champion {
         this.attackSpeed = attackSpeed;
         this.abilityName = abilityName;
         this.range = range;
-        this.starLevel = starLevel ?? 1;
+        this.starLevel = starLevel;
         this.mana = mana;
         this.manaPerAttack = manaPerAttack;
         this.abilityManaCost = abilityManaCost;
@@ -123,6 +143,8 @@ export class Champion {
         this.damageAmp = damageAmp;
         this.sunder = sunder;
         this.shred = shred;
+        this.wound = wound;
+        this.burn = burn;
         this.abilityPower = abilityPower;
         this.omnivamp = omnivamp;
         this.durability = durability;
@@ -130,20 +152,7 @@ export class Champion {
         this.currentHp = this.statsByStarLevel[this.starLevel].hp;
         this.armor = this.statsByStarLevel[this.starLevel].armor;
         this.magicResist = this.statsByStarLevel[this.starLevel].magicResist;
-        this.gameTime = 0; 
-        this.attacks = [1];
-        this.timeStep = 0.1;
-        this.id = uuidv4();
-        this.damageTakenArray = [];
-        this.shieldDamageTakenAray = [];
-        this.damageArray = [];
-        this.abilityArray = [];
-        this.healArray = [];
-        this.lastAttackTime = 0;
-        const firstAttackDelay = 1 / this.attackSpeed * 100;
-        this.nextAttackTime = firstAttackDelay; 
-        this.nextAttackReady = false;
-        this.battleTime = 0;
+        this.nextAttackTime = 1 / this.attackSpeed * 100;
     }
 
     getStats() {
@@ -201,9 +210,11 @@ export class Champion {
         const critRate = this.attackCritChance;
         const critDamageAmp = this.attackCritDamage;
         const damageAmp = this.damageAmp;
+        const wound = this.wound
         const omnivamp = this.omnivamp;
 
         const formattedTime = getFormattedTime(this);
+        
         if (this.items) {
             this.items.forEach(item => {    
                 if (item.attackSpeedStacking && item.additionalAttackSpeedPerStack) {
@@ -246,7 +257,12 @@ export class Champion {
         console.log(`[${formattedTime}] ${this.name} attacks ${target.name} for ${attackTypeMsg}`);
         
         if(this.currentHp < this.statsByStarLevel[this.starLevel].hp && this.omnivamp > 0){
-            const omnivampHealAmount = Math.round(finalDamage * (omnivamp / 100));
+            let omnivampHealAmount = Math.round(finalDamage * (omnivamp / 100));
+
+            if(wound){
+                omnivampHealAmount = Math.round(omnivampHealAmount * 0.67);
+            }
+            
             this.currentHp += omnivampHealAmount;
             console.log(`[${formattedTime}] ${this.name} healed ${omnivampHealAmount} hp`);
             this.healArray.push(omnivampHealAmount)
@@ -277,6 +293,7 @@ export class Champion {
         const abilityPower = this.abilityPower;
         const damageAmp = this.damageAmp;
         const omnivamp = this.omnivamp;
+        const wound = this.wound;
         let damage = ability.damage;
         let magicDamage = ability.magicDamage;
         const heal = ability.healing;
@@ -339,7 +356,7 @@ export class Champion {
             let critChance = Math.random() * 100 <= critRate;
 
             if (critChance) {
-                totalDamage = totalDamage * critDamage;
+                totalDamage *= critDamage;
             } 
             
             const attackTypeMsg = critChance ? `*Crit* ${totalDamage}` : totalDamage;
@@ -349,7 +366,12 @@ export class Champion {
             this.abilityArray.push(totalDamage);
             
             if(this.currentHp < this.statsByStarLevel[this.starLevel].hp && omnivamp > 0){
-                const omnivampHealAmount = Math.round(totalDamage * (omnivamp / 100));
+                let omnivampHealAmount = Math.round(totalDamage * (omnivamp / 100));
+                
+                if(!wound){
+                     Math.round(omnivampHealAmount * 0.67);
+                }
+
                 this.currentHp += omnivampHealAmount;
                 console.log(`[${formattedTime}] ${this.name} heals for ${omnivampHealAmount} health`);
                 this.healArray.push(omnivampHealAmount);
@@ -363,7 +385,11 @@ export class Champion {
                     this.currentHp = this.statsByStarLevel[this.starLevel].hp;
                 }
                 
-                const actualHeal = this.currentHp - oldHp;
+                let actualHeal = this.currentHp - oldHp;
+
+                if(wound){
+                    actualHeal = Math.round(actualHeal * 0.67);
+                }
                 this.healArray.push(actualHeal);
                 console.log(`[${formattedTime}] ${this.name}'s ability heals for ${actualHeal} health`);
             }
