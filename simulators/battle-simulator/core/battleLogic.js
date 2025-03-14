@@ -30,6 +30,7 @@ const { Item } = require('../data/item/item.ts');
 const { getItemByName } = require('../data/item/item-data.ts');
 const { Trait } = require('../data/trait/trait.ts');
 const { getTraitByName } = require('../data/trait/trait-data.ts');
+const { getDistanceBetweenCells, findClosestEnemy, moveChampionTowardsTarget } = require('./movementLogic.js');
 
 /*
 cd simulators/battle-simulator/core
@@ -46,6 +47,7 @@ function placeChampionByName(championName, row, column, starLevel, team) {
         const newChampion = new Champion(
             champion.name, 
             champion.cost, 
+            champion.movementSpeed,
             champion.traitsList, 
             champion.shield,
             champion.statsByStarLevel,
@@ -187,33 +189,39 @@ function addAdditionalTraitStatistics(champion) {
 function simulateRound(battlePlayer, battleOpponent, battleTime) {
     let attackOccurred = false;
 
-    // Player attacks - only try to attack if it's time for their next attack
     battlePlayer.forEach(champion => {
         if (champion.currentHp > 0) {
-            const target = battleOpponent.find(c => c.currentHp > 0);
-            if (target) {
-                if (champion.attack(target, battleTime)) {
-                    attackOccurred = true;
-                    return target;
+            // Find closest enemy
+            const { closestEnemy, distance } = findClosestEnemy(champion, battleOpponent, board);
+            
+            if (closestEnemy) {
+                if (distance <= champion.range) {
+                    if (champion.attack(closestEnemy, battleTime)) {
+                        attackOccurred = true;
+                    }
+                } else {
+                    moveChampionTowardsTarget(champion, closestEnemy, board, battleTime);
                 }
             }
         }
-    });
-     
-    // Opponent attacks - only try to attack if it's time for their next attack
+    }); 
+
     battleOpponent.forEach(champion => {
         if (champion.currentHp > 0) {
-            const target = battlePlayer.find(c => c.currentHp > 0);
-            if (target) {
-                if (champion.attack(target, battleTime)) {
-                    attackOccurred = true;
-                    return target;
+            const { closestEnemy, distance } = findClosestEnemy(champion, battlePlayer, board);
+            
+            if (closestEnemy) {
+                if (distance <= champion.range) {
+                    if (champion.attack(closestEnemy, battleTime)) {
+                        attackOccurred = true;
+                    }
+                } else {
+                    moveChampionTowardsTarget(champion, closestEnemy, board, battleTime);
                 }
             }
         }
     });
 
-    // Filter out champions with 0 HP from both teams
     battlePlayer = battlePlayer.filter(champion => champion.currentHp > 0);
     battleOpponent = battleOpponent.filter(champion => champion.currentHp > 0);
 
@@ -398,16 +406,16 @@ function startBattle() {
     }; 
 }
 
-placeChampionByName('Akali', 4, 3, 2, 'player');
+placeChampionByName('Akali', 4, 6, 2, 'player');
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
 
-console.log(board.getChampion(4, 3));
+console.log(board.getChampion(4, 6));
 console.log(board.getChampion(3, 3));
-addItemByName(board.getChampion(4,3), 'Morellonomicon')
-addAdditionalItemStatistics(board.getChampion(4, 3));
+addItemByName(board.getChampion(4,6), 'Morellonomicon')
+addAdditionalItemStatistics(board.getChampion(4, 6));
 
-checkChampionTraits(board.getChampion(4, 3));
-addAdditionalTraitStatistics(board.getChampion(4, 3));
+checkChampionTraits(board.getChampion(4, 6));
+addAdditionalTraitStatistics(board.getChampion(4, 6));
 
 board.displayBoard();
 

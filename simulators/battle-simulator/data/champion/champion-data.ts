@@ -10,6 +10,7 @@ const champions = [
         name: 'Amumu',
         cost: 1,
         shield: 0,
+        movementSpeed: 0,
         traitsList: ['Automata', 'Watcher'],
         statsByStarLevel: {
             1: { 
@@ -59,6 +60,7 @@ const champions = [
         name: 'Darius',
         cost: 1,
         shield: 0,
+        movementSpeed: 0,
         traitsList: ['Conqueror', 'Watcher'],
         statsByStarLevel: {
             1: { 
@@ -86,7 +88,7 @@ const champions = [
         attackSpeed: 0.7,
         abilityName: 'Decimate',
         abilityDescription: 'Darius swings his axe in a powerful strike, dealing damage and healing based on missing health.',
-        range: 1,
+        range: 10,
         mana: 30,
         manaPerAttack: 10,
         abilityManaCost: 70,
@@ -108,6 +110,7 @@ const champions = [
         name: 'Akali',
         cost: 2,
         shield: 0,
+        movementSpeed: 0,
         traitsList: ['Watcher', 'Automata'],
         statsByStarLevel: {
             1: { 

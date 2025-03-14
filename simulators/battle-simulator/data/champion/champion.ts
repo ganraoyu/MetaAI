@@ -44,7 +44,8 @@ export class Champion {
     readonly id: string = uuidv4();
     readonly name: string;
     readonly cost: number;
-    readonly abilityName: string;     
+    readonly abilityName: string;    
+    movementSpeed: number; 
     traitsList: string[];
     range: number;
 
@@ -100,6 +101,7 @@ export class Champion {
     constructor(
         name: string,
         cost: number, 
+        movementSpeed: number,
         traitsList: string[],
         shield: number = 0,
         statsByStarLevel: StatsByStarLevel,
@@ -126,6 +128,7 @@ export class Champion {
     ) {
         this.name = name;
         this.cost = cost;
+        this.movementSpeed = movementSpeed;
         this.traitsList = traitsList;
         this.shield = shield;
         this.statsByStarLevel = statsByStarLevel;

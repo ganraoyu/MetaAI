@@ -61,13 +61,19 @@ export function dragonsClawEffect(champion: Champion, battleTime: number){
     })
 }
 
-let bloodthristerEffectUsed = false
+const bloodthristerStateMap = new Map();
+let bloodthristerEffectUsed = false;
 
 export function bloodthristerEffect(champion: Champion, battleTime: number ){   
     if(!champion || !champion.items || !champion.items.length || !battleTime) return 'No items equipped';
 
     let formattedTime = getFormattedTime(champion);
     
+    if(!bloodthristerStateMap.has(champion.id)){
+        bloodthristerStateMap.set(champion.id, {
+            // let bloodthristerEffectUsed = false;
+        })
+    }
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Bloodthirster' && 
             item.shield && 

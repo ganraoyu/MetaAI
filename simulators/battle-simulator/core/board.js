@@ -60,17 +60,6 @@ class Board {
         return this.grid[row][column].champion;
     }
 
-    displayBoard() {
-        for (let row = 0; row < this.rows; row++) {
-            let rowDisplay = '';
-            for (let col = 0; col < this.columns; col++) {
-                const cell = this.grid[row][col];
-                rowDisplay += cell.champion ? `[${cell.champion.name.charAt(0)}]` : '[ ]';
-            }
-            console.log(rowDisplay);
-        }
-    }
-
     placeChampions(champions, side) {
         const startRow = side === 'left' ? 0 : Math.floor(this.rows / 2);
         const endRow = side === 'left' ? Math.floor(this.rows / 2) : this.rows;
@@ -83,6 +72,46 @@ class Board {
                     championIndex++;
                 }
             }
+        }
+    }
+
+    getChampionPosition(champion) {
+        for (let row = 0; row < this.rows; row++) {
+            for (let column = 0; column < this.columns; column++) {
+                if (this.getChampion(row, column) === champion) {
+                    return [row, column];
+                }
+            }
+        }
+        return 'Champion not found'; 
+    }
+
+    isValidPosition(row, column) {
+        return row >= 0 && row < this.rows && column >= 0 && column < this.columns;
+    }
+
+    removeChampion(row, column) {
+        if (this.isValidPosition(row, column)) {
+            this.grid[row][column].champion = null;
+            return true;
+        }
+        return false;
+    }
+
+    displayBoard() {
+        console.log('Board:');
+        for (let row = 0; row < this.rows; row++) {
+            let rowStr = '';
+            for (let column = 0; column < this.columns; column++) {
+                const cell = this.grid[row][column];
+                if (cell.champion) {
+                    const teamIndicator = cell.champion.team === 'player' ? 'P' : 'O';
+                    rowStr += `[${cell.champion.name.charAt(0)}${teamIndicator}]`;
+                } else {
+                    rowStr += '[  ]';
+                }
+            }
+            console.log(rowStr);
         }
     }
 }
