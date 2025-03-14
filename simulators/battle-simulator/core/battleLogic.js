@@ -20,7 +20,8 @@ const { addAdditionalItemStatistics,
     nashorsToothEffect,
     hextechGunbladeEffect,
     protectorsVowEffect,
-    redBuffEffect
+    redBuffEffect,
+    morellonomiconEffect
 } = require('../data/item/itemLogic.ts');   
 
 const { getChampionByName } = require('../data/champion/champion-data.ts');
@@ -311,7 +312,8 @@ function startBattle() {
                 guardBreakerEffect(champion, target, battleTime);
                 giantSlayerEffect(champion, target, battleTime);
                 brambleVestEffect(champion, target, battleTime);
-                redBuffEffect(champion, target, battleTime)
+                redBuffEffect(champion, target, battleTime);
+                morellonomiconEffect(champion, target, battleTime);
             }
         });
 
@@ -401,7 +403,7 @@ placeChampionByName('Darius', 3, 3, 3, 'opponent');
 
 console.log(board.getChampion(4, 3));
 console.log(board.getChampion(3, 3));
-addItemByName(board.getChampion(4,3), 'Red Buff')
+addItemByName(board.getChampion(4,3), 'Morellonomicon')
 addAdditionalItemStatistics(board.getChampion(4, 3));
 
 checkChampionTraits(board.getChampion(4, 3));

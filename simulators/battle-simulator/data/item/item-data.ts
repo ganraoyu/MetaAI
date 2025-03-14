@@ -237,6 +237,15 @@ export const combinedItems = [
         additionalDamageAmp: 0.06,
         burn: true,
         wound: true
+    }),
+    new Item({
+        name: 'Morellonomicon',
+        description: 'Attacks and Abilities deal 1% Burn and 33% Wound to enemies for 10 seconds.',
+        additionalAbilityPower: 20,
+        additionalHp: 150,
+        additionalAttackSpeed: 1.1,
+        burn: true,
+        wound: true,
     })
 ]   
 export function getItemByName(name: string){

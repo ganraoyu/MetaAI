@@ -239,7 +239,7 @@ export function steadfastHeartEffect(champion: Champion){
             champion.durability -= 7;
             steadFastHeartAfterEffectUsed = true;
             console.log(`[${formattedTime}] ${champion.name} lost 7 durability`);
-        }
+        };
     });
 };
 
@@ -260,14 +260,14 @@ export function crownguardEffect(champion: Champion, battleTime: number){
         ){
             champion.shield += (champion.statsByStarLevel[champion.starLevel].hp * item.shieldAmount);  
             crownguardEffectUsed = true;
-            console.log(`[${formattedTime}] ${champion.name} gained ${champion.statsByStarLevel[champion.starLevel].hp * item.shieldAmount} shield`)
+            console.log(`[${formattedTime}] ${champion.name} gained ${champion.statsByStarLevel[champion.starLevel].hp * item.shieldAmount} shield`);
         } else if(item.name === 'Crownguard' && battleTime >= 800 && !crownguardEffectExpired){
             crownguardEffectExpired = true;
             champion.shield = 0;
-            console.log(`[${formattedTime}] ${champion.name} lost their shield`)
-        }
-    })
-}
+            console.log(`[${formattedTime}] ${champion.name} lost their shield`);
+        };
+    });
+};
 
 let handOfJusticeEffectUsed = false;
 
@@ -283,19 +283,19 @@ export function handOfJusticeEffect(champion: Champion){
             champion.omnivamp += 15;
             handOfJusticeEffectUsed = true;
             
-            console.log(`[${formattedTime}] ${champion.name} used HOJ effect`)
+            console.log(`[${formattedTime}] ${champion.name} used HOJ effect`);
 
             if(Math.random() * 100 < 50){
                 champion.statsByStarLevel[champion.starLevel].attackDamage += 15;
                 champion.abilityPower += 15;
-                console.log(`[${formattedTime}] ${champion.name} gained 30 attack damage and ability power.`)
+                console.log(`[${formattedTime}] ${champion.name} gained 30 attack damage and ability power.`);
             } else{
                 champion.omnivamp += 15;
-                console.log(`[${formattedTime}] ${champion.name} gained 30 omnivamp.`)
-            }
-        }
-    })
-}
+                console.log(`[${formattedTime}] ${champion.name} gained 30 omnivamp.`);
+            };
+        };
+    });
+};
 
 let guardBreakerEffectUsed = false;
 let attackShield = false;
@@ -310,7 +310,7 @@ export function guardBreakerEffect(champion: Champion, target: Champion, battleT
     if(target.shieldDamageTakenAray.length > attackShieldArray.length){
         attackShield = true;
         attackShieldArray.push(battleTime);
-    }
+    };
 
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Guardbreaker' && !guardBreakerEffectUsed && attackShield){
@@ -346,7 +346,7 @@ export function nashorsToothEffect(champion: Champion, battleTime: number){
         abilityNashorsToothUsed = true;
         timeSinceLastNashorsToothEffectUsed = battleTime;
         abilityNashorsToothUsedArray.push(battleTime) 
-    }
+    };
 
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Nashor\'s Tooth' && nashorsToothEffectUsed && abilityNashorsToothUsed ){
@@ -362,8 +362,8 @@ export function nashorsToothEffect(champion: Champion, battleTime: number){
             nashorsToothEffectUsed = false;
             abilityNashorsToothUsed = false;
             console.log(`[${formattedTime}] ${champion.name} lost 60% attack speed.`);
-        }
-    })
+        };
+    });
 };
 
 let hextechGunbladeEffectUsed = false;
@@ -433,25 +433,26 @@ export function protectorsVowEffect(champion: Champion, battleTime: number){
                 console.log(`[${formattedTime}] ${champion.name} lost ${shieldToRemove} shield`);
             } else {
                 return 'No shield to remove';
-            }
+            };
 
             console.log(`[${formattedTime}] ${champion.name} lost their Protector's Vow shield and stats`);
-        }
-    })
-}
+        };
+    });
+};
 
 let redBuffEffectUsed = false;
 let isTargetBurned = false;
 let isTargetWounded = false;
 let timeSinceRedBuffEffectUsed = 0;
-let attackRedBuffArray: number[] = []
+let attackRedBuffArray: number[] = [];
 let timeSinceLastRedBuffEffect = 0;
+let burnTicks = [];
 
 export function redBuffEffect(champion: Champion, target: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
-    const burnDamage = target.statsByStarLevel[target.starLevel].hp * 0.01
+    const burnDamage = target.statsByStarLevel[target.starLevel].hp * 0.01;
 
     if(champion.damageArray.length > attackRedBuffArray.length){
         redBuffEffectUsed = true;
@@ -459,20 +460,97 @@ export function redBuffEffect(champion: Champion, target: Champion, battleTime: 
         isTargetBurned = true;
         timeSinceRedBuffEffectUsed = battleTime;
         attackRedBuffArray.push(battleTime);
-    };
+    }
 
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Red Buff' && item.burn && item.wound && redBuffEffectUsed){
 
+            if(burnTicks.length >= 5){
+                redBuffEffectUsed = false;
+                isTargetBurned = false;
+                isTargetWounded = false;
+                timeSinceRedBuffEffectUsed = 0;
+                attackRedBuffArray: []
+                timeSinceLastRedBuffEffect = 0;
+                target.burn = false;
+                target.wound = false;
+                burnTicks = []
+                return 
+            };
+
             if(isTargetBurned && !target.burn){
                 target.burn = true;
                 console.log(`[${formattedTime}] ${target.name} is being burnt by ${champion.name}'s Red Buff`);
-            }
+            };
+
+            if(isTargetWounded && !target.wound){
+                target.wound = true;
+            };
             
-            if(target.burn && battleTime - timeSinceRedBuffEffectUsed >= 1000){
-                target.currentHp -= burnDamage
-                console.log(`[${formattedTime}] ${target.name} burned for ${burnDamage} damage`)
+            if(target.burn && battleTime - timeSinceLastRedBuffEffect >= 100){
+                timeSinceLastRedBuffEffect = battleTime;
+                target.currentHp -= burnDamage;
+                burnTicks.push(battleTime)
+                console.log(`[${formattedTime}] ${target.name} burned for ${burnDamage} damage`);
+            };
+        };
+    });
+};
+
+let morellonomiconEffectUsed = false;
+let isTargetBurnedByMorellonomicon = false;
+let isTargetWoundedByMorellonomicon = false;
+let timeSinceMorellonomiconEffectUsed = 0;
+let attackMorellonomiconArray: number[] = [];
+let timeSinceLastMorellonomiconEffect = 0;
+let burnTicksForMorellonomicon = [];
+
+export function morellonomiconEffect(champion: Champion, target: Champion, battleTime: number) {
+    if (!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+    const burnDamage = target.statsByStarLevel[target.starLevel].hp * 0.01;
+
+    if (champion.damageArray.length > attackMorellonomiconArray.length) {
+        morellonomiconEffectUsed = true;
+        isTargetBurnedByMorellonomicon = true;
+        isTargetWoundedByMorellonomicon = true;
+        timeSinceMorellonomiconEffectUsed = battleTime;
+        attackMorellonomiconArray.push(battleTime);
+    }
+
+    champion.items.forEach((item: ItemProps) => {
+        if (item.name === 'Morellonomicon' && item.burn && item.wound && morellonomiconEffectUsed) {
+
+            if (burnTicksForMorellonomicon.length >= 5) {
+                morellonomiconEffectUsed = false;
+                isTargetBurned = false;
+                isTargetWounded = false;
+                timeSinceMorellonomiconEffectUsed = 0;
+                attackMorellonomiconArray = [];
+                timeSinceLastMorellonomiconEffect = 0;
+                target.burn = false;
+                target.wound = false;
+                burnTicksForMorellonomicon = [];
+                return;
+            }
+
+            if (isTargetBurnedByMorellonomicon && !target.burn) {
+                target.burn = true;
+                console.log(`[${formattedTime}] ${target.name} is being burnt by ${champion.name}'s Morellonomicon`);
+            }
+
+            if (isTargetWoundedByMorellonomicon && !target.wound) {
+                target.wound = true;
+            }
+
+            if (target.burn && battleTime - timeSinceLastMorellonomiconEffect >= 100) {
+                timeSinceLastMorellonomiconEffect = battleTime;
+                target.currentHp -= burnDamage;
+                burnTicksForMorellonomicon.push(battleTime);
+                console.log(`[${formattedTime}] ${target.name} burned for ${burnDamage} damage`);
             }
         }
-    })
-}
+    });
+};
+
