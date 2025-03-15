@@ -560,18 +560,24 @@ export function morellonomiconEffect(champion: Champion, target: Champion, battl
     });
 };
 
-let gargoyleStoneplateEffectUsed = false;
-
 export function gargoyleStoneplateEffect(champion: Champion, battleTime: number){
     if (!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
+    
+    const amountOfChampionsAttacking = champion.currentChampionsAttacking.length;
 
-    champion.items.forEach((item: ItemProps) =>{
-        if(item.name === 'Gargoyle Stoneplate'){
+
+    champion.items.forEach((item: ItemProps) => {
+        if(item.name === 'Gargoyle Stoneplate' && amountOfChampionsAttacking > 0){
+            const armorBonus = 10 * amountOfChampionsAttacking;
+            const magicResistBonus = 10 * amountOfChampionsAttacking;
             
+            champion.statsByStarLevel[champion.starLevel].armor += armorBonus;
+            champion.statsByStarLevel[champion.starLevel].magicResist += magicResistBonus;
+            
+            console.log(`[${formattedTime}] ${champion.name} gained ${armorBonus} armor and ${magicResistBonus} magic resist from ${amountOfChampionsAttacking} attackers`);
         }
-    })
-
+    });
 }
 

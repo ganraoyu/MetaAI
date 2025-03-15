@@ -261,15 +261,14 @@ export class Champion {
         if(this.currentTarget.length === 0 || this.currentTarget[0].id !== target.id || this.currentTarget[0].currentHp <= 0){
             this.currentTarget.push(target)
             console.log(`${this.name}'s Current Target:'`,{name: target.name, ID: target.id});
-            if(this.currentTarget.length === 1){
-                console.log(`${this.name} is attacking`, target.name)
-            }
+
         }
 
         if(!target.currentChampionsAttacking.includes(this)){
             target.currentChampionsAttacking.push(this);
             if(target.currentChampionsAttacking.length > 0){
-                console.log(`${target.currentChampionsAttacking.map(champion => champion.name).join(', ')} ${target.currentChampionsAttacking.length > 1 ? 'are' : 'is'} attacking ${target.name}`);
+                console.log(`${target.currentChampionsAttacking.map(champion => champion.name)
+                    .join(', ')} ${target.currentChampionsAttacking.length > 1 ? 'are' : 'is'} attacking ${target.name}`);
             }
         }
 

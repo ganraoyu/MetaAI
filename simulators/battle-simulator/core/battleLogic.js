@@ -4,7 +4,8 @@ const router = express.Router();
 const HexCell = require('../utils/HexCell.js');
 const Board = require('./board.js');
 
-const { addAdditionalItemStatistics, 
+const { 
+    addAdditionalItemStatistics, 
     dragonsClawEffect, 
     brambleVestEffect, 
     bloodthristerEffect, 
@@ -21,7 +22,8 @@ const { addAdditionalItemStatistics,
     hextechGunbladeEffect,
     protectorsVowEffect,
     redBuffEffect,
-    morellonomiconEffect
+    morellonomiconEffect,
+    gargoyleStoneplateEffect
 } = require('../data/item/itemLogic.ts');   
 
 const { getChampionByName } = require('../data/champion/champion-data.ts');
@@ -363,6 +365,7 @@ function startBattle() {
             handOfJusticeEffect(champion, battleTime);
             nashorsToothEffect(champion, battleTime);
             protectorsVowEffect(champion, battleTime);
+            gargoyleStoneplateEffect(champion, battleTime);
 
             if(ally){
                 hextechGunbladeEffect(champion, ally, battleTime);
@@ -379,6 +382,7 @@ function startBattle() {
 
         battleOpponent.forEach(champion => {
             const target = battleOpponent.find(c => c.currentHp > 0);
+            const ally = battlePlayer.reduce((max, c) => (c.currentHp > max.currentHp ? c : max), battlePlayer[0]);
 
             dragonsClawEffect(champion, battleTime);
             bloodthristerEffect(champion, battleTime);
@@ -389,10 +393,20 @@ function startBattle() {
             steadfastHeartEffect(champion, battleTime);
             crownguardEffect(champion, battleTime);
             handOfJusticeEffect(champion, battleTime);
+            nashorsToothEffect(champion, battleTime);
+            protectorsVowEffect(champion, battleTime);
+            gargoyleStoneplateEffect(champion, battleTime);
+
+            if(ally){
+                hextechGunbladeEffect(champion, ally, battleTime);
+            }
 
             if (target) {
+                guardBreakerEffect(champion, target, battleTime);
                 giantSlayerEffect(champion, target, battleTime);
                 brambleVestEffect(champion, target, battleTime);
+                redBuffEffect(champion, target, battleTime);
+                morellonomiconEffect(champion, target, battleTime);
             }
         });
 
@@ -463,8 +477,9 @@ placeChampionByName('Akali', 4, 4, 1, 'player');
 placeChampionByName('Darius', 1, 3, 3, 'opponent'); 
 
 console.log(board.getChampion(4, 6));
-console.log(board.getChampion(3, 3));
-addItemByName(board.getChampion(4,6), 'Morellonomicon')
+console.log(board.getChampion(1, 3));
+addItemByName(board.getChampion(4,6), 'Gargoyle Stoneplate')
+
 addAdditionalItemStatistics(board.getChampion(4, 6));
 
 checkChampionTraits(board.getChampion(4, 6));

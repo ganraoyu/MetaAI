@@ -248,12 +248,13 @@ export const combinedItems = [
         wound: true,
     }),
     new Item({
-        name: 'Gargoyle Stoneplat',
+        name: 'Gargoyle Stoneplate',
         description: 'Gain 10 Armor and 10 Magic Resist for each enemy targeting the holder.',
         additionalMagicResist: 30,
         additionalArmor: 30,
         additionalHealth: 100,
-    })
+    }),
+
 ]   
 export function getItemByName(name: string){
     if(!name){
@@ -274,6 +275,6 @@ export function getItemByName(name: string){
     }
 }
 
-console.log(combinedItems[6])
+// console.log(combinedItems[6])
 
 module.exports = { getItemByName, basicItems, combinedItems }
