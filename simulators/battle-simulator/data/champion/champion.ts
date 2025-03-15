@@ -97,6 +97,8 @@ export class Champion {
     damageArray: number[] = [];
     abilityArray: number[] = [];
     healArray: number[] = [];
+    currentTarget: Champion[] = [];
+    currentChampionsAttacking: Champion[] = [];
 
     constructor(
         name: string,
@@ -256,6 +258,30 @@ export class Champion {
         
         target.takeDamage(finalDamage);
 
+        if(this.currentTarget.length === 0 || this.currentTarget[0].id !== target.id || this.currentTarget[0].currentHp <= 0){
+            this.currentTarget.push(target)
+            console.log(`${this.name}'s Current Target:'`,{name: target.name, ID: target.id});
+            if(this.currentTarget.length === 1){
+                console.log(`${this.name} is attacking`, target.name)
+            }
+        }
+
+        if(!target.currentChampionsAttacking.includes(this)){
+            target.currentChampionsAttacking.push(this);
+            if(target.currentChampionsAttacking.length > 0){
+                console.log(`${target.currentChampionsAttacking.map(champion => champion.name).join(', ')} ${target.currentChampionsAttacking.length > 1 ? 'are' : 'is'} attacking ${target.name}`);
+            }
+        }
+
+        let newCurrentChampionsAttacking = this.currentChampionsAttacking.filter(champion => champion.currentHp > 0);
+        
+        if(newCurrentChampionsAttacking.length < this.currentChampionsAttacking.length){
+            const deadChampions = this.currentChampionsAttacking.filter(champion => !newCurrentChampionsAttacking.includes(champion));
+            console.log(`${deadChampions.map(champion => champion.name).join(', ')} ${deadChampions.length > 1 ? 'have' : 'has'} died and stopped attacking ${this.name}`);
+        }
+
+        this.currentChampionsAttacking = newCurrentChampionsAttacking;
+
         const attackTypeMsg = critChance ? `*Crit* ${finalDamage}` : finalDamage;
         console.log(`[${formattedTime}] ${this.name} attacks ${target.name} for ${attackTypeMsg}`);
         
@@ -366,6 +392,7 @@ export class Champion {
             console.log(`[${formattedTime}] ${this.name} uses <${this.abilityName}> on ${target.name} for ${attackTypeMsg} damage`);
 
             target.takeDamage(totalDamage);
+
             this.abilityArray.push(totalDamage);
             
             if(this.currentHp < this.statsByStarLevel[this.starLevel].hp && omnivamp > 0){

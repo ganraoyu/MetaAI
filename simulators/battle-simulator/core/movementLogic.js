@@ -1,11 +1,12 @@
 const BASE_MOVEMENT_SPEED = 550; 
-const HEX_DISTANCE = 100; 
-const MOVEMENT_COOLDOWN_BASE = 100; 
+const HEX_DISTANCE = 225; 
 
 function getFormattedTime(battleTime) {
-    const minutes = Math.floor(battleTime / 60);
-    const seconds = battleTime % 60;
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    const mins = Math.floor(battleTime / 6000);
+    const secs = Math.floor((battleTime % 6000) / 100);
+    const cents = battleTime % 100;
+    
+    return `${mins}:${secs.toString().padStart(2, '0')}.${cents.toString().padStart(2, '0')}`;
 }
 
 function getDistanceBetweenCells(row1, col1, row2, col2) {
@@ -51,21 +52,19 @@ function moveChampionTowardsTarget(champion, target, board, battleTime) {
     }
     
     if (board.isValidPosition(newRow, newCol) && !board.getChampion(newRow, newCol)) {
-        let movementSpeed = champion.movementSpeed || BASE_MOVEMENT_SPEED;
-        let moveTime = Math.round(MOVEMENT_COOLDOWN_BASE * (BASE_MOVEMENT_SPEED / movementSpeed));
 
-        if (champion.timeUntilAttack) {
-            champion.timeUntilAttack = Math.max(champion.timeUntilAttack, battleTime + moveTime);
-        }
-        
-        champion.lastMoveTime = battleTime;
-        
+        let movementSpeed = champion.movementSpeed || BASE_MOVEMENT_SPEED;
+        let moveTime = Math.round((HEX_DISTANCE / movementSpeed) * 100);
+
+        battleTime += moveTime;
+        champion.nextAttackTime += moveTime;
+
         const formattedTime = getFormattedTime(battleTime);
         console.log(`[${formattedTime}] ${champion.name} moves from [${championRow},${championCol}] to [${newRow},${newCol}] (delay: ${moveTime/100}s)`);
 
         board.removeChampion(championRow, championCol);
         board.placeChampion(champion, newRow, newCol);
-        return true;
+        return moveTime;
     }
     
     return false;

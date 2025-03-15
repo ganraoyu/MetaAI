@@ -10,7 +10,7 @@ const champions = [
         name: 'Amumu',
         cost: 1,
         shield: 0,
-        movementSpeed: 0,
+        movementSpeed: 550, 
         traitsList: ['Automata', 'Watcher'],
         statsByStarLevel: {
             1: { 
@@ -38,7 +38,7 @@ const champions = [
         attackSpeed: 0.6,
         abilityName: 'Obsolete Technology',
         abilityDescription: 'Obsolete Technology: Passive: Amumu reduces all incoming damage. Every second, emit sparks that deal magic damage to adjacent enemies.',
-        range: 1,
+        range: 123,
         mana: 1,
         manaPerAttack: 0,
         abilityManaCost: 0,
@@ -60,7 +60,7 @@ const champions = [
         name: 'Darius',
         cost: 1,
         shield: 0,
-        movementSpeed: 0,
+        movementSpeed: 550,
         traitsList: ['Conqueror', 'Watcher'],
         statsByStarLevel: {
             1: { 
@@ -88,7 +88,7 @@ const champions = [
         attackSpeed: 0.7,
         abilityName: 'Decimate',
         abilityDescription: 'Darius swings his axe in a powerful strike, dealing damage and healing based on missing health.',
-        range: 10,
+        range: 1,
         mana: 30,
         manaPerAttack: 10,
         abilityManaCost: 70,
@@ -110,7 +110,7 @@ const champions = [
         name: 'Akali',
         cost: 2,
         shield: 0,
-        movementSpeed: 0,
+        movementSpeed: 550,
         traitsList: ['Watcher', 'Automata'],
         statsByStarLevel: {
             1: { 

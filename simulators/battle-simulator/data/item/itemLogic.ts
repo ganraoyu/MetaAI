@@ -560,3 +560,18 @@ export function morellonomiconEffect(champion: Champion, target: Champion, battl
     });
 };
 
+let gargoyleStoneplateEffectUsed = false;
+
+export function gargoyleStoneplateEffect(champion: Champion, battleTime: number){
+    if (!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+
+    champion.items.forEach((item: ItemProps) =>{
+        if(item.name === 'Gargoyle Stoneplate'){
+            
+        }
+    })
+
+}
+

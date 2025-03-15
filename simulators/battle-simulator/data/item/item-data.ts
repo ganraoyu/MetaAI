@@ -246,6 +246,13 @@ export const combinedItems = [
         additionalAttackSpeed: 1.1,
         burn: true,
         wound: true,
+    }),
+    new Item({
+        name: 'Gargoyle Stoneplat',
+        description: 'Gain 10 Armor and 10 Magic Resist for each enemy targeting the holder.',
+        additionalMagicResist: 30,
+        additionalArmor: 30,
+        additionalHealth: 100,
     })
 ]   
 export function getItemByName(name: string){

@@ -39,6 +39,14 @@ nodemon battlelogic
    
 const board = new Board(8, 7);
 
+function getFormattedTime(battleTime) {
+    const mins = Math.floor(battleTime / 6000);
+    const secs = Math.floor((battleTime % 6000) / 100);
+    const cents = battleTime % 100;
+    const formattedTime = `${mins}:${secs.toString().padStart(2, '0')}.${cents.toString().padStart(2, '0')}`;
+    return formattedTime;
+}
+
 function placeChampionByName(championName, row, column, starLevel, team) {
     const champion = getChampionByName(championName);
     if (typeof champion === 'string') {
@@ -188,44 +196,87 @@ function addAdditionalTraitStatistics(champion) {
 
 function simulateRound(battlePlayer, battleOpponent, battleTime) {
     let attackOccurred = false;
+    let updatedBattleTime = battleTime;
 
-    battlePlayer.forEach(champion => {
-        if (champion.currentHp > 0) {
-            // Find closest enemy
-            const { closestEnemy, distance } = findClosestEnemy(champion, battleOpponent, board);
-            
-            if (closestEnemy) {
-                if (distance <= champion.range) {
-                    if (champion.attack(closestEnemy, battleTime)) {
-                        attackOccurred = true;
-                    }
-                } else {
-                    moveChampionTowardsTarget(champion, closestEnemy, board, battleTime);
+    let movementOccurred = false;
+
+
+    for (const champion of battlePlayer) {
+        if (champion.currentHp <= 0) continue;
+        
+        const { closestEnemy, distance } = findClosestEnemy(champion, battleOpponent, board);
+        
+        if (closestEnemy) {
+            if (distance <= champion.range) {
+                if (champion.attack(closestEnemy, updatedBattleTime)) {
+                    attackOccurred = true;
+                }
+            } else {
+                const moveTime = moveChampionTowardsTarget(champion, closestEnemy, board, updatedBattleTime);
+
+                if (moveTime) {
+                    updatedBattleTime += moveTime;
+                    movementOccurred = true;
+                    break; 
                 }
             }
         }
-    }); 
+    }
 
-    battleOpponent.forEach(champion => {
-        if (champion.currentHp > 0) {
+    if (!movementOccurred) {
+        for (const champion of battleOpponent) {
+            if (champion.currentHp <= 0) continue;
+            
             const { closestEnemy, distance } = findClosestEnemy(champion, battlePlayer, board);
             
             if (closestEnemy) {
                 if (distance <= champion.range) {
-                    if (champion.attack(closestEnemy, battleTime)) {
+                    if (champion.attack(closestEnemy, updatedBattleTime)) {
                         attackOccurred = true;
                     }
                 } else {
-                    moveChampionTowardsTarget(champion, closestEnemy, board, battleTime);
+                    const moveTime = moveChampionTowardsTarget(champion, closestEnemy, board, updatedBattleTime);
+                    if (moveTime) {
+                        updatedBattleTime += moveTime;
+                        movementOccurred = true;
+                        break;
+                    }
                 }
+            }
+        }
+    }
+
+    battlePlayer.forEach(champion => {
+        if (champion.currentHp <= 0) {
+            const [row, col] = board.getChampionPosition(champion);
+
+            if (row !== undefined && col !== undefined) {
+                board.removeChampion(row, col);
+            }
+        }
+    });
+    
+    battleOpponent.forEach(champion => {
+        if (champion.currentHp <= 0) {
+            const [row, col] = board.getChampionPosition(champion);
+
+            if (row !== undefined && col !== undefined) {
+                board.removeChampion(row, col);
             }
         }
     });
 
-    battlePlayer = battlePlayer.filter(champion => champion.currentHp > 0);
-    battleOpponent = battleOpponent.filter(champion => champion.currentHp > 0);
+    battlePlayer.filter(champion => champion.currentHp > 0);
+    battleOpponent.filter(champion => champion.currentHp > 0);
 
-    return { battlePlayer, battleOpponent, attackOccurred };
+
+    return { 
+        battlePlayer, 
+        battleOpponent, 
+        attackOccurred,
+        movementOccurred,
+        battleTime: updatedBattleTime 
+    };
 }
 
 function calculateWinRates(playerWins, opponentWins) {
@@ -248,28 +299,30 @@ function startBattle() {
     console.log("Player:", battlePlayer.map(c => `${c.name} (Attack Speed: ${c.attackSpeed.toFixed(2)})`));
     console.log("Opponent:", battleOpponent.map(c => `${c.name} (Attack Speed: ${c.attackSpeed.toFixed(2)})`));
     
-
     const BATTLE_STEP = 1; 
     const MAX_BATTLE_TIME = 30000; 
 
-    let battleTime = 0; // in centiseconds 
+    let battleTime = 0; 
 
     while (
         battlePlayer.some(champion => champion.currentHp > 0) && 
         battleOpponent.some(champion => champion.currentHp > 0) && 
         battleTime <= MAX_BATTLE_TIME
     ) {
-        battleTime += BATTLE_STEP;
+        const result = simulateRound(battlePlayer, battleOpponent, battleTime); 
         
-        const mins = Math.floor(this.battleTime / 6000);
-        const secs = Math.floor((this.battleTime % 6000) / 100);
-        const cents = this.battleTime % 100;
-        const formattedTime = `${mins}:${secs.toString().padStart(2, '0')}:${cents.toString().padStart(2, '0')}`;
+        battlePlayer = result.battlePlayer;
+        battleOpponent = result.battleOpponent;
+        battleTime = result.battleTime; 
         
-        const { attackOccurred } = simulateRound(battlePlayer, battleOpponent, battleTime);
-        
+        if (!result.movementOccurred && !result.attackOccurred) {
+            battleTime += BATTLE_STEP;
+        }
+    
+        const formattedTime = getFormattedTime(battleTime);
+
         if (battleTime % 100 === 0) {
-            console.log(`Battle time: ${battleTime/100} seconds`);
+            console.log(`Battle time: ${formattedTime} (${battleTime/100} seconds)`);
             
             const playerTeamStats = battlePlayer.map(champion => {
                 return [
@@ -295,7 +348,7 @@ function startBattle() {
             console.log('Opponent team:', opponentTeamStats);
         }
 
-        battlePlayer.forEach(champion =>{            
+        battlePlayer.forEach(champion => {            
             const target = battleOpponent.find(c => c.currentHp > 0);
             const ally = battlePlayer.reduce((max, c) => (c.currentHp > max.currentHp ? c : max), battlePlayer[0]);
 
@@ -313,7 +366,6 @@ function startBattle() {
 
             if(ally){
                 hextechGunbladeEffect(champion, ally, battleTime);
-
             }
 
             if (target) {
@@ -325,7 +377,7 @@ function startBattle() {
             }
         });
 
-        battleOpponent.forEach(champion =>{
+        battleOpponent.forEach(champion => {
             const target = battleOpponent.find(c => c.currentHp > 0);
 
             dragonsClawEffect(champion, battleTime);
@@ -343,6 +395,7 @@ function startBattle() {
                 brambleVestEffect(champion, target, battleTime);
             }
         });
+
     }
     
     if (battlePlayer.some(champion => champion.currentHp > 0)) {
@@ -354,10 +407,9 @@ function startBattle() {
     } else {
         console.log('No champions left standing - Draw!');
     }
-  
-
-    if(battleTime )
-    console.log('Battle ended after', battleTime/100, 'seconds of simulated time.');
+    
+    board.displayBoard();
+    console.log('Battle ended after', (battleTime/100).toFixed(2), 'seconds of simulated time.');
     
     const { playerWinRate, opponentWinRate } = calculateWinRates(playerWins, opponentWins);
 
@@ -406,8 +458,9 @@ function startBattle() {
     }; 
 }
 
-placeChampionByName('Akali', 4, 6, 2, 'player');
-placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
+placeChampionByName('Amumu', 4, 6, 1, 'player');
+placeChampionByName('Akali', 4, 4, 1, 'player');
+placeChampionByName('Darius', 1, 3, 3, 'opponent'); 
 
 console.log(board.getChampion(4, 6));
 console.log(board.getChampion(3, 3));
