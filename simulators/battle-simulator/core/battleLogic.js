@@ -23,7 +23,8 @@ const {
     protectorsVowEffect,
     redBuffEffect,
     morellonomiconEffect,
-    gargoyleStoneplateEffect
+    gargoyleStoneplateEffect,
+    sunfireCapeEffect
 } = require('../data/item/itemLogic.ts');   
 
 const { getChampionByName } = require('../data/champion/champion-data.ts');
@@ -351,6 +352,7 @@ function startBattle() {
         battlePlayer.forEach(champion => {            
             const target = battleOpponent.find(c => c.currentHp > 0);
             const ally = battlePlayer.reduce((max, c) => (c.currentHp > max.currentHp ? c : max), battlePlayer[0]);
+            const { championsInRadius, surroundingChampions,  } = board.getSurroundingChampionsByRadius(champion, 2);
 
             dragonsClawEffect(champion, battleTime);
             bloodthristerEffect(champion, battleTime);
@@ -375,6 +377,7 @@ function startBattle() {
                 brambleVestEffect(champion, target, battleTime);
                 redBuffEffect(champion, target, battleTime);
                 morellonomiconEffect(champion, target, battleTime);
+                sunfireCapeEffect(champion, target, surroundingChampions, battleTime);
             }
         });
 
@@ -471,15 +474,14 @@ function startBattle() {
 }
 
 placeChampionByName('Amumu', 4, 6, 1, 'player');
-placeChampionByName('Akali', 4, 5, 1, 'player');
 placeChampionByName('Darius', 1, 3, 3, 'opponent'); 
-placeChampionByName('Akali', 0, 3, 3, 'opponent'); 
+placeChampionByName('Akali', 3, 6, 3, 'opponent'); 
 
 console.log(board.getChampion(4, 6));
 console.log(board.getChampion(4, 5));
 console.log(board.getChampion(1, 3));
 console.log(board.getChampion(0, 3));
-addItemByName(board.getChampion(4,6), 'Gargoyle Stoneplate')
+addItemByName(board.getChampion(4,6), 'Sunfire Cape')
 
 addAdditionalItemStatistics(board.getChampion(4, 6));
 

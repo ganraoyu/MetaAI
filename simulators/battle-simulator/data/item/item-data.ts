@@ -260,7 +260,7 @@ export const combinedItems = [
         additionalHealth: 250,
         additionalArmor: 20,
         burn: true,
-        would: true
+        wound: true
     })
 
 ]   

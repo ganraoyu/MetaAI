@@ -38,7 +38,7 @@ const champions = [
         attackSpeed: 0.6,
         abilityName: 'Obsolete Technology',
         abilityDescription: 'Obsolete Technology: Passive: Amumu reduces all incoming damage. Every second, emit sparks that deal magic damage to adjacent enemies.',
-        range: 123,
+        range: 1,
         mana: 1,
         manaPerAttack: 0,
         abilityManaCost: 0,

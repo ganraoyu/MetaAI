@@ -586,26 +586,50 @@ export function gargoyleStoneplateEffect(champion: Champion, battleTime: number)
     });
 }
 
-let sunfireCapeEffectUsed = false;
+let sunfireCapeEffectUsed = true;
 let burnTicksForSunfireCape = [];
 let isTargetBurnedBySunfireCape = false;
 let isTargetWoundedBySunfireCape = false;
 let timeSinceLastSunfireCapeEffect = 0;
 
-export function sunfireCapeEffect(chamion: Champion, target: Champion, surroundingChampions: Champion[], battleTime: number){
-    if(!chamion || !chamion.items || !chamion.items.length) return;
+export function sunfireCapeEffect(champion: Champion, target: Champion, surroundingChampions: Champion[], battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
 
-    const formattedTime = getFormattedTime(chamion);
+    const formattedTime = getFormattedTime(champion);
     const burnDamage = target.statsByStarLevel[target.starLevel].hp * 0.01;
 
-    surroundingChampions.forEach((targets: Champion) => {
-        targets.currentHp -= burnDamage;
-        burnTicksForSunfireCape.push(battleTime);
-        console.log(`[${formattedTime}] ${targets.name} burned for ${burnDamage} damage`)
-    })
-            
-    chamion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Sunfire Cape'){
+    if(burnTicksForSunfireCape.length >= 5){
+        sunfireCapeEffectUsed = false;
+        isTargetBurnedBySunfireCape = false;
+        isTargetWoundedBySunfireCape = false;
+        timeSinceLastSunfireCapeEffect = 0;
+        burnTicksForSunfireCape = [];
+    }
+
+    champion.items.forEach((item: ItemProps) => {
+        if(item.name === 'Sunfire Cape' &&
+            item.burn &&
+            item.wound &&
+            sunfireCapeEffectUsed
+        ){
+            if(battleTime - timeSinceLastSunfireCapeEffect >= 100){
+                surroundingChampions.forEach((targets: Champion) => {
+                    if(!isTargetBurnedBySunfireCape && !targets.burn){
+                        targets.burn = true;
+                        console.log(`[${formattedTime}] ${targets.name} is being burnt by ${champion.name}'s Sunfire Cape`);
+                    }
+
+                    if(!isTargetWoundedBySunfireCape && !targets.wound){
+                        targets.wound = true;
+                    }
+
+                    targets.currentHp -= burnDamage;
+                    burnTicksForSunfireCape.push(battleTime);
+                    timeSinceLastSunfireCapeEffect = battleTime;
+                    console.log(`[${formattedTime}] ${targets.name} burned for ${burnDamage} damage`)
+
+                })
+            }
 
         }
     });

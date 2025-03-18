@@ -99,14 +99,18 @@ class Board {
     }
 
     isThereAChampion(row, column) {
+        if (!this.isValidPosition(row, column)) {
+            return false;
+        }
+
         return this.grid[row][column].champion !== null;
     }
 
     getSurroundingChampionsByRadius(champion, radius) { 
         const [row, column] = this.getChampionPosition(champion);
 
-        console.log('row', row);
-        console.log('column', column);
+        // console.log('row', row);
+        // console.log('column', column);
         let cellsAroundChampion = [];
         let surroundingChampions = [];
 
@@ -131,13 +135,13 @@ class Board {
         championsInRadius.forEach(cell => {
             const champion = this.getChampion(cell[0], cell[1]);
             surroundingChampions.push(champion);
-            console.log('champion', champion.name, 'found');
+            // console.log('champion', champion.name, 'found');
         });
 
-        console.log('championsInRadius', championsInRadius);
-        console.log('surroundingChampions', surroundingChampions);
+        // console.log('championsInRadius', championsInRadius);
+        // console.log('surroundingChampions', surroundingChampions);
 
-        return championsInRadius;
+        return { championsInRadius, surroundingChampions };
     }
 
     displayBoard() {
