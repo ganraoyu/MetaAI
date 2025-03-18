@@ -84,7 +84,6 @@ function placeChampionByName(championName, row, column, starLevel, team) {
             champion.abilityArray,
             champion.healArray,            
             champion.items,
-
         );
         newChampion.setStarLevel(starLevel);
         newChampion.team = team; // Assign the team to the champion
@@ -155,7 +154,6 @@ function checkChampionTraits(champion) {
 
     return combinedTraitsObject;
 }
-
 
 function addAdditionalTraitStatistics(champion) {
     let traitCounts = {};
@@ -473,11 +471,14 @@ function startBattle() {
 }
 
 placeChampionByName('Amumu', 4, 6, 1, 'player');
-placeChampionByName('Akali', 4, 4, 1, 'player');
+placeChampionByName('Akali', 4, 5, 1, 'player');
 placeChampionByName('Darius', 1, 3, 3, 'opponent'); 
+placeChampionByName('Akali', 0, 3, 3, 'opponent'); 
 
 console.log(board.getChampion(4, 6));
+console.log(board.getChampion(4, 5));
 console.log(board.getChampion(1, 3));
+console.log(board.getChampion(0, 3));
 addItemByName(board.getChampion(4,6), 'Gargoyle Stoneplate')
 
 addAdditionalItemStatistics(board.getChampion(4, 6));
@@ -486,5 +487,6 @@ checkChampionTraits(board.getChampion(4, 6));
 addAdditionalTraitStatistics(board.getChampion(4, 6));
 
 board.displayBoard();
+board.getSurroundingChampionsByRadius(board.getChampion(1, 3), 2);
 
 module.exports = { router, startBattle };

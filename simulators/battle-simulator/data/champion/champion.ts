@@ -3,13 +3,14 @@ const { getItemByName } = require('../item/item-data');
 const { ItemProps } = require('../item/item');
 const { externalMagicDamageEffect } = require('../item/itemLogic');
 type ItemProps = typeof ItemProps;
+
 /*
 cd simulators/battle-simulator/data/champion
 nodemon champion.ts
 */
 const { v4: uuidv4 } = require('uuid');
 
-// Interfaces
+
 interface AbilityStats {
     reduction: number;
     damage: number;
@@ -30,7 +31,6 @@ type StatsByStarLevel = {
     [starLevel: number]: StarLevelStats;
 };
 
-// Helper Functions
 function getFormattedTime(champion: Champion) {
     const mins = Math.floor(champion.battleTime / 6000);
     const secs = Math.floor((champion.battleTime % 6000) / 100);
@@ -38,7 +38,6 @@ function getFormattedTime(champion: Champion) {
     return `${mins}:${secs.toString().padStart(2, '0')}:${cents.toString().padStart(2, '0')}`;
 }
 
-// Champion Class
 export class Champion {
     // Basic Properties
     readonly id: string = uuidv4();
@@ -164,7 +163,7 @@ export class Champion {
         return this.statsByStarLevel[this.starLevel];
     }
 
-    setStarLevel(starLevel: number) {
+    setStarLevel(starLevel: number) { 
         if (this.statsByStarLevel[starLevel]) {
             this.starLevel = starLevel;
             this.currentHp = this.statsByStarLevel[starLevel].hp; 
@@ -220,6 +219,7 @@ export class Champion {
 
         const formattedTime = getFormattedTime(this);
         
+        // add rage blade effect
         if (this.items) {
             this.items.forEach(item => {    
                 if (item.attackSpeedStacking && item.additionalAttackSpeedPerStack) {
@@ -258,22 +258,24 @@ export class Champion {
         
         target.takeDamage(finalDamage);
 
+        // push target to current target array if not already in it
         if(this.currentTarget.length === 0 || this.currentTarget[0].id !== target.id || this.currentTarget[0].currentHp <= 0){
             this.currentTarget.push(target)
             console.log(`${this.name}'s Current Target:'`,{name: target.name, ID: target.id});
 
         }
 
+        // push attacking champion to target's currentChampionsAttacking array if not already in it
         if(!target.currentChampionsAttacking.includes(this)){
             target.currentChampionsAttacking.push(this);
-            if(target.currentChampionsAttacking.length > 0){
-                console.log(`${target.currentChampionsAttacking.map(champion => champion.name)
-                    .join(', ')} ${target.currentChampionsAttacking.length > 1 ? 'are' : 'is'} attacking ${target.name}`);
-            }
+            console.log(`${this.name} has started attacking ${target.name}`);
+            console.log(`${target.currentChampionsAttacking.map(champion => champion.name)
+                .join(', ')} ${target.currentChampionsAttacking.length > 1 ? 'are' : 'is'} now attacking ${target.name}`);
         }
 
+        // remove dead champions
         let newCurrentChampionsAttacking = this.currentChampionsAttacking.filter(champion => champion.currentHp > 0);
-        
+                        
         if(newCurrentChampionsAttacking.length < this.currentChampionsAttacking.length){
             const deadChampions = this.currentChampionsAttacking.filter(champion => !newCurrentChampionsAttacking.includes(champion));
             console.log(`${deadChampions.map(champion => champion.name).join(', ')} ${deadChampions.length > 1 ? 'have' : 'has'} died and stopped attacking ${this.name}`);
@@ -296,13 +298,13 @@ export class Champion {
             this.healArray.push(omnivampHealAmount)
         }
 
-        this.mana += this.manaPerAttack;
-        this.attacks.push(1);
-        this.damageArray.push(finalDamage);
+        this.mana += this.manaPerAttack; // increment mana
+        this.attacks.push(1); // increment attack counter
+        this.damageArray.push(finalDamage); // track damage dealt
         
-        this.lastAttackTime = this.battleTime;
-        const attackDelay = 1 / this.attackSpeed * 100;  
-        this.nextAttackTime = this.battleTime + attackDelay;
+        this.lastAttackTime = this.battleTime; // update last attack time
+        const attackDelay = 1 / this.attackSpeed * 100;  // calculate attack delay
+        this.nextAttackTime = this.battleTime + attackDelay; // update next attack time
         
         if (this.mana >= this.abilityManaCost) {
             this.useAbility(target, this.battleTime);

@@ -151,6 +151,7 @@ const champions = [
         sunder: false,
         shred: false,
         wound: false,
+        burn: false,
         durability: 0,
         omnivamp: 12,
         items: [],

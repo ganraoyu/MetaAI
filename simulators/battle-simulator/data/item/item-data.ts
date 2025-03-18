@@ -254,6 +254,14 @@ export const combinedItems = [
         additionalArmor: 30,
         additionalHealth: 100,
     }),
+    new Item({
+        name: 'Sunfire Cape',
+        description: 'Every 2 seconds, deal 1% Burn and 33% Wound to an enemy within 2 hexes for 10 seconds.',
+        additionalHealth: 250,
+        additionalArmor: 20,
+        burn: true,
+        would: true
+    })
 
 ]   
 export function getItemByName(name: string){

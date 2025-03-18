@@ -560,24 +560,53 @@ export function morellonomiconEffect(champion: Champion, target: Champion, battl
     });
 };
 
+let gargoyleStoneplateEffectUsed = false;
+let amountOfChampionsAttacking = 0;
+
 export function gargoyleStoneplateEffect(champion: Champion, battleTime: number){
     if (!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
     
-    const amountOfChampionsAttacking = champion.currentChampionsAttacking.length;
-
+     if(champion.currentChampionsAttacking.length > amountOfChampionsAttacking){
+        amountOfChampionsAttacking = 1;
+        gargoyleStoneplateEffectUsed = true;
+    }
 
     champion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Gargoyle Stoneplate' && amountOfChampionsAttacking > 0){
+        if(item.name === 'Gargoyle Stoneplate' && amountOfChampionsAttacking > 0 && gargoyleStoneplateEffectUsed){
             const armorBonus = 10 * amountOfChampionsAttacking;
             const magicResistBonus = 10 * amountOfChampionsAttacking;
-            
+
             champion.statsByStarLevel[champion.starLevel].armor += armorBonus;
             champion.statsByStarLevel[champion.starLevel].magicResist += magicResistBonus;
-            
+            gargoyleStoneplateEffectUsed = false
             console.log(`[${formattedTime}] ${champion.name} gained ${armorBonus} armor and ${magicResistBonus} magic resist from ${amountOfChampionsAttacking} attackers`);
         }
     });
 }
 
+let sunfireCapeEffectUsed = false;
+let burnTicksForSunfireCape = [];
+let isTargetBurnedBySunfireCape = false;
+let isTargetWoundedBySunfireCape = false;
+let timeSinceLastSunfireCapeEffect = 0;
+
+export function sunfireCapeEffect(chamion: Champion, target: Champion, surroundingChampions: Champion[], battleTime: number){
+    if(!chamion || !chamion.items || !chamion.items.length) return;
+
+    const formattedTime = getFormattedTime(chamion);
+    const burnDamage = target.statsByStarLevel[target.starLevel].hp * 0.01;
+
+    surroundingChampions.forEach((targets: Champion) => {
+        targets.currentHp -= burnDamage;
+        burnTicksForSunfireCape.push(battleTime);
+        console.log(`[${formattedTime}] ${targets.name} burned for ${burnDamage} damage`)
+    })
+            
+    chamion.items.forEach((item: ItemProps) => {
+        if(item.name === 'Sunfire Cape'){
+
+        }
+    });
+}

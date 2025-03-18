@@ -98,6 +98,48 @@ class Board {
         return false;
     }
 
+    isThereAChampion(row, column) {
+        return this.grid[row][column].champion !== null;
+    }
+
+    getSurroundingChampionsByRadius(champion, radius) { 
+        const [row, column] = this.getChampionPosition(champion);
+
+        console.log('row', row);
+        console.log('column', column);
+        let cellsAroundChampion = [];
+        let surroundingChampions = [];
+
+        // top right/left hex above champion
+        cellsAroundChampion.push([row - (radius - 1), column]); // top
+        cellsAroundChampion.push([row - (radius - 1), column + 1]); // top right
+        cellsAroundChampion.push([row - (radius - 1), column - 1]); // top left
+
+        //left and right hex of champion
+        cellsAroundChampion.push([row, column - (radius - 1)]); // left
+        cellsAroundChampion.push([row, column + (radius - 1)]); // right
+
+        // bottom right/left hex below champion
+        cellsAroundChampion.push([row + (radius - 1), column]); // bottom
+        cellsAroundChampion.push([row + (radius - 1), column + 1]); // bottom right
+        cellsAroundChampion.push([row + (radius - 1), column - 1]); // bottom left
+
+        const championsInRadius = cellsAroundChampion.filter(cell => {
+            return this.isThereAChampion(cell[0], cell[1]);
+        });
+
+        championsInRadius.forEach(cell => {
+            const champion = this.getChampion(cell[0], cell[1]);
+            surroundingChampions.push(champion);
+            console.log('champion', champion.name, 'found');
+        });
+
+        console.log('championsInRadius', championsInRadius);
+        console.log('surroundingChampions', surroundingChampions);
+
+        return championsInRadius;
+    }
+
     displayBoard() {
         console.log('Board:');
         for (let row = 0; row < this.rows; row++) {
