@@ -261,6 +261,21 @@ export const combinedItems = [
         additionalArmor: 20,
         burn: true,
         wound: true
+    }),
+    new Item({
+        name: 'Ionic Spark',
+        description: '30% Shred enemies within 2 hexes. When enemies cast an Ability, deal magic damage equal to 160% of the Mana spent.',
+        additionalHealth: 150,
+        additionalAbilityPower: 15,
+        additionalMagicResist: 25,
+        shred: true,
+    }),
+    new Item({
+        name: 'Adaptive Helm',
+        description: 'Combat Start: Gain different bonuses based on starting position. Front Two Rows: 40 Armor and Magic Resist. Gain 1 Mana when struck by an attack. Back Two Rows: 20 Ability Power. Gain 10 Mana every 3 seconds.',
+        additionalAbilityPower: 15,
+        additionalStartingMana: 15,
+        additionalMagicResist: 20,
     })
 
 ]   

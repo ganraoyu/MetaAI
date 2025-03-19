@@ -24,7 +24,9 @@ const {
     redBuffEffect,
     morellonomiconEffect,
     gargoyleStoneplateEffect,
-    sunfireCapeEffect
+    sunfireCapeEffect,
+    ionicSparkEffect,
+    adaptiveHelmEffect
 } = require('../data/item/itemLogic.ts');   
 
 const { getChampionByName } = require('../data/champion/champion-data.ts');
@@ -353,6 +355,14 @@ function startBattle() {
             const target = battleOpponent.find(c => c.currentHp > 0);
             const ally = battlePlayer.reduce((max, c) => (c.currentHp > max.currentHp ? c : max), battlePlayer[0]);
             const { championsInRadius, surroundingChampions,  } = board.getSurroundingChampionsByRadius(champion, 2);
+            const { championsInRadiusByTarget, surroundingChampionsAroundTarget } = board.getSurroundingChampionsByRadius(target, 2);
+            const {row, column} = board.getChampionPosition(champion);
+
+            let isChampionFrontOrBack; // True = front, False = back
+
+            if(row > 5){
+                isChampionFrontOrBack = true
+            }
 
             dragonsClawEffect(champion, battleTime);
             bloodthristerEffect(champion, battleTime);
@@ -366,7 +376,8 @@ function startBattle() {
             nashorsToothEffect(champion, battleTime);
             protectorsVowEffect(champion, battleTime);
             gargoyleStoneplateEffect(champion, battleTime);
-
+            ionicSparkEffect(champion, surroundingChampions, battleTime);
+            adaptiveHelmEffect(champion, isChampionFrontOrBack, battleTime)
             if(ally){
                 hextechGunbladeEffect(champion, ally, battleTime);
             }
@@ -378,6 +389,7 @@ function startBattle() {
                 redBuffEffect(champion, target, battleTime);
                 morellonomiconEffect(champion, target, battleTime);
                 sunfireCapeEffect(champion, target, surroundingChampions, battleTime);
+
             }
         });
 
@@ -477,16 +489,13 @@ placeChampionByName('Amumu', 4, 6, 1, 'player');
 placeChampionByName('Darius', 1, 3, 3, 'opponent'); 
 placeChampionByName('Akali', 3, 6, 3, 'opponent'); 
 
-console.log(board.getChampion(4, 6));
+console.log(board.getChampion(5, 6));
 console.log(board.getChampion(4, 5));
 console.log(board.getChampion(1, 3));
 console.log(board.getChampion(0, 3));
-addItemByName(board.getChampion(4,6), 'Sunfire Cape')
+addItemByName(board.getChampion(4,6), 'Adaptive Helm')
 
-addAdditionalItemStatistics(board.getChampion(4, 6));
 
-checkChampionTraits(board.getChampion(4, 6));
-addAdditionalTraitStatistics(board.getChampion(4, 6));
 
 board.displayBoard();
 board.getSurroundingChampionsByRadius(board.getChampion(1, 3), 2);

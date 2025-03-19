@@ -628,9 +628,49 @@ export function sunfireCapeEffect(champion: Champion, target: Champion, surround
                     timeSinceLastSunfireCapeEffect = battleTime;
                     console.log(`[${formattedTime}] ${targets.name} burned for ${burnDamage} damage`)
 
-                })
-            }
-
-        }
+                });
+            };
+        };
     });
+};
+
+let ionicSparkEffectUsed = true; // passive
+
+export function ionicSparkEffect(champion: Champion, surroundingChampions: Champion[], battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+
+    champion.items.forEach((item: ItemProps) => {
+        if(item.name === 'Ionic Spark' && item.shred && ionicSparkEffectUsed){
+            surroundingChampions.forEach((targets: Champion) => {
+                if(!targets.shred){
+                    targets.shred = true;    
+                    console.log(`[${formattedTime}] ${targets.name} shreded`)
+                }
+
+            })
+        }
+    })
+};
+
+let adaptiveHelmEffectUsed = false;
+
+export function adaptiveHelmEffect(champion: Champion, isChampionFrontOrBack: boolean, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+
+    champion.items.forEach((item: ItemProps) => {
+        if(item.name === 'Adaptive Helm' && !adaptiveHelmEffectUsed){
+            if(isChampionFrontOrBack){
+                champion.statsByStarLevel[champion.starLevel].armor += 40;
+                champion.statsByStarLevel[champion.starLevel].magicResist += 40;
+                console.log(`[${formattedTime}] ${champion.name} gained 40 armor and magic resist`);
+            } else if(!isChampionFrontOrBack){
+                champion.abilityPower += 20;
+                console.log(`[${formattedTime}] ${champion.name} gained 20 ability power`);
+            }
+        }
+    })
 }
