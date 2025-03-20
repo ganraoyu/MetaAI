@@ -28,7 +28,8 @@ const {
     ionicSparkEffect,
     adaptiveHelmEffect,
     evenshroudEffect,
-    redemptionEffect
+    redemptionEffect,
+    edgeOfNightEffect
 } = require('../data/item/itemLogic.ts');   
 
 const { getChampionByName } = require('../data/champion/champion-data.ts');
@@ -81,6 +82,7 @@ function placeChampionByName(championName, row, column, starLevel, team) {
             champion.shred,
             champion.wound,
             champion.burn,
+            champion.immunity,
             champion.abilityPower,
             champion.omnivamp,
             champion.durability,
@@ -379,6 +381,7 @@ function startBattle() {
             adaptiveHelmEffect(champion, isChampionFrontOrBack, battleTime)
             evenshroudEffect(champion, surroundingOpponents, battleTime )
             redemptionEffect(champion, surroundingAllies, battleTime)
+            edgeOfNightEffect(champion, battleTime)
 
             if(ally){
                 hextechGunbladeEffect(champion, ally, battleTime);
@@ -488,11 +491,10 @@ function startBattle() {
 }
 
 placeChampionByName('Amumu', 4, 6, 3, 'player');
-placeChampionByName('Darius', 4, 5, 3, 'player');
 placeChampionByName('Darius', 1, 3, 3, 'opponent'); 
 placeChampionByName('Akali', 3, 6, 3, 'opponent'); 
 
-addItemByName(board.getChampion(4,6), 'Evenshroud');
+addItemByName(board.getChampion(4,6), 'Edge of Night');
 
 console.log(board.getChampion(5, 6));
 console.log(board.getChampion(4, 6));

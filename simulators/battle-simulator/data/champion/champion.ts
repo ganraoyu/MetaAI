@@ -67,6 +67,7 @@ export class Champion {
     shred: boolean;
     wound: boolean;
     burn: boolean;
+    immunity: boolean;
     omnivamp: number;
 
     // Mana System
@@ -121,6 +122,7 @@ export class Champion {
         shred: boolean,
         wound: boolean,
         burn: boolean,
+        immunity: boolean,
         abilityPower: number,  
         omnivamp: number,
         durability: number,
@@ -149,6 +151,7 @@ export class Champion {
         this.shred = shred;
         this.wound = wound;
         this.burn = burn;
+        this.immunity = immunity;
         this.abilityPower = abilityPower;
         this.omnivamp = omnivamp;
         this.durability = durability;
@@ -208,6 +211,7 @@ export class Champion {
         const ability = target.getStats().ability;
         const damageReduction = ability.reduction;
         const sunder = target.sunder;
+        const immunity = target.immunity
         let durability = target.durability;
 
         const damage = this.getStats().attackDamage;
@@ -256,8 +260,12 @@ export class Champion {
 
         finalDamage = Math.round(finalDamage);
         
-        target.takeDamage(finalDamage);
+        if(immunity){
+            finalDamage = 0
+        } 
 
+        target.takeDamage(finalDamage);
+        
         // push target to current target array if not already in it
         if(this.currentTarget.length === 0 || this.currentTarget[0].id !== target.id || this.currentTarget[0].currentHp <= 0){
             this.currentTarget.push(target)
@@ -334,6 +342,7 @@ export class Champion {
         const damageReduction = targetAbility.reduction;
         const sunder = target.sunder;
         const shred = target.shred;
+        const immunity = target.immunity
         let durability = target.durability;
 
         const formattedTime = getFormattedTime(this);
@@ -389,6 +398,9 @@ export class Champion {
                 totalDamage *= critDamage;
             } 
             
+            if(immunity){
+                totalDamage = 0
+            }
             const attackTypeMsg = critChance ? `*Crit* ${totalDamage}` : totalDamage;
             console.log(`[${formattedTime}] ${this.name} uses <${this.abilityName}> on ${target.name} for ${attackTypeMsg} damage`);
 

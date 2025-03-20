@@ -290,6 +290,12 @@ export const combinedItems = [
         additionalHealth: 100,
         additionalStartingMana: 15,
         heal:true
+    }),
+    new Item({
+        name: 'Edge of Night',
+        description: 'Once per combat: At 60% Health, briefly become untargetable and shed negative effects. Then, gain 15% bonus Attack Speed.',
+        additionalAttackSpeed: 1.1,
+        additionalArmor: 20,
     })
 
 ]   

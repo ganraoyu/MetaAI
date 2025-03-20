@@ -1,4 +1,4 @@
-import { ItemProps } from './item'; 
+import { Item, ItemProps } from './item'; 
 import { Champion } from '../champion/champion';
 
 
@@ -696,7 +696,7 @@ export function evenshroudEffect(champion: Champion, surroundingOpponents: Champ
             surroundingOpponents.forEach((targets: Champion) =>{
                 if(!targets.sunder){
                     targets.sunder = true;
-                    console.log(`[${formattedTime}] ${targets.name} sundered`)   
+                    console.log(`[${formattedTime}] ${targets.name} sundered from evenshroud`);   
                 }
             })
             
@@ -705,7 +705,7 @@ export function evenshroudEffect(champion: Champion, surroundingOpponents: Champ
                 champion.statsByStarLevel[champion.starLevel].magicResist += 25;
                 combatStartEvenshroudEffectUsed = true;          
                 timeSinceEvenshroudEffectUsed = battleTime
-                console.log(`Combat start: [${formattedTime}] ${champion.name} gained 25 armor and magic resist`)
+                console.log(`Combat start: [${formattedTime}] ${champion.name} gained 25 armor and magic resist from evenshround`);
             }
         }
     })
@@ -741,3 +741,32 @@ export function redemptionEffect(champion: Champion, surroundingAllies: Champion
         }
     })
 }
+
+let edgeOfNightEffectUsed = false;
+let edgeOfNightEffectExpired = false;
+let timeSinceEdgeOfNightEffectUsed = 0;
+
+export function edgeOfNightEffect(champion: Champion, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+    
+    champion.items.forEach((item: ItemProps) =>{
+        if(item.name === 'Edge of Night'){
+            if(!edgeOfNightEffectUsed && champion.currentHp <= champion.statsByStarLevel[champion.starLevel].hp * 0.6){
+                champion.attackSpeed += 1.15;
+                edgeOfNightEffectUsed = true
+                champion.immunity = true;  
+                timeSinceEdgeOfNightEffectUsed = battleTime;
+                console.log(`[${formattedTime}] ${champion.name} gained 15% attack speed and 5 second immunity from Edge of Night`);
+            };
+            
+            if(edgeOfNightEffectUsed && !edgeOfNightEffectExpired && 
+               battleTime - timeSinceEdgeOfNightEffectUsed >= 500){
+                champion.immunity = false;
+                edgeOfNightEffectExpired = true;
+                console.log(`[${formattedTime}] ${champion.name} lost their immunity`);
+            };
+        };
+    });
+};
