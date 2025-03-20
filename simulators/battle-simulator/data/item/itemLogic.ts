@@ -592,7 +592,7 @@ let isTargetBurnedBySunfireCape = false;
 let isTargetWoundedBySunfireCape = false;
 let timeSinceLastSunfireCapeEffect = 0;
 
-export function sunfireCapeEffect(champion: Champion, target: Champion, surroundingChampions: Champion[], battleTime: number){
+export function sunfireCapeEffect(champion: Champion, target: Champion, surroundingOpponents: Champion[], battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -613,7 +613,7 @@ export function sunfireCapeEffect(champion: Champion, target: Champion, surround
             sunfireCapeEffectUsed
         ){
             if(battleTime - timeSinceLastSunfireCapeEffect >= 100){
-                surroundingChampions.forEach((targets: Champion) => {
+                surroundingOpponents.forEach((targets: Champion) => {
                     if(!isTargetBurnedBySunfireCape && !targets.burn){
                         targets.burn = true;
                         console.log(`[${formattedTime}] ${targets.name} is being burnt by ${champion.name}'s Sunfire Cape`);
@@ -634,16 +634,38 @@ export function sunfireCapeEffect(champion: Champion, target: Champion, surround
     });
 };
 
+let adaptiveHelmEffectUsed = false;
+
+export function adaptiveHelmEffect(champion: Champion, isChampionFrontOrBack: boolean, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+
+    champion.items.forEach((item: ItemProps) => {
+        if(item.name === 'Adaptive Helm' && !adaptiveHelmEffectUsed){
+            if(isChampionFrontOrBack){  
+                champion.statsByStarLevel[champion.starLevel].armor += 40;
+                champion.statsByStarLevel[champion.starLevel].magicResist += 40;
+                console.log(`[${formattedTime}] ${champion.name} gained 40 armor and magic resist`);
+            } else if(!isChampionFrontOrBack){
+                champion.abilityPower += 20;
+                console.log(`[${formattedTime}] ${champion.name} gained 20 ability power`);
+            }
+            adaptiveHelmEffectUsed = true;
+        }
+    })
+}
+
 let ionicSparkEffectUsed = true; // passive
 
-export function ionicSparkEffect(champion: Champion, surroundingChampions: Champion[], battleTime: number){
+export function ionicSparkEffect(champion: Champion, surroundingOpponents: Champion[], battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
 
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Ionic Spark' && item.shred && ionicSparkEffectUsed){
-            surroundingChampions.forEach((targets: Champion) => {
+            surroundingOpponents.forEach((targets: Champion) => {
                 if(!targets.shred){
                     targets.shred = true;    
                     console.log(`[${formattedTime}] ${targets.name} shreded`)
@@ -654,23 +676,68 @@ export function ionicSparkEffect(champion: Champion, surroundingChampions: Champ
     })
 };
 
-let adaptiveHelmEffectUsed = false;
+let evenshroudEffectUsed = true; // passive
+let combatStartEvenshroudEffectUsed = false;
+let timeSinceEvenshroudEffectUsed = 0; // combat start 
 
-export function adaptiveHelmEffect(champion: Champion, isChampionFrontOrBack: boolean, battleTime: number){
+export function evenshroudEffect(champion: Champion, surroundingOpponents: Champion[], battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
 
-    champion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Adaptive Helm' && !adaptiveHelmEffectUsed){
-            if(isChampionFrontOrBack){
-                champion.statsByStarLevel[champion.starLevel].armor += 40;
-                champion.statsByStarLevel[champion.starLevel].magicResist += 40;
-                console.log(`[${formattedTime}] ${champion.name} gained 40 armor and magic resist`);
-            } else if(!isChampionFrontOrBack){
-                champion.abilityPower += 20;
-                console.log(`[${formattedTime}] ${champion.name} gained 20 ability power`);
+    if(timeSinceEvenshroudEffectUsed >= 1000 && combatStartEvenshroudEffectUsed){
+        champion.statsByStarLevel[champion.starLevel].armor -= 25;
+        champion.statsByStarLevel[champion.starLevel].magicResist -= 25;
+        console.log(`[${formattedTime}] ${champion.name} lost 25 armor and magic resist from evenshround combat start effect`);
+    }
+
+    champion.items.forEach((item: ItemProps) =>{
+        if(item.name === 'Evenshroud' && evenshroudEffectUsed){
+            surroundingOpponents.forEach((targets: Champion) =>{
+                if(!targets.sunder){
+                    targets.sunder = true;
+                    console.log(`[${formattedTime}] ${targets.name} sundered`)   
+                }
+            })
+            
+            if(!combatStartEvenshroudEffectUsed){
+                champion.statsByStarLevel[champion.starLevel].armor += 25;
+                champion.statsByStarLevel[champion.starLevel].magicResist += 25;
+                combatStartEvenshroudEffectUsed = true;          
+                timeSinceEvenshroudEffectUsed = battleTime
+                console.log(`Combat start: [${formattedTime}] ${champion.name} gained 25 armor and magic resist`)
             }
+        }
+    })
+}
+
+let redemptionEffectUsed = false;
+let timeSinceRedemptionEffectUsed = 0;
+
+export function redemptionEffect(champion: Champion, surroundingAllies: Champion[], battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion); 
+
+    champion.items.forEach((item: ItemProps) => {
+        if(item.name === 'Redemption' && !redemptionEffectUsed && battleTime - timeSinceRedemptionEffectUsed >= 500){
+            surroundingAllies.forEach((ally: Champion) => {
+                const healingAmount = Math.round(ally.statsByStarLevel[ally.starLevel].hp * 0.15);
+                const reductionAmount = ally.statsByStarLevel[champion.starLevel].reduction += 10; // 10% percent
+
+                ally.statsByStarLevel[ally.starLevel].reduction += reductionAmount;
+                ally.currentHp += healingAmount;
+                ally.healArray.push(healingAmount);
+                
+                console.log(`[${formattedTime}] ${ally.name} healed for ${healingAmount} by redemption and gained 10 reduction`);
+            })
+
+            const healingAmount = Math.round(champion.statsByStarLevel[champion.starLevel].hp * 0.15);
+
+            champion.currentHp += healingAmount
+            console.log(`[${formattedTime}] ${champion.name} healed for ${healingAmount} by redemption and gained 10% reduction`)
+
+            timeSinceRedemptionEffectUsed = battleTime
         }
     })
 }

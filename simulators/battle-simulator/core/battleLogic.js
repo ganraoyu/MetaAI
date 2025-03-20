@@ -26,7 +26,9 @@ const {
     gargoyleStoneplateEffect,
     sunfireCapeEffect,
     ionicSparkEffect,
-    adaptiveHelmEffect
+    adaptiveHelmEffect,
+    evenshroudEffect,
+    redemptionEffect
 } = require('../data/item/itemLogic.ts');   
 
 const { getChampionByName } = require('../data/champion/champion-data.ts');
@@ -354,15 +356,12 @@ function startBattle() {
         battlePlayer.forEach(champion => {            
             const target = battleOpponent.find(c => c.currentHp > 0);
             const ally = battlePlayer.reduce((max, c) => (c.currentHp > max.currentHp ? c : max), battlePlayer[0]);
-            const { championsInRadius, surroundingChampions,  } = board.getSurroundingChampionsByRadius(champion, 2);
+            const { championsInRadius, surroundingOpponents, surroundingAllies } = board.getSurroundingChampionsByRadius(champion, 2);
             const { championsInRadiusByTarget, surroundingChampionsAroundTarget } = board.getSurroundingChampionsByRadius(target, 2);
-            const {row, column} = board.getChampionPosition(champion);
+            const [row, column] = board.getChampionPosition(champion);
 
             let isChampionFrontOrBack; // True = front, False = back
-
-            if(row > 5){
-                isChampionFrontOrBack = true
-            }
+            row >= 4 ? isChampionFrontOrBack = true : isChampionFrontOrBack = false;
 
             dragonsClawEffect(champion, battleTime);
             bloodthristerEffect(champion, battleTime);
@@ -376,8 +375,11 @@ function startBattle() {
             nashorsToothEffect(champion, battleTime);
             protectorsVowEffect(champion, battleTime);
             gargoyleStoneplateEffect(champion, battleTime);
-            ionicSparkEffect(champion, surroundingChampions, battleTime);
+            ionicSparkEffect(champion, surroundingOpponents, battleTime);
             adaptiveHelmEffect(champion, isChampionFrontOrBack, battleTime)
+            evenshroudEffect(champion, surroundingOpponents, battleTime )
+            redemptionEffect(champion, surroundingAllies, battleTime)
+
             if(ally){
                 hextechGunbladeEffect(champion, ally, battleTime);
             }
@@ -388,7 +390,7 @@ function startBattle() {
                 brambleVestEffect(champion, target, battleTime);
                 redBuffEffect(champion, target, battleTime);
                 morellonomiconEffect(champion, target, battleTime);
-                sunfireCapeEffect(champion, target, surroundingChampions, battleTime);
+                sunfireCapeEffect(champion, target, surroundingOpponents, battleTime);
 
             }
         });
@@ -485,19 +487,17 @@ function startBattle() {
     }; 
 }
 
-placeChampionByName('Amumu', 4, 6, 1, 'player');
+placeChampionByName('Amumu', 4, 6, 3, 'player');
+placeChampionByName('Darius', 4, 5, 3, 'player');
 placeChampionByName('Darius', 1, 3, 3, 'opponent'); 
 placeChampionByName('Akali', 3, 6, 3, 'opponent'); 
 
+addItemByName(board.getChampion(4,6), 'Evenshroud');
+
 console.log(board.getChampion(5, 6));
-console.log(board.getChampion(4, 5));
+console.log(board.getChampion(4, 6));
 console.log(board.getChampion(1, 3));
 console.log(board.getChampion(0, 3));
-addItemByName(board.getChampion(4,6), 'Adaptive Helm')
-
-
 
 board.displayBoard();
-board.getSurroundingChampionsByRadius(board.getChampion(1, 3), 2);
-
 module.exports = { router, startBattle };

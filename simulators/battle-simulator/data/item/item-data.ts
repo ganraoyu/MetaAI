@@ -276,6 +276,20 @@ export const combinedItems = [
         additionalAbilityPower: 15,
         additionalStartingMana: 15,
         additionalMagicResist: 20,
+    }),
+    new Item({
+        name: 'Evenshroud',
+        description: '30% Sunder enemies within 2 hexes. Gain 25 Armor and Magic Resist for the first 10 seconds of combat.',
+        additionalHeatlh: 150,
+        additionalMagicresist: 20,
+        sunder: true,
+    }),
+    new Item({
+        name: 'Redemption',
+        description: 'Heal allies within 1 hex for 15% of their missing Health every 5 seconds. They also take 10% less damage for 5 seconds (damage reduction does not stack).',
+        additionalHealth: 100,
+        additionalStartingMana: 15,
+        heal:true
     })
 
 ]   

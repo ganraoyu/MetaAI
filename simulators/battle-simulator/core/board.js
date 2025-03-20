@@ -113,6 +113,8 @@ class Board {
         // console.log('column', column);
         let cellsAroundChampion = [];
         let surroundingChampions = [];
+        let surroundingOpponents = []; 
+        let surroundingAllies = []; 
 
         // top right/left hex above champion
         cellsAroundChampion.push([row - (radius - 1), column]); // top
@@ -135,13 +137,21 @@ class Board {
         championsInRadius.forEach(cell => {
             const champion = this.getChampion(cell[0], cell[1]);
             surroundingChampions.push(champion);
-            // console.log('champion', champion.name, 'found');
+            //  console.log('champion', champion.name, 'found');
+        });
+
+        surroundingChampions.forEach(champion => {
+            if (champion.team === 'player') {
+                surroundingAllies.push(champion);
+            } else {
+                surroundingOpponents.push(champion);
+            }
         });
 
         // console.log('championsInRadius', championsInRadius);
         // console.log('surroundingChampions', surroundingChampions);
 
-        return { championsInRadius, surroundingChampions };
+        return { championsInRadius, surroundingOpponents, surroundingAllies };
     }
 
     displayBoard() {
