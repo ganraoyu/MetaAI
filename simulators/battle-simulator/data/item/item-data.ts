@@ -12,7 +12,7 @@ export const basicItems = [
     additionalAttackDamage: 1.1, // 10% attack damag
     }), 
     new Item({
-        name:'Recurve Bow',
+        name:'Recursive Bow',
         description:'Increases Attack Speed by 10%.',
         additionalAttackSpeed: 1.1 // 10% attack speed
     }),
@@ -44,7 +44,7 @@ export const basicItems = [
     new Item({
         name: 'Sparring Gloves',
         description: 'Increases Critical Chance by 15',
-        additionalCritChance: 0.2 // 20% crit chance
+        additionalCritChance: 20 // 20% crit chance
     }),
     new Item({
         name: 'Spatula',
@@ -296,9 +296,23 @@ export const combinedItems = [
         description: 'Once per combat: At 60% Health, briefly become untargetable and shed negative effects. Then, gain 15% bonus Attack Speed.',
         additionalAttackSpeed: 1.1,
         additionalArmor: 20,
+    }),
+    new Item({
+        name: 'Statikk Shiv',
+        description: 'Every 3rd attack deals 35 magic damage and 30% Shreds 4 enemies for 5 seconds.',
+        additionalAttackSpeed: 1.15,
+        additionalStartingMana: 15,
+        additionalAbilityPower: 15,
+        shred: true,    
+    }), new Item({
+        name: 'Quick Silver',
+        description: 'Combat start: Gain immunity to crowd control for 18 seconds. During this time, gain 3% Attack Speed every 2 seconds.',
+        additionalAttacKSpeed: 1.3,
+        additionalCritChance: 0.2,
     })
-
 ]   
+
+
 export function getItemByName(name: string){
     if(!name){
         return 'Champion name cannt be Empty'

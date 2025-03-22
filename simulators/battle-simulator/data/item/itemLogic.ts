@@ -10,7 +10,8 @@ function getFormattedTime(champion: any){
     return formattedTime;
 }
 
-export function addAdditionalItemStatistics(champion: Champion) { // basic stats
+// basic stats
+export function addAdditionalItemStatistics(champion: Champion) { 
     if (!champion || !champion.items || !champion.items.length) return 'No items equipped';
 
     if(champion.items.length > 0 && champion.items.length <= 3){
@@ -71,9 +72,10 @@ export function bloodthristerEffect(champion: Champion, battleTime: number ){
     
     if(!bloodthristerStateMap.has(champion.id)){
         bloodthristerStateMap.set(champion.id, {
-            // let bloodthristerEffectUsed = false;
+            bloodthristerEffectUsed: false
         })
     }
+
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Bloodthirster' && 
             item.shield && 
@@ -754,7 +756,7 @@ export function edgeOfNightEffect(champion: Champion, battleTime: number){
     champion.items.forEach((item: ItemProps) =>{
         if(item.name === 'Edge of Night'){
             if(!edgeOfNightEffectUsed && champion.currentHp <= champion.statsByStarLevel[champion.starLevel].hp * 0.6){
-                champion.attackSpeed += 1.15;
+                champion.attackSpeed *= 1.15;
                 edgeOfNightEffectUsed = true
                 champion.immunity = true;  
                 timeSinceEdgeOfNightEffectUsed = battleTime;
@@ -770,3 +772,49 @@ export function edgeOfNightEffect(champion: Champion, battleTime: number){
         };
     });
 };
+
+
+export function statikkShivEffect(champion: Champion, target: Champion, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+
+    champion.items.forEach((item: ItemProps) =>{
+        if(item.name === 'Stattik Shiv'){
+            if((champion.attacks.length - 1) % 3 === 0){
+                const magicDamage = 35;
+
+                target.shred = true;
+                target.currentHp -= magicDamage;
+                champion.magicDamageArray.push(magicDamage);
+                target.magicDamageTakenArray.push(magicDamage);
+                console.log(`[${formattedTime}] ${champion.name} dealt ${magicDamage} magic damage to ${target.name}`);
+            };
+        };
+    });
+};
+
+let quickSilverEffectUsed = false;
+let combatStartQuickSilverEffectUsed = false
+
+export function quickSilverEffect(champion: Champion, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+
+    champion.items.forEach((item: ItemProps) =>{
+        if(item.name === 'Quick Silver' && !quickSilverEffectUsed){
+            // combat start
+            if(!combatStartQuickSilverEffectUsed){
+                champion.attackSpeed *= 1.03;
+                combatStartQuickSilverEffectUsed = true;
+                console.log(`[${formattedTime}] ${champion.name} gained 3% attack speed from Quick Silver`);
+            }
+            // after combat start effect still active for 18 seconds
+            if (battleTime % 200 === 0 && battleTime <= 1800) { 
+                champion.attackSpeed *= 1.03;
+                console.log(`[${formattedTime}] ${champion.name} gained 3% attack speed from Quick Silver`);
+            }
+        }
+    })
+}

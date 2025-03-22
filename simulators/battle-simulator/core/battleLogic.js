@@ -29,7 +29,8 @@ const {
     adaptiveHelmEffect,
     evenshroudEffect,
     redemptionEffect,
-    edgeOfNightEffect
+    edgeOfNightEffect,
+    quickSilverEffect
 } = require('../data/item/itemLogic.ts');   
 
 const { getChampionByName } = require('../data/champion/champion-data.ts');
@@ -309,7 +310,7 @@ function startBattle() {
     const BATTLE_STEP = 1; 
     const MAX_BATTLE_TIME = 30000; 
 
-    let battleTime = 0; 
+    let battleTime = 0;
 
     while (
         battlePlayer.some(champion => champion.currentHp > 0) && 
@@ -378,10 +379,11 @@ function startBattle() {
             protectorsVowEffect(champion, battleTime);
             gargoyleStoneplateEffect(champion, battleTime);
             ionicSparkEffect(champion, surroundingOpponents, battleTime);
-            adaptiveHelmEffect(champion, isChampionFrontOrBack, battleTime)
-            evenshroudEffect(champion, surroundingOpponents, battleTime )
-            redemptionEffect(champion, surroundingAllies, battleTime)
-            edgeOfNightEffect(champion, battleTime)
+            adaptiveHelmEffect(champion, isChampionFrontOrBack, battleTime);
+            evenshroudEffect(champion, surroundingOpponents, battleTime );
+            redemptionEffect(champion, surroundingAllies, battleTime);
+            edgeOfNightEffect(champion, battleTime);
+            quickSilverEffect(champion, battleTime);
 
             if(ally){
                 hextechGunbladeEffect(champion, ally, battleTime);
@@ -490,11 +492,11 @@ function startBattle() {
     }; 
 }
 
-placeChampionByName('Amumu', 4, 6, 3, 'player');
-placeChampionByName('Darius', 1, 3, 3, 'opponent'); 
-placeChampionByName('Akali', 3, 6, 3, 'opponent'); 
+placeChampionByName('Akali', 4, 3, 3, 'player');
+placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
 
-addItemByName(board.getChampion(4,6), 'Edge of Night');
+addItemByName(board.getChampion(4,3), 'Quick Silver');
+addAdditionalItemStatistics(board.getChampion(4,3), 'Quick Silver');
 
 console.log(board.getChampion(5, 6));
 console.log(board.getChampion(4, 6));

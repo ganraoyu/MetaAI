@@ -93,8 +93,10 @@ export class Champion {
     // Combat Tracking Arrays
     attacks: number[] = [1];
     damageTakenArray: number[] = [];
+    magicDamageTakenArray: number[] = [];
     shieldDamageTakenAray: number[] = [];
     damageArray: number[] = [];
+    magicDamageArray: number[] = [];
     abilityArray: number[] = [];
     healArray: number[] = [];
     currentTarget: Champion[] = [];
