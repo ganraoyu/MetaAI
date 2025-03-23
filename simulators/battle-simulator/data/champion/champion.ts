@@ -94,7 +94,7 @@ export class Champion {
     attacks: number[] = [1];
     damageTakenArray: number[] = [];
     magicDamageTakenArray: number[] = [];
-    shieldDamageTakenAray: number[] = [];
+    shieldDamageTakenArray: number[] = [];
     damageArray: number[] = [];
     magicDamageArray: number[] = [];
     abilityArray: number[] = [];
@@ -181,13 +181,13 @@ export class Champion {
 
         if(this.shield > 0){
             this.shield -= damage;
-            this.shieldDamageTakenAray.push(damage);
+            this.shieldDamageTakenArray.push(damage);
         }
 
         if(this.shield < 0){
             const remainingDamage = Math.abs(this.shield);
             this.currentHp -= remainingDamage;
-            this.shieldDamageTakenAray.push(remainingDamage);
+            this.shieldDamageTakenArray.push(remainingDamage);
             this.shield = 0;
         }
        

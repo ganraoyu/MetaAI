@@ -495,8 +495,8 @@ function startBattle() {
 placeChampionByName('Akali', 4, 3, 3, 'player');
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
 
-addItemByName(board.getChampion(4,3), 'Quick Silver');
-addAdditionalItemStatistics(board.getChampion(4,3), 'Quick Silver');
+addItemByName(board.getChampion(4,3), 'Guardbreaker');
+addItemByName(board.getChampion(3,3), 'Guardbreaker');
 
 console.log(board.getChampion(5, 6));
 console.log(board.getChampion(4, 6));
