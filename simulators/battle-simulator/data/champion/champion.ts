@@ -94,9 +94,11 @@ export class Champion {
     attacks: number[] = [1];
     damageTakenArray: number[] = [];
     magicDamageTakenArray: number[] = [];
+    trueDamageTakenArray: number[] = [];
     shieldDamageTakenArray: number[] = [];
     damageArray: number[] = [];
     magicDamageArray: number[] = [];
+    trueDamageArray: number[] = [];
     abilityArray: number[] = [];
     healArray: number[] = [];
     currentTarget: Champion[] = [];

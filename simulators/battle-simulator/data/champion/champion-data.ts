@@ -60,7 +60,7 @@ const champions = [
     {
         name: 'Darius',
         cost: 1,
-        shield: 123,
+        shield: 0,
         movementSpeed: 550,
         traitsList: ['Conqueror', 'Watcher'],
         statsByStarLevel: {

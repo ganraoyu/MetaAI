@@ -378,7 +378,7 @@ function startBattle() {
             nashorsToothEffect(champion, battleTime);
             protectorsVowEffect(champion, battleTime);
             gargoyleStoneplateEffect(champion, battleTime);
-            ionicSparkEffect(champion, surroundingOpponents, battleTime);
+            ionicSparkEffect(champion, target, surroundingOpponents, battleTime);
             adaptiveHelmEffect(champion, isChampionFrontOrBack, battleTime);
             evenshroudEffect(champion, surroundingOpponents, battleTime );
             redemptionEffect(champion, surroundingAllies, battleTime);
@@ -495,13 +495,10 @@ function startBattle() {
 placeChampionByName('Akali', 4, 3, 3, 'player');
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
 
-addItemByName(board.getChampion(4,3), 'Guardbreaker');
-addItemByName(board.getChampion(3,3), 'Guardbreaker');
+addItemByName(board.getChampion(4,3), 'Quick Silver');
+addItemByName(board.getChampion(3,3), 'Nashor\'s Tooth');
 
-console.log(board.getChampion(5, 6));
-console.log(board.getChampion(4, 6));
-console.log(board.getChampion(1, 3));
-console.log(board.getChampion(0, 3));
+console.log(board.getChampion(4,3));
 
 board.displayBoard();
 module.exports = { router, startBattle };
