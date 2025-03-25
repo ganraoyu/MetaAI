@@ -402,7 +402,13 @@ function startBattle() {
 
         battleOpponent.forEach(champion => {
             const target = battleOpponent.find(c => c.currentHp > 0);
-            const ally = battlePlayer.reduce((max, c) => (c.currentHp > max.currentHp ? c : max), battlePlayer[0]);
+            const ally = battleOpponent.reduce((max, c) => (c.currentHp > max.currentHp ? c : max), battleOpponent[0]);
+            const { championsInRadius, surroundingOpponents, surroundingAllies } = board.getSurroundingChampionsByRadius(champion, 2);
+            const { championsInRadiusByTarget, surroundingChampionsAroundTarget } = board.getSurroundingChampionsByRadius(target, 2);
+            const [row, column] = board.getChampionPosition(champion);
+
+            let isChampionFrontOrBack; // True = front, False = back
+            row >= 4 ? isChampionFrontOrBack = true : isChampionFrontOrBack = false;
 
             dragonsClawEffect(champion, battleTime);
             bloodthristerEffect(champion, battleTime);
@@ -416,6 +422,12 @@ function startBattle() {
             nashorsToothEffect(champion, battleTime);
             protectorsVowEffect(champion, battleTime);
             gargoyleStoneplateEffect(champion, battleTime);
+            ionicSparkEffect(champion, target, surroundingOpponents, battleTime);
+            adaptiveHelmEffect(champion, isChampionFrontOrBack, battleTime);
+            evenshroudEffect(champion, surroundingOpponents, battleTime );
+            redemptionEffect(champion, surroundingAllies, battleTime);
+            edgeOfNightEffect(champion, battleTime);
+            quickSilverEffect(champion, battleTime);
 
             if(ally){
                 hextechGunbladeEffect(champion, ally, battleTime);
@@ -427,6 +439,8 @@ function startBattle() {
                 brambleVestEffect(champion, target, battleTime);
                 redBuffEffect(champion, target, battleTime);
                 morellonomiconEffect(champion, target, battleTime);
+                sunfireCapeEffect(champion, target, surroundingOpponents, battleTime);
+
             }
         });
 

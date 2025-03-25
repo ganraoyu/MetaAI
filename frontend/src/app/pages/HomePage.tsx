@@ -1,5 +1,5 @@
-import logo from '../../assets/logo.png';
-import black from '../../assets/black.png';
+// import logo from '../../assets/logo.png';
+// import black from '../../assets/black.png';
 
 const HomePage = () => {
   return (
