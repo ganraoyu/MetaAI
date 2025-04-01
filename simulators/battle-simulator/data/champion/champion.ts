@@ -1,7 +1,7 @@
 const { getChampionByName } = require('../champion/champion-data');
 const { getItemByName } = require('../item/item-data');
 const { ItemProps } = require('../item/item');
-const { externalMagicDamageEffect } = require('../item/itemLogic');
+const { externalMagicDamageEffect } = require('../item/logic/combinedItems.ts');
 type ItemProps = typeof ItemProps;
 
 /*
@@ -9,7 +9,6 @@ cd simulators/battle-simulator/data/champion
 nodemon champion.ts
 */
 const { v4: uuidv4 } = require('uuid');
-
 
 interface AbilityStats {
     reduction: number;

@@ -1,13 +1,67 @@
-const { startBattle } = require('./battleLogic.js');
+import { Champion } from '../data/champion/champion.js';
+import { Request, Response } from 'express';
+import { Item } from '../data/item/item.js';
 
-/*
-cd simulators/battle-simulator/core
-nodemon battleStatistics
-*/
+const { startBattle }  = require('./battleLogic.js');
 
-const startBattleData = startBattle();
+interface ChampionStatistic {
+    name: string;
+    items: Item[];
+    HP: number;
+    baseHP: number;
+    damageArray: number[];
+    abilityArray: number[];
+    healArray: number[];
+}
 
-const calculateWinRate = async (req, res) => {
+interface BattleResult {
+    player: Champion[];
+    opponent: Champion[];
+    playerWinRate: string;
+    opponentWinRate: string;
+    playerStatistics: ChampionStatistic[];
+    opponentStatistics: ChampionStatistic[];
+    battleDuration: number;
+}
+
+interface DamageData {
+    name: string;
+    totalDamage: number;
+}
+
+interface AbilityDamageData {
+    name: string;
+    totalAbilityDamage: number;
+}
+
+interface AllDamageData {
+    name: string;
+    totalAttackDamage: number;
+    totalAbilityDamage: number;
+    allDamage: number;
+    items?: Item[];
+}
+
+interface HealingData {
+  name: string;
+  totalHealing: number;
+}
+
+interface ChampionStatusData {
+    name: string;
+    HP: number;
+    baseHP: number;
+    isAlive: boolean;
+}
+
+interface ChampionItemData {
+    name: string;
+    items: Item[];
+}
+
+const startBattleData: BattleResult = startBattle();
+
+const calculateWinRate = async (req: Request, res: Response): Promise<{playerWinRate: string; opponentWinRate: string}> => {
     try {
         const { playerWinRate, opponentWinRate } = startBattleData;
         console.log('Player win rate is ' + playerWinRate);
@@ -17,31 +71,33 @@ const calculateWinRate = async (req, res) => {
     } catch (error) {
         console.error('Error: ' + error);
         res.status(500).json({ error: 'An error occurred while calculating win rate.' });
+        throw error;
     }
 };
 
-const calculateChampionItems = async (req, res) => {
-    try{
+const calculateChampionItems = async (req: Request, res: Response): Promise<{playerChampionItems: ChampionItemData[]; opponentChampionItems: ChampionItemData[]}> => {
+    try {
         const { playerStatistics, opponentStatistics } = startBattleData; 
 
-        const playerChampionItems = playerStatistics.map(champion => ({
+        const playerChampionItems = playerStatistics.map((champion: ChampionStatistic) => ({
             name: champion.name,
             items: champion.items
         }));
 
-        const opponentChampionItems = opponentStatistics.map(champion => ({
+        const opponentChampionItems = opponentStatistics.map((champion: ChampionStatistic) => ({
             name: champion.name,
             items: champion.items   
         }));
 
         return { playerChampionItems, opponentChampionItems };
-    } catch(error){
+    } catch(error) {
         console.error('Error: ' + error);
         res.status(500).json({ error: 'An error occurred while fetching champion items.' });
+        throw error;
     }
 }
 
-const calculateAttackDamageDelt = async (req, res) => {
+const calculateAttackDamageDelt = async (req: Request, res: Response): Promise<{totalPlayerDamage: DamageData[]; totalOpponentDamage: DamageData[]}> => {
     try {
         const { playerStatistics, opponentStatistics } = startBattleData;
 
@@ -67,10 +123,11 @@ const calculateAttackDamageDelt = async (req, res) => {
     } catch (error) {
         console.error('Error: ' + error);
         res.status(500).json({ error: 'An error occurred while calculating total attack damage.' });
+        throw error;
     }
 };
 
-const calculateAbilityDamageDelt = async (req, res) => {
+const calculateAbilityDamageDelt = async (req: Request, res: Response): Promise<{totalPlayerAbilityDamage: AbilityDamageData[]; totalOpponentAbilityDamage: AbilityDamageData[]}> => {
     try {
         const { playerStatistics, opponentStatistics } = startBattleData;
 
@@ -96,19 +153,17 @@ const calculateAbilityDamageDelt = async (req, res) => {
     } catch (error) {
         console.error('Error: ' + error);
         res.status(500).json({ error: 'An error occurred while calculating total ability damage.' });
+        throw error;
     }
 };
 
-const calculateAllDamageDelt = async (req, res) => {
+const calculateAllDamageDelt = async (req: Request, res: Response): Promise<{allPlayerDamage: AllDamageData[]; allOpponentDamage: AllDamageData[]}> => {
     try {
         const { playerStatistics, opponentStatistics } = startBattleData;
 
         if (playerStatistics.length === 0 || opponentStatistics.length === 0) {
-            return res.status(400).json({ error: 'No total damage data available.' });
-        }
-
-        if (playerStatistics.length === 0 || opponentStatistics.length === 0) {
-            return res.status(400).json({ error: 'No total ability damage data available.' });
+            res.status(400).json({ error: 'No total damage data available.' });
+            throw new Error('No data available');
         }
 
         const totalPlayerDamage = playerStatistics.map(champion => ({
@@ -148,14 +203,15 @@ const calculateAllDamageDelt = async (req, res) => {
         console.log(allPlayerDamage);
         console.log(allOpponentDamage);
 
-        return { allPlayerDamage, allOpponentDamage }
+        return { allPlayerDamage, allOpponentDamage };
     } catch (error) {
         console.error('Error: ' + error);
         res.status(500).json({ error: 'An error occurred while calculating total damage.' });
+        throw error;
     }
 };
 
-const calculateHealing = async (req, res) => {
+const calculateHealing = async (req: Request, res: Response): Promise<{totalPlayerHealing: HealingData[]; totalOpponentHealing: HealingData[]}> => {
     try {
         const { playerStatistics, opponentStatistics } = startBattleData;
         
@@ -172,14 +228,15 @@ const calculateHealing = async (req, res) => {
         console.log(totalPlayerHealing);
         console.log(totalOpponentHealing);
 
-        return { totalPlayerHealing, totalOpponentHealing }
+        return { totalPlayerHealing, totalOpponentHealing };
     } catch (error) {
         console.log('Error' + error);
         res.status(500).json({ error: 'An error occurred while calculating healing.' });
+        throw error;
     }
 };
 
-const calculateIsAliveOrDead = async (req, res) => {
+const calculateIsAliveOrDead = async (req: Request, res: Response): Promise<{checkPlayerChampionAliveOrDead: ChampionStatusData[]; checkOpponentChampionAliveOrDead: ChampionStatusData[]}> => {
     try {
         const { playerStatistics, opponentStatistics } = startBattleData;
 
@@ -203,28 +260,56 @@ const calculateIsAliveOrDead = async (req, res) => {
     } catch(error){
         console.log('Error', error);
         res.status(500).json({ error: 'An error occurred while checking if champions are alive or dead.' });
+        throw error;
     }
 };
 
-const calculateAllBattleStatistics = async (req, res) => {
-    try {
-        const { playerWinRate, opponentWinRate } = await calculateWinRate();
-        const { allPlayerDamage, allOpponentDamage } = await calculateAllDamageDelt();
-        const { totalPlayerHealing, totalOpponentHealing } = await calculateHealing();
-        const { checkPlayerChampionAliveOrDead, checkOpponentChampionAliveOrDead } = await calculateIsAliveOrDead();
+interface PlayerStatistics {
+    playerWinRate: string;
+    playerStatistics: Array<{
+        name: string;
+        items: Item[];
+        hp: number;
+        isAlive: boolean;
+        totalChampionDamage: number;
+        totalChampionAbilityDamage: number;
+        allChampionDamage: number;
+        totalChampionHealing: number;
+    }>;
+}
 
-        const playerChampionStatistics = [{
+interface OpponentStatistics {
+    opponentWinRate: string;
+    opponentStatistics: Array<{
+        name: string;
+        items: Item[];
+        hp: number;
+        isAlive: boolean;
+        totalChampionDamage: number;
+        totalChampionAbilityDamage: number;
+        allChampionDamage: number;
+        totalChampionHealing: number;
+    }>;
+}
+
+const calculateAllBattleStatistics = async (req: Request, res: Response): Promise<{playerChampionStatistics: PlayerStatistics[]; opponentChamionStatistics: OpponentStatistics[]}> => {
+    try {
+        const { playerWinRate, opponentWinRate } = await calculateWinRate(req, res);
+        const { allPlayerDamage, allOpponentDamage } = await calculateAllDamageDelt(req, res);
+        const { totalPlayerHealing, totalOpponentHealing } = await calculateHealing(req, res);
+        const { checkPlayerChampionAliveOrDead, checkOpponentChampionAliveOrDead } = await calculateIsAliveOrDead(req, res);
+
+        const playerChampionStatistics: PlayerStatistics[] = [{
             playerWinRate,
             playerStatistics: allPlayerDamage.map((champion, index) => ({
                 name: champion.name,
-                items: champion.items,
+                items: champion.items || [],
                 hp: checkPlayerChampionAliveOrDead[index].HP,
                 isAlive: checkPlayerChampionAliveOrDead[index].isAlive,
                 totalChampionDamage: champion.totalAttackDamage,
                 totalChampionAbilityDamage: champion.totalAbilityDamage,
                 allChampionDamage: champion.allDamage,
                 totalChampionHealing: totalPlayerHealing[index].totalHealing,
-
             }))
         }];
 
@@ -234,11 +319,11 @@ const calculateAllBattleStatistics = async (req, res) => {
 
         console.log('First Champion HP:', checkPlayerChampionAliveOrDead[0]?.HP);
         
-        const opponentChamionStatistics = [{
+        const opponentChamionStatistics: OpponentStatistics[] = [{
             opponentWinRate,
             opponentStatistics: allOpponentDamage.map((champion, index) => ({
                 name: champion.name,       
-                items: champion.items,   
+                items: champion.items || [],   
                 hp: checkOpponentChampionAliveOrDead[index].HP,                  
                 isAlive: checkOpponentChampionAliveOrDead[index].isAlive,
                 totalChampionDamage: champion.totalAttackDamage,
@@ -256,17 +341,18 @@ const calculateAllBattleStatistics = async (req, res) => {
     } catch (error) {
         console.log('Error', error);
         res.status(500).json({ error: 'An error occurred while calculating all battle statistics.' });
+        throw error;
     }
 };
 
-const calculateBattleHistory = async (req, res) => {
+const calculateBattleHistory = async (req: Request, res: Response): Promise<BattleResult> => {
     try {
         const battleHistory = startBattleData;
-        
         return battleHistory;
     } catch(error){
         console.log('Error', error);
         res.status(500).json({ error: 'An error occurred while fetching battle history.' });
+        throw error;
     }
 }
 

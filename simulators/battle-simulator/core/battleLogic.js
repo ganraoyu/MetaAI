@@ -1,44 +1,30 @@
 const express = require('express');
 const router = express.Router();
 
-const HexCell = require('../utils/HexCell.js');
 const Board = require('./board.js');
-
-const { 
-    addAdditionalItemStatistics, 
-    dragonsClawEffect, 
-    brambleVestEffect, 
-    bloodthristerEffect, 
-    archangelsStaffEffect, 
-    giantSlayerEffect, 
-    steraksGageEffect, 
-    runnansHurricaneEffect,
-    titansResolveEffect,
-    steadfastHeartEffect,
-    crownguardEffect,
-    handOfJusticeEffect,
-    guardBreakerEffect,
-    nashorsToothEffect,
-    hextechGunbladeEffect,
-    protectorsVowEffect,
-    redBuffEffect,
-    morellonomiconEffect,
-    gargoyleStoneplateEffect,
-    sunfireCapeEffect,
-    ionicSparkEffect,
-    adaptiveHelmEffect,
-    evenshroudEffect,
-    redemptionEffect,
-    edgeOfNightEffect,
-    quickSilverEffect
-} = require('../data/item/itemLogic.ts');   
+const HexCell = require('../utils/HexCell.js');
+const { Champion } = require('../data/champion/champion.ts');
+const { Item } = require('../data/item/item.ts');
+const { Trait } = require('../data/trait/trait.ts');
+const { displayStats } = require('../data/champion/champion.ts');
 
 const { getChampionByName } = require('../data/champion/champion-data.ts');
-const { displayStats, Champion } = require('../data/champion/champion.ts');
-const { Item } = require('../data/item/item.ts');
 const { getItemByName } = require('../data/item/item-data.ts');
-const { Trait } = require('../data/trait/trait.ts');
 const { getTraitByName } = require('../data/trait/trait-data.ts');
+
+const { addAdditionalItemStatistics } = require('../data/item/logic/basicItems.ts');
+
+const { 
+    applyItemEffects, 
+    applyStaticEffects, 
+    applyTargetEffects, 
+    applyAllyEffects, 
+    applySurroundingAlliesEffects, 
+    applySurroundingOpponentsEffects, 
+    applyPositionalEffects, 
+    applyAllItemEffects 
+} = require('../data/item/logic/_itemEffects.ts');
+
 const { getDistanceBetweenCells, findClosestEnemy, moveChampionTowardsTarget } = require('./movementLogic.js');
 
 /*
@@ -48,12 +34,10 @@ nodemon battlelogic
    
 const board = new Board(8, 7);
 
-function getFormattedTime(battleTime) {
-    const mins = Math.floor(battleTime / 6000);
-    const secs = Math.floor((battleTime % 6000) / 100);
-    const cents = battleTime % 100;
-    const formattedTime = `${mins}:${secs.toString().padStart(2, '0')}.${cents.toString().padStart(2, '0')}`;
-    return formattedTime;
+function getFormattedTime(time) {
+    const minutes = Math.floor(time / 6000);
+    const seconds = ((time % 6000) / 100).toFixed(2).padStart(5, '0');
+    return `${minutes}:${seconds}`;
 }
 
 function placeChampionByName(championName, row, column, starLevel, team) {
@@ -304,9 +288,7 @@ function startBattle() {
     let battleOpponent = [...opponent];
     
     console.log("Starting battle with champions:");
-    console.log("Player:", battlePlayer.map(c => `${c.name} (Attack Speed: ${c.attackSpeed.toFixed(2)})`));
-    console.log("Opponent:", battleOpponent.map(c => `${c.name} (Attack Speed: ${c.attackSpeed.toFixed(2)})`));
-    
+
     const BATTLE_STEP = 1; 
     const MAX_BATTLE_TIME = 30000; 
 
@@ -338,7 +320,6 @@ function startBattle() {
                     `(${champion.currentHp.toFixed(2)} HP,`,
                     `${champion.shield} shield,`,
                     `${champion.mana}/${champion.abilityManaCost} mana),`,  
-                    `(Attack Speed: ${champion.attackSpeed.toFixed(2)})`
                 ].join(' ');
             });
             
@@ -348,7 +329,6 @@ function startBattle() {
                     `(${champion.currentHp.toFixed(2)} HP,`,
                     `${champion.shield} shield,`,
                     `${champion.mana}/${champion.abilityManaCost} mana),`,
-                    `(Attack Speed: ${champion.attackSpeed.toFixed(2)})`
                 ].join(' ');
             });
             
@@ -366,38 +346,18 @@ function startBattle() {
             let isChampionFrontOrBack; // True = front, False = back
             row >= 4 ? isChampionFrontOrBack = true : isChampionFrontOrBack = false;
 
-            dragonsClawEffect(champion, battleTime);
-            bloodthristerEffect(champion, battleTime);
-            archangelsStaffEffect(champion, battleTime);
-            runnansHurricaneEffect(champion, battleTime);
-            steraksGageEffect(champion, battleTime);
-            titansResolveEffect(champion, battleTime);
-            steadfastHeartEffect(champion, battleTime);
-            crownguardEffect(champion, battleTime);
-            handOfJusticeEffect(champion, battleTime);
-            nashorsToothEffect(champion, battleTime);
-            protectorsVowEffect(champion, battleTime);
-            gargoyleStoneplateEffect(champion, battleTime);
-            ionicSparkEffect(champion, target, surroundingOpponents, battleTime);
-            adaptiveHelmEffect(champion, isChampionFrontOrBack, battleTime);
-            evenshroudEffect(champion, surroundingOpponents, battleTime );
-            redemptionEffect(champion, surroundingAllies, battleTime);
-            edgeOfNightEffect(champion, battleTime);
-            quickSilverEffect(champion, battleTime);
-
-            if(ally){
-                hextechGunbladeEffect(champion, ally, battleTime);
-            }
-
-            if (target) {
-                guardBreakerEffect(champion, target, battleTime);
-                giantSlayerEffect(champion, target, battleTime);
-                brambleVestEffect(champion, target, battleTime);
-                redBuffEffect(champion, target, battleTime);
-                morellonomiconEffect(champion, target, battleTime);
-                sunfireCapeEffect(champion, target, surroundingOpponents, battleTime);
-
-            }
+            applyAllItemEffects(
+                champion, 
+                battleTime, 
+                target, 
+                ally, 
+                surroundingOpponents, 
+                surroundingAllies, 
+                championsInRadius, 
+                surroundingChampionsAroundTarget, 
+                championsInRadiusByTarget, 
+                isChampionFrontOrBack
+            );
         });
 
         battleOpponent.forEach(champion => {
@@ -410,40 +370,19 @@ function startBattle() {
             let isChampionFrontOrBack; // True = front, False = back
             row >= 4 ? isChampionFrontOrBack = true : isChampionFrontOrBack = false;
 
-            dragonsClawEffect(champion, battleTime);
-            bloodthristerEffect(champion, battleTime);
-            archangelsStaffEffect(champion, battleTime);
-            runnansHurricaneEffect(champion, battleTime);
-            steraksGageEffect(champion, battleTime);
-            titansResolveEffect(champion, battleTime);
-            steadfastHeartEffect(champion, battleTime);
-            crownguardEffect(champion, battleTime);
-            handOfJusticeEffect(champion, battleTime);
-            nashorsToothEffect(champion, battleTime);
-            protectorsVowEffect(champion, battleTime);
-            gargoyleStoneplateEffect(champion, battleTime);
-            ionicSparkEffect(champion, target, surroundingOpponents, battleTime);
-            adaptiveHelmEffect(champion, isChampionFrontOrBack, battleTime);
-            evenshroudEffect(champion, surroundingOpponents, battleTime );
-            redemptionEffect(champion, surroundingAllies, battleTime);
-            edgeOfNightEffect(champion, battleTime);
-            quickSilverEffect(champion, battleTime);
-
-            if(ally){
-                hextechGunbladeEffect(champion, ally, battleTime);
-            }
-
-            if (target) {
-                guardBreakerEffect(champion, target, battleTime);
-                giantSlayerEffect(champion, target, battleTime);
-                brambleVestEffect(champion, target, battleTime);
-                redBuffEffect(champion, target, battleTime);
-                morellonomiconEffect(champion, target, battleTime);
-                sunfireCapeEffect(champion, target, surroundingOpponents, battleTime);
-
-            }
+            applyAllItemEffects(
+                champion, 
+                battleTime, 
+                target, 
+                ally, 
+                surroundingOpponents, 
+                surroundingAllies, 
+                championsInRadius, 
+                surroundingChampionsAroundTarget, 
+                championsInRadiusByTarget, 
+                isChampionFrontOrBack
+            );
         });
-
     }
     
     if (battlePlayer.some(champion => champion.currentHp > 0)) {
@@ -498,6 +437,8 @@ function startBattle() {
     });
     
     return { 
+        player,
+        opponent,
         playerWinRate, 
         opponentWinRate, 
         playerStatistics, 
@@ -509,10 +450,10 @@ function startBattle() {
 placeChampionByName('Akali', 4, 3, 3, 'player');
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
 
-addItemByName(board.getChampion(4,3), 'Quick Silver');
-addItemByName(board.getChampion(3,3), 'Nashor\'s Tooth');
-
+addItemByName(board.getChampion(4,3), 'Dragon\'s Claw');
+addAdditionalItemStatistics(board.getChampion(4,3))
 console.log(board.getChampion(4,3));
 
 board.displayBoard();
+
 module.exports = { router, startBattle };
