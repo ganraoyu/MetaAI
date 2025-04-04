@@ -12,7 +12,7 @@ const {
 
 const getWinRate = async (req, res) => {
     try{
-        const winRate = await calculateWinRate();
+        const winRate = await calculateWinRate(req, res);
         res.json(winRate);
     } catch(error){
         console.error('Error: ' + error);
@@ -22,7 +22,7 @@ const getWinRate = async (req, res) => {
 
 const getChampionItems = async (req, res) => {
     try{
-        const championItems = await calculateChampionItems();
+        const championItems = await calculateChampionItems(req, res);
         res.json(championItems);
     } catch(error){
         console.error('Error: ' + error);
@@ -31,7 +31,7 @@ const getChampionItems = async (req, res) => {
 }
 const getAttackDamageDelt = async (req, res) => {
     try{
-        const attackDamage = await calculateAttackDamageDelt();
+        const attackDamage = await calculateAttackDamageDelt(req, res);
         res.json(attackDamage);
     } catch(error){
         console.error('Error: ' + error);
@@ -41,7 +41,7 @@ const getAttackDamageDelt = async (req, res) => {
 
 const getAbilityDamageDelt = async (req, res) => {
     try{
-        const abilityDamage = await calculateAbilityDamageDelt();
+        const abilityDamage = await calculateAbilityDamageDelt(req, res);
         res.json(abilityDamage);
     } catch(error){
         console.error('Error: ' + error);
@@ -51,7 +51,7 @@ const getAbilityDamageDelt = async (req, res) => {
 
 const getAllDamageDelt = async (req, res) => {
     try{
-        const allDamage = await calculateAllDamageDelt();
+        const allDamage = await calculateAllDamageDelt(req, res);
         res.json(allDamage);
     } catch(error){
         console.error('Error: ' + error);
@@ -61,8 +61,8 @@ const getAllDamageDelt = async (req, res) => {
 
 const getHealing = async (req, res) => {
     try{
-        const healing = await calculateHealing();
-        res.json(healing)
+        const healing = await calculateHealing(req, res);
+        res.json(healing)   
     } catch(error){
         console.log('Error', error)
         res.status(500).json({ error: 'An error occurred while calculating healing.' });
@@ -71,7 +71,7 @@ const getHealing = async (req, res) => {
 
 const getAliveOrDead = async (req, res) => {
     try{
-        const aliveOrDead = await calculateIsAliveOrDead();
+        const aliveOrDead = await calculateIsAliveOrDead(req, res);
         res.json(aliveOrDead)
     } catch(error){
         console.log('Error', error)
@@ -80,7 +80,7 @@ const getAliveOrDead = async (req, res) => {
 }
 const getAllBattleStatistics = async (req, res) => {
     try{ 
-         const battleStatistics = await calculateAllBattleStatistics();
+         const battleStatistics = await calculateAllBattleStatistics(req, res);
          res.json(battleStatistics)
     } catch(error){
         console.log('Error', error)
@@ -90,7 +90,7 @@ const getAllBattleStatistics = async (req, res) => {
 
 const getBattleHistory = async (req, res) => {
     try{
-        const battleHistory = await calculateBattleHistory();
+        const battleHistory = await calculateBattleHistory(req, res);
         res.json(battleHistory)
     } catch(error){
         console.log('Error', error)

@@ -26,6 +26,7 @@ import {
     edgeOfNightEffect,
     quickSilverEffect,
     statikkShivEffect,
+    lastWhisperEffect
 } from './combinedItems'
 
 export function applyStaticEffects(champion: Champion) {
@@ -55,6 +56,7 @@ export function applyTargetEffects(champion: Champion, target: Champion, battleT
     redBuffEffect(champion, target, battleTime);
     morellonomiconEffect(champion, target, battleTime);
     statikkShivEffect(champion, target, battleTime);
+    lastWhisperEffect(champion, target, battleTime);
 }
 
 export function applyAllyEffects(champion: Champion, ally: Champion, battleTime: number) {
@@ -85,7 +87,9 @@ export function applyAllItemEffects(
     ally: Champion, 
     isChampionFrontOrBack: boolean, 
     surroundingAllies: Champion[],
-    surroundOpponents: Champion[] 
+    surroundOpponents: Champion[],
+    championsInRadius: Champion[],
+    championsInRadiusByTarget: Champion[]
 ){
     applyStaticEffects(champion);
     applySimpleEffects(champion, battleTime);

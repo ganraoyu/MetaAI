@@ -400,49 +400,13 @@ function startBattle() {
     
     const { playerWinRate, opponentWinRate } = calculateWinRates(playerWins, opponentWins);
 
-    const playerStatistics = player.map((champion, index) => {
-        if (index < battlePlayer.length) {
-            champion.damageArray = battlePlayer[index].damageArray || [];
-            champion.abilityArray = battlePlayer[index].abilityArray || [];
-            champion.healArray = battlePlayer[index].healArray || [];
-        }
-        
-        return {
-            name: champion.name,
-            items: champion.items,
-            HP: index < battlePlayer.length ? battlePlayer[index].currentHp : 0,
-            baseHP: champion.statsByStarLevel[champion.starLevel].hp,
-            damageArray: champion.damageArray,
-            abilityArray: champion.abilityArray,
-            healArray: champion.healArray
-        };
-    });
-
-    const opponentStatistics = opponent.map((champion, index) => {
-        if (index < battleOpponent.length) {
-            champion.damageArray = battleOpponent[index].damageArray || [];
-            champion.abilityArray = battleOpponent[index].abilityArray || [];
-            champion.healArray = battleOpponent[index].healArray || [];
-        }
-        
-        return {
-            name: champion.name,
-            items: champion.items,
-            HP: index < battleOpponent.length ? battleOpponent[index].currentHp : 0,
-            baseHP: champion.statsByStarLevel[champion.starLevel].hp,
-            damageArray: champion.damageArray,
-            abilityArray: champion.abilityArray,
-            healArray: champion.healArray
-        };
-    });
-    
     return { 
         player,
         opponent,
+        battlePlayer,
+        battleOpponent,
         playerWinRate, 
         opponentWinRate, 
-        playerStatistics, 
-        opponentStatistics,
         battleDuration: battleTime/100 
     }; 
 }
@@ -450,7 +414,7 @@ function startBattle() {
 placeChampionByName('Akali', 4, 3, 3, 'player');
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
 
-addItemByName(board.getChampion(4,3), 'Dragon\'s Claw');
+addItemByName(board.getChampion(4,3), 'Static Shiv');
 addAdditionalItemStatistics(board.getChampion(4,3))
 console.log(board.getChampion(4,3));
 

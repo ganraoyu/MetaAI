@@ -247,6 +247,42 @@ export function steadfastHeartEffect(champion: Champion){
 }
 
 
+const lastWhisperStateMap = new Map();
+
+export function lastWhisperEffect(champion: Champion, target: Champion, battleTime: number){
+    if (!champion?.items?.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+
+    if(!lastWhisperStateMap.has(champion.id)){
+        lastWhisperStateMap.set(champion.id, {
+            effectUsed: false,
+            targetArmor: 0,
+        });
+    }
+
+    const state = lastWhisperStateMap.get(champion.id);
+
+    champion.items.forEach((item: ItemProps) =>{
+        if(item.name === 'Last Whisper' && 
+            item.shred && 
+            !state.effectUsed
+        ){
+            target.statsByStarLevel[target.starLevel].armor -= 0.35 * target.statsByStarLevel[target.starLevel].armor;
+            state.targetArmor = target.statsByStarLevel[target.starLevel].armor;
+            state.effectUsed = true;
+            console.log(`[${formattedTime}] ${target.name} lost 35% armor from Last Whisper`);
+        } else if(item.name === 'Last Whisper' && 
+                  state.effectUsed && 
+                  target.statsByStarLevel[target.starLevel].armor < state.targetArmor
+        ){
+            target.statsByStarLevel[target.starLevel].armor += 0.35 * target.statsByStarLevel[target.starLevel].armor;
+            state.effectUsed = false;
+            console.log(`[${formattedTime}] ${target.name} regained 35% armor from Last Whisper`);
+        };
+    });
+}
+
 const crownGuardStateMap = new Map();
 
 export function crownguardEffect(champion: Champion, battleTime: number){
@@ -904,7 +940,6 @@ export function edgeOfNightEffect(champion: Champion, battleTime: number){
         };
     });
 };
-
 
 export function statikkShivEffect(champion: Champion, target: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
