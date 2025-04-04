@@ -941,25 +941,45 @@ export function edgeOfNightEffect(champion: Champion, battleTime: number){
     });
 };
 
+const statikkShivStateMap = new Map();
+
 export function statikkShivEffect(champion: Champion, target: Champion, battleTime: number){
-    if(!champion || !champion.items || !champion.items.length) return;
+    if(!champion || !champion.items || !champion.items.length || !target) return;
 
     const formattedTime = getFormattedTime(champion);
 
+    if(!statikkShivStateMap.has(champion.id)){
+        statikkShivStateMap.set(champion.id, {
+            effectUsed: false,
+            lastProcessedAttackCount: 0  
+        });
+    }
+
+    const state = statikkShivStateMap.get(champion.id);
+
+    if(champion.attacks && 
+       champion.attacks.length > 0 && 
+       champion.attacks.length % 3 === 0 &&
+       champion.attacks.length > state.lastProcessedAttackCount) {
+        
+        state.effectUsed = true;
+        state.lastProcessedAttackCount = champion.attacks.length;
+    }
+
     champion.items.forEach((item: ItemProps) =>{
-        if(item.name === 'Stattik Shiv'){
-            if((champion.attacks.length - 1) % 3 === 0){
-                const magicDamage = 35;
+        if(item.name === 'Statikk Shiv' && state.effectUsed){
+            const magicDamage = 35;
 
-                if(!target.shred){
-                    target.shred = true;
-                }
+            if(!target.shred){
+                target.shred = true;
+                console.log(`[${formattedTime}] ${target.name} shreded from Statikk Shiv`);
+            }
 
-                target.currentHp -= magicDamage;
-                champion.magicDamageArray.push(magicDamage);
-                target.magicDamageTakenArray.push(magicDamage);
-                console.log(`[${formattedTime}] ${champion.name} dealt ${magicDamage} magic damage to ${target.name}`);
-            };
+            target.currentHp -= magicDamage;            
+            target.magicDamageTakenArray.push(magicDamage);
+            champion.magicDamageArray.push(magicDamage);
+            state.effectUsed = false;
+            console.log(`[${formattedTime}] ${champion.name} dealt ${magicDamage} magic damage to ${target.name}`);
         };
     });
 };

@@ -414,7 +414,7 @@ function startBattle() {
 placeChampionByName('Akali', 4, 3, 3, 'player');
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
 
-addItemByName(board.getChampion(4,3), 'Static Shiv');
+addItemByName(board.getChampion(4,3), 'Statikk Shiv');
 addAdditionalItemStatistics(board.getChampion(4,3))
 console.log(board.getChampion(4,3));
 
