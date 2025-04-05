@@ -3,7 +3,7 @@ const { getItemByName } = require('../item/item-data');
 const { ItemProps } = require('../item/item');
 const { externalMagicDamageEffect } = require('../item/logic/combinedItems.ts');
 
-const battleLogger = require('../../core/battleLogger.js');
+const battleLogger = require('../../core/battleLogger.ts');
 const { logBattleEvent } = battleLogger;
 
 type ItemProps = typeof ItemProps;
@@ -308,6 +308,7 @@ export class Champion {
                 attackSpeed: this.attackSpeed,
                 armor: this.armor,
                 magicResist: this.magicResist,
+
             },
             target: {
                 champion: target.name,
@@ -318,8 +319,8 @@ export class Champion {
             isCrit: critChance,
             mana: this.mana,
             manaPerAttack: this.manaPerAttack,
-            time: this.battleTime,
-            message: `[${formattedTime}] ${this.name} attacks ${target.name} for ${attackTypeMsg}`
+            time: this.battleTime,              
+            message: `${this.name} attacks ${target.name} for ${attackTypeMsg} damage`
         }, this.battleTime);
 
         console.log(`[${formattedTime}] ${this.name} attacks ${target.name} for ${attackTypeMsg}`);
@@ -335,6 +336,7 @@ export class Champion {
                 champion: this.name,
                 healAmount: omnivampHealAmount,
                 time: this.battleTime,
+                message: `[${this.name} healed ${omnivampHealAmount} hp`,
             }, this.battleTime);
 
             this.currentHp += omnivampHealAmount;
@@ -439,7 +441,7 @@ export class Champion {
             }
 
             const attackTypeMsg = critChance ? `*Crit* ${totalDamage}` : totalDamage;
-            console.log(`[${formattedTime}] ${this.name} uses <${this.abilityName}> on ${target.name} for ${attackTypeMsg} damage`);
+            console.log(`${this.name} uses <${this.abilityName}> on ${target.name} for ${attackTypeMsg} damage`);
 
             logBattleEvent('ability', {
                 attacker: this.name,
@@ -447,7 +449,7 @@ export class Champion {
                 ability: this.abilityName,
                 damage: totalDamage,
                 isCrit: critChance,
-
+                message: `[${formattedTime}] ${this.name} uses <${this.abilityName}> on ${target.name} for ${attackTypeMsg} damage`,
             }, this.battleTime);
 
             target.takeDamage(totalDamage);
@@ -462,7 +464,7 @@ export class Champion {
                 }
 
                 this.currentHp += omnivampHealAmount;
-                console.log(`[${formattedTime}] ${this.name} heals for ${omnivampHealAmount} health`);
+                console.log(`${this.name} heals for ${omnivampHealAmount} health`);
                 this.healArray.push(omnivampHealAmount);
             }
 
@@ -483,6 +485,7 @@ export class Champion {
                 logBattleEvent('heal', {
                     champion: this.name,
                     healAmount: actualHeal,
+                    message: `[${formattedTime}] ${this.name}'s ability heals for ${actualHeal} health`,
                 }, this.battleTime);
 
                 this.healArray.push(actualHeal);

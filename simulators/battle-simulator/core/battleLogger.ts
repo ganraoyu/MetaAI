@@ -1,12 +1,12 @@
-const battleLogs = [];
+const battleLogs: Object[] = [];
 
-function getFormattedTime(time) {
+function getFormattedTime(time: number) {
     const minutes = Math.floor(time / 6000);
     const seconds = ((time % 6000) / 100).toFixed(2).padStart(5, '0');
     return `${minutes}:${seconds}`;
 }
 
-function logBattleEvent(eventType, details, currentTime) {
+export function logBattleEvent(eventType: string, details: object, currentTime: number) {
     const timeStamp = getFormattedTime(currentTime);
 
     battleLogs.push({
@@ -17,15 +17,10 @@ function logBattleEvent(eventType, details, currentTime) {
     
 }
 
-function getBattleHistory(currentBattleTime) {
+export function getBattleHistory(currentBattleTime: number) {
     return {
         battleLogs,
         duration: currentBattleTime ? currentBattleTime/100 : 0
     };
 }
 
-module.exports = {
-    logBattleEvent,
-    getBattleHistory,
-    battleLogs
-}

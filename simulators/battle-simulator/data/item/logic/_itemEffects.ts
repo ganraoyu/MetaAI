@@ -31,12 +31,13 @@ import {
 
 export function applyStaticEffects(champion: Champion) {
     runnansHurricaneEffect(champion);
-    steraksGageEffect(champion);
+
     handOfJusticeEffect(champion);
     steadfastHeartEffect(champion);
 }
 
-export function applySimpleEffects(champion: Champion, battleTime: number){
+export function applySimpleEffects(champion: Champion, battleTime: number){    
+    steraksGageEffect(champion, battleTime);
     dragonsClawEffect(champion, battleTime);
     bloodthristerEffect(champion, battleTime);
     archangelsStaffEffect(champion, battleTime);

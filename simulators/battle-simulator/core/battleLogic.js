@@ -15,7 +15,7 @@ const { getTraitByName } = require('../data/trait/trait-data.ts');
 const { addAdditionalItemStatistics } = require('../data/item/logic/basicItems.ts');
 
 
-const battleLogger = require('./battleLogger.js');
+const battleLogger = require('./battleLogger.ts');
 const { logBattleEvent } = battleLogger;
 
 const { 
@@ -421,7 +421,7 @@ function startBattle() {
 placeChampionByName('Akali', 4, 3, 3, 'player');
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
 
-addItemByName(board.getChampion(4,3), 'Last Whisper');
+addItemByName(board.getChampion(4,3), 'Dragon\'s Claw');
 addAdditionalItemStatistics(board.getChampion(4,3))
 console.log(board.getChampion(4,3));
 

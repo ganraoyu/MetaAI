@@ -1,6 +1,7 @@
 import { Item, ItemProps } from '../item'; 
 import { Champion } from '../../champion/champion';
 import { getFormattedTime } from '../../../utils/formattedTime';
+import { logBattleEvent } from '../../../core/battleLogger';
 
 export function dragonsClawEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;
@@ -18,6 +19,12 @@ export function dragonsClawEffect(champion: Champion, battleTime: number){
             const healAmount = Math.round(champion.statsByStarLevel[champion.starLevel].hp * item.healAmount);
             champion.currentHp += healAmount;
             champion.healArray.push(healAmount);
+            logBattleEvent('heal', {
+                champion: champion.name,
+                healAmount: healAmount,
+                item: item.name,
+            }, battleTime);
+
             console.log(`[${formattedTime}] ${champion.name} healed for ${healAmount} hp from Dragon's Claw`);
         };
     });
@@ -49,6 +56,13 @@ export function bloodthristerEffect(champion: Champion, battleTime: number ){
                 state.effectUsed = true;
                 const shieldAmount = champion.statsByStarLevel[champion.starLevel].hp * item.shieldAmount;
                 champion.shield += shieldAmount
+
+                logBattleEvent('shield', {
+                    champion: champion.name,
+                    shieldAmount: shieldAmount,
+                    item: item.name,
+                }, battleTime);
+
                 console.log(`[${formattedTime}] ${champion.name} gained a shield for ${shieldAmount} hp`);
             }
         }
@@ -93,6 +107,14 @@ export function giantSlayerEffect(champion: Champion, target: Champion, battleTi
             target.statsByStarLevel[target.starLevel].hp > 1750
         ){
             champion.damageAmp += item.additionalDamageAmp || 0;
+
+            logBattleEvent('damageAmp', {
+                champion: champion.name,
+                target: target.name,
+                damageAmp: item.additionalDamageAmp,
+                item: item.name,
+            }, battleTime);
+
             console.log(`[${formattedTime}] ${champion.name} gained 20% damage amp against ${target.name} from Giant Slayer`);
         }
     })
@@ -107,6 +129,15 @@ export function archangelsStaffEffect(champion: Champion, battleTime: number){
         if(item.name === 'Archangel\'s Staff' && item.abilityPowerStacking){
             if(battleTime % 500 === 0){
                 champion.abilityPower += item.additionalAbilityPowerPerStack || 0; 
+
+                logBattleEvent('stacking', {
+                    champion: champion.name,
+                    abilityPowerGained: item.additionalAbilityPowerPerStack,
+                    currentAbilityPower: champion.abilityPower,
+                    item: item.name,
+                    message: `${champion.name} gained ${item.additionalAbilityPowerPerStack} ability power from Archangel's Staff`,
+                }, battleTime);
+
                 console.log(`[${formattedTime}] ${champion.name} gained ${item.additionalAbilityPowerPerStack} ability power from Archangel's Staff`);
             }
         }
@@ -128,7 +159,7 @@ export function runnansHurricaneEffect(champion: Champion){
 
 const steraksGageStateMap = new Map();
 
-export function steraksGageEffect(champion: Champion){
+export function steraksGageEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length) return;
     
     const formattedTime = getFormattedTime(champion);
@@ -150,6 +181,14 @@ export function steraksGageEffect(champion: Champion){
             champion.currentHp += healAmount
             champion.statsByStarLevel[champion.starLevel].attackDamage *= 1.35;
             champion.healArray.push(healAmount)
+
+            logBattleEvent('heal', {
+                champion: champion.name,
+                healAmount: healAmount,
+                item: item.name,
+                message: `${champion.name} gained ${healAmount} health from Sterak's Gage`,
+            }, battleTime);
+
             console.log(`[${formattedTime}] ${champion.name} gained ${healAmount} health from Sterak's Gage`);
             state.effectUsed = true;
         }
@@ -192,6 +231,17 @@ export function titansResolveEffect(champion: Champion, battleTime: number){
             champion.abilityPower += 1;
             champion.statsByStarLevel[champion.starLevel].attackDamage *= 1.02;
             state.titansResolveStacks += 1;
+
+            logBattleEvent('stacking', {
+                champion: champion.name,
+                attackDamageGained: 2,
+                abilityPowerGained: 1,
+                currentAttackDamage: champion.statsByStarLevel[champion.starLevel].attackDamage,
+                currentAbilityPower: champion.abilityPower,
+                item: item.name,
+                message: `${champion.name} Titan's Resolve Stacks: ${state.titansResolveStacks}/25`,
+            }, battleTime)
+
             console.log(`[${formattedTime}] ${champion.name} gained 2% attack damage and 1 ability power (Stack ${state.titansResolveStacks}/25) from Titan's Resolve`);
             state.damageTaken = false;  // Reset damage taken flag
         } else if(state.titansResolveStacks === 25 && !state.fullStackEffectUsed){
