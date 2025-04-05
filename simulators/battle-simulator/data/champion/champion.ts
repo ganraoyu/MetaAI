@@ -308,10 +308,11 @@ export class Champion {
                 attackSpeed: this.attackSpeed,
                 armor: this.armor,
                 magicResist: this.magicResist,
-
             },
             target: {
                 champion: target.name,
+                currentHp: target.currentHp,
+                maxHp: target.statsByStarLevel[target.starLevel].hp,
                 armor: target.armor,
                 magicResist: target.magicResist,
             },
@@ -444,8 +445,21 @@ export class Champion {
             console.log(`${this.name} uses <${this.abilityName}> on ${target.name} for ${attackTypeMsg} damage`);
 
             logBattleEvent('ability', {
-                attacker: this.name,
-                target: target.name,
+                attacker: {
+                    champion: this.name,
+                    mana: this.mana,
+                    abilityPower: this.abilityPower,
+                    attackSpeed: this.attackSpeed,
+                    armor: this.armor,
+                    magicResist: this.magicResist,
+                },
+                target: {
+                    champion: target.name,
+                    currentHp: target.currentHp,
+                    maxHp: target.statsByStarLevel[target.starLevel].hp,
+                    armor: target.armor,
+                    magicResist: target.magicResist,
+                },
                 ability: this.abilityName,
                 damage: totalDamage,
                 isCrit: critChance,

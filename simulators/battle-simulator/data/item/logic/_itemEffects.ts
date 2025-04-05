@@ -32,12 +32,13 @@ import {
 export function applyStaticEffects(champion: Champion) {
     runnansHurricaneEffect(champion);
 
-    handOfJusticeEffect(champion);
-    steadfastHeartEffect(champion);
+
+
 }
 
 export function applySimpleEffects(champion: Champion, battleTime: number){    
-    steraksGageEffect(champion, battleTime);
+    steraksGageEffect(champion, battleTime);    
+    steadfastHeartEffect(champion, battleTime);
     dragonsClawEffect(champion, battleTime);
     bloodthristerEffect(champion, battleTime);
     archangelsStaffEffect(champion, battleTime);
@@ -47,7 +48,8 @@ export function applySimpleEffects(champion: Champion, battleTime: number){
     protectorsVowEffect(champion, battleTime);
     gargoyleStoneplateEffect(champion, battleTime);
     edgeOfNightEffect(champion, battleTime);
-    quickSilverEffect(champion, battleTime);
+    quickSilverEffect(champion, battleTime);    
+    handOfJusticeEffect(champion, battleTime);
 };
 
 export function applyTargetEffects(champion: Champion, target: Champion, battleTime: number) {
