@@ -14,6 +14,10 @@ const { getTraitByName } = require('../data/trait/trait-data.ts');
 
 const { addAdditionalItemStatistics } = require('../data/item/logic/basicItems.ts');
 
+
+const battleLogger = require('./battleLogger.js');
+const { logBattleEvent } = battleLogger;
+
 const { 
     applyItemEffects, 
     applyStaticEffects, 
@@ -277,6 +281,8 @@ function calculateWinRates(playerWins, opponentWins) {
     return { playerWinRate, opponentWinRate };
 }
 
+let currentBattleTime = 0;
+
 function startBattle() {
     console.log('Battle started!');
 
@@ -400,6 +406,7 @@ function startBattle() {
     
     const { playerWinRate, opponentWinRate } = calculateWinRates(playerWins, opponentWins);
 
+    currentBattleTime = battleTime; 
     return { 
         player,
         opponent,
@@ -414,10 +421,14 @@ function startBattle() {
 placeChampionByName('Akali', 4, 3, 3, 'player');
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
 
-addItemByName(board.getChampion(4,3), 'Statikk Shiv');
+addItemByName(board.getChampion(4,3), 'Last Whisper');
 addAdditionalItemStatistics(board.getChampion(4,3))
 console.log(board.getChampion(4,3));
 
 board.displayBoard();
 
-module.exports = { router, startBattle };
+module.exports = { 
+    router, 
+    startBattle, 
+    getBattleHistory: () => battleLogger.getBattleHistory(currentBattleTime)
+};

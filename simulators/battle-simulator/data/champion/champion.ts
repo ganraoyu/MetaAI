@@ -2,6 +2,10 @@ const { getChampionByName } = require('../champion/champion-data');
 const { getItemByName } = require('../item/item-data');
 const { ItemProps } = require('../item/item');
 const { externalMagicDamageEffect } = require('../item/logic/combinedItems.ts');
+
+const battleLogger = require('../../core/battleLogger.js');
+const { logBattleEvent } = battleLogger;
+
 type ItemProps = typeof ItemProps;
 
 /*
@@ -295,6 +299,29 @@ export class Champion {
         this.currentChampionsAttacking = newCurrentChampionsAttacking;
 
         const attackTypeMsg = critChance ? `*Crit* ${finalDamage}` : finalDamage;
+
+        logBattleEvent('attack', {
+            attacker: {
+                champion: this.name,
+                mana: this.mana,
+                manaGained: this.manaPerAttack,
+                attackSpeed: this.attackSpeed,
+                armor: this.armor,
+                magicResist: this.magicResist,
+            },
+            target: {
+                champion: target.name,
+                armor: target.armor,
+                magicResist: target.magicResist,
+            },
+            damage: finalDamage,
+            isCrit: critChance,
+            mana: this.mana,
+            manaPerAttack: this.manaPerAttack,
+            time: this.battleTime,
+            message: `[${formattedTime}] ${this.name} attacks ${target.name} for ${attackTypeMsg}`
+        }, this.battleTime);
+
         console.log(`[${formattedTime}] ${this.name} attacks ${target.name} for ${attackTypeMsg}`);
         
         if(this.currentHp < this.statsByStarLevel[this.starLevel].hp && this.omnivamp > 0){
@@ -304,6 +331,12 @@ export class Champion {
                 omnivampHealAmount = Math.round(omnivampHealAmount * 0.67);
             }
             
+            logBattleEvent('heal', {
+                champion: this.name,
+                healAmount: omnivampHealAmount,
+                time: this.battleTime,
+            }, this.battleTime);
+
             this.currentHp += omnivampHealAmount;
             console.log(`[${formattedTime}] ${this.name} healed ${omnivampHealAmount} hp`);
             this.healArray.push(omnivampHealAmount)
@@ -404,8 +437,18 @@ export class Champion {
             if(immunity){
                 totalDamage = 0
             }
+
             const attackTypeMsg = critChance ? `*Crit* ${totalDamage}` : totalDamage;
             console.log(`[${formattedTime}] ${this.name} uses <${this.abilityName}> on ${target.name} for ${attackTypeMsg} damage`);
+
+            logBattleEvent('ability', {
+                attacker: this.name,
+                target: target.name,
+                ability: this.abilityName,
+                damage: totalDamage,
+                isCrit: critChance,
+
+            }, this.battleTime);
 
             target.takeDamage(totalDamage);
 
@@ -436,6 +479,12 @@ export class Champion {
                 if(wound){
                     actualHeal = Math.round(actualHeal * 0.67);
                 }
+
+                logBattleEvent('heal', {
+                    champion: this.name,
+                    healAmount: actualHeal,
+                }, this.battleTime);
+
                 this.healArray.push(actualHeal);
                 console.log(`[${formattedTime}] ${this.name}'s ability heals for ${actualHeal} health`);
             }

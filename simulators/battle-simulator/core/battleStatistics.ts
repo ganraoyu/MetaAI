@@ -418,17 +418,17 @@ const calculateAllBattleStatistics = async (req: Request, res: Response): Promis
     };
 };
 
-const calculateBattleHistory = async (req: Request, res: Response): Promise<BattleResult> => {
+const calculateBattleHistory = async (req: Request, res: Response): Promise<void> => {
     try {
-        const battleHistory = startBattleData;
+        const { getBattleHistory } = require('./battleLogic.js');
+        const battleHistory = getBattleHistory();
+        
         return battleHistory;
-    } catch(error){
+    } catch(error) {
         console.log('Error', error);
         res.status(500).json({ error: 'An error occurred while fetching battle history.' });
-        throw error;
-    };
+    }
 };
-
 /* 
 calculateWinRate();
 calculateAbilityDamageDelt();

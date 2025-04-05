@@ -21,6 +21,6 @@ router.get('/allDamageDelt', getAllDamageDelt);
 router.get('/healing', getHealing);
 router.get('/aliveOrDead', getAliveOrDead);
 router.get('/allBattleStatistics', getAllBattleStatistics);
-router.get('/battleHistory', getBattleHistory);
+router.get('/battle-history', getBattleHistory);
 
 module.exports = router;
