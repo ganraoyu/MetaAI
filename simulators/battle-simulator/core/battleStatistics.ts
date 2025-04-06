@@ -6,6 +6,9 @@ const { startBattle }  = require('./battleLogic.js');
 
 const { player, opponent, battlePlayer, battleOpponent } = startBattle();
 
+const playerChampions = [...player];
+const opponentChampions = [...opponent];
+
 const playerStatistics = player.map((champion: Champion, index: number) => {
     if (index < battlePlayer.length) {
         champion.damageTakenArray = battlePlayer[index].damageTakenArray || [];
@@ -418,17 +421,62 @@ const calculateAllBattleStatistics = async (req: Request, res: Response): Promis
     };
 };
 
-const calculateBattleHistory = async (req: Request, res: Response): Promise<void> => {
+const calculateChampionStatistics = async (req: Request, res: Response): Promise<{playerChampions: any[], opponentChampions: any[]}> =>{
+    try{            
+        const serializablePlayerChampions = playerChampions.map(champion => ({
+            id: champion.id,
+            name: champion.name,
+            team: champion.team,
+            currentHp: champion.currentHp,
+            maxHp: champion.statsByStarLevel[champion.starLevel].hp,
+            shield: champion.shield,
+            starLevel: champion.starLevel,
+            items: champion.items,
+            statsByStarLevel: champion.statsByStarLevel,
+            attackSpeed: champion.attackSpeed,
+            abilityName: champion.abilityName,
+            range: champion.range,
+            armor: champion.armor,
+            magicResist: champion.magicResist,
+        }));
+        
+        const serializableOpponentChampions = opponentChampions.map(champion => ({
+            id: champion.id,
+            name: champion.name,
+            team: champion.team,
+            currentHp: champion.currentHp,
+            maxHp: champion.statsByStarLevel[champion.starLevel].hp,
+            shield: champion.shield,
+            starLevel: champion.starLevel,
+            items: champion.items,
+            statsByStarLevel: champion.statsByStarLevel,
+            attackSpeed: champion.attackSpeed,
+            abilityName: champion.abilityName,
+            range: champion.range,
+            armor: champion.armor,
+            magicResist: champion.magicResist,
+        }));
+        
+        return {
+            playerChampions: serializablePlayerChampions,
+            opponentChampions: serializableOpponentChampions
+        };
+    } catch(error){
+        console.log('Error', error);
+        res.status(500).json({ error: 'An error occurred while calculating champion statistics.' });
+        throw error;
+    }
+}
+
+const calculateBattleHistory = async (req: Request, res: Response) => {
     try {
         const { getBattleHistory } = require('./battleLogic.js');
-        const battleHistory = getBattleHistory();
-        
-        return battleHistory;
+        return getBattleHistory(); 
     } catch(error) {
         console.log('Error', error);
-        res.status(500).json({ error: 'An error occurred while fetching battle history.' });
+        throw error; 
     }
-};
+}
 /* 
 calculateWinRate();
 calculateAbilityDamageDelt();
@@ -448,5 +496,6 @@ module.exports = {
     calculateHealing,
     calculateIsAliveOrDead,
     calculateAllBattleStatistics,
+    calculateChampionStatistics,
     calculateBattleHistory,
 };
