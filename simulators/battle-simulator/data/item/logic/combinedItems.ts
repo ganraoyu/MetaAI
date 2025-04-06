@@ -69,33 +69,56 @@ export function bloodthristerEffect(champion: Champion, battleTime: number ){
     })
 }
 
-// brambleVestStateMap = new Map();
+const brambleVestStateMap = new Map();
 
-let timeSinceLastExternalMagicDamage = 0;
-let attackedArray = [];
-let cooldown = 0; // 200 centiseconds, 2 seconds
-
-export function brambleVestEffect(champion: Champion, target: Champion, battleTime: number){ // unfinished
+export function brambleVestEffect(champion: Champion, surroundingOpponents: Champion[], battleTime: number){ 
     if (!champion?.items?.length || !battleTime) return;
 
     let formattedTime = getFormattedTime(champion);
 
+    if(!brambleVestStateMap.has(champion.id)){
+        brambleVestStateMap.set(champion.id, {
+            effectUsed: false,
+            attackCount: 0,
+            magicAttackCount: 0,
+            abilityAttackCount: 0,
+            timeSinceEffectUsed: 0,
+        });
+    };
+
+    const state = brambleVestStateMap.get(champion.id);
+    
+    if(champion.damageTakenArray.length > state.attackCount || champion.magicDamageTakenArray.length > state.magicAttackCount){
+        state.effectUsed = true;
+        state.attackCount = champion.damageTakenArray.length;
+        state.magicAttackCount = champion.magicDamageTakenArray.length;
+
+    };
+   
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Bramble Vest' && 
-            item.externalMagicDamage && 
-            champion.damageTakenArray.length > attackedArray.length
+            state.effectUsed && 
+            battleTime - state.timeSinceEffectUsed >= 200
         ){
-            if(battleTime - target.attackSpeed >= timeSinceLastExternalMagicDamage){
-                if(battleTime >= cooldown){
-                    target.currentHp -= item.externalMagicDamage;
-                    attackedArray.push(battleTime)
-                    cooldown = timeSinceLastExternalMagicDamage + battleTime + 200;
-                    console.log(`[${formattedTime}] ${champion.name} dealt ${item.externalMagicDamage} magic damage to ${target.name}`);
-                }
-            }
-        }
-    })
-}
+            surroundingOpponents.forEach((target: Champion) => {
+            target.currentHp -= 100;
+            champion.magicDamageArray.push(100);
+            target.magicDamageTakenArray.push(100);
+            state.effectUsed = false;
+            state.timeSinceEffectUsed = battleTime;
+            logBattleEvent('magicDamage', {
+                champion: champion.name,
+                target: target.name,
+                magicDamage: 100,
+                item: item.name,
+                message: `${champion.name} dealt 100 magic damage to ${target.name} from Bramble Vest`,
+            }, battleTime)
+                    
+            console.log(`[${formattedTime}] ${champion.name} dealt 100 magic damage to ${target.name} from Bramble Vest`);
+            });
+        };
+    });
+};
 
 export function giantSlayerEffect(champion: Champion, target: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;

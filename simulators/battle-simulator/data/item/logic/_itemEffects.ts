@@ -47,13 +47,12 @@ export function applySimpleEffects(champion: Champion, battleTime: number){
     nashorsToothEffect(champion, battleTime);
     protectorsVowEffect(champion, battleTime);
     gargoyleStoneplateEffect(champion, battleTime);
-    edgeOfNightEffect(champion, battleTime);
+edgeOfNightEffect(champion, battleTime);
     quickSilverEffect(champion, battleTime);    
     handOfJusticeEffect(champion, battleTime);
 };
 
 export function applyTargetEffects(champion: Champion, target: Champion, battleTime: number) {
-    brambleVestEffect(champion, target, battleTime);
     giantSlayerEffect(champion, target, battleTime);
     guardBreakerEffect(champion, target, battleTime);
     redBuffEffect(champion, target, battleTime);
@@ -68,6 +67,7 @@ export function applyAllyEffects(champion: Champion, ally: Champion, battleTime:
 
 export function applySurroundingOpponentsEffects(champion: Champion, surroundingOpponents: Champion[], battleTime: number) {
     evenshroudEffect(champion, surroundingOpponents, battleTime);
+    brambleVestEffect(champion, surroundingOpponents, battleTime);
 }
 
 export function applySurroundingAlliesEffects(champion: Champion, surroundingAllies: Champion[], battleTime: number) {
