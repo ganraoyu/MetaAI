@@ -6,13 +6,14 @@ export default {
       colors: {
         gold: '#fbbf24',
         darkGray: '#250000',
+        mainBackground: '#141414',
+        hexCell: '#1f2937',
+        hexCellHover: '#374151',
       },
       fontFamily: {
-        sans: ['customFont', 'sans-serif'],
+        'sans': ['Montserrat', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        'montserrat': ['Montserrat', 'sans-serif'],
       },
-      backgroundImage: {
-        mainPage: "url('/assets/background.jpg')",
-      }
     },
   },
   plugins: [],

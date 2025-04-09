@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 const path = require('path');
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 const userRoutes = require('./routes/player/player.routes.js');
@@ -11,10 +12,15 @@ const battleSimulatorRoutes = require('./routes/battle-simulator/statistics/batt
 
 const { client } = require('./database/db.js')
 
-
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const PORT = process.env.PORT || 3000;
+
+// Enable CORS for all routes
+app.use(cors());
+
+// Parse JSON request bodies
+app.use(express.json());
 
 app.use('/player', userRoutes);
 app.use('/leaderboard', leaderboardRoutes);      
@@ -27,4 +33,4 @@ app.listen(PORT, () => {
 });     
 
 console.log('RIOT-API-KEY', process.env.RIOT_API_KEY)
-client.connect().then(()=> console.log("PostgreSQL connected")) 
+client.connect().then(()=> console.log("PostgreSQL connected"))

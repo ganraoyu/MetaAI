@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Footer = () => {
   return (
-    <div className="bg-black h-30 ">
+    <div className="bg-mainBackground h-30 ">
       <div className='align-middle text-center pt-5'>
         <FontAwesomeIcon icon={faGithub} className="text-white text-xl px-3 h-7 w-7 hover:cursor-pointer" onClick={() => window.location.href = 'http://Github.com'}/>
         <FontAwesomeIcon icon={faYoutube} className="text-white text-xl px-3 h-7 w-7 hover:cursor-pointer"onClick={() => window.location.href = 'http://Youtube.com'}/>

@@ -5,8 +5,8 @@ import { faGithub, faPaypal } from '@fortawesome/free-brands-svg-icons';
 
 const Header = () => {
   return (
-    <div className="fixed top-0 left-0 right-0 bg-black h-[65px] z-50 opacity-90">
-      <div className="flex justify-between items-center bg-black h-full">
+    <div className="fixed top-0 left-0 right-0 bg-gray-500 h-[65px] z-50">
+      <div className="flex justify-between items-center bg-mainBackground h-full">
         <div className="flex items-center pl-3 ml-4 h-full hover:cursor-pointer " onClick={() => window.location.href = '/Stratify/'}>
           <img src={logo} alt="Logo" className='w-8 h-8 mr-2 mb-1 invert brightness-0'/>
           <h1 className="text-white text-[22px] tracking-widest font-bold">TFTStratify</h1>
