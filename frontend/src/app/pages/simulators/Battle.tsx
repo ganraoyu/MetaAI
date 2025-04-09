@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { HexCells } from './HexCells';
 import axios from 'axios';
 
 // Define interfaces for your battle data
@@ -11,13 +12,6 @@ interface BattleLog {
 interface BattleData {
   battleLogs: BattleLog[];
   duration: number;
-}
-
-interface HexCellsProps {
-  champion: any;
-  row: number;
-  col: number;
-  occupied?: boolean;
 }
 
 const Battle = () => {
@@ -54,11 +48,43 @@ const Battle = () => {
       <div>
         <button>Clear</button>
       </div>
-      <div
-        className="w-16 h-16 bg-hexCell mx-auto my-4 relative hover:bg-hexCellHover transition-colors duration-300 flex items-center justify-center text-white"
-        style={{
-          clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'
-        }}>
+      <div className="grid grid-cols-1 justify-items-center">
+        <div className='flex justify-center items-center gap-0 mr-8 mb-[-1.1rem]'>
+          <HexCells champion={null} row={0} col={0} occupied={false} />
+          <HexCells champion={null} row={0} col={1} occupied={false} />
+          <HexCells champion={null} row={0} col={2} occupied={false} />
+          <HexCells champion={null} row={0} col={3} occupied={false} />
+          <HexCells champion={null} row={0} col={4} occupied={false} />
+          <HexCells champion={null} row={0} col={5} occupied={false} />
+          <HexCells champion={null} row={0} col={6} occupied={false} />
+        </div>
+        <div className='flex justify-center items-center gap-0 ml-10 mb-[-1.1rem]'>
+          <HexCells champion={null} row={1} col={0} occupied={false} />
+          <HexCells champion={null} row={1} col={1} occupied={false} />
+          <HexCells champion={null} row={1} col={2} occupied={false} />
+          <HexCells champion={null} row={1} col={3} occupied={false} />
+          <HexCells champion={null} row={1} col={4} occupied={false} />
+          <HexCells champion={null} row={1} col={5} occupied={false} />
+          <HexCells champion={null} row={1} col={6} occupied={false} />
+        </div>
+        <div className='flex justify-center items-center gap-0 mr-8 mb-[-1.1rem]'>
+          <HexCells champion={null} row={2} col={0} occupied={false} />
+          <HexCells champion={null} row={2} col={1} occupied={false} />
+          <HexCells champion={null} row={2} col={2} occupied={false} />
+          <HexCells champion={null} row={2} col={3} occupied={false} />
+          <HexCells champion={null} row={2} col={4} occupied={false} />
+          <HexCells champion={null} row={2} col={5} occupied={false} />
+          <HexCells champion={null} row={2} col={6} occupied={false} />
+        </div>
+        <div className='flex justify-center items-center gap-0 ml-10 mb-[-1.1rem]'>
+          <HexCells champion={null} row={3} col={0} occupied={false} />
+          <HexCells champion={null} row={3} col={1} occupied={false} />
+          <HexCells champion={null} row={3} col={2} occupied={false} />
+          <HexCells champion={null} row={3} col={3} occupied={false} />
+          <HexCells champion={null} row={3} col={4} occupied={false} />
+          <HexCells champion={null} row={3} col={5} occupied={false} />
+          <HexCells champion={null} row={3} col={6} occupied={false} />
+        </div>
       </div>
         {loading && clicked ? (
           <p>Loading battle data...</p>
