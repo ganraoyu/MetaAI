@@ -1,5 +1,6 @@
+// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: ['./src/**/*.{html,js,ts,tsx}'],
   theme: {
     extend: {
@@ -7,8 +8,9 @@ export default {
         gold: '#fbbf24',
         darkGray: '#250000',
         mainBackground: '#141414',
-        hexCell: '#1f2937',
+        hexCell: '#11161e',
         hexCellHover: '#374151',
+        hexCellBackground: '#191919',
       },
       fontFamily: {
         'sans': ['Montserrat', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
@@ -16,5 +18,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 }

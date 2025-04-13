@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { HexCells } from './HexCells';
 import axios from 'axios';
+import { MdClose, MdPlayArrow } from "react-icons/md";
 
 // Define interfaces for your battle data
 interface BattleLog {
@@ -35,57 +36,68 @@ const Battle = () => {
       setLoading(false);
     }
   };
-
+                
   return (
-    <div className='bg-mainBackground'>
-    <div>
-      
-    
-      <div>
-        <h1 className='text-[1.2rem] flex justify-center w-full pt-[6rem] text-white font-semibold'>TFT Battle Simulator</h1>
-        <p className='text-white text-[0.8rem]'>Get real-time replays of battles with our TFT Battle Simulator</p>
+    <div className='bg-mainBackground min-h-screen pt-[10rem]'>        
+      <div className='flex-col items-center w-[60rem] mx-auto mb-4 '>
+        <div className='flex-col items-center justify-center mr-[2rem] mb-4'>
+          <h1 className='text-[1.2rem] w-full text-white font-semibold'>TFT Battle Simulator</h1>
+          <p className='text-white text-[0.8rem]'>Get real-time replays of battles with our TFT Battle Simulator</p>
+        </div>        
+      <div className='flex items-center gap-1'>          
+        <button className='btn btn-outline btn-success btn-sm flex items-center gap-1' onClick={() => {setClicked(true); fetchBattleHistory();}}>
+          <MdPlayArrow className="text-lg" /> Start Battle
+        </button>
+        <button className='btn btn-outline btn-error btn-sm flex items-center gap-1' onClick={() => setBattleHistory(null)}>
+          <MdClose className="text-lg" /> Clear Board
+        </button>
       </div>
-      <div>
-        <button>Clear</button>
       </div>
-      <div className="grid grid-cols-1 justify-items-center">
-        <div className='flex justify-center items-center gap-0 mr-8 mb-[-1.1rem]'>
-          <HexCells champion={null} row={0} col={0} occupied={false} />
-          <HexCells champion={null} row={0} col={1} occupied={false} />
-          <HexCells champion={null} row={0} col={2} occupied={false} />
-          <HexCells champion={null} row={0} col={3} occupied={false} />
-          <HexCells champion={null} row={0} col={4} occupied={false} />
-          <HexCells champion={null} row={0} col={5} occupied={false} />
-          <HexCells champion={null} row={0} col={6} occupied={false} />
+      <div className='flex flex-col items-center justify-center h-[25rem] w-[60rem] mx-auto p-4 bg-hexCellBackground rounded-2xl'>
+        <div className=''>
+          <p>
+            Traits
+          </p>
         </div>
-        <div className='flex justify-center items-center gap-0 ml-10 mb-[-1.1rem]'>
-          <HexCells champion={null} row={1} col={0} occupied={false} />
-          <HexCells champion={null} row={1} col={1} occupied={false} />
-          <HexCells champion={null} row={1} col={2} occupied={false} />
-          <HexCells champion={null} row={1} col={3} occupied={false} />
-          <HexCells champion={null} row={1} col={4} occupied={false} />
-          <HexCells champion={null} row={1} col={5} occupied={false} />
-          <HexCells champion={null} row={1} col={6} occupied={false} />
+        <div className="grid grid-cols-1 justify-items-center">
+          <div className='flex justify-center items-center gap-0 mr-8 mb-[-1.1rem]'>
+            <HexCells champion={null} row={0} col={0} occupied={false} />
+            <HexCells champion={null} row={0} col={1} occupied={false} />
+            <HexCells champion={null} row={0} col={2} occupied={false} />
+            <HexCells champion={null} row={0} col={3} occupied={false} />
+            <HexCells champion={null} row={0} col={4} occupied={false} />
+            <HexCells champion={null} row={0} col={5} occupied={false} />
+            <HexCells champion={null} row={0} col={6} occupied={false} />
+          </div>
+          <div className='flex justify-center items-center gap-0 ml-10 mb-[-1.1rem]'>
+            <HexCells champion={null} row={1} col={0} occupied={false} />
+            <HexCells champion={null} row={1} col={1} occupied={false} />
+            <HexCells champion={null} row={1} col={2} occupied={false} />
+            <HexCells champion={null} row={1} col={3} occupied={false} />
+            <HexCells champion={null} row={1} col={4} occupied={false} />
+            <HexCells champion={null} row={1} col={5} occupied={false} />
+            <HexCells champion={null} row={1} col={6} occupied={false} />
+          </div>
+          <div className='flex justify-center items-center gap-0 mr-8 mb-[-1.1rem]'>
+            <HexCells champion={null} row={2} col={0} occupied={false} />
+            <HexCells champion={null} row={2} col={1} occupied={false} />
+            <HexCells champion={null} row={2} col={2} occupied={false} />
+            <HexCells champion={null} row={2} col={3} occupied={false} />
+            <HexCells champion={null} row={2} col={4} occupied={false} />
+            <HexCells champion={null} row={2} col={5} occupied={false} />
+            <HexCells champion={null} row={2} col={6} occupied={false} />
+          </div>
+          <div className='flex justify-center items-center gap-0 ml-10 mb-[-1.1rem]'>
+            <HexCells champion={null} row={3} col={0} occupied={false} />
+            <HexCells champion={null} row={3} col={1} occupied={false} />
+            <HexCells champion={null} row={3} col={2} occupied={false} />
+            <HexCells champion={null} row={3} col={3} occupied={false} />
+            <HexCells champion={null} row={3} col={4} occupied={false} />
+            <HexCells champion={null} row={3} col={5} occupied={false} />
+            <HexCells champion={null} row={3} col={6} occupied={false} />
+          </div>
         </div>
-        <div className='flex justify-center items-center gap-0 mr-8 mb-[-1.1rem]'>
-          <HexCells champion={null} row={2} col={0} occupied={false} />
-          <HexCells champion={null} row={2} col={1} occupied={false} />
-          <HexCells champion={null} row={2} col={2} occupied={false} />
-          <HexCells champion={null} row={2} col={3} occupied={false} />
-          <HexCells champion={null} row={2} col={4} occupied={false} />
-          <HexCells champion={null} row={2} col={5} occupied={false} />
-          <HexCells champion={null} row={2} col={6} occupied={false} />
-        </div>
-        <div className='flex justify-center items-center gap-0 ml-10 mb-[-1.1rem]'>
-          <HexCells champion={null} row={3} col={0} occupied={false} />
-          <HexCells champion={null} row={3} col={1} occupied={false} />
-          <HexCells champion={null} row={3} col={2} occupied={false} />
-          <HexCells champion={null} row={3} col={3} occupied={false} />
-          <HexCells champion={null} row={3} col={4} occupied={false} />
-          <HexCells champion={null} row={3} col={5} occupied={false} />
-          <HexCells champion={null} row={3} col={6} occupied={false} />
-        </div>
-      </div>
+        <div>
         {loading && clicked ? (
           <p>Loading battle data...</p>
         ) : error ? (
@@ -130,21 +142,12 @@ const Battle = () => {
                 </ul>
               </div>
             ) : (
-              <p>No battle history found.</p>
+              <p>No battle logs available.</p>
             )}
-            <button onClick={() => setBattleHistory(null)} >Clear History</button>
-            <button
-              onClick={() => {
-                setClicked(true);
-                fetchBattleHistory();
-              }}
-              >
-              Simulate Battle
-            </button>
-            <button onClick={fetchBattleHistory} >Refresh</button>
           </div>
         )}
         </div>
+      </div>
     </div>
   );
 };

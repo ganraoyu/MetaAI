@@ -1,13 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+@plugin "daisyui";
 
 @layer base {
   @font-face {
     font-family: 'CustomFont';
-    src: url('../assets/fonts/font.ttf') format('truetype'); /* Adjusted the relative path */
+    src: url('../assets/fonts/font.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
-  }
-}
+  };
+};
