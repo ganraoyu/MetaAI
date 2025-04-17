@@ -16,7 +16,7 @@ import ChampionsStatistics from './pages/statistics/ChampionsStatistics.tsx';
 import ItemsStatistics from './pages/statistics/ItemsStatistics.tsx';
 
 import RollingOdds from './pages/simulators/RollingOdds.tsx';
-import Battle from './pages/simulators/Battle.tsx';
+import Battle from './pages/simulators/battle/Battle.tsx';
 
 function Router() {
   return (

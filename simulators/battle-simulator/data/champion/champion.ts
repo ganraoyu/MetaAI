@@ -308,6 +308,8 @@ export class Champion {
                 mana: this.mana,
                 manaGained: this.manaPerAttack,
                 attackSpeed: this.attackSpeed,
+                currentHp: this.currentHp,
+                maxHp: this.statsByStarLevel[this.starLevel].hp,
                 armor: this.armor,
                 magicResist: this.magicResist,
             },

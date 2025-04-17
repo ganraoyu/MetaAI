@@ -23,7 +23,7 @@ export const HexCells: React.FC<HexCellsProps> = ({ champion, row, col, occupied
         className={`absolute inset-[1px] ${occupied ? 'bg-blue-600' : 'bg-hexCell'} hover:bg-hexCellHover transition-colors duration-300 flex items-center justify-center text-white`}
         style={{
           clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'
-        }}
+        }}    
       >
         {champion}
       </div>

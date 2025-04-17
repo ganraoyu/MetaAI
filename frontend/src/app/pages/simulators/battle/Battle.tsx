@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { HexCells } from './HexCells';
+import { ChampionCard } from './ChampionCard';
 import axios from 'axios';
 import { MdClose, MdPlayArrow } from "react-icons/md";
 
-// Define interfaces for your battle data
 interface BattleLog {
   formattedTime: string;
   type: string;
@@ -207,8 +207,15 @@ const Battle = () => {
                           {log.type === "attack" && toggleAttack && (
                           <div className='bg-gradient-to-r from-red-900/40 to-red-800/20 border-l-4 border-red-600 rounded-md p-2 shadow-md'>
                             <span className="text-xs text-gray-400 block mb-1">[{log.formattedTime}]</span>
-                            <span className="font-medium">{log.details.attacker.champion}</span> attacks <span className="font-medium">{log.details.target.champion}</span> 
-                            <span className="float-right font-bold text-red-500">{log.details.isCrit ? "CRIT " : ""}{log.details.damage}</span>
+                            <span className="font-medium">
+                                <ChampionCard 
+                                  champion={log.details.attacker.champion}
+                                  currentHp={log.details.attacker.currentHp || 0}
+                                  maxHp={log.details.attacker.maxHp || 100}
+                                />
+                              {log.details.attacker.champion}
+                            </span> attacks <span className="font-medium">{log.details.target.champion}</span> 
+                            <span className="float-right font-bold text-red-400">{log.details.isCrit ? `CRIT ${log.details.damage}` : log.details.damage}</span>
                           </div>
                           )}
                           {log.type === "ability" && toggleAbility && (
