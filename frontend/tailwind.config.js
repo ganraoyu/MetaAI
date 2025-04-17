@@ -8,9 +8,11 @@ module.exports = {
         gold: '#fbbf24',
         darkGray: '#250000',
         mainBackground: '#141414',
-        hexCell: '#11161e',
+        hexCell: '#262324',
         hexCellHover: '#374151',
         hexCellBackground: '#191919',
+        hexCellComponents: '#1e1e1e',
+        hexCellComponentsFont: '#4d4d4d'
       },
       fontFamily: {
         'sans': ['Montserrat', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],

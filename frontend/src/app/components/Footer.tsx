@@ -10,11 +10,11 @@ const Footer = () => {
         <FontAwesomeIcon icon={faPaypal} className="text-white text-xl px-3 h-7 w-7 hover:cursor-pointer"onClick={() => window.location.href = 'http://Paypal.com'}/>
         <FontAwesomeIcon icon={faTwitch} className="text-white text-xl px-3 h-7 w-7 hover:cursor-pointer"onClick={() => window.location.href = 'http://Twitch.com'}/>
       </div>
-      <div className='flex justify-center text-white text-[14px] pt-2'>
+      <div className='flex justify-center text-white text-[12px] pt-2'>
         <p className='mr-8 hover:cursor-pointer'>Privacy Policy</p>
         <p className='hover:cursor-pointer'>Terms of Use</p>
       </div>
-      <p className='text-white text-[12px] text-center'>© 2023 - 2025 TFTStratify. TFTStratify isn't endorsed by Riot Games and doesn't reflect the views or 
+      <p className='text-white text-[10px] text-center'>© 2023 - 2025 TFTStratify. TFTStratify isn't endorsed by Riot Games and doesn't reflect the views or 
         opinions of Riot Games or anyone officially involved in producing or <br/> managing Riot Games properties. 
         Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.</p>
     </div>
