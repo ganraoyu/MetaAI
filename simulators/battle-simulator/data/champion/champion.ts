@@ -338,7 +338,16 @@ export class Champion {
             }
             
             logBattleEvent('heal', {
-                champion: this.name,
+                healer: {
+                    champion: this.name,
+                    currentHp: this.currentHp,
+                    maxHp: this.statsByStarLevel[this.starLevel].hp,
+                },
+                target: {
+                    champion: this.name,
+                    currentHp: this.currentHp,
+                    maxHp: this.statsByStarLevel[this.starLevel].hp,
+                },
                 healAmount: omnivampHealAmount,
                 time: this.battleTime,
                 message: `[${this.name} healed ${omnivampHealAmount} hp`,
@@ -454,6 +463,8 @@ export class Champion {
                     mana: this.mana,
                     abilityPower: this.abilityPower,
                     attackSpeed: this.attackSpeed,
+                    currentHp: this.currentHp,
+                    maxHp: this.statsByStarLevel[this.starLevel].hp,
                     armor: this.armor,
                     magicResist: this.magicResist,
                 },
@@ -501,8 +512,18 @@ export class Champion {
                 }
 
                 logBattleEvent('heal', {
-                    champion: this.name,
+                    healer: {
+                        champion: this.name,
+                        currentHp: this.currentHp,
+                        maxHp: this.statsByStarLevel[this.starLevel].hp,
+                    },
+                    target: {
+                        champion: this.name,
+                        currentHp: this.currentHp,
+                        maxHp: this.statsByStarLevel[this.starLevel].hp,
+                    },                        
                     healAmount: actualHeal,
+                    time: this.battleTime,
                     message: `[${formattedTime}] ${this.name}'s ability heals for ${actualHeal} health`,
                 }, this.battleTime);
 
