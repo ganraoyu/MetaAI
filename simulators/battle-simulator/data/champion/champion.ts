@@ -324,7 +324,8 @@ export class Champion {
             isCrit: critChance,
             mana: this.mana,
             manaPerAttack: this.manaPerAttack,
-            time: this.battleTime,              
+            time: this.battleTime,        
+            source: 'attack',      
             message: `${this.name} attacks ${target.name} for ${attackTypeMsg} damage`
         }, this.battleTime);
 
@@ -349,7 +350,9 @@ export class Champion {
                     maxHp: this.statsByStarLevel[this.starLevel].hp,
                 },
                 healAmount: omnivampHealAmount,
+                source: 'omnivamp',
                 time: this.battleTime,
+
                 message: `[${this.name} healed ${omnivampHealAmount} hp`,
             }, this.battleTime);
 
@@ -478,6 +481,8 @@ export class Champion {
                 ability: this.abilityName,
                 damage: totalDamage,
                 isCrit: critChance,
+                time: this.battleTime, 
+                source: 'ability',
                 message: `[${formattedTime}] ${this.name} uses <${this.abilityName}> on ${target.name} for ${attackTypeMsg} damage`,
             }, this.battleTime);
 
@@ -523,6 +528,7 @@ export class Champion {
                         maxHp: this.statsByStarLevel[this.starLevel].hp,
                     },                        
                     healAmount: actualHeal,
+                    source: 'omnivamp',
                     time: this.battleTime,
                     message: `[${formattedTime}] ${this.name}'s ability heals for ${actualHeal} health`,
                 }, this.battleTime);

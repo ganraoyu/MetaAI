@@ -23,8 +23,9 @@ export function dragonsClawEffect(champion: Champion, battleTime: number){
                 champion: champion.name,
                 healAmount: healAmount,
                 item: item.name,
+                type: 'item',
+                source: 'Dragon\'s Claw',
             }, battleTime);
-
             console.log(`[${formattedTime}] ${champion.name} healed for ${healAmount} hp from Dragon's Claw`);
         };
     });
@@ -61,6 +62,9 @@ export function bloodthristerEffect(champion: Champion, battleTime: number ){
                     champion: champion.name,
                     shieldAmount: shieldAmount,
                     item: item.name,
+                    type: 'item',
+                    source: 'Bloodthirster',
+                    message: `${champion.name} gained a shield for ${shieldAmount} hp`,
                 }, battleTime);
 
                 console.log(`[${formattedTime}] ${champion.name} gained a shield for ${shieldAmount} hp`);
@@ -111,6 +115,8 @@ export function brambleVestEffect(champion: Champion, surroundingOpponents: Cham
                 target: target.name,
                 magicDamage: 100,
                 item: item.name,
+                type: 'item',
+                source: 'Bramble Vest',
                 message: `${champion.name} dealt 100 magic damage to ${target.name} from Bramble Vest`,
             }, battleTime)
                     
@@ -136,6 +142,8 @@ export function giantSlayerEffect(champion: Champion, target: Champion, battleTi
                 target: target.name,
                 damageAmp: item.additionalDamageAmp,
                 item: item.name,
+                type: 'item',
+                source: 'Giant Slayer',
             }, battleTime);
 
             console.log(`[${formattedTime}] ${champion.name} gained 20% damage amp against ${target.name} from Giant Slayer`);
@@ -158,6 +166,8 @@ export function archangelsStaffEffect(champion: Champion, battleTime: number){
                     abilityPowerGained: item.additionalAbilityPowerPerStack,
                     currentAbilityPower: champion.abilityPower,
                     item: item.name,
+                    type: 'item',
+                    source: 'Archangel\'s Staff',
                     message: `${champion.name} gained ${item.additionalAbilityPowerPerStack} ability power from Archangel's Staff`,
                 }, battleTime);
 
@@ -209,6 +219,8 @@ export function steraksGageEffect(champion: Champion, battleTime: number){
                 champion: champion.name,
                 healAmount: healAmount,
                 item: item.name,
+                type: 'item',
+                source: 'Sterak\'s Gage',
                 message: `${champion.name} gained ${healAmount} health from Sterak's Gage`,
             }, battleTime);
 
@@ -262,6 +274,8 @@ export function titansResolveEffect(champion: Champion, battleTime: number){
                 currentAttackDamage: champion.statsByStarLevel[champion.starLevel].attackDamage,
                 currentAbilityPower: champion.abilityPower,
                 item: item.name,
+                type: 'item',
+                source: 'Titan\'s Resolve',
                 message: `${champion.name} Titan's Resolve Stacks: ${state.titansResolveStacks}/25`,
             }, battleTime)
 
@@ -281,6 +295,8 @@ export function titansResolveEffect(champion: Champion, battleTime: number){
                 currentArmor: champion.statsByStarLevel[champion.starLevel].armor,
                 currentMagicResist: champion.statsByStarLevel[champion.starLevel].magicResist,
                 item: item.name,
+                type: 'item',
+                source: 'Titan\'s Resolve',
                 message: `${champion.name} gained 20 armor and 20 magic resist from Titan's Resolve`,
             }, battleTime);
 
@@ -340,6 +356,8 @@ export function steadfastHeartEffect(champion: Champion, battleTime: number){
                 durabilityLost: 7,
                 currentDurability: champion.durability,
                 item: item.name,
+                type: 'item',
+                source: 'Steadfast Heart',
                 message: `${champion.name} lost 7 durability from Steadfast Heart`,
             }, battleTime);
 
@@ -362,6 +380,8 @@ export function lastWhisperEffect(champion: Champion, target: Champion, battleTi
                     champion: champion.name,
                     target: target.name,
                     item: item.name,
+                    type: 'item',
+                    source: 'Last Whisper',
                     message: `${target.name} is sundered by ${champion.name}`,
                 }, battleTime);
 
@@ -402,6 +422,8 @@ export function crownguardEffect(champion: Champion, battleTime: number){
                 champion: champion.name,
                 shieldAmount: shieldAmount,
                 item: item.name,
+                type: 'item',
+                source: 'Crownguard',
                 message: `${champion.name} gained ${shieldAmount} shield from Crownguard`,
             }, battleTime);
 
@@ -414,6 +436,8 @@ export function crownguardEffect(champion: Champion, battleTime: number){
                 champion: champion.name,
                 shieldAmount: 0,
                 item: item.name,
+                type: 'item',
+                source: 'Crownguard',
                 message: `${champion.name} lost all their shield from Crownguard`,
             }, battleTime);
 
@@ -457,6 +481,8 @@ export function handOfJusticeEffect(champion: Champion, battleTime: number){
                     attackDamageGained: 30,
                     abilityPowerGained: 30,
                     item: item.name,
+                    type: 'item',
+                    source: 'Hand of Justice',
                     message: `${champion.name} gained 30 attack damage and ability power from HOJ`,
                 }, battleTime);
 
@@ -468,6 +494,8 @@ export function handOfJusticeEffect(champion: Champion, battleTime: number){
                     champion: champion.name,
                     omnivampGained: 30,
                     item: item.name,
+                    type: 'item',
+                    source: 'Hand of Justice',
                     message: `${champion.name} gained 30 omnivamp from HOJ`,
                 }, battleTime);
 
@@ -512,6 +540,8 @@ export function guardBreakerEffect(champion: Champion, target: Champion, battleT
                 target: target.name,
                 damageAmp: 0.25,
                 item: item.name,
+                type: 'item',
+                source: 'Guardbreaker',
                 message: `${champion.name} gained 25% damage amp from Guardbreaker`,
             }, battleTime);
 
@@ -530,6 +560,8 @@ export function guardBreakerEffect(champion: Champion, target: Champion, battleT
                 target: target.name,
                 damageAmp: -0.25,
                 item: item.name,
+                type: 'item',
+                source: 'Guardbreaker',
                 message: `${champion.name} lost 25% damage amp from Guardbreaker`,
             }, battleTime);
 
@@ -575,6 +607,8 @@ export function nashorsToothEffect(champion: Champion, battleTime: number){
                 champion: champion.name,
                 attackSpeedGained: 60,
                 item: item.name,
+                type: 'item',
+                source: 'Nashor\'s Tooth',
                 message: `${champion.name} gained 60% attack speed from Nashor's Tooth`,
             }, battleTime);
 
@@ -592,6 +626,8 @@ export function nashorsToothEffect(champion: Champion, battleTime: number){
                 champion: champion.name,
                 attackSpeedLost: 60,
                 item: item.name,
+                type: 'item',
+                source: 'Nashor\'s Tooth',
                 message: `${champion.name} lost 60% attack speed from Nashor's Tooth`,
             }, battleTime);
 
@@ -639,6 +675,8 @@ export function hextechGunbladeEffect(champion: Champion, ally: Champion, battle
                     ally: ally.name,
                     healAmount: healAmount,
                     item: item.name,
+                    type: 'item',
+                    source: 'Hextech Gunblade',
                     message: `${champion.name} healed ${ally.name} for ${healAmount} from Hextech Gunblade`,
                 }, battleTime);
 
@@ -687,6 +725,8 @@ export function protectorsVowEffect(champion: Champion, battleTime: number){
                 armorGained: 20,
                 magicResistGained: 20,
                 item: item.name,
+                type: 'item',
+                source: 'Protector\'s Vow',
                 message: `${champion.name} gained ${shieldAmount} shield, 20 armor and 20 magic resist from Protector's Vow`,
             }, battleTime);
 
@@ -713,6 +753,8 @@ export function protectorsVowEffect(champion: Champion, battleTime: number){
                     armorLost: 20,
                     magicResistLost: 20,
                     item: item.name,
+                    type: 'item',
+                    source: 'Protector\'s Vow',
                     message: `${champion.name} lost ${shieldToRemove} shield, 20 armor and 20 magic resist from Protector's Vow`,
                 }, battleTime);
 
@@ -770,6 +812,8 @@ export function redBuffEffect(champion: Champion, target: Champion, battleTime: 
                     target: target.name,
                     burnDamage: burnDamage,
                     item: item.name,
+                    type: 'item',
+                    source: 'Red Buff',
                     message: `${target.name} is being burnt by ${champion.name}'s Red Buff`,
                 }, battleTime);
 
@@ -783,6 +827,8 @@ export function redBuffEffect(champion: Champion, target: Champion, battleTime: 
                     champion: champion.name,
                     target: target.name,
                     item: item.name,
+                    type: 'item',
+                    source: 'Red Buff',
                     message: `${target.name} is being wounded by ${champion.name}'s Red Buff`,
                 }, battleTime);
 
@@ -801,6 +847,8 @@ export function redBuffEffect(champion: Champion, target: Champion, battleTime: 
                     target: target.name,
                     burnDamage: burnDamage,
                     item: item.name,
+                    type: 'item',
+                    source: 'Red Buff',
                     message: `${target.name} burned for ${burnDamage} damage`,
                 }, battleTime);
 
@@ -858,6 +906,8 @@ export function morellonomiconEffect(champion: Champion, target: Champion, battl
                     target: target.name,
                     burnDamage: burnDamage,
                     item: item.name,
+                    type: 'item',
+                    source: 'Morellonomicon',
                     message: `${target.name} is being burnt by ${champion.name}'s Morellonomicon`,
                 }, battleTime);
 
@@ -871,6 +921,8 @@ export function morellonomiconEffect(champion: Champion, target: Champion, battl
                     champion: champion.name,
                     target: target.name,
                     item: item.name,
+                    type: 'item',
+                    source: 'Morellonomicon',
                     message: `${target.name} is being wounded by ${champion.name}'s Morellonomicon`,
                 }, battleTime);
 
@@ -890,6 +942,8 @@ export function morellonomiconEffect(champion: Champion, target: Champion, battl
                     target: target.name,
                     burnDamage: burnDamage,
                     item: item.name,
+                    type: 'item',
+                    source: 'Morellonomicon',
                     message: `${target.name} burned for ${burnDamage} damage`,
                 }, battleTime);
 
@@ -937,6 +991,8 @@ export function gargoyleStoneplateEffect(champion: Champion, battleTime: number)
                 armorBonus: armorBonus,
                 magicResistBonus: magicResistBonus,
                 item: item.name,
+                type: 'item',
+                source: 'Gargoyle Stoneplate',
                 message: `${champion.name} gained ${armorBonus} armor and ${magicResistBonus} magic resist from Gargoyle Stoneplate`,
             }, battleTime);
 
@@ -983,6 +1039,8 @@ export function sunfireCapeEffect(champion: Champion, target: Champion, surround
                         target: targets.name,
                         burnDamage: burnDamage,
                         item: item.name,
+                        type: 'item',
+                        source: 'Sunfire Cape',
                         message: `${targets.name} is being burnt by ${champion.name}'s Sunfire Cape`,
                     }, battleTime);
 
@@ -996,6 +1054,8 @@ export function sunfireCapeEffect(champion: Champion, target: Champion, surround
                         champion: champion.name,
                         target: targets.name,
                         item: item.name,
+                        type: 'item',
+                        source: 'Sunfire Cape',
                         message: `${targets.name} is being wounded by ${champion.name}'s Sunfire Cape`,
                     }, battleTime);
 
@@ -1013,6 +1073,8 @@ export function sunfireCapeEffect(champion: Champion, target: Champion, surround
                         target: targets.name,
                         burnDamage: burnDamage,
                         item: item.name,
+                        type: 'item',
+                        source: 'Sunfire Cape',
                         message: `${targets.name} burned for ${burnDamage} damage from Sunfire Cape`,
                     }, battleTime);
 
@@ -1049,6 +1111,8 @@ export function adaptiveHelmEffect(champion: Champion, isChampionFrontOrBack: bo
                     armorGained: 40,
                     magicResistGained: 40,
                     item: item.name,
+                    type: 'item',
+                    source: 'Adaptive Helm',
                     message: `${champion.name} gained 40 armor and magic resist`,
                 }, battleTime);
 
@@ -1060,6 +1124,8 @@ export function adaptiveHelmEffect(champion: Champion, isChampionFrontOrBack: bo
                     champion: champion.name,
                     abilityPowerGained: 20,
                     item: item.name,
+                    type: 'item',
+                    source: 'Adaptive Helm',
                     message: `${champion.name} gained 20 ability power`,
                 }, battleTime);
 
@@ -1099,6 +1165,8 @@ export function ionicSparkEffect(champion: Champion, target: Champion,surroundin
                         champion: champion.name,
                         target: targets.name,
                         item: item.name,
+                        type: 'item',
+                        source: 'Ionic Spark',
                         message: `${targets.name} is being shredded by ${champion.name}'s Ionic Spark`,
                     }, battleTime);
 
@@ -1117,6 +1185,8 @@ export function ionicSparkEffect(champion: Champion, target: Champion,surroundin
                         target: targets.name,
                         magicDamage: magicDamage,
                         item: item.name,
+                        type: 'item',
+                        source: 'Ionic Spark',
                         message: `${targets.name} took ${magicDamage} magic damage from Ionic Spark`,
                     }, battleTime);
 
@@ -1160,6 +1230,8 @@ export function evenshroudEffect(champion: Champion, surroundingOpponents: Champ
                         champion: champion.name,
                         target: targets.name,
                         item: item.name,
+                        type: 'item',
+                        source: 'Evenshroud',
                         message: `${targets.name} is sundered from Evenshroud`,
                     }, battleTime);
 
@@ -1178,6 +1250,8 @@ export function evenshroudEffect(champion: Champion, surroundingOpponents: Champ
                     armorGained: 25,
                     magicResistGained: 25,
                     item: item.name,
+                    type: 'item',
+                    source: 'Evenshroud',
                     message: `${champion.name} gained 25 armor and magic resist from Evenshroud`,
                 }, battleTime);
 
@@ -1220,6 +1294,8 @@ export function redemptionEffect(champion: Champion, surroundingAllies: Champion
                     healAmount: healingAmount,
                     reductionAmount: reductionAmount,
                     item: item.name,
+                    type: 'item',
+                    source: 'Redemption',
                     message: `${ally.name} healed for ${healingAmount} and gained ${reductionAmount}% reduction from Redemption`,
                 }, battleTime);
 
@@ -1234,6 +1310,8 @@ export function redemptionEffect(champion: Champion, surroundingAllies: Champion
                 champion: champion.name,
                 healAmount: healingAmount,
                 item: item.name,
+                type: 'item',
+                source: 'Redemption',
                 message: `${champion.name} healed for ${healingAmount} from Redemption`,
             }, battleTime);
 
@@ -1274,6 +1352,8 @@ export function edgeOfNightEffect(champion: Champion, battleTime: number){
                     attackSpeedGained: 15,
                     immunityGained: 5,
                     item: item.name,
+                    type: 'item',
+                    source: 'Edge of Night',
                     message: `${champion.name} gained 15% attack speed and 5 second immunity from Edge of Night`,
                 }, battleTime);
 
@@ -1289,6 +1369,8 @@ export function edgeOfNightEffect(champion: Champion, battleTime: number){
                     champion: champion.name,
                     immunityLost: 5,
                     item: item.name,
+                    type: 'item',
+                    source: 'Edge of Night',
                     message: `${champion.name} lost their immunity from Edge of Night`,
                 }, battleTime);
 
@@ -1334,6 +1416,8 @@ export function statikkShivEffect(champion: Champion, target: Champion, battleTi
                     champion: champion.name,
                     target: target.name,
                     item: item.name,
+                    type: 'item',
+                    source: 'Statikk Shiv',
                     message: `${target.name} shreded from Statikk Shiv`,
                 }, battleTime);
 
@@ -1350,6 +1434,8 @@ export function statikkShivEffect(champion: Champion, target: Champion, battleTi
                 target: target.name,
                 magicDamage: magicDamage,
                 item: item.name,
+                type: 'item',
+                source: 'Statikk Shiv',
                 message: `${champion.name} dealt ${magicDamage} magic damage to ${target.name}`,
             }, battleTime);
 
@@ -1385,6 +1471,8 @@ export function quickSilverEffect(champion: Champion, battleTime: number){
                     champion: champion.name,
                     attackSpeedGained: 3,
                     item: item.name,
+                    type: 'item',
+                    source: 'Quick Silver',
                     message: `${champion.name} gained 3% attack speed from Quick Silver`,
                 }, battleTime);
 
@@ -1398,6 +1486,8 @@ export function quickSilverEffect(champion: Champion, battleTime: number){
                     champion: champion.name,
                     attackSpeedGained: 3,
                     item: item.name,
+                    type: 'item',
+                    source: 'Quick Silver',
                     message: `${champion.name} gained 3% attack speed from Quick Silver`,
                 }, battleTime);
 
