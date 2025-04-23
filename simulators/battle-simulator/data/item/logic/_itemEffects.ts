@@ -47,7 +47,7 @@ export function applySimpleEffects(champion: Champion, battleTime: number){
     nashorsToothEffect(champion, battleTime);
     protectorsVowEffect(champion, battleTime);
     gargoyleStoneplateEffect(champion, battleTime);
-edgeOfNightEffect(champion, battleTime);
+    edgeOfNightEffect(champion, battleTime);
     quickSilverEffect(champion, battleTime);    
     handOfJusticeEffect(champion, battleTime);
 };
