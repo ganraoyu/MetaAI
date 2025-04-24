@@ -309,6 +309,14 @@ export const combinedItems = [
         description: 'Combat start: Gain immunity to crowd control for 18 seconds. During this time, gain 3% Attack Speed every 2 seconds.',
         additionalAttacKSpeed: 1.3,
         additionalCritChance: 0.2,
+    }),
+    new Item({
+        name: 'Blue Buff',
+        description: ' Max mana reduced by 10. Gain 10 Mana after casting. When the holder gets a takedown, they deal 5% more damage for 8 seconds.',
+        additionalAttackSpeed: 1.15,
+        additionalStartingMana: 30,
+        additionalAbilityPower: 15,
+        additionalDamageAmp: 0.05
     })
 ]   
 

@@ -421,8 +421,8 @@ function startBattle() {
 placeChampionByName('Akali', 4, 3, 3, 'player');
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
 
-// addItemByName(board.getChampion(4,3), 'Sunfire Cape');
-// addAdditionalItemStatistics(board.getChampion(4,3), 'Sunfire Cape');
+addItemByName(board.getChampion(4,3), 'Blue Buff');
+addAdditionalItemStatistics(board.getChampion(4,3), 'Blue Buff');
 
 console.log(board.getChampion(4,3));
 

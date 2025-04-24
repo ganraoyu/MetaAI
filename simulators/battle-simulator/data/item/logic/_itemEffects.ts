@@ -26,7 +26,8 @@ import {
     edgeOfNightEffect,
     quickSilverEffect,
     statikkShivEffect,
-    lastWhisperEffect
+    lastWhisperEffect,
+    blueBuffEffect,
 } from './combinedItems'
 
 export function applyStaticEffects(champion: Champion) {
@@ -50,6 +51,7 @@ export function applySimpleEffects(champion: Champion, battleTime: number){
     edgeOfNightEffect(champion, battleTime);
     quickSilverEffect(champion, battleTime);    
     handOfJusticeEffect(champion, battleTime);
+    blueBuffEffect(champion, battleTime);
 };
 
 export function applyTargetEffects(champion: Champion, target: Champion, battleTime: number) {

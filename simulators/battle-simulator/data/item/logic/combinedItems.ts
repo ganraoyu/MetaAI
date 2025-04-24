@@ -1497,3 +1497,69 @@ export function quickSilverEffect(champion: Champion, battleTime: number){
     });
 };
 
+const blueBuffStateMap = new Map();
+
+export function blueBuffEffect(champion: Champion, battleTime: number){
+    if(!champion || !champion.items || !champion.items.length) return;
+
+    const formattedTime = getFormattedTime(champion);
+
+    if(!blueBuffStateMap.has(champion.id)){
+        blueBuffStateMap.set(champion.id, {
+            combatStartEffectUsed: false,
+            effectUsed: false,
+            effectExpired: false,
+            timeSinceCombatStartEffectUsed: 0,
+            timeSinceEffectUsed: 0,
+            abilityCount: 0,
+        });
+    }
+
+    const state = blueBuffStateMap.get(champion.id);
+
+    if(champion.abilityArray.length > state.abilityCount){
+        state.abilityCount += 1;
+        state.effectUsed = true;
+    }
+
+    champion.items.forEach((item: ItemProps) =>{
+        if(item.name === 'Blue Buff' && !state.combatStartEffectUsed){
+            champion.abilityManaCost -= 10; // Max mana reduced
+            state.combatStartEffectUsed = true;
+            console.log(`[${formattedTime}] ${champion.name} lost 10 mana cost from Blue Buff`);
+        };
+        if(item.name ==='Blue Buff' && state.effectUsed){
+            champion.mana += 10;
+            champion.damageAmp += 0.15;
+            state.timeSinceEffectUsed = battleTime;
+            state.effectUsed = false;
+            state.effectExpired = false;
+
+            logBattleEvent('damageAmp', {
+                champion: champion.name,
+                damageAmpGained: 15,
+                item: item.name,
+                type: 'item',
+                source: 'Blue Buff',
+                message: `${champion.name} gained 15% damage amp from Blue Buff`,
+            }, battleTime);
+
+            console.log(`[${formattedTime}] ${champion.name} gained 15% damage amp from Blue Buff`);
+        };
+        if(item.name === 'Blue Buff' && battleTime - state.timeSinceEffectUsed >= 800 && !state.effectExpired){
+            champion.damageAmp -= 0.15;
+            state.effectExpired = true;
+
+            logBattleEvent('damageAmp', {
+                champion: champion.name,
+                damageAmpLost: 15,
+                item: item.name,
+                type: 'item',
+                source: 'Blue Buff',
+                message: `${champion.name} lost 15% damage amp from Blue Buff`,
+            }, battleTime);
+
+            console.log(`[${formattedTime}] ${champion.name} lost 15% damage amp from Blue Buff`);
+        }
+    })
+}
