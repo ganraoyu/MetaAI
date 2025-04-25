@@ -3,7 +3,7 @@ import { Champion } from '../../champion/champion';
 import { getFormattedTime } from '../../../utils/formattedTime';
 import { logBattleEvent } from '../../../core/battleLogger';
 
-export function dragonsClawEffect(champion: Champion, battleTime: number){
+export function radiantDragonsClawEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;
 
     let formattedTime = getFormattedTime(champion);
@@ -33,7 +33,7 @@ export function dragonsClawEffect(champion: Champion, battleTime: number){
 
 const bloodthristerStateMap = new Map();
 
-export function bloodthristerEffect(champion: Champion, battleTime: number ){   
+export function radiantBloodthristerEffect(champion: Champion, battleTime: number ){   
     if (!champion?.items?.length || !battleTime) return;
 
     let formattedTime = getFormattedTime(champion);
@@ -75,7 +75,7 @@ export function bloodthristerEffect(champion: Champion, battleTime: number ){
 
 const brambleVestStateMap = new Map();
 
-export function brambleVestEffect(champion: Champion, surroundingOpponents: Champion[], battleTime: number){ 
+export function radiantBrambleVestEffect(champion: Champion, surroundingOpponents: Champion[], battleTime: number){ 
     if (!champion?.items?.length || !battleTime) return;
 
     let formattedTime = getFormattedTime(champion);
@@ -126,7 +126,7 @@ export function brambleVestEffect(champion: Champion, surroundingOpponents: Cham
     });
 };
 
-export function giantSlayerEffect(champion: Champion, target: Champion, battleTime: number){
+export function radiantGiantSlayerEffect(champion: Champion, target: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;
     
     const formattedTime = getFormattedTime(champion);
@@ -151,7 +151,7 @@ export function giantSlayerEffect(champion: Champion, target: Champion, battleTi
     })
 }
 
-export function archangelsStaffEffect(champion: Champion, battleTime: number){
+export function radiantArchangelsStaffEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -179,7 +179,7 @@ export function archangelsStaffEffect(champion: Champion, battleTime: number){
 
 let runnansHurricaneEffectUsed = false;
 
-export function runnansHurricaneEffect(champion: Champion){
+export function radiantRunnansHurricaneEffect(champion: Champion){
     if (!champion?.items?.length) return;
 
     champion.items.forEach((item: ItemProps) => {
@@ -192,7 +192,7 @@ export function runnansHurricaneEffect(champion: Champion){
 
 const steraksGageStateMap = new Map();
 
-export function steraksGageEffect(champion: Champion, battleTime: number){
+export function radiantSteraksGageEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length) return;
     
     const formattedTime = getFormattedTime(champion);
@@ -232,7 +232,7 @@ export function steraksGageEffect(champion: Champion, battleTime: number){
 
 const titansResolveStateMap = new Map();
 
-export function titansResolveEffect(champion: Champion, battleTime: number){
+export function radiantTitansResolveEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -307,7 +307,7 @@ export function titansResolveEffect(champion: Champion, battleTime: number){
 
 const steadFastHeartStateMap = new Map();
 
-export function steadfastHeartEffect(champion: Champion, battleTime: number){
+export function radiantSteadfastHeartEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -366,7 +366,7 @@ export function steadfastHeartEffect(champion: Champion, battleTime: number){
     });
 }
 
-export function lastWhisperEffect(champion: Champion, target: Champion, battleTime: number){
+export function radiantLastWhisperEffect(champion: Champion, target: Champion, battleTime: number){
     if (!champion?.items?.length) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -393,7 +393,7 @@ export function lastWhisperEffect(champion: Champion, target: Champion, battleTi
 
 const crownGuardStateMap = new Map();
 
-export function crownguardEffect(champion: Champion, battleTime: number){
+export function radiantCrownguardEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -448,7 +448,7 @@ export function crownguardEffect(champion: Champion, battleTime: number){
 
 const handOfJusticeStateMap = new Map();
 
-export function handOfJusticeEffect(champion: Champion, battleTime: number){
+export function radiantHandOfJusticeEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -508,7 +508,7 @@ export function handOfJusticeEffect(champion: Champion, battleTime: number){
 
 const guardBreakerStateMap = new Map();
 
-export function guardBreakerEffect(champion: Champion, target: Champion, battleTime: number){
+export function radiantGuardBreakerEffect(champion: Champion, target: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -573,7 +573,7 @@ export function guardBreakerEffect(champion: Champion, target: Champion, battleT
 
 const nashorsToothStateMap = new Map();
 
-export function nashorsToothEffect(champion: Champion, battleTime: number){
+export function radiantNashorsToothEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -639,7 +639,7 @@ export function nashorsToothEffect(champion: Champion, battleTime: number){
 
 const hextechGunBladeStateMap = new Map();
 
-export function hextechGunbladeEffect(champion: Champion, ally: Champion, battleTime: number){
+export function radiantHextechGunbladeEffect(champion: Champion, ally: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;
 
     const damage = champion.statsByStarLevel[champion.starLevel].ability.damage;
@@ -688,7 +688,7 @@ export function hextechGunbladeEffect(champion: Champion, ally: Champion, battle
 
 const protectorsVowStateMap = new Map();
 
-export function protectorsVowEffect(champion: Champion, battleTime: number){
+export function radiantProtectorsVowEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -766,7 +766,7 @@ export function protectorsVowEffect(champion: Champion, battleTime: number){
 
 const redBuffStateMap = new Map();
 
-export function redBuffEffect(champion: Champion, target: Champion, battleTime: number){
+export function radiantRedBuffEffect(champion: Champion, target: Champion, battleTime: number){
     if(!champion?.items?.length || !battleTime) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -860,7 +860,7 @@ export function redBuffEffect(champion: Champion, target: Champion, battleTime: 
 
 const morellonomiconStateMap = new Map();
 
-export function morellonomiconEffect(champion: Champion, target: Champion, battleTime: number) {
+export function radiantMorellonomiconEffect(champion: Champion, target: Champion, battleTime: number) {
     if(!champion?.items?.length || !battleTime) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -956,7 +956,7 @@ export function morellonomiconEffect(champion: Champion, target: Champion, battl
 
 const gargoyleStoneplateStateMap = new Map();
 
-export function gargoyleStoneplateEffect(champion: Champion, battleTime: number){
+export function radiantGargoyleStoneplateEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -1003,7 +1003,7 @@ export function gargoyleStoneplateEffect(champion: Champion, battleTime: number)
 
 const sunfireCapeStateMap = new Map();
 
-export function sunfireCapeEffect(champion: Champion, target: Champion, surroundingOpponents: Champion[], battleTime: number){
+export function radiantSunfireCapeEffect(champion: Champion, target: Champion, surroundingOpponents: Champion[], battleTime: number){
     if(!champion?.items?.length || !battleTime) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -1087,7 +1087,7 @@ export function sunfireCapeEffect(champion: Champion, target: Champion, surround
 
 const adaptiveHelmStateMap = new Map();
 
-export function adaptiveHelmEffect(champion: Champion, isChampionFrontOrBack: boolean, battleTime: number){
+export function radiantAdaptiveHelmEffect(champion: Champion, isChampionFrontOrBack: boolean, battleTime: number){
     if(!champion?.items?.length || !battleTime) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -1138,7 +1138,7 @@ export function adaptiveHelmEffect(champion: Champion, isChampionFrontOrBack: bo
 
 const ionicSparkStateMap = new Map();
 
-export function ionicSparkEffect(champion: Champion, target: Champion,surroundingOpponents: Champion[], battleTime: number){
+export function radiantIonicSparkEffect(champion: Champion, target: Champion,surroundingOpponents: Champion[], battleTime: number){
     if(!champion?.items?.length || !battleTime) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -1199,7 +1199,7 @@ export function ionicSparkEffect(champion: Champion, target: Champion,surroundin
 
 const evenshroudStateMap = new Map();
 
-export function evenshroudEffect(champion: Champion, surroundingOpponents: Champion[], battleTime: number){
+export function radiantEvenshroudEffect(champion: Champion, surroundingOpponents: Champion[], battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -1264,7 +1264,7 @@ export function evenshroudEffect(champion: Champion, surroundingOpponents: Champ
 
 const redemptionStateMap = new Map();
 
-export function redemptionEffect(champion: Champion, surroundingAllies: Champion[], battleTime: number){
+export function radiantRedemptionEffect(champion: Champion, surroundingAllies: Champion[], battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion); 
@@ -1324,7 +1324,7 @@ export function redemptionEffect(champion: Champion, surroundingAllies: Champion
 
 const edgeOfNightStateMap = new Map();
 
-export function edgeOfNightEffect(champion: Champion, battleTime: number){
+export function EdgeOfNightEffect(champion: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -1382,7 +1382,7 @@ export function edgeOfNightEffect(champion: Champion, battleTime: number){
 
 const statikkShivStateMap = new Map();
 
-export function statikkShivEffect(champion: Champion, target: Champion, battleTime: number){
+export function radiantStatikkShivEffect(champion: Champion, target: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length || !target) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -1446,7 +1446,7 @@ export function statikkShivEffect(champion: Champion, target: Champion, battleTi
 
 const quickSilverStateMap = new Map();
 
-export function quickSilverEffect(champion: Champion, battleTime: number){
+export function radiantQuickSilverEffect(champion: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -1499,7 +1499,7 @@ export function quickSilverEffect(champion: Champion, battleTime: number){
 
 const blueBuffStateMap = new Map();
 
-export function blueBuffEffect(champion: Champion, battleTime: number){
+export function radiantBlueBuffEffect(champion: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
@@ -1560,6 +1560,6 @@ export function blueBuffEffect(champion: Champion, battleTime: number){
             }, battleTime);
 
             console.log(`[${formattedTime}] ${champion.name} lost 15% damage amp from Blue Buff`);
-        };
-    });
-};  
+        }
+    })
+}

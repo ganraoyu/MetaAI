@@ -320,7 +320,17 @@ export const combinedItems = [
     })
 ]   
 
-
+export const radiantItems = [
+    new Item({
+        name: 'Guinsoo\'s Reckoning',
+        description: 'Attacks grant 10% Attack Speed. Stacks infinitely.',
+        additionalAbilityPower: 10, // 10 ability power
+        additonalAttackSpeed: 1.2, // 10% attack speed
+        attackSpeedStacking: true,
+        additionalAttackSpeedPerStack: 1.1 //10% attack speed per stack
+    }),
+    
+]
 export function getItemByName(name: string){
     if(!name){
         return 'Champion name cannt be Empty'
