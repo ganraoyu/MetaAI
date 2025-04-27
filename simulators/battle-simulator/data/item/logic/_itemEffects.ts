@@ -6,7 +6,7 @@ import {
     archangelsStaffEffect, 
     giantSlayerEffect, 
     steraksGageEffect, 
-    runnansHurricaneEffect,
+    runaansHurricaneEffect,
     titansResolveEffect,
     steadfastHeartEffect,
     crownguardEffect,
@@ -29,15 +29,22 @@ import {
     lastWhisperEffect,
     blueBuffEffect,
 } from './combinedItems'
+import {
+    dragonsWillEffect,
+    blessedBloodthirsterEffect,
+    rosethornVestEffect,
+    demonSlayerEffect,
+    urlAngelsStaffEffect,
+    steraksMegashieldEffect,
+    titansVowEffect
+} from './radiantItems'
 
 export function applyStaticEffects(champion: Champion) {
-    runnansHurricaneEffect(champion);
-
-
-
+    runaansHurricaneEffect(champion);
 }
 
 export function applySimpleEffects(champion: Champion, battleTime: number){    
+    // combined items
     steraksGageEffect(champion, battleTime);    
     steadfastHeartEffect(champion, battleTime);
     dragonsClawEffect(champion, battleTime);
@@ -52,15 +59,26 @@ export function applySimpleEffects(champion: Champion, battleTime: number){
     quickSilverEffect(champion, battleTime);    
     handOfJusticeEffect(champion, battleTime);
     blueBuffEffect(champion, battleTime);
+
+    // radiant items
+    dragonsWillEffect(champion, battleTime);
+    blessedBloodthirsterEffect(champion, battleTime);
+    urlAngelsStaffEffect(champion, battleTime);
+    steraksMegashieldEffect(champion, battleTime);
+    titansVowEffect(champion, battleTime);
 };
 
 export function applyTargetEffects(champion: Champion, target: Champion, battleTime: number) {
+    // combined items
     giantSlayerEffect(champion, target, battleTime);
     guardBreakerEffect(champion, target, battleTime);
     redBuffEffect(champion, target, battleTime);
     morellonomiconEffect(champion, target, battleTime);
     statikkShivEffect(champion, target, battleTime);
     lastWhisperEffect(champion, target, battleTime);
+
+    // radiant items
+    demonSlayerEffect(champion, target, battleTime);
 }
 
 export function applyAllyEffects(champion: Champion, ally: Champion, battleTime: number) {
@@ -68,8 +86,12 @@ export function applyAllyEffects(champion: Champion, ally: Champion, battleTime:
 }
 
 export function applySurroundingOpponentsEffects(champion: Champion, surroundingOpponents: Champion[], battleTime: number) {
+    // combined items
     evenshroudEffect(champion, surroundingOpponents, battleTime);
     brambleVestEffect(champion, surroundingOpponents, battleTime);
+
+    // radiant items
+    rosethornVestEffect(champion, surroundingOpponents, battleTime);
 }
 
 export function applySurroundingAlliesEffects(champion: Champion, surroundingAllies: Champion[], battleTime: number) {

@@ -3,13 +3,13 @@ import { Champion } from '../../champion/champion';
 import { getFormattedTime } from '../../../utils/formattedTime';
 import { logBattleEvent } from '../../../core/battleLogger';
 
-export function radiantDragonsClawEffect(champion: Champion, battleTime: number){
+export function dragonsWillEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;
 
     let formattedTime = getFormattedTime(champion);
 
     champion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Dragon\'s Claw' && 
+        if(item.name === 'Dragon\'s Will' && 
             item.heal && 
             item.healAmount && 
             battleTime % 200 === 0 && 
@@ -24,46 +24,46 @@ export function radiantDragonsClawEffect(champion: Champion, battleTime: number)
                 healAmount: healAmount,
                 item: item.name,
                 type: 'item',
-                source: 'Dragon\'s Claw',
+                source: 'Dragon\'s Will',
             }, battleTime);
-            console.log(`[${formattedTime}] ${champion.name} healed for ${healAmount} hp from Dragon's Claw`);
+            console.log(`[${formattedTime}] ${champion.name} healed for ${healAmount} hp from Dragon's Will`);
         };
     });
 };
 
-const bloodthristerStateMap = new Map();
+const blessedBloodthirsterStateMap = new Map();
 
-export function radiantBloodthristerEffect(champion: Champion, battleTime: number ){   
+export function blessedBloodthirsterEffect(champion: Champion, battleTime: number ){   
     if (!champion?.items?.length || !battleTime) return;
 
     let formattedTime = getFormattedTime(champion);
     
-    if(!bloodthristerStateMap.has(champion.id)){
-        bloodthristerStateMap.set(champion.id, {
+    if(!blessedBloodthirsterStateMap.has(champion.id)){
+        blessedBloodthirsterStateMap.set(champion.id, {
             effectUsed: false
         })
     }
 
-    const state = bloodthristerStateMap.get(champion.id);
+    const state = blessedBloodthirsterStateMap.get(champion.id);
     
     champion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Bloodthirster' && 
+        if(item.name === 'Blessed Bloodthirster' && 
             item.shield && 
             item.shieldAmount && 
             item.shieldDuration && 
             !state.effectUsed
         ){
-            if(champion.currentHp <= champion.statsByStarLevel[champion.starLevel].hp * 0.4){                
-                state.effectUsed = true;
+            if(champion.currentHp <= champion.statsByStarLevel[champion.starLevel].hp * 0.4){
                 const shieldAmount = champion.statsByStarLevel[champion.starLevel].hp * item.shieldAmount;
                 champion.shield += shieldAmount
+                state.effectUsed = true;
 
                 logBattleEvent('shield', {
                     champion: champion.name,
                     shieldAmount: shieldAmount,
                     item: item.name,
                     type: 'item',
-                    source: 'Bloodthirster',
+                    source: 'Blessed Bloodthirster',
                     message: `${champion.name} gained a shield for ${shieldAmount} hp`,
                 }, battleTime);
 
@@ -73,15 +73,15 @@ export function radiantBloodthristerEffect(champion: Champion, battleTime: numbe
     })
 }
 
-const brambleVestStateMap = new Map();
+const rosethronVestStateMap = new Map();
 
-export function radiantBrambleVestEffect(champion: Champion, surroundingOpponents: Champion[], battleTime: number){ 
+export function rosethornVestEffect(champion: Champion, surroundingOpponents: Champion[], battleTime: number){ 
     if (!champion?.items?.length || !battleTime) return;
 
     let formattedTime = getFormattedTime(champion);
 
-    if(!brambleVestStateMap.has(champion.id)){
-        brambleVestStateMap.set(champion.id, {
+    if(!rosethronVestStateMap.has(champion.id)){
+        rosethronVestStateMap.set(champion.id, {
             effectUsed: false,
             attackCount: 0,
             magicAttackCount: 0,
@@ -90,7 +90,7 @@ export function radiantBrambleVestEffect(champion: Champion, surroundingOpponent
         });
     };
 
-    const state = brambleVestStateMap.get(champion.id);
+    const state = rosethronVestStateMap.get(champion.id);
     
     if(champion.damageTakenArray.length > state.attackCount || champion.magicDamageTakenArray.length > state.magicAttackCount){
         state.effectUsed = true;
@@ -100,42 +100,56 @@ export function radiantBrambleVestEffect(champion: Champion, surroundingOpponent
     };
    
     champion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Bramble Vest' && 
+        if(item.name === 'Rosethorn Vest' && 
             state.effectUsed && 
             battleTime - state.timeSinceEffectUsed >= 200
         ){
             surroundingOpponents.forEach((target: Champion) => {
-            target.currentHp -= 100;
-            champion.magicDamageArray.push(100);
-            target.magicDamageTakenArray.push(100);
+            const magicDamage = item.externalMagicDamage || 175;
+
+            target.currentHp -= magicDamage;
+            champion.magicDamageArray.push(magicDamage);
+            target.magicDamageTakenArray.push(magicDamage);
+
             state.effectUsed = false;
             state.timeSinceEffectUsed = battleTime;
             logBattleEvent('magicDamage', {
                 champion: champion.name,
                 target: target.name,
-                magicDamage: 100,
+                magicDamage: magicDamage,
                 item: item.name,
                 type: 'item',
-                source: 'Bramble Vest',
-                message: `${champion.name} dealt 100 magic damage to ${target.name} from Bramble Vest`,
+                source: 'Rosethorn Vest',
+                message: `${champion.name} dealt 100 magic damage to ${target.name} from Rosethorn Vest`,
             }, battleTime)
                     
-            console.log(`[${formattedTime}] ${champion.name} dealt 100 magic damage to ${target.name} from Bramble Vest`);
+            console.log(`[${formattedTime}] ${champion.name} dealt ${magicDamage} magic damage to ${target.name} from Rosethorn Vest`);
             });
         };
     });
 };
 
-export function radiantGiantSlayerEffect(champion: Champion, target: Champion, battleTime: number){
+const demonSlayerStateMap = new Map();
+
+export function demonSlayerEffect(champion: Champion, target: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;
     
     const formattedTime = getFormattedTime(champion);
 
+    if(!demonSlayerStateMap.has(champion.id)){
+        demonSlayerStateMap.set(champion.id, {
+            effectUsed: false,
+        });
+    };
+
+    const state = demonSlayerStateMap.get(champion.id);
+
     champion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Giant Slayer' && 
-            target.statsByStarLevel[target.starLevel].hp > 1750
+        if(item.name === 'Demon Slayer' && 
+            target.statsByStarLevel[target.starLevel].hp > 1750 && !state.effectUsed
         ){
-            champion.damageAmp += item.additionalDamageAmp || 0;
+            champion.damageAmp += 0.3; // 30% damage amp
+            state.effectUsed = true;
 
             logBattleEvent('damageAmp', {
                 champion: champion.name,
@@ -143,21 +157,21 @@ export function radiantGiantSlayerEffect(champion: Champion, target: Champion, b
                 damageAmp: item.additionalDamageAmp,
                 item: item.name,
                 type: 'item',
-                source: 'Giant Slayer',
+                source: 'Demon Slayer',
             }, battleTime);
 
-            console.log(`[${formattedTime}] ${champion.name} gained 20% damage amp against ${target.name} from Giant Slayer`);
+            console.log(`[${formattedTime}] ${champion.name} gained 30% damage amp against ${target.name} from Demon Slayer`);
         }
     })
 }
 
-export function radiantArchangelsStaffEffect(champion: Champion, battleTime: number){
+export function urlAngelsStaffEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;
 
     const formattedTime = getFormattedTime(champion);
 
     champion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Archangel\'s Staff' && item.abilityPowerStacking){
+        if(item.name === 'Urf-Angel\'s Staff' && item.abilityPowerStacking){
             if(battleTime % 500 === 0){
                 champion.abilityPower += item.additionalAbilityPowerPerStack || 0; 
 
@@ -167,52 +181,49 @@ export function radiantArchangelsStaffEffect(champion: Champion, battleTime: num
                     currentAbilityPower: champion.abilityPower,
                     item: item.name,
                     type: 'item',
-                    source: 'Archangel\'s Staff',
-                    message: `${champion.name} gained ${item.additionalAbilityPowerPerStack} ability power from Archangel's Staff`,
+                    source: 'Urf-Angel\'s Staff',
+                    message: `${champion.name} gained ${item.additionalAbilityPowerPerStack} ability power from Urf-Angel\'s Staff`,
                 }, battleTime);
 
-                console.log(`[${formattedTime}] ${champion.name} gained ${item.additionalAbilityPowerPerStack} ability power from Archangel's Staff`);
+                console.log(`[${formattedTime}] ${champion.name} gained ${item.additionalAbilityPowerPerStack} ability power from Urf-Angel\'s Staff`);
             }
         }
     })
 }
 
-let runnansHurricaneEffectUsed = false;
-
-export function radiantRunnansHurricaneEffect(champion: Champion){
+export function runaansTempestEffect(champion: Champion){
     if (!champion?.items?.length) return;
-
     champion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Runaan\s Hurricane' && !runnansHurricaneEffectUsed){
+        if(item.name === 'Runaan\s Tempest'){
             champion.statsByStarLevel[champion.starLevel].attackDamage += champion.statsByStarLevel[champion.starLevel].attackDamage * 0.55;
-            runnansHurricaneEffectUsed = true;
         }
     })
 }
 
-const steraksGageStateMap = new Map();
+const steraksMegashieldstateMap = new Map();
 
-export function radiantSteraksGageEffect(champion: Champion, battleTime: number){
+export function steraksMegashieldEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length) return;
     
     const formattedTime = getFormattedTime(champion);
 
-    if(!steraksGageStateMap.has(champion.id)){
-        steraksGageStateMap.set(champion.id, {
+    if(!steraksMegashieldstateMap.has(champion.id)){
+        steraksMegashieldstateMap.set(champion.id, {
             effectUsed: false
         })
     }
 
-    const state = steraksGageStateMap.get(champion.id)
+    const state = steraksMegashieldstateMap.get(champion.id)
 
     champion.items.forEach((item: ItemProps) =>{
-        if(item.name ==='Sterak\'s Gage' &&
+        if(item.name ==='Sterak\'s Megashield' &&
             !state.effectUsed &&
             champion.currentHp <= champion.statsByStarLevel[champion.starLevel].hp * 0.6
         ){
-            const healAmount = champion.statsByStarLevel[champion.starLevel].hp *  0.25;
+            const healAmount = champion.statsByStarLevel[champion.starLevel].hp *  0.4;
             champion.currentHp += healAmount
-            champion.statsByStarLevel[champion.starLevel].attackDamage *= 1.35;
+            champion.statsByStarLevel[champion.starLevel].attackDamage *= 1.8;
+    
             champion.healArray.push(healAmount)
 
             logBattleEvent('heal', {
@@ -220,34 +231,34 @@ export function radiantSteraksGageEffect(champion: Champion, battleTime: number)
                 healAmount: healAmount,
                 item: item.name,
                 type: 'item',
-                source: 'Sterak\'s Gage',
-                message: `${champion.name} gained ${healAmount} health from Sterak's Gage`,
+                source: 'Sterak\'s Megashield',
+                message: `${champion.name} gained ${healAmount} health from Sterak's Megashield`,
             }, battleTime);
 
-            console.log(`[${formattedTime}] ${champion.name} gained ${healAmount} health from Sterak's Gage`);
+            console.log(`[${formattedTime}] ${champion.name} gained ${healAmount} health from Sterak's Megashield`);
             state.effectUsed = true;
         }
     })
 }
 
-const titansResolveStateMap = new Map();
+const titansVowStateMap = new Map();
 
-export function radiantTitansResolveEffect(champion: Champion, battleTime: number){
+export function titansVowEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;
 
     const formattedTime = getFormattedTime(champion);
 
-    if(!titansResolveStateMap.has(champion.id)){
-        titansResolveStateMap.set(champion.id, {
+    if(!titansVowStateMap.has(champion.id)){
+        titansVowStateMap.set(champion.id, {
             effectUsed: false,            
             fullStackEffectUsed: false,   
-            titansResolveStacks: 0,       
+            titansVowStacks: 0,       
             damageTakenArray: [],         
             damageTaken: false,           
         })
     }
 
-    const state = titansResolveStateMap.get(champion.id)
+    const state = titansVowStateMap.get(champion.id)
 
     // Check if champion has taken new damage since last check
     if(champion.damageTakenArray && champion.damageTakenArray.length > state.damageTakenArray.length){
@@ -256,123 +267,123 @@ export function radiantTitansResolveEffect(champion: Champion, battleTime: numbe
     };
 
     champion.items.forEach((item: ItemProps) =>{
-        if(item.name === 'Titan\'s Resolve' &&             
+        if(item.name === 'Titan\'s Vow' &&             
             !state.effectUsed &&
             item.abilityPowerStacking && 
-            state.titansResolveStacks < 25 && 
+            state.titansVowStacks < 25 && 
             state.damageTaken                  
         ){            
             // Apply stacking bonuses
-            champion.abilityPower += 1;
-            champion.statsByStarLevel[champion.starLevel].attackDamage *= 1.02;
-            state.titansResolveStacks += 1;
+            champion.abilityPower += 3;
+            champion.statsByStarLevel[champion.starLevel].attackDamage *= 1.03;
+            state.titansVowStacks += 1;
 
             logBattleEvent('stacking', {
                 champion: champion.name,
-                attackDamageGained: 2,
-                abilityPowerGained: 1,
+                attackDamageGained: 3,
+                abilityPowerGained: 3,
                 currentAttackDamage: champion.statsByStarLevel[champion.starLevel].attackDamage,
                 currentAbilityPower: champion.abilityPower,
                 item: item.name,
                 type: 'item',
-                source: 'Titan\'s Resolve',
-                message: `${champion.name} Titan's Resolve Stacks: ${state.titansResolveStacks}/25`,
+                source: 'Titan\'s Vow',
+                message: `${champion.name} Titan's Vow Stacks: ${state.titansVowStacks}/25`,
             }, battleTime)
 
-            console.log(`[${formattedTime}] ${champion.name} gained 2% attack damage and 1 ability power (Stack ${state.titansResolveStacks}/25) from Titan's Resolve`);
+            console.log(`[${formattedTime}] ${champion.name} gained 2% attack damage and 1 ability power (Stack ${state.titansVowStacks}/25) from Titan's Vow`);
             state.damageTaken = false;  // Reset damage taken flag
-        } else if(state.titansResolveStacks === 25 && !state.fullStackEffectUsed){
+        } else if(state.titansVowStacks === 25 && !state.fullStackEffectUsed){
             // Apply bonus stats when max stacks are reached
             state.effectUsed = true;      
             state.fullStackEffectUsed = true;
-            champion.statsByStarLevel[champion.starLevel].armor += 20;
-            champion.statsByStarLevel[champion.starLevel].magicResist += 20;
+            champion.statsByStarLevel[champion.starLevel].armor += 50;
+            champion.statsByStarLevel[champion.starLevel].magicResist += 50;
 
             logBattleEvent('stacking', {
                 champion: champion.name,
-                armorGained: 20,
-                magicResistGained: 20,
+                armorGained: 50,
+                magicResistGained: 50,
                 currentArmor: champion.statsByStarLevel[champion.starLevel].armor,
                 currentMagicResist: champion.statsByStarLevel[champion.starLevel].magicResist,
                 item: item.name,
                 type: 'item',
-                source: 'Titan\'s Resolve',
-                message: `${champion.name} gained 20 armor and 20 magic resist from Titan's Resolve`,
+                source: 'Titan\'s Vow',
+                message: `${champion.name} gained 50 armor and 50 magic resist from Titan's Vow`,
             }, battleTime);
 
-            console.log(`[${formattedTime}] ${champion.name} gained 20 armor and 20 magic resist from Titan's Resolve`);
+            console.log(`[${formattedTime}] ${champion.name} gained 50 armor and 50 magic resist from Titan's Vow`);
         };
     });
 };
 
-const steadFastHeartStateMap = new Map();
+const legacyOfTheColossusStateMap = new Map();
 
-export function radiantSteadfastHeartEffect(champion: Champion, battleTime: number){
+export function legacyOfTheColossusEffect(champion: Champion, battleTime: number){
     if (!champion?.items?.length) return;
 
     const formattedTime = getFormattedTime(champion);
 
-    if(!steadFastHeartStateMap.has(champion.id)){
-        steadFastHeartStateMap.set(champion.id, {
+    if(!legacyOfTheColossusStateMap.has(champion.id)){
+        legacyOfTheColossusStateMap.set(champion.id, {
             effectUsed: false,
             effectExpired: false,
         });
     }
 
-    const state = steadFastHeartStateMap.get(champion.id);
+    const state = legacyOfTheColossusStateMap.get(champion.id);
 
     champion.items.forEach((item: ItemProps) =>{
         // When champion's health is ABOVE 50%, give 15 durability
-        if(item.name === 'Steadfast Heart' && 
+        if(item.name === 'Legacy Of The Colossus' && 
            !state.effectUsed && 
            champion.currentHp > champion.statsByStarLevel[champion.starLevel].hp * 0.5
         ){
-            champion.durability += 15;
+            champion.durability += 30;
 
             logBattleEvent('durability', {
                 champion: champion.name,
-                durabilityGained: 15,
+                durabilityGained: 30,
                 currentDurability: champion.durability,
                 item: item.name,
-                message: `${champion.name} gained 15 durability from Steadfast Heart`,
+                message: `${champion.name} gained 30 durability from Legacy Of The Colossus`,
             }, battleTime);
 
             console.log(`[${formattedTime}] ${champion.name} gained 15 durability`);
             state.effectUsed = true;
             state.effectExpired = false; // Reset expired flag
         } 
-        // When champion's health drops BELOW 50%, reduce to 8 durability
-        else if(item.name === 'Steadfast Heart' && 
+        // When champion's health drops BELOW 40%, reduce to 14 durability
+        else if(item.name === 'Legacy Of The Colossus' && 
                 state.effectUsed && 
-                champion.currentHp <= champion.statsByStarLevel[champion.starLevel].hp * 0.5 && 
+                champion.currentHp <= champion.statsByStarLevel[champion.starLevel].hp * 0.4 && 
                 !state.effectExpired
         ){
-            champion.durability -= 7; // Reduce from 15 to 8
+            champion.durability -= 14; // Reduce from 30 to 16
             state.effectExpired = true;
             state.effectUsed = false; // Allow effect to be used again if health goes back up
 
             logBattleEvent('durability', {
                 champion: champion.name,
-                durabilityLost: 7,
+                durabilityLost: 14,
                 currentDurability: champion.durability,
                 item: item.name,
                 type: 'item',
-                source: 'Steadfast Heart',
-                message: `${champion.name} lost 7 durability from Steadfast Heart`,
+                source: 'Legacy Of The Colossus',
+                message: `${champion.name} lost 14 durability from Legacy Of The Colossus`,
             }, battleTime);
 
-            console.log(`[${formattedTime}] ${champion.name} lost 7 durability`);
+            console.log(`[${formattedTime}] ${champion.name} lost 14 durability`);
         }
     });
 }
 
-export function radiantLastWhisperEffect(champion: Champion, target: Champion, battleTime: number){
+export function eternalWhisperEffect(champion: Champion, target: Champion, battleTime: number){
     if (!champion?.items?.length) return;
 
     const formattedTime = getFormattedTime(champion);
 
     champion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Last Whisper'){
+        if(item.name === 'Eternal Whisper'){
             if(!target.sunder){
                 target.sunder = true;
 
@@ -381,7 +392,7 @@ export function radiantLastWhisperEffect(champion: Champion, target: Champion, b
                     target: target.name,
                     item: item.name,
                     type: 'item',
-                    source: 'Last Whisper',
+                    source: 'Eternal Whisper',
                     message: `${target.name} is sundered by ${champion.name}`,
                 }, battleTime);
 

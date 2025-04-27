@@ -126,17 +126,27 @@ export function brambleVestEffect(champion: Champion, surroundingOpponents: Cham
     });
 };
 
+const giantSlayerStateMap = new Map();
+
 export function giantSlayerEffect(champion: Champion, target: Champion, battleTime: number){
     if (!champion?.items?.length || !battleTime) return;
-    
+
     const formattedTime = getFormattedTime(champion);
+
+    if(!giantSlayerStateMap.has(champion.id)){
+        giantSlayerStateMap.set(champion.id, {
+            effectUsed: false,
+        });
+    }
+
+    const state = giantSlayerStateMap.get(champion.id);
 
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Giant Slayer' && 
-            target.statsByStarLevel[target.starLevel].hp > 1750
+            target.statsByStarLevel[target.starLevel].hp > 1750 && !state.effectUsed
         ){
-            champion.damageAmp += item.additionalDamageAmp || 0;
-
+            champion.damageAmp += 0.2; // 20% damage amp
+            state.effectUsed = true;
             logBattleEvent('damageAmp', {
                 champion: champion.name,
                 target: target.name,
@@ -177,15 +187,12 @@ export function archangelsStaffEffect(champion: Champion, battleTime: number){
     })
 }
 
-let runnansHurricaneEffectUsed = false;
-
-export function runnansHurricaneEffect(champion: Champion){
+export function runaansHurricaneEffect(champion: Champion){
     if (!champion?.items?.length) return;
 
     champion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Runaan\s Hurricane' && !runnansHurricaneEffectUsed){
+        if(item.name === 'Runaan\s Hurricane'){
             champion.statsByStarLevel[champion.starLevel].attackDamage += champion.statsByStarLevel[champion.starLevel].attackDamage * 0.55;
-            runnansHurricaneEffectUsed = true;
         }
     })
 }

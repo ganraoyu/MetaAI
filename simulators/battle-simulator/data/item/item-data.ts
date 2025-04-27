@@ -153,7 +153,7 @@ export const combinedItems = [
         additionalAttackSpeed: 1.1, // 10% attack speed
         additionalAbilityPower: 25, // 25 flat AP
         additionalAttackDamage: 1.25, // 25% attack damage
-        additionalDamageAmp: 0.2, // 20% damage amp
+        additionalDamageAmp: 0.05, // 5% damage amp
     }),
     new Item({
         name: 'Runaan\'s Hurricane',
@@ -377,6 +377,7 @@ export const radiantItems = [
     }),
     new Item({
         name: 'Blessed Bloodthirster',
+        description: 'Once per combat at 40% Health, gain a 50% max Health Shield that lasts up to 5 seconds.',
         additionalAttackDamage: 1.4, // 40% more attack damage
         additionalAbilityPower: 40, // 40 ability power
         additionalMagicResist: 20, // 20 more magic resist
@@ -415,7 +416,7 @@ export const radiantItems = [
         additonalStartingMana: 30, // 30 starting mana
         abilityPowerStacking: true,
         abilityPowerStackInterval: 4, // every 4 seconds
-        abilityPowerStackAmount: 40 // 40 ability power
+        additionalAbilityPowerPerStack: 40 // 40 ability power
     }),
     new Item({
         name: 'Demon Slayer',
@@ -440,7 +441,7 @@ export const radiantItems = [
     }),
     new Item({
         name: 'Titan\'s Vow',
-        description: 'Gain 3% Attack Damage and 3 Ability Power when attacking or taking damage, stacking up to 25 times.',
+        description: 'Gain 3% Attack Damage and 3 Ability Power when attacking or taking damage, stacking up to 25 times. At full stacks, gain 50 Armor and 50 Magic Resist.',
         additionalAttackSpeed: 1.3, // 20% attack speed
         additionalArmor: 35, // 35 more armor
         abilityPowerStacking: true,
@@ -481,7 +482,7 @@ export const radiantItems = [
     }),
     new Item({
         name: 'The Bashor\'s Gift',
-        description: 'After casting an ability, gain 120% Attack Speed for 8 seconds.',\
+        description: 'After casting an ability, gain 120% Attack Speed for 8 seconds.',
         additinalAbilityPower: 30, // 30 ability power
         additionalHeath: 200, // 200 more health
         additinalAttackSpeed: 1.2, // 20% attack speed
@@ -521,11 +522,11 @@ export const radiantItems = [
         burn: true,
     }),
     new Item({
-        name: 'Legacy of the Colossus',
+        name: 'Legacy Of The Colossus',
         description: 'Gain 16% durability. While above 40% Health, instead gain 30% Durability.',
         additionalArmor: 40, // 40 more armor
         additionalCritChance: 20, // 20% crit chance
-        additionalHealth: 200, // 200 more health
+        additionalHealth: 500, // 500 more health
     }),
     new Item({
         name: 'Sunlight Cape',
@@ -591,6 +592,7 @@ export const radiantItems = [
         additionalAttackSpeed: 1.6, // 60% attack speed
     })
 ]
+
 export function getItemByName(name: string){
     if(!name){
         return 'Champion name cannt be Empty'
@@ -598,11 +600,14 @@ export function getItemByName(name: string){
 
     const basicItem = basicItems.find(basicItems => basicItems.name === name)
     const combinedItem = combinedItems.find(combinedItems => combinedItems.name === name)
+    const radiantItem = radiantItems.find(radiantItems => radiantItems.name === name)
 
     if(basicItem){
         return basicItem
     } else if(combinedItem){
         return combinedItem
+    } else if(radiantItem){
+        return radiantItem
     }
 
     if(!basicItems || !combinedItems){
@@ -612,4 +617,4 @@ export function getItemByName(name: string){
 
 // console.log(combinedItems[6])
 
-module.exports = { getItemByName, basicItems, combinedItems }
+module.exports = { getItemByName, basicItems, combinedItems, radiantItems };
