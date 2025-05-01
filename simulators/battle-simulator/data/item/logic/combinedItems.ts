@@ -438,6 +438,7 @@ export function crownguardEffect(champion: Champion, battleTime: number){
         } else if(item.name === 'Crownguard' && battleTime >= 800 && !state.effectExpired){
             state.effectExpired = true;
             champion.shield = 0;
+            champion.abilityPower += 50; 
 
             logBattleEvent('shield', {
                 champion: champion.name,
@@ -470,13 +471,14 @@ export function handOfJusticeEffect(champion: Champion, battleTime: number){
 
     champion.items.forEach((item: ItemProps) => {
 
-        // Base effect gives 15 AP and 15 omnivamp
+        // Base effect gives 15 AP/AD and 15 attack 
         if(item.name === 'Hand of Justice' && !state.effectUsed ){
             champion.statsByStarLevel[champion.starLevel].attackDamage += 15;
             champion.abilityPower += 15;
-            champion.omnivamp += 15;
+            champion.omnivamp += 12;
             state.effectUsed = true;
-            console.log(`[${formattedTime}] ${champion.name} used HOJ effect`);
+
+            console.log(`[${formattedTime}] ${champion.name} used Hand of Justice effect`);
             
             // Randomly choose between 30 AD/AP or 30 omnivamp total. This is including in the base effect
             if(Math.random() * 100 < 50){
@@ -490,12 +492,12 @@ export function handOfJusticeEffect(champion: Champion, battleTime: number){
                     item: item.name,
                     type: 'item',
                     source: 'Hand of Justice',
-                    message: `${champion.name} gained 30 attack damage and ability power from HOJ`,
+                    message: `${champion.name} gained 30 attack damage and ability power from Hand of Justice`,
                 }, battleTime);
 
-                console.log(`[${formattedTime}] ${champion.name} gained 30 attack damage and ability power from HOJ.`);
+                console.log(`[${formattedTime}] ${champion.name} gained 30 attack damage and ability power from Hand of Justice.`);
             } else{
-                champion.omnivamp += 15;
+                champion.omnivamp += 12;
                 
                 logBattleEvent('combatStart', {
                     champion: champion.name,
@@ -506,7 +508,7 @@ export function handOfJusticeEffect(champion: Champion, battleTime: number){
                     message: `${champion.name} gained 30 omnivamp from HOJ`,
                 }, battleTime);
 
-                console.log(`[${formattedTime}] ${champion.name} gained 30 omnivamp from HOJ.`);
+                console.log(`[${formattedTime}] ${champion.name} gained 30 omnivamp from Hand of Justice.`);
             };
         };
     });
@@ -538,41 +540,41 @@ export function guardBreakerEffect(champion: Champion, target: Champion, battleT
 
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Guardbreaker' && !state.effectUsed && state.attackShield){
-            champion.damageAmp += 0.25;
+            champion.damageAmp += 0.15;
             state.timeSinceEffectUsed = battleTime;
             state.effectUsed = true;
 
             logBattleEvent('damageAmp', {
                 champion: champion.name,
                 target: target.name,
-                damageAmp: 0.25,
+                damageAmp: 0.15,
                 item: item.name,
                 type: 'item',
                 source: 'Guardbreaker',
-                message: `${champion.name} gained 25% damage amp from Guardbreaker`,
+                message: `${champion.name} gained 15% damage amp from Guardbreaker`,
             }, battleTime);
 
-            console.log(`[${formattedTime}] ${champion.name} gained 25% damage amp.`);
+            console.log(`[${formattedTime}] ${champion.name} gained 15% damage amp.`);
         } else if(item.name === 'Guardbreaker' && 
             state.attackShield && 
             state.effectUsed && 
             (battleTime - state.timeSinceEffectUsed) >= 300
         ){
-            champion.damageAmp -= 0.25;
+            champion.damageAmp -= 0.15;
             state.effectUsed = false;
             state.attackShield = false;
 
             logBattleEvent('damageAmp', {
                 champion: champion.name,
                 target: target.name,
-                damageAmp: -0.25,
+                damageAmp: -0.15,
                 item: item.name,
                 type: 'item',
                 source: 'Guardbreaker',
-                message: `${champion.name} lost 25% damage amp from Guardbreaker`,
+                message: `${champion.name} lost 15% damage amp from Guardbreaker`,
             }, battleTime);
 
-            console.log(`[${formattedTime}] ${champion.name} lost 25% damage amp.`);
+            console.log(`[${formattedTime}] ${champion.name} lost 15% damage amp.`);
         };
     });
 };
@@ -750,10 +752,6 @@ export function protectorsVowEffect(champion: Champion, battleTime: number){
             if(champion.shield > 0){
                 champion.shield -= shieldToRemove;
 
-                // Also remove the armor and magic resist bonuses when shield expires
-                champion.statsByStarLevel[champion.starLevel].armor -= 20;
-                champion.statsByStarLevel[champion.starLevel].magicResist -= 20;
-
                 logBattleEvent('shield', {
                     champion: champion.name,
                     shieldAmount: -shieldToRemove,
@@ -762,10 +760,10 @@ export function protectorsVowEffect(champion: Champion, battleTime: number){
                     item: item.name,
                     type: 'item',
                     source: 'Protector\'s Vow',
-                    message: `${champion.name} lost ${shieldToRemove} shield, 20 armor and 20 magic resist from Protector's Vow`,
+                    message: `${champion.name} lost ${shieldToRemove} shield from Protector's Vow`,
                 }, battleTime);
 
-                console.log(`[${formattedTime}] ${champion.name} lost ${shieldToRemove} shield, 20 armor and 20 magic resist`);
+                console.log(`[${formattedTime}] ${champion.name} lost ${shieldToRemove} shield`);
             } 
         };
     });

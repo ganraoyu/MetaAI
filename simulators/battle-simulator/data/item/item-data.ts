@@ -193,7 +193,7 @@ export const combinedItems = [
         shieldDuration: 8, // 8 seconds
     }),
     new Item({
-        name: 'Hand of Justice',
+        name: 'Hand Of Justice',
         description: 'Gain 2 effects: • 15% Attack Damage and 15 Ability Power. • 15% Omnivamp. Each round, randomly double 1 of these effects. Omnivamp: heal for some of damage dealt',
         additionalStartingMana: 15,
         additionalCritChance: 20,
@@ -466,13 +466,13 @@ export const radiantItems = [
         shieldDuration: 8, // 8 seconds
     }),
     new Item({
-        name: 'Fist of Justice',
+        name: 'Fist Of Fairness',
         description: 'Gain 2 effects: 35% Attack Damage and 35 Ability Power. 20% Omnivamp. While above 50% health, double the Attack Damage and Ability Power. While below 50% Health, doubl the Omnivamp.',
         additionalStartingMana: 15,
         additionalCritChance: 40,
     }),
     new Item({
-        name: 'Willbraeker',
+        name: 'Willbreaker',
         description: 'After damaging a Shield, deal 50% more damage for 3 seconds.',
         additionalAbilityPower: 30, // 50 ability power
         additionalAttackSpeed: 1.3, // 30% attack speed
@@ -488,7 +488,7 @@ export const radiantItems = [
         additinalAttackSpeed: 1.2, // 20% attack speed
     }),
     new Item({
-        name: 'Hextech Gunblade',
+        name: 'Hextech Lifeblade',
         description: 'Heal the lowest percent Health ally for 40% of damage dealt.',
         additionalAttackSpeed: 1.4, // 40% attack speed
         additionalAbilityPower: 40, // 40 ability power
@@ -509,7 +509,7 @@ export const radiantItems = [
         description: 'Attacks and Abilities 2% Burn and 33% Wound enemies for 5 seconds.',
         additionalAttackSpeed: 1.6, // 60% attack speed
         additionalDamageAmp: 0.1, // 10% more damage
-        would: true,
+        wound: true,
         burn: true,
     }),
     new Item({

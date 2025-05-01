@@ -36,7 +36,16 @@ import {
     demonSlayerEffect,
     urlAngelsStaffEffect,
     steraksMegashieldEffect,
-    titansVowEffect
+    titansVowEffect,
+    royalCrownshieldEffect,
+    fistOfFairnessEffect,
+    willbreakerEffect,
+    theBaronsGiftEffect,
+    radiantHextechGunbladeEffect,
+    bulwarksOathEffect,
+    crestOfCindersEffect,
+    moreMorellonomiconEffect,
+    dvarapalaStoneplateEffect
 } from './radiantItems'
 
 export function applyStaticEffects(champion: Champion) {
@@ -66,6 +75,11 @@ export function applySimpleEffects(champion: Champion, battleTime: number){
     urlAngelsStaffEffect(champion, battleTime);
     steraksMegashieldEffect(champion, battleTime);
     titansVowEffect(champion, battleTime);
+    royalCrownshieldEffect(champion, battleTime);
+    fistOfFairnessEffect(champion, battleTime);
+    theBaronsGiftEffect(champion, battleTime);
+    bulwarksOathEffect(champion, battleTime);
+    dvarapalaStoneplateEffect(champion, battleTime);
 };
 
 export function applyTargetEffects(champion: Champion, target: Champion, battleTime: number) {
@@ -79,10 +93,15 @@ export function applyTargetEffects(champion: Champion, target: Champion, battleT
 
     // radiant items
     demonSlayerEffect(champion, target, battleTime);
+    willbreakerEffect(champion, target, battleTime);
+    crestOfCindersEffect(champion, target, battleTime);
+    moreMorellonomiconEffect(champion, target, battleTime);
 }
 
 export function applyAllyEffects(champion: Champion, ally: Champion, battleTime: number) {
     hextechGunbladeEffect(champion, ally, battleTime);
+
+    radiantHextechGunbladeEffect(champion, ally, battleTime);
 }
 
 export function applySurroundingOpponentsEffects(champion: Champion, surroundingOpponents: Champion[], battleTime: number) {
