@@ -334,7 +334,7 @@ export function legacyOfTheColossusEffect(champion: Champion, battleTime: number
     const state = legacyOfTheColossusStateMap.get(champion.id);
 
     champion.items.forEach((item: ItemProps) =>{
-        // When champion's health is ABOVE 50%, give 15 durability
+        // When champion's health is ABOVE 50%, give 20 durability
         if(item.name === 'Legacy Of The Colossus' && 
            !state.effectUsed && 
            champion.currentHp > champion.statsByStarLevel[champion.starLevel].hp * 0.5
@@ -349,7 +349,7 @@ export function legacyOfTheColossusEffect(champion: Champion, battleTime: number
                 message: `${champion.name} gained 30 durability from Legacy Of The Colossus`,
             }, battleTime);
 
-            console.log(`[${formattedTime}] ${champion.name} gained 15 durability`);
+            console.log(`[${formattedTime}] ${champion.name} gained 20 durability`);
             state.effectUsed = true;
             state.effectExpired = false; // Reset expired flag
         } 
@@ -955,8 +955,8 @@ export function dvarapalaStoneplateEffect(champion: Champion, battleTime: number
             state.effectUsed
         ){            
             state.effectUsed = false
-            const armorBonus = 15 * state.amountOfChampionsAttacking;
-            const magicResistBonus = 15 * state.amountOfChampionsAttacking;
+            const armorBonus = 20 * state.amountOfChampionsAttacking;
+            const magicResistBonus = 20 * state.amountOfChampionsAttacking;
             champion.statsByStarLevel[champion.starLevel].armor += armorBonus;
             champion.statsByStarLevel[champion.starLevel].magicResist += magicResistBonus;
 
@@ -966,14 +966,15 @@ export function dvarapalaStoneplateEffect(champion: Champion, battleTime: number
                 magicResistBonus: magicResistBonus,
                 item: item.name,
                 type: 'item',
-                source: 'Gargoyle Stoneplate',
-                message: `${champion.name} gained ${armorBonus} armor and ${magicResistBonus} magic resist from Gargoyle Stoneplate`,
+                source: 'Dvarapala Stoneplate',
+                message: `${champion.name} gained ${armorBonus} armor and ${magicResistBonus} magic resist from Dvarapala Stoneplate`,
             }, battleTime);
 
             console.log(`[${formattedTime}] ${champion.name} gained ${armorBonus} armor and ${magicResistBonus} magic resist from ${state.amountOfChampionsAttacking} attackers`);
         };
-        if(item.name === 'Dvarapala Stoneplate' && battleTime - state.timeSinceLastHeal >= 1000 ){
-            const healAmount = champion.statsByStarLevel[champion.starLevel].hp * 0.4;
+
+        if(item.name === 'Dvarapala Stoneplate' && battleTime - state.timeSinceLastHeal >= 100 ){
+            const healAmount = champion.statsByStarLevel[champion.starLevel].hp * 0.020;
 
             champion.currentHp += healAmount;
             state.timeSinceLastHeal = battleTime;
@@ -984,11 +985,11 @@ export function dvarapalaStoneplateEffect(champion: Champion, battleTime: number
                 healAmount: healAmount,
                 item: item.name,
                 type: 'item',
-                source: 'Gargoyle Stoneplate',
-                message: `${champion.name} healed for ${healAmount} from Gargoyle Stoneplate`,
+                source: 'Dvarapala Stoneplate',
+                message: `${champion.name} healed for ${healAmount} from Dvarapala Stoneplate`,
             }, battleTime);
 
-            console.log(`[${formattedTime}] ${champion.name} healed for ${healAmount} from Gargoyle Stoneplate`);
+            console.log(`[${formattedTime}] ${champion.name} healed for ${healAmount} from Dvarapala Stoneplate`);
         }   
     });
 };
@@ -1087,38 +1088,38 @@ export function radiantAdaptiveHelmEffect(champion: Champion, isChampionFrontOrB
     const state = adaptiveHelmStateMap.get(champion.id);
 
     champion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Adaptive Helm' && !state.effectUsed){
+        if(item.name === 'Jak\'sho the Protean' && !state.effectUsed){
             if(isChampionFrontOrBack){  
                 champion.statsByStarLevel[champion.starLevel].armor += 40;
                 champion.statsByStarLevel[champion.starLevel].magicResist += 40;
 
                 logBattleEvent('armorMagicResist', {
                     champion: champion.name,
-                    armorGained: 40,
-                    magicResistGained: 40,
+                    armorGained: 60,
+                    magicResistGained: 60,
                     item: item.name,
                     type: 'item',
-                    source: 'Adaptive Helm',
-                    message: `${champion.name} gained 40 armor and magic resist`,
+                    source: 'Jak\'sho the Protean',
+                    message: `${champion.name} gained 60 armor and magic resist`,
                 }, battleTime);
 
-                console.log(`[${formattedTime}] ${champion.name} gained 40 armor and magic resist`);
+                console.log(`[${formattedTime}] ${champion.name} gained 60 armor and magic resist`);
             } else if(!isChampionFrontOrBack){
-                champion.abilityPower += 20;
+                champion.abilityPower += 40;
 
                 logBattleEvent('abilityPower', {
                     champion: champion.name,
-                    abilityPowerGained: 20,
+                    abilityPowerGained: 40,
                     item: item.name,
                     type: 'item',
-                    source: 'Adaptive Helm',
-                    message: `${champion.name} gained 20 ability power`,
+                    source: 'Jak\'sho the Protean',
+                    message: `${champion.name} gained 40 ability power`,
                 }, battleTime);
 
-                console.log(`[${formattedTime}] ${champion.name} gained 20 ability power`);
+                console.log(`[${formattedTime}] ${champion.name} gained 40 ability power`);
             }
             state.effectUsed = true;
-        }
+        }   
     })
 }
 
@@ -1132,14 +1133,15 @@ export function radiantIonicSparkEffect(champion: Champion, target: Champion,sur
     if(!ionicSparkStateMap.has(champion.id)){
         ionicSparkStateMap.set(champion.id, {
             effectUsed: true,
-            targetAbilityCount: [...target.abilityArray].length
+            targetAbilityCount: [...target.abilityArray].length,
+            timeSinceLastHeal: 0,
         });
     };
 
     const state = ionicSparkStateMap.get(champion.id);
 
     champion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Ionic Spark' && 
+        if(item.name === 'Covalent Spark' && 
             item.shred && 
             state.effectUsed
         ){
@@ -1152,8 +1154,8 @@ export function radiantIonicSparkEffect(champion: Champion, target: Champion,sur
                         target: targets.name,
                         item: item.name,
                         type: 'item',
-                        source: 'Ionic Spark',
-                        message: `${targets.name} is being shredded by ${champion.name}'s Ionic Spark`,
+                        source: 'Covalent Spark',
+                        message: `${targets.name} is being shredded by ${champion.name}'s Covalent Spark`,
                     }, battleTime);
 
                     console.log(`[${formattedTime}] ${targets.name} shreded`)
@@ -1161,7 +1163,7 @@ export function radiantIonicSparkEffect(champion: Champion, target: Champion,sur
 
                 if(targets.abilityArray.length > state.targetAbilityCount){
                     state.targetAbilityCount += 1;
-                    const magicDamage = target.abilityManaCost * 1.6;
+                    const magicDamage = target.abilityManaCost * 200;
                     targets.currentHp -= magicDamage
                     champion.magicDamageArray.push(magicDamage);
                     target.magicDamageTakenArray.push(magicDamage);
@@ -1172,42 +1174,61 @@ export function radiantIonicSparkEffect(champion: Champion, target: Champion,sur
                         magicDamage: magicDamage,
                         item: item.name,
                         type: 'item',
-                        source: 'Ionic Spark',
-                        message: `${targets.name} took ${magicDamage} magic damage from Ionic Spark`,
+                        source: 'Covalent Spark',
+                        message: `${targets.name} took ${magicDamage} magic damage from Covalent Spark`,
                     }, battleTime);
 
-                    console.log(`[${formattedTime}] ${targets.name} took ${magicDamage} magic damage from Ionic Spark`);
+                    console.log(`[${formattedTime}] ${targets.name} took ${magicDamage} magic damage from Covalent Spark`);
                 };
+
+                if(item.name === 'Covalent Spark' && battleTime - state.timeSinceLastHeal >= 100 ){
+                    const healAmount = champion.statsByStarLevel[champion.starLevel].hp * 0.020;
+        
+                    champion.currentHp += healAmount;
+                    state.timeSinceLastHeal = battleTime;
+                    champion.healArray.push(healAmount);
+        
+                    logBattleEvent('heal', {
+                        champion: champion.name,
+                        healAmount: healAmount,
+                        item: item.name,
+                        type: 'item',
+                        source: 'Covalent Spark',
+                        message: `${champion.name} healed for ${healAmount} from Covalent Spark`,
+                    }, battleTime);
+        
+                    console.log(`[${formattedTime}] ${champion.name} healed for ${healAmount} from Covalent Spark`);
+                }   
             });
         };
     });
 };
 
-const evenshroudStateMap = new Map();
+const equinoxStateMap = new Map();
 
-export function radiantEvenshroudEffect(champion: Champion, surroundingOpponents: Champion[], battleTime: number){
+export function equinoxEffect(champion: Champion, surroundingOpponents: Champion[], battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
 
-    if(!evenshroudStateMap.has(champion.id)){
-        evenshroudStateMap.set(champion.id, {
+    if(!equinoxStateMap.has(champion.id)){
+        equinoxStateMap.set(champion.id, {
             effectUsed: true,
             combastStartEffectUsed: false,
             timeSinceEffectUsed: 0 // combat start
         });
     };
 
-    const state = evenshroudStateMap.get(champion.id);
+    const state = equinoxStateMap.get(champion.id);
 
-    if(state.timeSinceEffectUsed >= 1000 && state.combastStartEffectUsed){
-        champion.statsByStarLevel[champion.starLevel].armor -= 25;
-        champion.statsByStarLevel[champion.starLevel].magicResist -= 25;
-        console.log(`[${formattedTime}] ${champion.name} lost 25 armor and magic resist from Evenshroud combat start effect`);
+    if(state.timeSinceEffectUsed >= 2000 && state.combastStartEffectUsed){
+        champion.statsByStarLevel[champion.starLevel].armor -= 75;
+        champion.statsByStarLevel[champion.starLevel].magicResist -= 75;
+        console.log(`[${formattedTime}] ${champion.name} lost 75 armor and magic resist from Equinox combat start effect`);
     };
 
     champion.items.forEach((item: ItemProps) =>{
-        if(item.name === 'Evenshroud' && state.effectUsed){
+        if(item.name === 'Equinox' && state.effectUsed){
             surroundingOpponents.forEach((targets: Champion) =>{
                 if(!targets.sunder){
                     targets.sunder = true;
@@ -1217,57 +1238,57 @@ export function radiantEvenshroudEffect(champion: Champion, surroundingOpponents
                         target: targets.name,
                         item: item.name,
                         type: 'item',
-                        source: 'Evenshroud',
-                        message: `${targets.name} is sundered from Evenshroud`,
+                        source: 'Equinox',
+                        message: `${targets.name} is sundered from Equinox`,
                     }, battleTime);
 
-                    console.log(`[${formattedTime}] ${targets.name} sundered from Evenshroud`);   
+                    console.log(`[${formattedTime}] ${targets.name} sundered from Equinox`);   
                 };
             });
             
         if(!state.combastStartEffectUsed){      
                 state.combastStartEffectUsed = true;                               
                 state.timeSinceEffectUsed = battleTime;
-                champion.statsByStarLevel[champion.starLevel].armor += 25;
-                champion.statsByStarLevel[champion.starLevel].magicResist += 25;
+                champion.statsByStarLevel[champion.starLevel].armor += 75;
+                champion.statsByStarLevel[champion.starLevel].magicResist += 75;
 
                 logBattleEvent('combatStart', {
                     champion: champion.name,
-                    armorGained: 25,
-                    magicResistGained: 25,
+                    armorGained: 75,
+                    magicResistGained: 75,
                     item: item.name,
                     type: 'item',
                     source: 'Evenshroud',
-                    message: `${champion.name} gained 25 armor and magic resist from Evenshroud`,
+                    message: `${champion.name} gained 75 armor and magic resist from Evenshroud`,
                 }, battleTime);
 
-                console.log(`Combat start: [${formattedTime}] ${champion.name} gained 25 armor and magic resist from Evenshroud`);
+                console.log(`Combat start: [${formattedTime}] ${champion.name} gained 75 armor and magic resist from Evenshroud`);
             };
         };
     });
 };
 
 
-const redemptionStateMap = new Map();
+const absolutionStateMap = new Map();
 
-export function radiantRedemptionEffect(champion: Champion, surroundingAllies: Champion[], battleTime: number){
+export function absolutionEffect(champion: Champion, surroundingAllies: Champion[], battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion); 
 
-    if(!redemptionStateMap.has(champion.id)){
-        redemptionStateMap.set(champion.id, {
+    if(!absolutionStateMap.has(champion.id)){
+        absolutionStateMap.set(champion.id, {
             effectUsed: false,
             timeSinceEffectUsed: 0
         });
     };
 
-    const state = redemptionStateMap.get(champion.id);
+    const state = absolutionStateMap.get(champion.id);
 
     champion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Redemption' && !state.effectUsed && battleTime - state.timeSinceEffectUsed >= 500){
+        if(item.name === 'Absolution' && !state.effectUsed && battleTime - state.timeSinceEffectUsed >= 500){
             surroundingAllies.forEach((ally: Champion) => {
-                const healingAmount = Math.round(ally.statsByStarLevel[ally.starLevel].hp * 0.15);
+                const healingAmount = Math.round(ally.statsByStarLevel[ally.starLevel].hp * 0.25);
                 const reductionAmount = 10; // 10% percent
 
                 ally.statsByStarLevel[ally.starLevel].reduction += reductionAmount;
@@ -1281,14 +1302,14 @@ export function radiantRedemptionEffect(champion: Champion, surroundingAllies: C
                     reductionAmount: reductionAmount,
                     item: item.name,
                     type: 'item',
-                    source: 'Redemption',
-                    message: `${ally.name} healed for ${healingAmount} and gained ${reductionAmount}% reduction from Redemption`,
+                    source: 'Absolution',
+                    message: `${ally.name} healed for ${healingAmount} and gained ${reductionAmount}% reduction from Absolution`,
                 }, battleTime);
 
-                console.log(`[${formattedTime}] ${ally.name} healed for ${healingAmount} by redemption and gained 10 reduction`);
+                console.log(`[${formattedTime}] ${ally.name} healed for ${healingAmount} by Absolution and gained 10 reduction`);
             });
 
-            const healingAmount = Math.round(champion.statsByStarLevel[champion.starLevel].hp * 0.15);
+            const healingAmount = Math.round(champion.statsByStarLevel[champion.starLevel].hp * 0.25);
 
             champion.currentHp += healingAmount;
 
@@ -1298,52 +1319,56 @@ export function radiantRedemptionEffect(champion: Champion, surroundingAllies: C
                 item: item.name,
                 type: 'item',
                 source: 'Redemption',
-                message: `${champion.name} healed for ${healingAmount} from Redemption`,
+                message: `${champion.name} healed for ${healingAmount} from Absolution`,
             }, battleTime);
 
-            console.log(`[${formattedTime}] ${champion.name} healed for ${healingAmount} by redemption and gained 10% reduction`);
+            console.log(`[${formattedTime}] ${champion.name} healed for ${healingAmount} by Absolution and gained 10% reduction`);
 
             state.timeSinceEffectUsed = battleTime;
         };
     });
 };
 
-const edgeOfNightStateMap = new Map();
+const brinkOfDawnStateMap = new Map();
 
 export function EdgeOfNightEffect(champion: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
 
-    if(!edgeOfNightStateMap.has(champion.id)){
-        edgeOfNightStateMap.set(champion.id, {
+    if(!brinkOfDawnStateMap.has(champion.id)){ 
+        brinkOfDawnStateMap.set(champion.id, {
             effectUsed: false,
             effectExpired: false,
             timeSinceEffectUsed: 0
         });
     }
 
-    const state = edgeOfNightStateMap.get(champion.id);
+    const state = brinkOfDawnStateMap.get(champion.id);
     
     champion.items.forEach((item: ItemProps) =>{
-        if(item.name === 'Edge of Night'){
+        if(item.name === 'Brink Of Dawn'){
             if(!state.effectUsed && champion.currentHp <= champion.statsByStarLevel[champion.starLevel].hp * 0.6){
-                champion.attackSpeed *= 1.15;
+                const healAmount = Math.round(champion.statsByStarLevel[champion.starLevel].hp);
+
+                champion.attackSpeed *= 1.85;
+                champion.currentHp += healAmount;
                 state.effectUsed = true
                 champion.immunity = true;  
                 state.timeSinceEffectUsed = battleTime;
 
                 logBattleEvent('combatStart', {
                     champion: champion.name,
-                    attackSpeedGained: 15,
+                    attackSpeedGained: 85,
                     immunityGained: 5,
                     item: item.name,
+                    heal: healAmount,
                     type: 'item',
-                    source: 'Edge of Night',
-                    message: `${champion.name} gained 15% attack speed and 5 second immunity from Edge of Night`,
+                    source: 'Brink Of Dawn',
+                    message: `${champion.name} gained 85% attack speed and 5 second immunity from Brink Of Dawn`,
                 }, battleTime);
 
-                console.log(`[${formattedTime}] ${champion.name} gained 15% attack speed and 5 second immunity from Edge of Night`);
+                console.log(`[${formattedTime}] ${champion.name} gained 85% attack speed and 5 second immunity from Brink Of Dawn, and healed for ${healAmount}`);
             };
             
             if(state.effectUsed && !state.effectExpired && 
@@ -1356,8 +1381,8 @@ export function EdgeOfNightEffect(champion: Champion, battleTime: number){
                     immunityLost: 5,
                     item: item.name,
                     type: 'item',
-                    source: 'Edge of Night',
-                    message: `${champion.name} lost their immunity from Edge of Night`,
+                    source: 'Brink Of Dawn',
+                    message: `${champion.name} lost their immunity from Brink Of Dawn`,
                 }, battleTime);
 
                 console.log(`[${formattedTime}] ${champion.name} lost their immunity`);
@@ -1366,34 +1391,34 @@ export function EdgeOfNightEffect(champion: Champion, battleTime: number){
     });
 };
 
-const statikkShivStateMap = new Map();
+const statikksStateMap = new Map();
 
 export function radiantStatikkShivEffect(champion: Champion, target: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length || !target) return;
 
     const formattedTime = getFormattedTime(champion);
 
-    if(!statikkShivStateMap.has(champion.id)){
-        statikkShivStateMap.set(champion.id, {
+    if(!statikksStateMap.has(champion.id)){
+        statikksStateMap.set(champion.id, {
             effectUsed: false,
             lastProcessedAttackCount: 0  
         });
     }
 
-    const state = statikkShivStateMap.get(champion.id);
+    const state = statikksStateMap.get(champion.id);
 
     if(champion.attacks && 
        champion.attacks.length > 0 && 
        champion.attacks.length % 3 === 0 &&
        champion.attacks.length > state.lastProcessedAttackCount) {
-        
+         
         state.effectUsed = true;
         state.lastProcessedAttackCount = champion.attacks.length;
     }
 
     champion.items.forEach((item: ItemProps) =>{
-        if(item.name === 'Statikk Shiv' && state.effectUsed){
-            const magicDamage = 35;
+        if(item.name === 'Statikk\'s Favor' && state.effectUsed){
+            const magicDamage = 95;
 
             if(!target.shred){
                 target.shred = true;  
@@ -1403,11 +1428,11 @@ export function radiantStatikkShivEffect(champion: Champion, target: Champion, b
                     target: target.name,
                     item: item.name,
                     type: 'item',
-                    source: 'Statikk Shiv',
-                    message: `${target.name} shreded from Statikk Shiv`,
+                    source: 'Statikk\'s Favor',
+                    message: `${target.name} shreded from Statikk\'s Favor`,
                 }, battleTime);
 
-                console.log(`[${formattedTime}] ${target.name} shreded from Statikk Shiv`);
+                console.log(`[${formattedTime}] ${target.name} shreded from Statikk\'s Favor`);
             }
 
             target.currentHp -= magicDamage;            
@@ -1421,7 +1446,7 @@ export function radiantStatikkShivEffect(champion: Champion, target: Champion, b
                 magicDamage: magicDamage,
                 item: item.name,
                 type: 'item',
-                source: 'Statikk Shiv',
+                source: 'Statikk\'s Favor',
                 message: `${champion.name} dealt ${magicDamage} magic damage to ${target.name}`,
             }, battleTime);
 
@@ -1430,68 +1455,68 @@ export function radiantStatikkShivEffect(champion: Champion, target: Champion, b
     });
 };
 
-const quickSilverStateMap = new Map();
+const quickestSilver = new Map();
 
 export function radiantQuickSilverEffect(champion: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
 
-    if(!quickSilverStateMap.has(champion.id)){
-        quickSilverStateMap.set(champion.id, {
+    if(!quickestSilver.has(champion.id)){
+        quickestSilver.set(champion.id, {
             effectUsed: false,
             combatStarEffectUsed: false
         });
     }
 
-    const state = quickSilverStateMap.get(champion.id);
+    const state = quickestSilver.get(champion.id);
 
     champion.items.forEach((item: ItemProps) =>{
-        if(item.name === 'Quick Silver' && !state.effectUsed){
+        if(item.name === 'QuickestSilver' && !state.effectUsed){
             // combat start
             if(!state.combatStarEffectUsed){
-                champion.attackSpeed *= 1.03;
+                champion.attackSpeed *= 1.07;
                 state.combatStarEffectUsed = true;
 
                 logBattleEvent('combatStart', {
                     champion: champion.name,
-                    attackSpeedGained: 3,
+                    attackSpeedGained: 7,
                     item: item.name,
                     type: 'item',
-                    source: 'Quick Silver',
-                    message: `${champion.name} gained 3% attack speed from Quick Silver`,
+                    source: 'QuickestSilver',
+                    message: `${champion.name} gained 7% attack speed from QuickestSilver`,
                 }, battleTime);
 
-                console.log(`[${formattedTime}] ${champion.name} gained 3% attack speed from Quick Silver`);
+                console.log(`[${formattedTime}] ${champion.name} gained 7% attack speed from QuickestSilver`);
             }
             // after combat start effect still active for 18 seconds
             if (battleTime % 200 === 0 && battleTime <= 1800) { 
-                champion.attackSpeed *= 1.03;
+                champion.attackSpeed *= 1.07;
 
                 logBattleEvent('attackSpeed', {
                     champion: champion.name,
-                    attackSpeedGained: 3,
+                    attackSpeedGained: 7,
                     item: item.name,
                     type: 'item',
-                    source: 'Quick Silver',
-                    message: `${champion.name} gained 3% attack speed from Quick Silver`,
+                    source: 'QuickestSilver',
+                    message: `${champion.name} gained 3% attack speed from QuickestSilver`,
                 }, battleTime);
 
-                console.log(`[${formattedTime}] ${champion.name} gained 3% attack speed from Quick Silver`);
+                console.log(`[${formattedTime}] ${champion.name} gained 7% attack speed from QuickestSilver`);
             };
         };
     });
 };
 
-const blueBuffStateMap = new Map();
+const blueBlessingStateMap = new Map();
 
-export function radiantBlueBuffEffect(champion: Champion, battleTime: number){
+export function blueBlessingEffect(champion: Champion, battleTime: number){
     if(!champion || !champion.items || !champion.items.length) return;
 
     const formattedTime = getFormattedTime(champion);
 
-    if(!blueBuffStateMap.has(champion.id)){
-        blueBuffStateMap.set(champion.id, {
+    if(!blueBlessingStateMap.has(champion.id)){
+        blueBlessingStateMap.set(champion.id, {
             combatStartEffectUsed: false,
             effectUsed: false,
             effectExpired: false,
@@ -1501,7 +1526,7 @@ export function radiantBlueBuffEffect(champion: Champion, battleTime: number){
         });
     }
 
-    const state = blueBuffStateMap.get(champion.id);
+    const state = blueBlessingStateMap.get(champion.id);
 
     if(champion.abilityArray.length > state.abilityCount){
         state.abilityCount += 1;
@@ -1509,43 +1534,43 @@ export function radiantBlueBuffEffect(champion: Champion, battleTime: number){
     }
 
     champion.items.forEach((item: ItemProps) =>{
-        if(item.name === 'Blue Buff' && !state.combatStartEffectUsed){
+        if(item.name === 'Blue Blessing' && !state.combatStartEffectUsed){
             champion.abilityManaCost -= 10; // Max mana reduced
             state.combatStartEffectUsed = true;
-            console.log(`[${formattedTime}] ${champion.name} lost 10 mana cost from Blue Buff`);
+            console.log(`[${formattedTime}] ${champion.name} lost 10 mana cost from Blue Blessing`);
         };
-        if(item.name ==='Blue Buff' && state.effectUsed){
+        if(item.name ==='Blue Blessing' && state.effectUsed){
             champion.mana += 10;
-            champion.damageAmp += 0.15;
+            champion.damageAmp += 0.20;
             state.timeSinceEffectUsed = battleTime;
             state.effectUsed = false;
             state.effectExpired = false;
 
             logBattleEvent('damageAmp', {
                 champion: champion.name,
-                damageAmpGained: 15,
+                damageAmpGained: 20,
                 item: item.name,
                 type: 'item',
-                source: 'Blue Buff',
-                message: `${champion.name} gained 15% damage amp from Blue Buff`,
+                source: 'Blue Blessing',
+                message: `${champion.name} gained 20% damage amp from Blue Blessing`,
             }, battleTime);
 
-            console.log(`[${formattedTime}] ${champion.name} gained 15% damage amp from Blue Buff`);
+            console.log(`[${formattedTime}] ${champion.name} gained 20% damage amp from Blue Blessing`);
         };
-        if(item.name === 'Blue Buff' && battleTime - state.timeSinceEffectUsed >= 800 && !state.effectExpired){
-            champion.damageAmp -= 0.15;
+        if(item.name === 'Blue Blessing' && battleTime - state.timeSinceEffectUsed >= 1200 && !state.effectExpired){
+            champion.damageAmp -= 0.20;
             state.effectExpired = true;
 
             logBattleEvent('damageAmp', {
                 champion: champion.name,
-                damageAmpLost: 15,
+                damageAmpLost: 20,
                 item: item.name,
                 type: 'item',
-                source: 'Blue Buff',
-                message: `${champion.name} lost 15% damage amp from Blue Buff`,
+                source: 'Blue Blessing',
+                message: `${champion.name} lost 20% damage amp from Blue Blessing`,
             }, battleTime);
 
-            console.log(`[${formattedTime}] ${champion.name} lost 15% damage amp from Blue Buff`);
+            console.log(`[${formattedTime}] ${champion.name} lost 20% damage amp from Blue Blessing`);
         }
     })
 }

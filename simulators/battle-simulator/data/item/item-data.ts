@@ -565,7 +565,7 @@ export const radiantItems = [
         heal: true,
     }), 
     new Item({
-        name: 'Brink of Dawn',
+        name: 'Brink Of Dawn',
         description: 'Once per combat: At 60% Health, briefly become untargetable and shed negative effects. Then, heal 100% missing health and gain 85% bonus Attack Speed.',
         additionalAttackSpeed: 1.3, // 30% attack speed
         additionalArmor: 30, // 30 more armor

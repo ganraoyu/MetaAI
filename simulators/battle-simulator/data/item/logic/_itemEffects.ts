@@ -45,7 +45,8 @@ import {
     bulwarksOathEffect,
     crestOfCindersEffect,
     moreMorellonomiconEffect,
-    dvarapalaStoneplateEffect
+    dvarapalaStoneplateEffect,
+    sunlightCapeEffect,
 } from './radiantItems'
 
 export function applyStaticEffects(champion: Champion) {

@@ -27,6 +27,7 @@ const Battle = () => {
   const [toggleAttack, setToggleAttack] = useState(true);
   const [toggleAbility, setToggleAbility] = useState(true);
   const [toggleHeal, setToggleHeal] = useState(true);
+  const [toggleItemHeal, setToggleItemHeal] = useState(true);
   const [toggleMagicDamage, setToggleMagicDamage] = useState(true);
   const [toggleBurn, setToggleBurn] = useState(true);
 
@@ -305,6 +306,17 @@ const Battle = () => {
                         />
                         </div>
                       </div>
+                      </div>
+                    )}
+                    {log.type === "heal" && log.details.type === "item" && toggleItemHeal && (
+                      <div className='bg-gradient-to-r from-teal-900/40 to-teal-800/20 border-l-4 border-teal-500 rounded-md p-2 shadow-md'>
+                        <div className="flex justify-between items-start mb-2">
+                          <span className="text-xs text-gray-400">[{log.formattedTime}]</span>
+                          <span className="text-xs font-bold text-teal-400 bg-teal-400/20 px-2 py-0.5 rounded">
+                            +{log.details.healAmount}
+                          </span>
+                        </div>
+                        <div>Item healing from {log.details.item}</div>
                       </div>
                     )}
                     {log.type === "magicDamage" && toggleMagicDamage && (
