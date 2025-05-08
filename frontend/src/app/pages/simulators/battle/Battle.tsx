@@ -45,7 +45,7 @@ const Battle = () => {
       setLoading(false);
     }
   };
-                
+      
   return (
     <div className='bg-mainBackground min-h-screen pt-[6rem]'>        
       <div className='flex-col items-center w-[70rem] mx-auto mb-4'>
@@ -218,9 +218,22 @@ const Battle = () => {
                       <div className='grid grid-cols-3 gap-2 mb-4'>
                       <div className="flex justify-end">
                         <ChampionCard 
-                        champion={log.details.attacker.champion}
-                        currentHp={log.details.attacker.currentHp || 0}
-                        maxHp={log.details.attacker.maxHp || 100}
+                          champion={log.details.attacker.champion}
+                          currentHp={log.details.attacker.currentHp || 0}
+                          maxHp={log.details.attacker.maxHp || 100}
+                          mana={log.details.attacker.mana || 0}
+                          maxMana={log.details.attacker.maxMana || 100}
+                          shield={log.details.attacker.shield || 0}
+                          armor={log.details.attacker.armor || 0}
+                          magicResist={log.details.attacker.magicResist || 0}
+                          attackDamage={log.details.attacker.attackDamage || 0}
+                          attackSpeed={log.details.attacker.attackSpeed || 0}
+                          critChance={log.details.attacker.critChance || 0}
+                          critDamage={log.details.attacker.critDamage || 0}
+                          abilityPower={log.details.attacker.abilityPower || 0}
+                          damageAmp={log.details.attacker.damageAmp || 0}
+                          reduction={log.details.attacker.reduction || 0}
+                          range={log.details.attacker.range || 0}
                         />
                       </div>
                       <div className="flex flex-col justify-center items-center">
@@ -235,9 +248,22 @@ const Battle = () => {
                       </div>
                       <div className="flex justify-start">
                         <ChampionCard 
-                        champion={log.details.target.champion}
-                        currentHp={log.details.target.currentHp || 0}
-                        maxHp={log.details.target.maxHp || 100}
+                          champion={log.details.target.champion}
+                          currentHp={log.details.target.currentHp || 0}
+                          maxHp={log.details.target.maxHp || 100}
+                          mana={log.details.target.mana || 0}
+                          maxMana={log.details.target.maxMana || 100}
+                          shield={log.details.target.shield || 0}
+                          armor={log.details.target.armor || 0}
+                          magicResist={log.details.target.magicResist || 0}
+                          attackDamage={log.details.target.attackDamage || 0}
+                          attackSpeed={log.details.target.attackSpeed || 0}
+                          critChance={log.details.target.critChance || 0}
+                          critDamage={log.details.target.critDamage || 0}
+                          abilityPower={log.details.target.abilityPower || 0}
+                          damageAmp={log.details.target.damageAmp || 0}
+                          reduction={log.details.target.reduction || 0}
+                          range={log.details.target.range || 0}
                         />
                       </div>
                       </div>
@@ -257,6 +283,19 @@ const Battle = () => {
                             champion={log.details.attacker.champion}
                             currentHp={log.details.attacker.currentHp || 0}
                             maxHp={log.details.attacker.maxHp || 100}
+                            mana={log.details.attacker.mana || 0}
+                            maxMana={log.details.attacker.maxMana || 100}
+                            shield={log.details.attacker.shield || 0}
+                            armor={log.details.attacker.armor || 0}
+                            magicResist={log.details.attacker.magicResist || 0}
+                            attackDamage={log.details.attacker.attackDamage || 0}
+                            attackSpeed={log.details.attacker.attackSpeed || 0}
+                            critChance={log.details.attacker.critChance || 0}
+                            critDamage={log.details.attacker.critDamage || 0}
+                            abilityPower={log.details.attacker.abilityPower || 0}
+                            damageAmp={log.details.attacker.damageAmp || 0}
+                            reduction={log.details.attacker.reduction || 0}
+                            range={log.details.attacker.range || 0}
                           />
                           </div>
                           <div className="flex flex-col items-center justify-center">
@@ -272,6 +311,19 @@ const Battle = () => {
                               champion={log.details.target.champion}
                               currentHp={log.details.target.currentHp || 0}
                               maxHp={log.details.target.maxHp || 100}
+                              mana={log.details.target.mana || 0}
+                              maxMana={log.details.target.maxMana || 100}
+                              shield={log.details.target.shield || 0}
+                              armor={log.details.target.armor || 0}
+                              magicResist={log.details.target.magicResist || 0}
+                              attackDamage={log.details.target.attackDamage || 0}
+                              attackSpeed={log.details.target.attackSpeed || 0}
+                              critChance={log.details.target.critChance || 0}
+                              critDamage={log.details.target.critDamage || 0}
+                              abilityPower={log.details.target.abilityPower || 0}
+                              damageAmp={log.details.target.damageAmp || 0}
+                              reduction={log.details.target.reduction || 0}
+                              range={log.details.target.range || 0}
                             />
                           </div>
                         </div>
@@ -291,6 +343,19 @@ const Battle = () => {
                           champion={log.details.healer.champion}
                           currentHp={log.details.healer.currentHp + log.details.healAmount}
                           maxHp={log.details.healer.maxHp}
+                          mana={log.details.healer.mana || 0}
+                          maxMana={log.details.healer.maxMana || 100}
+                          shield={log.details.healer.shield || 0}
+                          armor={log.details.healer.armor || 0}
+                          magicResist={log.details.healer.magicResist || 0}
+                          attackDamage={log.details.healer.attackDamage || 0}
+                          attackSpeed={log.details.healer.attackSpeed || 0}
+                          critChance={log.details.healer.critChance || 0}
+                          critDamage={log.details.healer.critDamage || 0}
+                          abilityPower={log.details.healer.abilityPower || 0}
+                          damageAmp={log.details.healer.damageAmp || 0}
+                          reduction={log.details.healer.reduction || 0}
+                          range={log.details.healer.range || 0}
                         />
                         </div>
                         <div className="flex flex-col items-center justify-center">  
@@ -303,6 +368,19 @@ const Battle = () => {
                           champion={log.details.target.champion}
                           currentHp={log.details.target.currentHp + log.details.healAmount}
                           maxHp={log.details.target.maxHp}
+                          mana={log.details.target.mana || 0}
+                          maxMana={log.details.target.maxMana || 100}
+                          shield={log.details.target.shield || 0}
+                          armor={log.details.target.armor || 0}
+                          magicResist={log.details.target.magicResist || 0}
+                          attackDamage={log.details.target.attackDamage || 0}
+                          attackSpeed={log.details.target.attackSpeed || 0}
+                          critChance={log.details.target.critChance || 0}
+                          critDamage={log.details.target.critDamage || 0}
+                          abilityPower={log.details.target.abilityPower || 0}
+                          damageAmp={log.details.target.damageAmp || 0}
+                          reduction={log.details.target.reduction || 0}
+                          range={log.details.target.range || 0}
                         />
                         </div>
                       </div>
