@@ -1,49 +1,57 @@
-import { useState } from 'react';
-import ChampionCardHover from './ChampionCardHover.tsx';
+import { useState, useRef } from 'react';
+import ChampionCardHover from './ChampionCardHover';
 
 interface ChampionCardProps {
   champion: string;
-  cost: number;
+  cost?: number;
   currentHp: number;
   maxHp: number;
-  mana: number;
-  maxMana: number;
-  shield: number;
-  armor: number;
-  magicResist: number;
-  attackDamage: number;
-  attackSpeed: number;
-  critChance: number;
-  critDamage: number;
-  abilityPower: number;
-  damageAmp: number;
-  reduction: number;
-  range: number;
+  mana?: number;
+  maxMana?: number;
+  shield?: number;
+  trait1?: string;
+  trait2?: string;
+  trait3?: string;
+  armor?: number;
+  magicResist?: number;
+  attackDamage?: number;
+  attackSpeed?: number;
+  critChance?: number;
+  critDamage?: number;
+  abilityPower?: number;
+  damageAmp?: number;
+  omnivamp?: number;
+  reduction?: number;
+  range?: number;
+  starLevel?: number;
 }
 
 export const ChampionCard = ({
   champion,
-  cost,
+  cost = 4,
   currentHp,
   maxHp,
-  mana,
-  maxMana,
-  shield,
-  trait1,
-  trait2,
-  trait3,
-  armor,
-  magicResist,
-  attackDamage,
-  attackSpeed,
-  critChance,
-  critDamage,
-  abilityPower,
-  damageAmp,
-  reduction,
-  range,
+  mana = 0,
+  maxMana = 100,
+  shield = 0,
+  trait1 = "",
+  trait2 = "",
+  trait3 = "",
+  armor = 0,
+  magicResist = 0,
+  attackDamage = 0,
+  attackSpeed = 0,
+  critChance = 0,
+  critDamage = 0,
+  abilityPower = 0,
+  damageAmp = 0,
+  omnivamp = 0,
+  reduction = 0,
+  range = 0,
+  starLevel = 1,
 }: ChampionCardProps) => {
   const [toggleChampionCardHover, setToggleChampionCardHover] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const hpPercentage = (currentHp / maxHp) * 100;
   const hpColor = hpPercentage > 60 ? 'bg-green-500' : 
@@ -51,7 +59,8 @@ export const ChampionCard = ({
 
   return (
     <div 
-      className="flex flex-col items-center rounded-md" 
+      ref={cardRef}
+      className="flex flex-col items-center rounded-md relative" 
       onMouseEnter={() => setToggleChampionCardHover(true)} 
       onMouseLeave={() => setToggleChampionCardHover(false)}
     >
@@ -71,31 +80,38 @@ export const ChampionCard = ({
         </div>
       </div>
       <div className="text-[0.7rem] text-white mt-1 font-semibold">
-        {currentHp}/{maxHp}
+        {Math.round(currentHp)}/{maxHp}
       </div>
+      
       {toggleChampionCardHover && 
         <ChampionCardHover 
-        champion={champion} 
-        trait1={trait1}
-        trait2={trait2}
-        trait3={trait3}
-        cost={cost}
-        currentHp={currentHp}
-        maxHp={maxHp}
-        mana={mana}
-        maxMana={maxMana}
-        shield={shield}
-        armor={armor}
-        magicResist={magicResist}
-        attackDamage={attackDamage}
-        attackSpeed={attackSpeed}
-        critChance={critChance}
-        critDamage={critDamage}
-        abilityPower={abilityPower}
-        damageAmp={damageAmp}
-        reduction={reduction}
-        range={range}
-      />}
+          champion={champion} 
+          trait1={trait1}
+          trait2={trait2}
+          trait3={trait3}
+          cost={cost}
+          currentHp={currentHp}
+          maxHp={maxHp}
+          mana={mana}
+          maxMana={maxMana}
+          shield={shield}
+          armor={armor}
+          magicResist={magicResist}
+          attackDamage={attackDamage}
+          attackSpeed={attackSpeed}
+          critChance={critChance}
+          critDamage={critDamage}
+          abilityPower={abilityPower}
+          damageAmp={damageAmp}
+          omnivamp={omnivamp}
+          reduction={reduction}
+          range={range}
+          starLevel={starLevel}
+          parentRef={cardRef}
+        />
+      }
     </div>
   );
 };
+
+export default ChampionCard;

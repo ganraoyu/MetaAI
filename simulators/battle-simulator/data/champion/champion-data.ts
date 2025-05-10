@@ -111,7 +111,7 @@ const champions = [
     {
         name: 'Akali',
         cost: 2,
-        shield: 0,
+        shield: 20,
         movementSpeed: 550,
         traitsList: ['Watcher', 'Automata'],
         statsByStarLevel: {

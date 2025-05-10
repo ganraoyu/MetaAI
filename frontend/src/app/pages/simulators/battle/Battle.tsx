@@ -219,11 +219,15 @@ const Battle = () => {
                       <div className="flex justify-end">
                         <ChampionCard 
                           champion={log.details.attacker.champion}
+                          cost={log.details.attacker.cost}
                           currentHp={log.details.attacker.currentHp || 0}
                           maxHp={log.details.attacker.maxHp || 100}
                           mana={log.details.attacker.mana || 0}
                           maxMana={log.details.attacker.maxMana || 100}
-                          shield={log.details.attacker.shield || 0}
+                          shield={log.details.attacker.shield || 0}                          
+                          trait1={log.details.attacker.traits[0] || ''}
+                          trait2={log.details.attacker.traits[1] || ''}
+                          trait3={log.details.attacker.traits[2] || ''}
                           armor={log.details.attacker.armor || 0}
                           magicResist={log.details.attacker.magicResist || 0}
                           attackDamage={log.details.attacker.attackDamage || 0}
@@ -232,6 +236,7 @@ const Battle = () => {
                           critDamage={log.details.attacker.critDamage || 0}
                           abilityPower={log.details.attacker.abilityPower || 0}
                           damageAmp={log.details.attacker.damageAmp || 0}
+                          omnivamp={log.details.attacker.omnivamp || 0}
                           reduction={log.details.attacker.reduction || 0}
                           range={log.details.attacker.range || 0}
                         />
@@ -254,6 +259,9 @@ const Battle = () => {
                           mana={log.details.target.mana || 0}
                           maxMana={log.details.target.maxMana || 100}
                           shield={log.details.target.shield || 0}
+                          trait1={log.details.target.traits[0] || ''}
+                          trait2={log.details.target.traits[1] || ''}
+                          trait3={log.details.target.traits[2] || ''}
                           armor={log.details.target.armor || 0}
                           magicResist={log.details.target.magicResist || 0}
                           attackDamage={log.details.target.attackDamage || 0}
@@ -262,6 +270,7 @@ const Battle = () => {
                           critDamage={log.details.target.critDamage || 0}
                           abilityPower={log.details.target.abilityPower || 0}
                           damageAmp={log.details.target.damageAmp || 0}
+                          omnivamp={log.details.target.omnivamp || 0}
                           reduction={log.details.target.reduction || 0}
                           range={log.details.target.range || 0}
                         />

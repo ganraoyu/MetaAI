@@ -301,32 +301,77 @@ export class Champion {
         this.currentChampionsAttacking = newCurrentChampionsAttacking;
 
         const attackTypeMsg = critChance ? `*Crit* ${finalDamage}` : finalDamage;
-
         logBattleEvent('attack', {
-            attacker: {
-                champion: this.name,
-                mana: this.mana,
-                manaGained: this.manaPerAttack,
-                attackSpeed: this.attackSpeed,
-                currentHp: this.currentHp,
-                maxHp: this.statsByStarLevel[this.starLevel].hp,
-                armor: this.armor,
-                magicResist: this.magicResist,
-            },
-            target: {
-                champion: target.name,
-                currentHp: target.currentHp,
-                maxHp: target.statsByStarLevel[target.starLevel].hp,
-                armor: target.armor,
-                magicResist: target.magicResist,
-            },
+            // Attack details
+            time: this.battleTime,
+            source: 'attack',
             damage: finalDamage,
             isCrit: critChance,
-            mana: this.mana,
-            manaPerAttack: this.manaPerAttack,
-            time: this.battleTime,        
-            source: 'attack',      
-            message: `${this.name} attacks ${target.name} for ${attackTypeMsg} damage`
+            message: `${this.name} attacks ${target.name} for ${attackTypeMsg} damage`,
+            
+            // Attacker information
+            attacker: {
+                // Basic info
+                champion: this.name,
+                cost: this.cost,
+                traits: this.traitsList,
+                
+                // Health stats
+                currentHp: this.currentHp,
+                maxHp: this.statsByStarLevel[this.starLevel].hp,
+                shield: this.shield,
+                
+                // Offensive stats
+                attackDamage: this.statsByStarLevel[this.starLevel].attackDamage,
+                attackSpeed: this.attackSpeed,
+                critChance: this.attackCritChance,
+                critDamage: this.attackCritDamage,
+                abilityPower: this.abilityPower,
+                damageAmp: this.damageAmp - 1,
+                omnivamp: this.omnivamp,
+                range: this.range,
+                
+                // Defensive stats
+                armor: this.getStats().armor,
+                magicResist: this.getStats().magicResist,
+                durability: this.durability,
+                
+                // Mana information
+                mana: this.mana,
+                manaGained: this.manaPerAttack,
+                manaPerAttack: this.manaPerAttack
+            }, 
+            
+            // Target information
+            target: {
+                // Basic info
+                champion: target.name,
+                cost: target.cost,
+                traits: target.traitsList,
+                
+                // Health stats
+                currentHp: target.currentHp,
+                maxHp: target.statsByStarLevel[target.starLevel].hp,
+                shield: target.shield,
+                
+                // Offensive stats
+                attackDamage: target.statsByStarLevel[target.starLevel].attackDamage,
+                attackSpeed: target.attackSpeed,
+                critChance: target.attackCritChance,
+                critDamage: target.attackCritDamage,
+                abilityPower: target.abilityPower,
+                damageAmp: target.damageAmp - 1,
+                omnivamp: target.omnivamp,
+                
+                // Defensive stats
+                armor: target.armor,
+                magicResist: target.magicResist,
+                durability: target.durability,
+                
+                // Other stats
+                range: target.range,
+                mana: target.mana
+            }
         }, this.battleTime);
 
         console.log(`[${formattedTime}] ${this.name} attacks ${target.name} for ${attackTypeMsg}`);
@@ -363,7 +408,7 @@ export class Champion {
 
         this.mana += this.manaPerAttack; // increment mana
         this.attacks.push(1); // increment attack counter
-        this.damageArray.push(finalDamage); // track damage dealt
+        this.damageArray.push(finalDamage); // track damage dealt 
         
         this.lastAttackTime = this.battleTime; // update last attack time
         const attackDelay = 1 / this.attackSpeed * 100;  // calculate attack delay
