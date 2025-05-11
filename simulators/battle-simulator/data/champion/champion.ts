@@ -315,6 +315,7 @@ export class Champion {
                 champion: this.name,
                 cost: this.cost,
                 traits: this.traitsList,
+                items: this.items,
                 
                 // Health stats
                 currentHp: this.currentHp,
@@ -348,6 +349,7 @@ export class Champion {
                 champion: target.name,
                 cost: target.cost,
                 traits: target.traitsList,
+                items: target.items,
                 
                 // Health stats
                 currentHp: target.currentHp,

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { HexCells } from './HexCells';
-import { ChampionCard } from './ChampionCard';
+import { ChampionCard } from './components/ChampionCard';
 import axios from 'axios';
 import { MdClose, MdPlayArrow } from "react-icons/md";
 
@@ -228,6 +228,9 @@ const Battle = () => {
                           trait1={log.details.attacker.traits[0] || ''}
                           trait2={log.details.attacker.traits[1] || ''}
                           trait3={log.details.attacker.traits[2] || ''}
+                          item1={log.details.attacker.items?.[0]?.name || ''}
+                          item2={log.details.attacker.items?.[1]?.name || ''}
+                          item3={log.details.attacker.items?.[2]?.name || ''}
                           armor={log.details.attacker.armor || 0}
                           magicResist={log.details.attacker.magicResist || 0}
                           attackDamage={log.details.attacker.attackDamage || 0}
@@ -262,6 +265,9 @@ const Battle = () => {
                           trait1={log.details.target.traits[0] || ''}
                           trait2={log.details.target.traits[1] || ''}
                           trait3={log.details.target.traits[2] || ''}
+                          item1={log.details.target.items?.[0]?.name || ''}
+                          item2={log.details.target.items?.[1]?.name || ''}
+                          item3={log.details.target.items?.[2]?.name || ''}
                           armor={log.details.target.armor || 0}
                           magicResist={log.details.target.magicResist || 0}
                           attackDamage={log.details.target.attackDamage || 0}

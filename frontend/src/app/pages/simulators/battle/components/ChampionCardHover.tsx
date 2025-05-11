@@ -1,4 +1,5 @@
 import { useEffect, useState, RefObject } from 'react';
+import { itemMap } from '../utils/ItemMapping';
 
 interface ChampionCardHoverProps {
   champion: string;
@@ -11,6 +12,9 @@ interface ChampionCardHoverProps {
   trait1: string;
   trait2: string;
   trait3: string;
+  item1?: string;
+  item2?: string;
+  item3?: string;
   armor: number;
   magicResist: number;
   attackDamage: number;
@@ -37,6 +41,9 @@ const ChampionCardHover = ({
   trait1,
   trait2,
   trait3,
+  item1,
+  item2,
+  item3,
   armor,
   magicResist,
   attackDamage,
@@ -91,7 +98,7 @@ const ChampionCardHover = ({
 
   return (
     <div 
-      className='fixed bg-gray-800 text-white rounded-md shadow-lg w-44 h-64 z-50 origin-top-left animate-grow-in'
+      className='fixed bg-gray-800 text-white rounded-md shadow-lg w-44 h-78 z-50 origin-top-left animate-grow-in'
       style={{ 
         top: `${position.top}px`, 
         left: `${position.left}px` 
@@ -175,13 +182,9 @@ const ChampionCardHover = ({
           </div>
         </div>
         {shield > 0 && (
-          <div className="relative h-3 mt-1 bg-gray-700 rounded">
-            <div 
-              className="absolute top-0 left-0 h-3 bg-blue-600 rounded" 
-              style={{ width: `${(shield / maxHp) * 100}%` }}
-            ></div>
+          <div className="relative h-3 mt-1 bg-gray-500 rounded">
             <div className="absolute inset-0 flex items-center justify-center text-xs text-white font-medium text-outline">
-              {Math.round(shield)}/{maxHp}
+              {Math.round(shield)}/{shield}
             </div>
           </div>
         )}
@@ -193,6 +196,37 @@ const ChampionCardHover = ({
           <div className="absolute inset-0 flex items-center justify-center text-xs text-white font-medium text-outline">
             {mana}/{maxMana}
           </div>
+        </div>
+      </div>
+
+      {/* Champion Items */}
+      <div className="flex justify-center gap-5 mt-2">
+        <div>
+          {item1 && itemMap[item1] ? (
+            <img
+              src={itemMap[item1].image}
+              alt={item1}
+              className="h-8 w-8 border-2 border-gray-700"
+            />
+          ) : <div className='border-2 h-8 w-8 border-gray-700'></div>}
+        </div>
+        <div>
+          {item2 && itemMap[item2] ? (
+            <img
+              src={itemMap[item2].image}
+              alt={item2}
+              className="h-8 w-8 border-2 border-gray-700"
+            />
+          ) : <div className='border-2 h-8 w-8 border-gray-700'></div>}
+        </div>
+        <div>
+          {item3 && itemMap[item3] ? (
+            <img
+              src={itemMap[item3].image}
+              alt={item3}
+              className="h-8 w-8 border-2 border-gray-700"
+            />
+          ) : <div className='border-2 h-8 w-8 border-gray-700'></div>}
         </div>
       </div>
 

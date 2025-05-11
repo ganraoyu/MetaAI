@@ -423,6 +423,10 @@ placeChampionByName('Darius', 3, 3, 3, 'opponent');
 
 addItemByName(board.getChampion(4,3), 'Bramble Vest');
 addAdditionalItemStatistics(board.getChampion(4,3), 'Bramble Vest',)
+addItemByName(board.getChampion(4,3), 'Infinity Edge');
+addAdditionalItemStatistics(board.getChampion(4,3), 'Infinity Edge',)
+addItemByName(board.getChampion(4,3), 'Bloodthirster');
+addAdditionalItemStatistics(board.getChampion(4,3), 'Bloodthirster',)
 
 console.log(board.getChampion(4,3));
 

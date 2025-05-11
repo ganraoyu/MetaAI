@@ -12,6 +12,9 @@ interface ChampionCardProps {
   trait1?: string;
   trait2?: string;
   trait3?: string;
+  item1?: string;
+  item2?: string;
+  item3?: string;
   armor?: number;
   magicResist?: number;
   attackDamage?: number;
@@ -37,6 +40,9 @@ export const ChampionCard = ({
   trait1 = "",
   trait2 = "",
   trait3 = "",
+  item1 = "",
+  item2 = "",
+  item3 = "",
   armor = 0,
   magicResist = 0,
   attackDamage = 0,
@@ -89,6 +95,9 @@ export const ChampionCard = ({
           trait1={trait1}
           trait2={trait2}
           trait3={trait3}
+          item1={item1}
+          item2={item2}
+          item3={item3}
           cost={cost}
           currentHp={currentHp}
           maxHp={maxHp}
