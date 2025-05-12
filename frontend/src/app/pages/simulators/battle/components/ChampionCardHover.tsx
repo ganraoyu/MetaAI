@@ -231,7 +231,7 @@ const ChampionCardHover = ({
       </div>
 
       {/* Stats */}
-      <div className="px-2 py-3 text-[0.7rem]">
+      <div className="px-4 py-3 text-[0.7rem]">
         <div className="grid grid-cols-5 gap-0.5 text-gray-300">
           {/* First row of stats */}
           <div className="flex flex-col items-center">
