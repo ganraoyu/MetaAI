@@ -1072,20 +1072,20 @@ export function sunlightCapeEffect(champion: Champion, target: Champion, surroun
     });
 };
 
-const adaptiveHelmStateMap = new Map();
+const jakshoTheProteanStateMap = new Map();
 
-export function radiantAdaptiveHelmEffect(champion: Champion, isChampionFrontOrBack: boolean, battleTime: number){
+export function jakshoTheProteanEffect(champion: Champion, isChampionFrontOrBack: boolean, battleTime: number){
     if(!champion?.items?.length || !battleTime) return;
 
     const formattedTime = getFormattedTime(champion);
 
-    if(!adaptiveHelmStateMap.has(champion.id)){
-        adaptiveHelmStateMap.set(champion.id, {
+    if(!jakshoTheProteanStateMap.has(champion.id)){
+        jakshoTheProteanStateMap.set(champion.id, {
             effectUsed: false
         });
     };
 
-    const state = adaptiveHelmStateMap.get(champion.id);
+    const state = jakshoTheProteanStateMap.get(champion.id);
 
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Jak\'sho the Protean' && !state.effectUsed){
@@ -1123,22 +1123,22 @@ export function radiantAdaptiveHelmEffect(champion: Champion, isChampionFrontOrB
     })
 }
 
-const ionicSparkStateMap = new Map();
+const covalentSparkStateMap = new Map();
 
-export function radiantIonicSparkEffect(champion: Champion, target: Champion,surroundingOpponents: Champion[], battleTime: number){
+export function covalentSparkEffect(champion: Champion, target: Champion,surroundingOpponents: Champion[], battleTime: number){
     if(!champion?.items?.length || !battleTime) return;
 
     const formattedTime = getFormattedTime(champion);
 
-    if(!ionicSparkStateMap.has(champion.id)){
-        ionicSparkStateMap.set(champion.id, {
+    if(!covalentSparkStateMap.has(champion.id)){
+        covalentSparkStateMap.set(champion.id, {
             effectUsed: true,
             targetAbilityCount: [...target.abilityArray].length,
             timeSinceLastHeal: 0,
         });
     };
 
-    const state = ionicSparkStateMap.get(champion.id);
+    const state = covalentSparkStateMap.get(champion.id);
 
     champion.items.forEach((item: ItemProps) => {
         if(item.name === 'Covalent Spark' && 

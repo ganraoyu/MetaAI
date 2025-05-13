@@ -1,5 +1,43 @@
 import { useEffect, useState, RefObject } from 'react';
-import { itemMap } from '../utils/ItemMapping';
+import { combinedItems } from '../data/item-data';
+import { ChampionCardItemHover } from './itemHover';
+
+interface ItemData {
+  name: string;
+  description: string;
+  image: string;
+  additionalAttackSpeed?: number;
+  additionalAbilityPower?: number;
+  additionalAttackDamage?: number;
+  additionalHealth?: number;
+  additionalPercentageHealth?: number;
+  additionalArmor?: number;
+  additionalMagicResist?: number;
+  additionalStartingMana?: number;
+  additionalManaPerAttack?: number;
+  additionalCritChance?: number;
+  additionalDamageAmp?: number;
+  attackSpeedStacking?: boolean;
+  additionalAttackSpeedPerStack?: number;
+  abilityPowerStacking?: boolean;
+  abilityPowerStackInterval?: number;
+  additionalAbilityPowerPerStack?: number;
+  abilityCritStrike?: boolean;
+  shield?: boolean;
+  shieldAmount?: number;
+  shieldDuration?: number;
+  omnivamp?: number;
+  heal?: boolean;
+  healAmount?: number;
+  reduction?: boolean;
+  reductionAmount?: number;
+  externalMagicDamage?: number;
+  sunder?: boolean;
+  sunderRadius?: number;
+  shred?: boolean;
+  burn?: boolean;
+  wound?: boolean;
+}
 
 interface ChampionCardHoverProps {
   champion: string;
@@ -58,9 +96,17 @@ const ChampionCardHover = ({
   starLevel = 3,
   parentRef
 }: ChampionCardHoverProps) => {
-  const [hasShield, setHasShield] = useState(false);
+
+  const [toggleChampionItemHover, setToggleChampionItemHover] = useState(true);
+  const [item1Hover, setItem1Hover] = useState(false);
+  const [item2Hover, setItem2Hover] = useState(false);
+  const [item3Hover, setItem3Hover] = useState(false);
 
   const [position, setPosition] = useState({ top: 0, left: 0 });
+
+  const item1Data = combinedItems.find(item => item.name === item1);
+  const item2Data = combinedItems.find(item => item.name === item2);
+  const item3Data = combinedItems.find(item => item.name === item3); 
 
   useEffect(() => {
     if (parentRef.current) {
@@ -200,29 +246,29 @@ const ChampionCardHover = ({
       </div>
 
       {/* Champion Items */}
-      <div className="flex justify-center gap-5 mt-2">
-        <div>
-          {item1 && itemMap[item1] ? (
+      <div className="flex justify-center gap-5 mt-3">
+        <div onMouseEnter={() => setItem1Hover(true)} onMouseLeave={() => setItem1Hover(false)}>
+          {item1 ? (
             <img
-              src={itemMap[item1].image}
+              src={combinedItems.find(item => item.name === item1)?.image}
               alt={item1}
               className="h-8 w-8 border-2 border-gray-700"
             />
           ) : <div className='border-2 h-8 w-8 border-gray-700'></div>}
         </div>
-        <div>
-          {item2 && itemMap[item2] ? (
+        <div onMouseEnter={() => setItem2Hover(true)} onMouseLeave={() => setItem2Hover(false)}>
+          {item2 ? (
             <img
-              src={itemMap[item2].image}
+              src={combinedItems.find(item => item.name === item2)?.image}
               alt={item2}
               className="h-8 w-8 border-2 border-gray-700"
             />
           ) : <div className='border-2 h-8 w-8 border-gray-700'></div>}
         </div>
-        <div>
-          {item3 && itemMap[item3] ? (
+        <div onMouseEnter={() => setItem3Hover(true)} onMouseLeave={() => setItem3Hover(false)}>
+          {item3 ? (
             <img
-              src={itemMap[item3].image}
+              src={combinedItems.find(item => item.name === item3)?.image}
               alt={item3}
               className="h-8 w-8 border-2 border-gray-700"
             />
@@ -230,56 +276,109 @@ const ChampionCardHover = ({
         </div>
       </div>
 
+      {/* Item Hovers */}
+      {item1Hover && item1 && (
+        <ChampionCardItemHover 
+          name={item1 || ''}
+          description={item1Data?.description || ''}
+          image={item1Data?.image || ''}
+          additionalAttackSpeed={item1Data?.additionalAttackSpeed || 0}
+          additionalAbilityPower={item1Data?.additionalAbilityPower || 0}
+          additionalAttackDamage={item1Data?.additionalAttackDamage || 0}
+          additionalHealth={item1Data?.additionalHealth || 0}
+          additionalPercentageHealth={item1Data?.additionalPercentageHealth || 0}
+          additionalArmor={item1Data?.additionalArmor || 0}
+          additionalMagicResist={item1Data?.additionalMagicResist || 0}
+          additionalStartingMana={item1Data?.additionalStartingMana || 0}
+          additionalManaPerAttack={item1Data?.additionalManaPerAttack || 0}
+          additionalCritChance={item1Data?.additionalCritChance || 0}
+          additionalDamageAmp={item1Data?.additionalDamageAmp || 0}
+          attackSpeedStacking={item1Data?.attackSpeedStacking || false}
+          additionalAttackSpeedPerStack={item1Data?.additionalAttackSpeedPerStack || 0}
+          abilityPowerStacking={item1Data?.abilityPowerStacking || false}
+          abilityPowerStackInterval={item1Data?.abilityPowerStackInterval || 0}
+          additionalAbilityPowerPerStack={item1Data?.additionalAbilityPowerPerStack || 0}
+          abilityCritStrike={item1Data?.abilityCritStrike || false}
+          shield={item1Data?.shield || false}
+          shieldAmount={item1Data?.shieldAmount || 0}
+          shieldDuration={item1Data?.shieldDuration || 0}
+          omnivamp={item1Data?.omnivamp || 0}
+          heal={item1Data?.heal || false}
+          healAmount={item1Data?.healAmount || 0}
+          reduction={item1Data?.reduction || false}
+          reductionAmount={item1Data?.reductionAmount || 0}
+          externalMagicDamage={item1Data?.externalMagicDamage || 0}
+          sunder={item1Data?.sunder || false}
+          sunderRadius={item1Data?.sunderRadius || 0}
+          shred={item1Data?.shred || false}
+          burn={item1Data?.burn || false}
+          wound={item1Data?.wound || false}
+        />
+      )}
+      {item2Hover && item2 && (
+        <ChampionCardItemHover 
+          name={item2}
+          description={combinedItems.find(item => item.name === item2)?.description || ''}
+          image={combinedItems.find(item => item.name === item2)?.image || ''}
+        />
+      )}
+      {item3Hover && item3 && (
+        <ChampionCardItemHover 
+          name={item3}
+          description={combinedItems.find(item => item.name === item3)?.description || ''}
+          image={combinedItems.find(item => item.name === item3)?.image || ''}
+        />
+      )}
+
       {/* Stats */}
-      <div className="px-4 py-3 text-[0.7rem]">
+      <div className="px-2 py-3 text-[0.7rem]">
         <div className="grid grid-cols-5 gap-0.5 text-gray-300">
           {/* First row of stats */}
           <div className="flex flex-col items-center">
         <img src="../assets/icons/attack.png" className="h-4 w-4 mb-0.5" alt="attack" />
-        <p className="text-center w-full truncate">{attackDamage}</p>
+        <p className="text-center w-full truncate">{Math.round(attackDamage) || 0}</p>
           </div>
           <div className="flex flex-col items-center">
         <img src="../assets/icons/abilitypower.png" className="h-4 w-4 mb-0.5" alt="abilityPower" />
-        <p className="text-center w-full truncate">{abilityPower}</p>
+        <p className="text-center w-full truncate">{Math.round(abilityPower) || 0}</p>
           </div>
           <div className="flex flex-col items-center">
         <img src="../assets/icons/armor.png" className="h-4 w-4 mb-0.5" alt="armor" />
-        <p className="text-center w-full truncate">{armor}</p>
+        <p className="text-center w-full truncate">{Math.round(armor) || 0}</p>
           </div>
           <div className="flex flex-col items-center">
         <img src="../assets/icons/magicresist.png" className="h-4 w-4 mb-0.5" alt="magicResist" />
-        <p className="text-center w-full truncate">{magicResist}</p>
+        <p className="text-center w-full truncate">{Math.round(magicResist) || 0}</p>
           </div>
           <div className="flex flex-col items-center">
         <img src="../assets/icons/attackspeed.png" className="h-4 w-4 mb-0.5" alt="attackSpeed" />
-        <p className="text-center w-full truncate">{attackSpeed.toFixed(2)}</p>
+        <p className="text-center w-full truncate">{attackSpeed || 0}</p>
           </div>
         </div>
         <div className="grid grid-cols-5 gap-0.5 text-gray-300 mt-1">
           {/* Second row of stats */}
           <div className="flex flex-col items-center">
         <img src="../assets/icons/criticalstrikechance.png" className="h-4 w-4 mb-0.5" alt="criticalstrikechance" />
-        <p className="text-center w-full truncate">{critChance}%</p>
+        <p className="text-center w-full truncate">{critChance || 0}%</p>
           </div>
           <div className="flex flex-col items-center">
         <img src="../assets/icons/criticaldamage.svg" className="h-4 w-4 mb-0.5" alt="critDamage" />
-        <p className="text-center w-full truncate">{critDamage}0%</p>
+        <p className="text-center w-full truncate">{critDamage || 0}0%</p>
           </div>
           <div className="flex flex-col items-center">
         <img src="../assets/icons/omnivamp.png" className="h-4 w-4 mb-0.5" alt="omnivamp" />
-        <p className="text-center w-full truncate">{omnivamp || 0}%</p>
+        <p className="text-center w-full truncate">{Math.round(omnivamp) || 0}%</p>
           </div>
           <div className="flex flex-col items-center">
         <img src="../assets/icons/damageamp.png" className="h-4 w-4 mb-0.5" alt="damageAmp" />
-        <p className="text-center w-full truncate">{damageAmp}%</p>
+        <p className="text-center w-full truncate">{Math.round(damageAmp) || 0}%</p>
           </div>
           <div className="flex flex-col items-center">
         <img src="../assets/icons/range.png" className="h-4 w-4 mb-0.5" alt="range" />
-        <p className="text-center w-full truncate">{range}</p>
+        <p className="text-center w-full truncate">{Math.round(range) || 0}</p>
           </div>
         </div>
       </div>
-
       <style>{`
         .text-outline {
           text-shadow: 

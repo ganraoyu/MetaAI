@@ -47,7 +47,7 @@ export function bloodthristerEffect(champion: Champion, battleTime: number ){
     const state = bloodthristerStateMap.get(champion.id);
     
     champion.items.forEach((item: ItemProps) => {
-        if(item.name === 'Bloodthirster' && 
+        if(item.name === 'Bloodthrister' && 
             item.shield && 
             item.shieldAmount && 
             item.shieldDuration && 
@@ -63,7 +63,7 @@ export function bloodthristerEffect(champion: Champion, battleTime: number ){
                     shieldAmount: shieldAmount,
                     item: item.name,
                     type: 'item',
-                    source: 'Bloodthirster',
+                    source: 'Bloodthrister',
                     message: `${champion.name} gained a shield for ${shieldAmount} hp`,
                 }, battleTime);
 

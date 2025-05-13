@@ -422,11 +422,11 @@ placeChampionByName('Akali', 4, 3, 3, 'player');
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
 
 addItemByName(board.getChampion(4,3), 'Bramble Vest');
-addAdditionalItemStatistics(board.getChampion(4,3), 'Bramble Vest',)
+addAdditionalItemStatistics(board.getChampion(4,3), 'Bramble Vest')
 addItemByName(board.getChampion(4,3), 'Infinity Edge');
-addAdditionalItemStatistics(board.getChampion(4,3), 'Infinity Edge',)
-addItemByName(board.getChampion(4,3), 'Bloodthirster');
-addAdditionalItemStatistics(board.getChampion(4,3), 'Bloodthirster',)
+addAdditionalItemStatistics(board.getChampion(4,3), 'Infinity Edge')
+addItemByName(board.getChampion(4,3), 'Bloodthrister');
+addAdditionalItemStatistics(board.getChampion(4,3), 'Bloodthrister')
 
 console.log(board.getChampion(4,3));
 

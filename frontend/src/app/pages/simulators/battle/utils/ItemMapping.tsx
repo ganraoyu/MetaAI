@@ -86,5 +86,19 @@ export const itemMap: ItemMap = {
     'Adaptive Helm': {
         image: '../assets/items/combined/AdaptiveHelm.png'
     },
-    ''
+    'Evenshround': {
+        image: '../assets/items/combined/Evenshround.png'
+    },
+    'Redemption': {
+        image: '../assets/items/combined/Redemption.png'
+    },
+    'Statikk Shiv': {
+        image: '../assets/items/combined/StatikkShiv.png'
+    },
+    'Quick Silver': {
+        image: '../assets/items/combined/QuickSilver.png'
+    },
+    'Blue Buff': {
+        image: '../assets/items/combined/BlueBuff.png'
+    }
 };

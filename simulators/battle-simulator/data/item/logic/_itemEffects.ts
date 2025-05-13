@@ -47,6 +47,8 @@ import {
     moreMorellonomiconEffect,
     dvarapalaStoneplateEffect,
     sunlightCapeEffect,
+    jakshoTheProteanEffect,
+    covalentSparkEffect
 } from './radiantItems'
 
 export function applyStaticEffects(champion: Champion) {
@@ -121,10 +123,14 @@ export function applySurroundingAlliesEffects(champion: Champion, surroundingAll
 export function applyTargetAreaEffects(champion: Champion, target: Champion, surroundingOpponents: Champion[], battleTime: number) {
     ionicSparkEffect(champion, target, surroundingOpponents, battleTime);
     sunfireCapeEffect(champion, target, surroundingOpponents, battleTime);
+
+    covalentSparkEffect(champion, target, surroundingOpponents, battleTime);
+    sunlightCapeEffect(champion, target, surroundingOpponents, battleTime);
 }
 
 export function applyPositionalEffects(champion: Champion, isChampionFrontOrBack: boolean, battleTime: number) {
     adaptiveHelmEffect(champion, isChampionFrontOrBack, battleTime);
+    jakshoTheProteanEffect(champion, isChampionFrontOrBack, battleTime);
 }
 
 export function applyAllItemEffects(
