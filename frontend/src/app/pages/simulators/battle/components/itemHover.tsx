@@ -75,10 +75,12 @@ export const ChampionCardItemHover = ({
   wound
 }: ItemData) => {
   return (
-    <div className="bg-orange-950 absolute z-4">
+    <div className="bg-orange-950 absolute z-4 border-2 border-orange-500 rounded-md box-shadow-lg ">
       <div>
-        <p>{name}</p>
-        {description}
+        <p className="text-m">{name}</p>
+        <div>
+          <p>+{additionalAbilityPower}</p>
+          </div>
       </div>
     </div>
   )

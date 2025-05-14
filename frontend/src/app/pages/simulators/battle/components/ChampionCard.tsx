@@ -66,9 +66,11 @@ export const ChampionCard = ({
   return (
     <div 
       ref={cardRef}
-      className="flex flex-col items-center rounded-md relative" 
+      className="flex flex-col items-center rounded-md relative mouse-pointer" 
       onMouseEnter={() => setToggleChampionCardHover(true)} 
-      onMouseLeave={() => setToggleChampionCardHover(false)}
+      onMouseLeave={() => {
+        setTimeout(() => setToggleChampionCardHover(false), 50);
+      }}
     >
       <div className="relative">
         <img 
@@ -88,37 +90,52 @@ export const ChampionCard = ({
       <div className="text-[0.7rem] text-white mt-1 font-semibold">
         {Math.round(currentHp)}/{maxHp}
       </div>
-      
-      {toggleChampionCardHover && 
-        <ChampionCardHover 
-          champion={champion} 
-          trait1={trait1}
-          trait2={trait2}
-          trait3={trait3}
-          item1={item1}
-          item2={item2}
-          item3={item3}
-          cost={cost}
-          currentHp={currentHp}
-          maxHp={maxHp}
-          mana={mana}
-          maxMana={maxMana}
-          shield={shield}
-          armor={armor}
-          magicResist={magicResist}
-          attackDamage={attackDamage}
-          attackSpeed={attackSpeed}
-          critChance={critChance}
-          critDamage={critDamage}
-          abilityPower={abilityPower}
-          damageAmp={damageAmp}
-          omnivamp={omnivamp}
-          reduction={reduction}
-          range={range}
-          starLevel={starLevel}
-          parentRef={cardRef}
-        />
-      }
+        {toggleChampionCardHover && 
+          <ChampionCardHover 
+            champion={champion} 
+            trait1={trait1}
+            trait2={trait2}
+            trait3={trait3}
+            item1={item1}
+            item2={item2}
+            item3={item3}
+            cost={cost}
+            currentHp={currentHp}
+            maxHp={maxHp}
+            mana={mana}
+            maxMana={maxMana}
+            shield={shield}
+            armor={armor}
+            magicResist={magicResist}
+            attackDamage={attackDamage}
+            attackSpeed={attackSpeed}
+            critChance={critChance}
+            critDamage={critDamage}
+            abilityPower={abilityPower}
+            damageAmp={damageAmp}
+            omnivamp={omnivamp}
+            reduction={reduction}
+            range={range}
+            starLevel={starLevel}
+            parentRef={cardRef}
+          />
+        }
+      <style>{`
+        @keyframes growOut {
+          from {
+            transform: scale(1);
+            opacity: 1;
+          }
+          to {
+            transform: scale(0.6);
+            opacity: 0;
+          }
+        }
+
+        .animate-grow-out {
+          animation: growOut 0.2s ease-out forwards;
+        }
+      `}</style>
     </div>
   );
 };

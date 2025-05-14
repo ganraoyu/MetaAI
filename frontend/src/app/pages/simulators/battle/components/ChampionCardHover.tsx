@@ -70,7 +70,7 @@ interface ChampionCardHoverProps {
 
 const ChampionCardHover = ({
   champion,
-  cost = 4,
+  cost,
   currentHp,
   maxHp,
   mana,
@@ -93,7 +93,7 @@ const ChampionCardHover = ({
   omnivamp,
   reduction,
   range,
-  starLevel = 3,
+  starLevel,
   parentRef
 }: ChampionCardHoverProps) => {
 
@@ -169,7 +169,7 @@ const ChampionCardHover = ({
           {[1, 2, 3].map((star) => (
             <svg 
               key={star}
-              className={`w-3.5 h-3.5 ${star <= starLevel ? 'text-yellow-400 fill-yellow-400' : 'text-gray-400'}`}
+              className={`w-3.5 h-3.5 ${star <= (starLevel || 0) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-400'}`}
               xmlns="http://www.w3.org/2000/svg" 
               viewBox="0 0 24 24" 
               fill="none" 
@@ -398,9 +398,23 @@ const ChampionCardHover = ({
             opacity: 1;
           }
         }
-
+        
+        @keyframes growOut {
+          from {
+            transform: scale(1);
+            opacity: 1;
+          }
+          to {
+            transform: scale(0.6);
+            opacity: 0;
+          }
+        }
         .animate-grow-in {
           animation: growIn 0.2s ease-out forwards;
+        }
+        
+        .animate-grow-out {
+          animation: growOut 0.2s ease-out forwards;
         }
       `}</style>
     </div>
