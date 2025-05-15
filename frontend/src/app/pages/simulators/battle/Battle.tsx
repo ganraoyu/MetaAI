@@ -258,6 +258,7 @@ const Battle = () => {
                         <ChampionCard 
                           champion={log.details.target.champion}
                           currentHp={log.details.target.currentHp || 0}
+                          cost={log.details.target.cost}
                           maxHp={log.details.target.maxHp || 100}
                           mana={log.details.target.mana || 0}
                           maxMana={log.details.target.maxMana || 100}

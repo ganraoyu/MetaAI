@@ -6,7 +6,8 @@ export const combinedItems = [
         additionalAbilityPower: 10, // 10 ability power  
         attackSpeedStacking: true,
         additionalAttackSpeedPerStack: 1.05, //5% attack speed per stack
-        image: '../assets/items/combined/GuinsoosRageblade.png'
+        image: '../assets/items/combined/GuinsoosRageblade.png',
+        components: ['Recurve Bow', 'Needlessly Large Rod']
     },
     {
         name: 'Infinity Edge',
@@ -14,7 +15,9 @@ export const combinedItems = [
         abilityCritStrike: true,
         additionalAttackDamage: 1.35, // 35% more attack damage
         additionalCritChance: 35, // 35% crit chance
-        image: '../assets/items/combined/InfinityEdge.png'
+        image: '../assets/items/combined/InfinityEdge.png',
+        components: ['B.F. Sword', 'Sparring Gloves'],
+        componentsImages: ['../assets/items/basic/BFSword.png', '../assets/items/basic/SparringGloves.png']
     },
     {
         name: 'Jeweled Gauntlet',
@@ -22,7 +25,8 @@ export const combinedItems = [
         abilityCritStrike: true,
         additionalAbilityPower: 35, // 35 base ability power
         additionalCritChance: 35, // 35% crit chance
-        image: '../assets/items/combined/JeweledGauntlet.png'
+        image: '../assets/items/combined/JeweledGauntlet.png',
+        components: ['Needlessly Large Rod', 'Sparring Gloves']
     },
     {
         name: 'Last Whisper',
@@ -32,14 +36,16 @@ export const combinedItems = [
         additionalAttackDamage: 1.15, // 15% more attack damage
         additionalAttackSpeed: 1.2, // 20% more attack speed
         additionalCritChance: 20, // 20% crit chance
-        image: '../assets/items/combined/LastWhisper.png'
+        image: '../assets/items/combined/LastWhisper.png',
+        components: ['Recurve Bow', 'Sparring Gloves']
     },
     {
         name: 'Warmog\'s Armor',
         description: 'Gain 12% max health',
         additionalHealth: 600, // 600 more health
         additionalPercentageHealth: 1.12, // 50% more health
-        image: '../assets/items/combined/WarmogsArmor.png'
+        image: '../assets/items/combined/WarmogsArmor.png',
+        components: ['Giant\'s Belt', 'Giant\'s Belt']
     },
     {
         name: 'Spear of Shojin',
@@ -48,14 +54,16 @@ export const combinedItems = [
         additionalStartingMana: 15, // 15 starting mana
         additionalManaPerAttack: 5, // 5 mana per attack
         additionalAbilityPower: 15, // 15 ability power
-        image: '../assets/items/combined/SpearOfShojin.png'
+        image: '../assets/items/combined/SpearOfShojin.png',
+        components: ['Tear of the Goddess', 'B.F. Sword']
     },
     {
         name: 'Death Blade',
         description: 'Perfect peace and calm for the holder - and all who face it.',
         additionalAttackDamage: 1.3, // 30% more attack damage
         additionalDamageAmp: 0.1, // 10% more damage
-        image: '../assets/items/combined/DeathBlade.png'
+        image: '../assets/items/combined/DeathBlade.png',
+        components: ['B.F. Sword', 'B.F. Sword']
     },
     {
         name: 'Bloodthrister',
@@ -67,14 +75,16 @@ export const combinedItems = [
         shieldAmount: 0.25, // 25% max health shield
         shieldDuration: 5, // 5 seconds
         omnivamp: 25, // 25% omnivamp
-        image: '../assets/items/combined/Bloodthrister.png'
+        image: '../assets/items/combined/Bloodthrister.png',
+        components: ['B.F. Sword', 'Negatron Cloak']
     },
     {
         name: 'Rabadon\'s Deathcap',
         description: 'This humble hat can help you make, or unmake, the world itself.',
         additionalAbilityPower: 50, // 50 ability power
         additionalDamageAmp: 0.15, // 15% more damage
-        image: '../assets/items/combined/RabadonsDeathcap.png'
+        image: '../assets/items/combined/RabadonsDeathcap.png',
+        components: ['Needlessly Large Rod', 'Needlessly Large Rod']
     },
     {
         name: 'Dragon\'s Claw',
@@ -83,7 +93,8 @@ export const combinedItems = [
         additionalPercentageHealth: 1.07, // 7% more health
         heal: true,
         healAmount: 0.025, // 2.5% healing of max health every 2 seconds
-        image: '../assets/items/combined/DragonsClaw.png'
+        image: '../assets/items/combined/DragonsClaw.png',
+        components: ['Negatron Cloak', 'Negatron Cloak']
     },
     {
         name: 'Bramble Vest',
@@ -93,7 +104,8 @@ export const combinedItems = [
         reduction: true,
         reductionAmount: 8, // 8% reduced damage
         externalMagicDamage: 100,
-        image: '../assets/items/combined/BrambleVest.png'
+        image: '../assets/items/combined/BrambleVest.png',
+        components: ['Chain Vest', 'Chain Vest']
     },
     {
         name: 'Archangel\'s Staff',
@@ -103,7 +115,8 @@ export const combinedItems = [
         abilityPowerStacking: true,
         abilityPowerStackInterval: 5, // every 5 seconds
         additionalAbilityPowerPerStack: 30, // 30 ability power
-        image: '../assets/items/combined/ArchangelsStaff.png'
+        image: '../assets/items/combined/ArchangelsStaff.png',
+        components: ['Tear of the Goddess', 'Needlessly Large Rod']
     },
     {
         name: 'Giant Slayer',
@@ -112,7 +125,8 @@ export const combinedItems = [
         additionalAbilityPower: 25,
         additionalAttackDamage: 1.25,
         additionalDamageAmp: 0.05,
-        image: '../assets/items/combined/GiantSlayer.png'
+        image: '../assets/items/combined/GiantSlayer.png',
+        components: ['B.F. Sword', 'Recurve Bow']
     },
     {
         name: 'Runaan\'s Hurricane',
@@ -120,14 +134,16 @@ export const combinedItems = [
         additionalAttackSpeed: 1.1,
         additionalAttackDamage: 1.1,
         additionalMagicResist: 20,
-        image: '../assets/items/combined/RunaansHurricane.png'
+        image: '../assets/items/combined/RunaansHurricane.png',
+        components: ['Recurve Bow', 'Negatron Cloak']
     },
     {
         name: 'Sterak\'s Gage',
         description: 'Once per combat at 60% Health, gain 25% max Health and 35% Attack Damage.',
         additionalHealth: 200,
         additionalAttackDamage: 1.15,
-        image: '../assets/items/combined/SteraksGage.png'
+        image: '../assets/items/combined/SteraksGage.png',
+        components: ['Giant\'s Belt', 'B.F. Sword']
     },
     {
         name: 'Titan\'s Resolve',
@@ -135,7 +151,8 @@ export const combinedItems = [
         additionalAttackSpeed: 1.1,
         additionalArmor: 20,
         abilityPowerStacking: true,
-        image: '../assets/items/combined/TitansResolve.png'
+        image: '../assets/items/combined/TitansResolve.png',
+        components: ['Chain Vest', 'Recurve Bow']
     },
     {
         name: 'Steadfast Heart',
@@ -143,7 +160,8 @@ export const combinedItems = [
         additionalHealth: 200,
         additionalArmor: 20,
         additionalCritChance: 15,
-        image: '../assets/items/combined/SteadfastHeart.png'
+        image: '../assets/items/combined/SteadfastHeart.png',
+
     },
     {
         name: 'Crownguard',

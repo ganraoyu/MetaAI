@@ -31,7 +31,7 @@ interface ChampionCardProps {
 
 export const ChampionCard = ({
   champion,
-  cost = 4,
+  cost,
   currentHp,
   maxHp,
   mana = 0,
@@ -69,7 +69,7 @@ export const ChampionCard = ({
       className="flex flex-col items-center rounded-md relative mouse-pointer" 
       onMouseEnter={() => setToggleChampionCardHover(true)} 
       onMouseLeave={() => {
-        setTimeout(() => setToggleChampionCardHover(false), 50);
+        setTimeout(() => setToggleChampionCardHover(false), 100);
       }}
     >
       <div className="relative">

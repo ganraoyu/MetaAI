@@ -144,7 +144,7 @@ const ChampionCardHover = ({
 
   return (
     <div 
-      className='fixed bg-gray-800 text-white rounded-md shadow-lg w-44 h-78 z-50 origin-top-left animate-grow-in'
+      className='fixed bg-gray-800 text-white rounded-md w-44 h-78 z-50 origin-top-left animate-grow-in shadow-2xl shadow-gray-900'
       style={{ 
         top: `${position.top}px`, 
         left: `${position.left}px` 
@@ -281,6 +281,8 @@ const ChampionCardHover = ({
         <ChampionCardItemHover 
           name={item1 || ''}
           description={item1Data?.description || ''}
+          components={item1Data?.components || []}
+          componentsImages={item1Data?.componentsImages || []}
           image={item1Data?.image || ''}
           additionalAttackSpeed={item1Data?.additionalAttackSpeed || 0}
           additionalAbilityPower={item1Data?.additionalAbilityPower || 0}
@@ -317,16 +319,82 @@ const ChampionCardHover = ({
       )}
       {item2Hover && item2 && (
         <ChampionCardItemHover 
-          name={item2}
-          description={combinedItems.find(item => item.name === item2)?.description || ''}
-          image={combinedItems.find(item => item.name === item2)?.image || ''}
+          name={item2 || ''}
+          description={item2Data?.description || ''}
+          components={item2Data?.components || []}
+          componentsImages={item2Data?.componentsImages || []}
+          image={item2Data?.image || ''}
+          additionalAttackSpeed={item2Data?.additionalAttackSpeed || 0}
+          additionalAbilityPower={item2Data?.additionalAbilityPower || 0}
+          additionalAttackDamage={item2Data?.additionalAttackDamage || 0}
+          additionalHealth={item2Data?.additionalHealth || 0}
+          additionalPercentageHealth={item2Data?.additionalPercentageHealth || 0}
+          additionalArmor={item2Data?.additionalArmor || 0}
+          additionalMagicResist={item2Data?.additionalMagicResist || 0}
+          additionalStartingMana={item2Data?.additionalStartingMana || 0}
+          additionalManaPerAttack={item2Data?.additionalManaPerAttack || 0}
+          additionalCritChance={item2Data?.additionalCritChance || 0}
+          additionalDamageAmp={item2Data?.additionalDamageAmp || 0}
+          attackSpeedStacking={item2Data?.attackSpeedStacking || false}
+          additionalAttackSpeedPerStack={item2Data?.additionalAttackSpeedPerStack || 0}
+          abilityPowerStacking={item2Data?.abilityPowerStacking || false}
+          abilityPowerStackInterval={item2Data?.abilityPowerStackInterval || 0}
+          additionalAbilityPowerPerStack={item2Data?.additionalAbilityPowerPerStack || 0}
+          abilityCritStrike={item2Data?.abilityCritStrike || false}
+          shield={item2Data?.shield || false}
+          shieldAmount={item2Data?.shieldAmount || 0}
+          shieldDuration={item2Data?.shieldDuration || 0}
+          omnivamp={item2Data?.omnivamp || 0}
+          heal={item2Data?.heal || false}
+          healAmount={item2Data?.healAmount || 0}
+          reduction={item2Data?.reduction || false}
+          reductionAmount={item2Data?.reductionAmount || 0}
+          externalMagicDamage={item2Data?.externalMagicDamage || 0}
+          sunder={item2Data?.sunder || false}
+          sunderRadius={item2Data?.sunderRadius || 0}
+          shred={item2Data?.shred || false}
+          burn={item2Data?.burn || false}
+          wound={item2Data?.wound || false}
         />
       )}
       {item3Hover && item3 && (
         <ChampionCardItemHover 
-          name={item3}
-          description={combinedItems.find(item => item.name === item3)?.description || ''}
-          image={combinedItems.find(item => item.name === item3)?.image || ''}
+          name={item3 || ''}
+          description={item3Data?.description || ''}
+          components={item3Data?.components || []}
+          componentsImages={item3Data?.componentsImages || []}
+          image={item3Data?.image || ''}
+          additionalAttackSpeed={item3Data?.additionalAttackSpeed || 0}
+          additionalAbilityPower={item3Data?.additionalAbilityPower || 0}
+          additionalAttackDamage={item3Data?.additionalAttackDamage || 0}
+          additionalHealth={item3Data?.additionalHealth || 0}
+          additionalPercentageHealth={item3Data?.additionalPercentageHealth || 0}
+          additionalArmor={item3Data?.additionalArmor || 0}
+          additionalMagicResist={item3Data?.additionalMagicResist || 0}
+          additionalStartingMana={item3Data?.additionalStartingMana || 0}
+          additionalManaPerAttack={item3Data?.additionalManaPerAttack || 0}
+          additionalCritChance={item3Data?.additionalCritChance || 0}
+          additionalDamageAmp={item3Data?.additionalDamageAmp || 0}
+          attackSpeedStacking={item3Data?.attackSpeedStacking || false}
+          additionalAttackSpeedPerStack={item3Data?.additionalAttackSpeedPerStack || 0}
+          abilityPowerStacking={item3Data?.abilityPowerStacking || false}
+          abilityPowerStackInterval={item3Data?.abilityPowerStackInterval || 0}
+          additionalAbilityPowerPerStack={item3Data?.additionalAbilityPowerPerStack || 0}
+          abilityCritStrike={item3Data?.abilityCritStrike || false}
+          shield={item3Data?.shield || false}
+          shieldAmount={item3Data?.shieldAmount || 0}
+          shieldDuration={item3Data?.shieldDuration || 0}
+          omnivamp={item3Data?.omnivamp || 0}
+          heal={item3Data?.heal || false}
+          healAmount={item3Data?.healAmount || 0}
+          reduction={item3Data?.reduction || false}
+          reductionAmount={item3Data?.reductionAmount || 0}
+          externalMagicDamage={item3Data?.externalMagicDamage || 0}
+          sunder={item3Data?.sunder || false}
+          sunderRadius={item3Data?.sunderRadius || 0}
+          shred={item3Data?.shred || false}
+          burn={item3Data?.burn || false}
+          wound={item3Data?.wound || false}
         />
       )}
 
