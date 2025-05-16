@@ -74,7 +74,7 @@ export const ChampionCard = ({
     >
       <div className="relative">
         <img 
-          src={`../assets/SET14/champions/centered/${champion}.png`} 
+          src={`../assets/SET13/champions/centered/${champion}.png`} 
           alt={champion}
           className="w-10 h-10 rounded-full border-2 border-gray-600"
         />
@@ -99,7 +99,7 @@ export const ChampionCard = ({
             item1={item1}
             item2={item2}
             item3={item3}
-            cost={cost}
+            cost={cost || 0}
             currentHp={currentHp}
             maxHp={maxHp}
             mana={mana}

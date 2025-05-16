@@ -313,6 +313,7 @@ export class Champion {
             attacker: {
                 // Basic info
                 champion: this.name,
+                starLevel: this.starLevel,
                 cost: this.cost,
                 traits: this.traitsList,
                 items: this.items,
@@ -347,6 +348,7 @@ export class Champion {
             target: {
                 // Basic info
                 champion: target.name,
+                starLevel: target.starLevel,
                 cost: target.cost,
                 traits: target.traitsList,
                 items: target.items,
