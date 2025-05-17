@@ -66,7 +66,7 @@ export const ChampionCard = ({
   return (
     <div 
       ref={cardRef}
-      className="flex flex-col items-center rounded-md relative mouse-pointer" 
+      className="flex flex-col items-center rounded-md relative cursor-pointer" 
       onMouseEnter={() => setToggleChampionCardHover(true)} 
       onMouseLeave={() => {
         setTimeout(() => setToggleChampionCardHover(false), 100);

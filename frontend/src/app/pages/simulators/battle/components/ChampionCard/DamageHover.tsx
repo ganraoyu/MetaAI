@@ -18,7 +18,7 @@ interface DamageBreakdownProps {
   damageType: 'physical' | 'magical' | 'true';
 }
 
-export const ChampionCardDamageHover: React.FC<DamageBreakdownProps> = ({
+export const DamageHover: React.FC<DamageBreakdownProps> = ({
   rawDamage,
   finalDamage,
   armorReduction,

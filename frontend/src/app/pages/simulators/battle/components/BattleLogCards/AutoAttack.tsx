@@ -1,22 +1,59 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ChampionCard } from '../ChampionCard/ChampionCard.tsx'
-import { ChampionCardDamageHover } from '../ChampionCard/ChampionCardDamageHover.tsx'
+import { DamageHover } from '../ChampionCard/DamageHover.tsx'
+import { GiSwordClash } from 'react-icons/gi'
 
-const AutoAttack = ({log, index} : {log: any, index: number}) => {
+export const AutoAttack = ({log, index, parentRef} : {log: any, index: number, parentRef: any}) => {
     const [hoveredDamageId, setHoveredDamageId] = useState<number | null>(null)
     const [clickedDamageId, setClickedDamageId] = useState<number | null>(null)
 
+    const [position, setPosition] = useState({ top: 0, left: 0 });
+
     const handleDamageClicked = (id: number) => {
-        if(clickedDamageId === id) {
-            setClickedDamageId(null)
+        if (clickedDamageId === id) {
+            setClickedDamageId(null);
         } else {
-            setClickedDamageId(id)
+            setClickedDamageId(id);
         }
     }
+
+    useEffect(() => {
+        if (parentRef?.current) {
+            const updatePosition = () => {
+                const rect = parentRef.current?.getBoundingClientRect();
+                if (!rect) return;
+                
+                const viewportWidth = window.innerWidth;
+
+                let left = rect.right + 10;
+                
+                if (left + 180 > viewportWidth) {
+                    left = rect.left - 180;
+                }
+                
+                setPosition({
+                    top: rect.top,
+                    left: Math.max(10, left)
+                });
+            };
+            
+            // Initial position
+            updatePosition();
+            
+            // Update position on scroll
+            window.addEventListener('scroll', updatePosition);
+            window.addEventListener('resize', updatePosition);
+            
+            return () => {
+                window.removeEventListener('scroll', updatePosition);
+                window.removeEventListener('resize', updatePosition);
+            };
+        }
+    }, [parentRef]);
     return (
     <div>
         <div className='bg-gradient-to-r from-red-900/40 to-red-800/20 border-l-4 border-red-600 rounded-md p-2 shadow-md'>
-            <div className="flex justify-between items-start mb-2">
+            <div className="flex justify-between items-start mb-2 cursor-pointer">
                 <span className="text-xs text-gray-400">[{log.formattedTime}]</span>
                 <span 
                 className="text-xs font-bold text-red-400 bg-red-400/20 px-2 py-0.5 rounded  "
@@ -26,20 +63,20 @@ const AutoAttack = ({log, index} : {log: any, index: number}) => {
                 >
                 {log.details.damage}
                     {(hoveredDamageId === index || clickedDamageId === index) && (
-                    <div className="absolute mt-1 animate-grow-in origin-top-right z-50">
-                        <ChampionCardDamageHover 
-                        rawDamage={log.details.damage || 0}
-                        finalDamage={log.details.damage || 0}
-                        armorReduction={{
-                            percentage: Math.round(log.details.armorReductionPercentage || 0),
-                            value: log.details.target.armor || 0
-                        }}
-                        magicResistReduction={{
-                            percentage: Math.round(log.details.magicResistReductionPercentage || 0),
-                            value: log.details.target.magicResist || 0
-                        }}
-                        otherModifiers={log.details.modifiers || []}
-                        damageType={log.details.damageType || 'physical'}
+                    <div className="absolute mt-1 animate-grow-in origin-top-right z-50 cursor-auto">
+                        <DamageHover 
+                            rawDamage={Math.round(log.details.attacker.attackDamage) || 0}
+                            finalDamage={log.details.damage || 0}
+                            armorReduction={{
+                                percentage: Math.round(log.details.target.armor || 0),
+                                value: log.details.target.armor || 0
+                            }}
+                            magicResistReduction={{
+                                percentage: Math.round(log.details.target.magicResist || 0),
+                                value: log.details.target.magicResist || 0
+                            }}
+                            otherModifiers={log.details.modifiers || []}
+                            damageType={log.details.damageType || 'physical'}
                         />
                     </div>
                     )}
@@ -77,9 +114,7 @@ const AutoAttack = ({log, index} : {log: any, index: number}) => {
                 </div>
                 <div className="flex flex-col justify-center items-center">
                     <div className="w-8 h-8 rounded-full bg-red-500/30 flex items-center justify-center">
-                        <svg className="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                        </svg>
+                        <GiSwordClash  className='h-6 w-6'/>
                     </div>
                     <p className="text-xs font-bold text-red-500 animate-pulse mt-1 px-2">
                         {log.details.isCrit ? 'CRIT' : ''}
@@ -120,4 +155,3 @@ const AutoAttack = ({log, index} : {log: any, index: number}) => {
     )
 }
 
-export default AutoAttack

@@ -368,8 +368,8 @@ export class Champion {
                 omnivamp: target.omnivamp,
                 
                 // Defensive stats
-                armor: target.armor,
-                magicResist: target.magicResist,
+                armor: target.getStats().armor,
+                magicResist: target.getStats().magicResist,
                 durability: target.durability,
                 
                 // Other stats

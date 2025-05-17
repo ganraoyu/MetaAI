@@ -40,7 +40,7 @@ interface ItemData {
   wound?: boolean;
 }
 
-export const ChampionCardItemHover = ({
+export const ItemHover = ({
   name,
   description,
   image,

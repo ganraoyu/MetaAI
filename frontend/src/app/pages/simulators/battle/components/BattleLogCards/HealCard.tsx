@@ -1,6 +1,6 @@
 import { ChampionCard } from '../ChampionCard/ChampionCard'
 
-const HealCard = ({log}: {log: any}) => {
+export const HealCard = ({log}: {log: any}) => {
   return (
     <div>
         <div className='bg-gradient-to-r from-green-900/40 to-green-800/20 border-l-4 border-green-500 rounded-md p-2 shadow-md'>        
@@ -61,5 +61,3 @@ const HealCard = ({log}: {log: any}) => {
     </div>
   )
 }
-
-export default HealCard

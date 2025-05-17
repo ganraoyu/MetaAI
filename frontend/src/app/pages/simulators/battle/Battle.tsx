@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { HexCells } from './HexCells';
 import { ChampionCard } from './components/ChampionCard/ChampionCard';
 import axios from 'axios';
 import { MdClose, MdPlayArrow } from "react-icons/md";
 
 import { Filter } from './components/BattleLogCards/_Filter';
-import AutoAttack from './components/BattleLogCards/AutoAttack';
+import { AutoAttack } from './components/BattleLogCards/AutoAttack';
 import { Ability } from './components/BattleLogCards/Ability';
-import HealCard from './components/BattleLogCards/HealCard';
+import { HealCard } from './components/BattleLogCards/HealCard';
 
 interface BattleLog {
   formattedTime: string;
@@ -23,6 +23,8 @@ interface BattleData {
 }
 
 const Battle = () => {
+  const parentRef = useRef<HTMLDivElement>(null);
+
   const [champion, setChampion] = useState<string | null>(null);
   const [battleHistory, setBattleHistory] = useState<BattleData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -67,7 +69,6 @@ const Battle = () => {
             <MdClose className="text-lg" /> Clear Board
           </button>
         </div>
-
         <div className='flex flex-row items-start justify-between h-[35rem] w-[70rem] mx-auto p-4 bg-hexCellBackground rounded-2xl'>
           {/* Left side - Traits */}
           <div className='w-1/4 text-white'>
@@ -159,18 +160,18 @@ const Battle = () => {
           <div className='mb-10'>
             <div className='flex justify-center items-center h-17 w-[18rem] bg-hexCellComponents rounded-2xl pt-5'>
               <Filter
-              toggleAttack={toggleAttack}
-              toggleAbility={toggleAbility}
-              toggleHeal={toggleHeal}
-              toggleItemHeal={toggleItemHeal}
-              toggleMagicDamage={toggleMagicDamage}
-              toggleBurn={toggleBurn}
-              setToggleAttack={setToggleAttack}
-              setToggleAbility={setToggleAbility}
-              setToggleHeal={setToggleHeal}
-              setToggleItemHeal={setToggleItemHeal}
-              setToggleMagicDamage={setToggleMagicDamage}
-              setToggleBurn={setToggleBurn}
+                toggleAttack={toggleAttack}
+                toggleAbility={toggleAbility}
+                toggleHeal={toggleHeal}
+                toggleItemHeal={toggleItemHeal}
+                toggleMagicDamage={toggleMagicDamage}
+                toggleBurn={toggleBurn}
+                setToggleAttack={setToggleAttack}
+                setToggleAbility={setToggleAbility}
+                setToggleHeal={setToggleHeal}
+                setToggleItemHeal={setToggleItemHeal}
+                setToggleMagicDamage={setToggleMagicDamage}
+                setToggleBurn={setToggleBurn}
               />
             </div>
             <div className='mt-4 w-[18rem] h-[26rem] max-h-[calc(100%-3rem)] overflow-y-auto scrollbar-hide text-white bg-hexCellComponents rounded-2xl p-4' style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
@@ -212,6 +213,7 @@ const Battle = () => {
                           <AutoAttack 
                             log={log}
                             index={index}
+                            parentRef={parentRef}
                           />
                         )}
                         {log.type === "ability" && toggleAbility && (

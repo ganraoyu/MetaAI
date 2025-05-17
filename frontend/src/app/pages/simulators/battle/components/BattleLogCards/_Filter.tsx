@@ -47,7 +47,7 @@ export const Filter = ({
           />
         </div>
         {toggleAttack && (
-          <div className="absolute inset-0 rounded-md bg-red-400/20 animate-pulse"></div>
+           <div className="absolute inset-0 rounded-md bg-red-400/20 animate-pulse"></div>
         )}
         <div className="absolute bottom-0 inset-x-0 h-1 bg-gradient-to-r from-red-500/0 via-red-500/80 to-red-500/0 opacity-70"></div>
         <p className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 text-xs font-medium text-red-300">Attack</p>

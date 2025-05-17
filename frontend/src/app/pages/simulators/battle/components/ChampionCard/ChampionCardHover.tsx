@@ -1,6 +1,6 @@
 import { useEffect, useState, RefObject } from 'react';
 import { combinedItems } from '../../data/item-data';
-import { ChampionCardItemHover } from './itemHover';
+import { ItemHover } from './ItemHover';
 
 interface ItemData {
   name: string;
@@ -278,7 +278,7 @@ const ChampionCardHover = ({
 
       {/* Item Hovers */}
       {item1Hover && item1 && (
-        <ChampionCardItemHover 
+        <ItemHover 
           name={item1 || ''}
           description={item1Data?.description || ''}
           components={item1Data?.components || []}
@@ -318,7 +318,7 @@ const ChampionCardHover = ({
         />
       )}
       {item2Hover && item2 && (
-        <ChampionCardItemHover 
+        <ItemHover 
           name={item2 || ''}
           description={item2Data?.description || ''}
           components={item2Data?.components || []}
@@ -358,7 +358,7 @@ const ChampionCardHover = ({
         />
       )}
       {item3Hover && item3 && (
-        <ChampionCardItemHover 
+        <ItemHover 
           name={item3 || ''}
           description={item3Data?.description || ''}
           components={item3Data?.components || []}
