@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { HexCells } from './HexCells';
-import { ChampionCard } from './components/ChampionCard/ChampionCard';
+import { useTitle } from '../../../utilities/useTitle';
 import axios from 'axios';
 import { MdClose, MdPlayArrow, MdAnalytics, MdSave, MdFolderOpen, MdAutorenew, MdSettings } from "react-icons/md";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
@@ -25,6 +25,8 @@ interface BattleData {
 }
 
 const Battle = () => {
+  useTitle('TFT Battle Simulator');
+  
   const parentRef = useRef<HTMLDivElement>(null);
 
   const [champion, setChampion] = useState<string | null>(null);
@@ -59,7 +61,7 @@ const Battle = () => {
       setLoading(false);
     }
   };
-      
+
   return (
     <div className='bg-mainBackground min-h-screen pt-[4.5rem]'>        
       <div className='flex-col items-center w-[70rem] mx-auto'>
