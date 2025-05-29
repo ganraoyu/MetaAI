@@ -1,6 +1,8 @@
 import { useEffect, useState, RefObject } from 'react';
 import { combinedItems } from '../../data/item-data';
-import { ItemHover } from './ItemHover';
+import { ItemHover } from './SlotHover/ItemSlotHover';
+import { abilityData } from '../../data/SET13/ability-data';
+import { AbilitySlotHover } from './SlotHover/AbilitySlotHover';
 
 interface ItemData {
   name: string;
@@ -98,6 +100,7 @@ const ChampionCardHover = ({
 }: ChampionCardHoverProps) => {
 
   const [toggleChampionItemHover, setToggleChampionItemHover] = useState(true);
+  const [abilityHover, setAbilityHover] = useState(false);
   const [item1Hover, setItem1Hover] = useState(false);
   const [item2Hover, setItem2Hover] = useState(false);
   const [item3Hover, setItem3Hover] = useState(false);
@@ -245,8 +248,15 @@ const ChampionCardHover = ({
         </div>
       </div>
 
-      {/* Champion Items */}
-      <div className="flex justify-center gap-5 mt-3">
+      {/* Champion Ability/Items Slots */}
+      <div className="flex justify-center gap-2 mt-3">
+        <div onMouseEnter={() => setAbilityHover(true)} onMouseLeave={() => setAbilityHover(false)}>
+        {champion ? (
+          <img src={abilityData[champion]?.image} className="h-8 w-8 border-2 border-gray-700" />
+          ) : (
+            <div className='border-2 h-8 w-8 border-gray-700'></div>
+        )}
+        </div>
         <div onMouseEnter={() => setItem1Hover(true)} onMouseLeave={() => setItem1Hover(false)}>
           {item1 ? (
             <img
@@ -277,6 +287,13 @@ const ChampionCardHover = ({
       </div>
 
       {/* Item Hovers */}
+      {abilityHover && champion && (
+        <AbilitySlotHover 
+          name={champion}
+          ability={abilityData[champion]?.ability}
+          description={abilityData[champion]?.description}
+        />
+      )}
       {item1Hover && item1 && (
         <ItemHover 
           name={item1 || ''}
@@ -319,7 +336,7 @@ const ChampionCardHover = ({
       )}
       {item2Hover && item2 && (
         <ItemHover 
-          name={item2 || ''}
+           name={item2 || ''}
           description={item2Data?.description || ''}
           components={item2Data?.components || []}
           componentsImages={item2Data?.componentsImages || []}

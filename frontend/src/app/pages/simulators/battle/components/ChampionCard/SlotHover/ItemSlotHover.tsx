@@ -82,8 +82,8 @@ export const ItemHover = ({
     <div className="bg-gray-800 absolute mt-3 z-4 border border-gray-700 rounded-md shadow-sm shadow-gray-700 w-60">
       {/* Stats */}
       <div className="text-xs p-2 flex flex-row items-center justify-between">
-        <div className="flex flex-col"> 
-          <p className="text-m text-base font-medium">{name}</p>
+        <div className="flex flex-col "> 
+          <p className="text-base font-medium">{name}</p>
           <div className="flex flex-wrap gap-2">
             {/* Stats */}
             {(additionalAbilityPower || 0) > 0 && (
@@ -154,7 +154,7 @@ export const ItemHover = ({
             )}
           </div>
         </div>
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end border-b border-gray-600 pb-2">
           {componentsImages && componentsImages.length > 0 && (
             <div className="flex items-center gap-1">
               <img src={componentsImages[0]} alt={componentsImages[0]} className="h-6 w-6 border border-black" />
@@ -171,5 +171,4 @@ export const ItemHover = ({
     </div>
   )
 } 
-
 

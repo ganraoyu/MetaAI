@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { HexCells } from './HexCells';
 import { ChampionCard } from './components/ChampionCard/ChampionCard';
 import axios from 'axios';
-import { MdClose, MdPlayArrow } from "react-icons/md";
+import { MdClose, MdPlayArrow, MdAnalytics, MdSave, MdFolderOpen, MdAutorenew, MdSettings } from "react-icons/md";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 import { Filter } from './components/BattleLogCards/_Filter';
 import { AutoAttack } from './components/BattleLogCards/AutoAttack';
@@ -39,8 +40,12 @@ const Battle = () => {
   const [toggleMagicDamage, setToggleMagicDamage] = useState(true);
   const [toggleBurn, setToggleBurn] = useState(true);
 
+  const [toggleUnits, setToggleUnits] = useState(true);
+  const [toggleAugments, setToggleAugments] = useState(false);
+
   const fetchBattleHistory = async () => {
     setLoading(true);
+
     try {
       const response = await axios.get('http://localhost:3000/battle-simulator/battle-history');
       console.log('Response data:', response.data); 
@@ -56,25 +61,53 @@ const Battle = () => {
       
   return (
     <div className='bg-mainBackground min-h-screen pt-[4rem]'>        
-      <div className='flex-col items-center w-[70rem] mx-auto mb-4'>
-        <div className='flex-col items-center justify-center mr-[2rem] mb-[0.5rem]'>
+      <div className='flex-col items-center w-[70rem] mx-auto'>
+        <div className='flex-col items-center justify-center mr-[2rem] '>
           <h1 className='text-[1.2rem] w-full text-white font-semibold'>TFT Battle Simulator</h1>
           <p className='text-white text-[0.8rem]'>Get real-time replays of battles with our TFT Battle Simulator</p>
         </div>        
-        <div className='flex items-center gap-1 mb-[0.5rem]'>          
+        <div className='flex items-center gap-1 mb-[0.5rem]'>
+          {/* Existing buttons */}
           <button className='btn btn-outline btn-success btn-sm flex items-center gap-1' onClick={() => {setClicked(true); fetchBattleHistory();}}>
-            <MdPlayArrow className="text-lg" /> Start Battle
+            <MdPlayArrow className="text-lg h-4 w-4" /> Start Battle
           </button>
           <button className='btn btn-outline btn-error btn-sm flex items-center gap-1' onClick={() => setBattleHistory(null)}>
-            <MdClose className="text-lg" /> Clear Board
+            <MdClose className="text-lg h-4 w-4" /> Clear Board
+          </button>
+          <button className='btn btn-outline btn-info btn-sm flex items-center gap-1'>
+            <MdAnalytics className="text-lg h-4 w-4" /> View Details
+          </button>
+          
+          {/* New buttons */}
+          <button className='btn btn-outline btn-primary btn-sm flex items-center gap-1'>
+            <MdSave className="text-lg h-4 w-4" /> Save Board
+          </button>
+          <button className='btn btn-outline btn-primary btn-sm flex items-center gap-1'>
+            <MdFolderOpen className="text-lg h-4 w-4" /> Load Board
+          </button>
+          <button className='btn btn-outline btn-accent btn-sm flex items-center gap-1'>
+            <MdSettings className="text-lg h-4 w-4" /> Options
+          </button>
+          
+          {/* Navigation buttons */}
+          <button className='btn btn-outline btn-secondary btn-sm flex items-center gap-1'>
+            <FaArrowLeft className="text-lg h-4 w-4" />
+          </button>
+          <button className='btn btn-outline btn-secondary btn-sm flex items-center gap-1'>
+            <FaArrowRight className="text-lg h-4 w-4" />
           </button>
         </div>
-        <div className='flex flex-row items-start justify-between h-[35rem] w-[70rem] mx-auto p-4 bg-hexCellBackground rounded-2xl'>
+        <div className='flex flex-row items-start justify-between h-[35rem] w-[70rem] mx-auto p-4 bg-hexCellBackground rounded-t-2xl'>
           {/* Left side - Traits */}
           <div className='w-1/4 text-white'>
             <p className="font-semibold">
               Traits
             </p>
+            <div className='bg-hexCellComponents rounded-2xl w-56 h-56 mb-6'>
+
+            </div>
+            <div className='bg-hexCellComponents rounded-2xl mb-2 w-56 h-56'>
+            </div>
             {/* Trait content goes here */}
           </div>
           
@@ -219,6 +252,8 @@ const Battle = () => {
                         {log.type === "ability" && toggleAbility && (
                           <Ability
                             log={log}
+                            index={index}
+                            parentRef={parentRef}
                           />
                         )}
                         {log.type === "heal" && toggleHeal && (
@@ -274,7 +309,18 @@ const Battle = () => {
               )}
             </div>
           </div>
-        </div>      
+        </div>   
+        <div className='h-[40rem] w-[70rem] bg-hexCellBackground rounded-b-2xl'>
+          <div>
+            <button>Units</button>
+            <button>Augments</button>
+            <div>
+              {toggleUnits && (
+                <div>hi</div>
+                )}
+            </div>
+          </div>
+        </div>  
       </div>
     </div>
   );
