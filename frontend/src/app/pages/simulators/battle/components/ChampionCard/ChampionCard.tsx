@@ -57,6 +57,8 @@ export const ChampionCard = ({
   starLevel = 1,
 }: ChampionCardProps) => {
   const [toggleChampionCardHover, setToggleChampionCardHover] = useState(false);
+  const [clickChampionCardHover, setClickChampionCardHover] = useState(false);
+
   const cardRef = useRef<HTMLDivElement>(null);
 
   const hpPercentage = (currentHp / maxHp) * 100;
@@ -71,6 +73,7 @@ export const ChampionCard = ({
       onMouseLeave={() => {
         setTimeout(() => setToggleChampionCardHover(false), 100);
       }}
+      onClick={() => setClickChampionCardHover(!clickChampionCardHover)}
     >
       <div className="relative">
         <img 
@@ -90,7 +93,7 @@ export const ChampionCard = ({
       <div className="text-[0.7rem] text-white mt-1 font-semibold">
         {Math.round(currentHp)}/{maxHp}
       </div>
-        {toggleChampionCardHover && 
+        {(toggleChampionCardHover || clickChampionCardHover) && 
           <ChampionCardHover 
             champion={champion} 
             trait1={trait1}

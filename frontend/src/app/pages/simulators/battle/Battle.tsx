@@ -9,6 +9,7 @@ import { Filter } from './components/BattleLogCards/_Filter';
 import { AutoAttack } from './components/BattleLogCards/AutoAttack';
 import { Ability } from './components/BattleLogCards/Ability';
 import { HealCard } from './components/BattleLogCards/HealCard';
+import { champions } from './data/SET13/champion-data';
 
 interface BattleLog {
   formattedTime: string;
@@ -60,7 +61,7 @@ const Battle = () => {
   };
       
   return (
-    <div className='bg-mainBackground min-h-screen pt-[4rem]'>        
+    <div className='bg-mainBackground min-h-screen pt-[4.5rem]'>        
       <div className='flex-col items-center w-[70rem] mx-auto'>
         <div className='flex-col items-center justify-center mr-[2rem] '>
           <h1 className='text-[1.2rem] w-full text-white font-semibold'>TFT Battle Simulator</h1>
@@ -191,7 +192,7 @@ const Battle = () => {
           
           {/* Right side - Battle Logs */}
           <div className='mb-10'>
-            <div className='flex justify-center items-center h-17 w-[18rem] bg-hexCellComponents rounded-2xl pt-5'>
+            <div className='flex justify-center items-center h-17 w-[18rem] bg-hexCellComponents rounded-2xl pt-5 select-none'>
               <Filter
                 toggleAttack={toggleAttack}
                 toggleAbility={toggleAbility}
@@ -236,7 +237,7 @@ const Battle = () => {
                   <button onClick={fetchBattleHistory}>Try Again</button>
                 </div>
               ) : (
-                <div>
+                <div className='select-none'>
                   {battleHistory && battleHistory.battleLogs && battleHistory.battleLogs.length > 0 ? (
                     <div>
                     <ul className="battle-log text-[0.8rem]">
@@ -310,13 +311,22 @@ const Battle = () => {
             </div>
           </div>
         </div>   
-        <div className='h-[40rem] w-[70rem] bg-hexCellBackground rounded-b-2xl'>
-          <div>
+        {/* Bottom section - Units and Augments */}
+        <div className='h-[40rem] w-[70rem] bg-hexCellBackground rounded-b-2xl mt-[-1.5rem] ml-[1.5rem]'>
+          <div className=''>
             <button>Units</button>
             <button>Augments</button>
             <div>
               {toggleUnits && (
-                <div>hi</div>
+                <div className='flex gap-2 select-none'>
+                  {champions.map(champion => (
+                    <div key={champion.name}>
+                      <img src={champion.image} alt={champion.name} className="w-10 h-10 border border-gray-600" />
+                      <p className='text-[0.65rem] text-center'>{champion.name}</p>
+                      {}
+                    </div>
+                  ))}
+                </div>
                 )}
             </div>
           </div>

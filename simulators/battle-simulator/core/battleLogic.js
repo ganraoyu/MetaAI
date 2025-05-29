@@ -213,6 +213,18 @@ function simulateRound(battlePlayer, battleOpponent, battleTime) {
                 if (moveTime) {
                     updatedBattleTime += moveTime;
                     movementOccurred = true;
+                    logBattleEvent('movement', {
+                        mover: {
+                            name: champion.name,
+                            team: champion.team,
+                            position: board.getChampionPosition(champion)
+                        },
+                        target: {
+                            name: closestEnemy.name,
+                            team: closestEnemy.team,
+                            position: board.getChampionPosition(closestEnemy)
+                        },
+                    }, updatedBattleTime);
                     break; 
                 }
             }
@@ -235,6 +247,18 @@ function simulateRound(battlePlayer, battleOpponent, battleTime) {
                     if (moveTime) {
                         updatedBattleTime += moveTime;
                         movementOccurred = true;
+                        logBattleEvent('movement', {
+                            mover: {
+                                name: champion.name,
+                                team: champion.team,
+                                position: board.getChampionPosition(champion)
+                            },
+                            target: {
+                                name: closestEnemy.name,
+                                team: closestEnemy.team,
+                                position: board.getChampionPosition(closestEnemy)
+                            },
+                        }, updatedBattleTime);
                         break;
                     }
                 }
@@ -418,17 +442,8 @@ function startBattle() {
     }; 
 }
 
-placeChampionByName('Akali', 4, 3, 3, 'player');
+placeChampionByName('Akali', 7, 3, 3, 'player');
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
-
-addItemByName(board.getChampion(4,3), 'Titan\'s Resolve');
-addAdditionalItemStatistics(board.getChampion(4,3), 'Titan\'s Resolve');
-addItemByName(board.getChampion(4,3), 'Infinity Edge');
-addAdditionalItemStatistics(board.getChampion(4,3), 'Infinity Edge')
-addItemByName(board.getChampion(4,3), 'Bloodthrister');
-addAdditionalItemStatistics(board.getChampion(4,3), 'Bloodthrister')
-
-console.log(board.getChampion(4,3));
 
 board.displayBoard();
 
