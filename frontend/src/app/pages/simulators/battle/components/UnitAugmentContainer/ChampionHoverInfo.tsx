@@ -1,6 +1,4 @@
-import React from 'react'
-
-const ChampionHoverInfo = () => {
+export const ChampionHoverInfo = () => {
   return (
     <div>
       

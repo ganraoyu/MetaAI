@@ -10,6 +10,7 @@ import { AutoAttack } from './components/BattleLogCards/AutoAttack';
 import { Ability } from './components/BattleLogCards/Ability';
 import { HealCard } from './components/BattleLogCards/HealCard';
 import { champions } from './data/SET13/champion-data';
+import { UnitAugmentContainer } from './components/UnitAugmentContainer/UnitAugmentContainer';
 
 interface BattleLog {
   formattedTime: string;
@@ -25,7 +26,7 @@ interface BattleData {
 }
 
 const Battle = () => {
-  useTitle('TFT Battle Simulator');
+  useTitle('TFT Battle Simulator - Builder');
   
   const parentRef = useRef<HTMLDivElement>(null);
 
@@ -314,20 +315,14 @@ const Battle = () => {
           </div>
         </div>   
         {/* Bottom section - Units and Augments */}
-        <div className='h-[40rem] w-[70rem] bg-hexCellBackground rounded-b-2xl mt-[-1.5rem] ml-[1.5rem]'>
+        <div className='h-[40rem] w-[70rem] bg-hexCellBackground rounded-b-2xl mt-[-1.5rem] pl-[1.5rem]'>
           <div className=''>
             <button>Units</button>
             <button>Augments</button>
             <div>
               {toggleUnits && (
                 <div className='flex gap-2 select-none'>
-                  {champions.map(champion => (
-                    <div key={champion.name}>
-                      <img src={champion.image} alt={champion.name} className="w-10 h-10 border border-gray-600" />
-                      <p className='text-[0.65rem] text-center'>{champion.name}</p>
-                      {}
-                    </div>
-                  ))}
+                  <UnitAugmentContainer />
                 </div>
                 )}
             </div>

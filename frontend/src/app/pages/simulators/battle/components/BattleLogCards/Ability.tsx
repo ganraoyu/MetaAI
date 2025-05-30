@@ -7,7 +7,7 @@ export const Ability = ({log}: {log: any}) => {
             <div className="flex justify-between items-start mb-2">
                 <span className="text-xs text-gray-400">[{log.formattedTime}]</span>
                 <span className="text-xs font-bold text-blue-400 bg-blue-400/20 px-2 py-0.5 rounded">
-                    {log.details.damage}
+                    -{log.details.damage}
                 </span>
             </div>
             <div className='grid grid-cols-3 gap-2 mb-2'>

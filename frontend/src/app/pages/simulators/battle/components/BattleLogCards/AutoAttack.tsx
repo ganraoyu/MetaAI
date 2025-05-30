@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { ChampionCard } from '../ChampionCard/ChampionCard.tsx'
-import { DamageHover } from '../ChampionCard/DamageHover.tsx'
+import { DamageHover } from './CardHovers/DamageHover.tsx'
 import { GiSwordClash } from 'react-icons/gi'
 
 export const AutoAttack = ({log, index, parentRef} : {log: any, index: number, parentRef: any}) => {
@@ -61,12 +61,12 @@ export const AutoAttack = ({log, index, parentRef} : {log: any, index: number, p
                 onMouseLeave={() => setHoveredDamageId(null)}
                 onClick={() => handleDamageClicked(index)}
                 >
-                {log.details.damage}
+                -{log.details.damage}
                     {(hoveredDamageId === index || clickedDamageId === index) && (
                     <div className="absolute mt-1 animate-grow-in origin-top-right z-50 cursor-auto">
                         <DamageHover 
-                            rawDamage={Math.round(log.details.attacker.attackDamage) || 0}
-                            finalDamage={log.details.damage || 0}
+                            rawDamage={-Math.round(log.details.attacker.attackDamage) || 0}
+                            finalDamage={-log.details.damage || 0}
                             armorReduction={{
                                 percentage: Math.round(log.details.target.armor || 0),
                                 value: log.details.target.armor || 0
