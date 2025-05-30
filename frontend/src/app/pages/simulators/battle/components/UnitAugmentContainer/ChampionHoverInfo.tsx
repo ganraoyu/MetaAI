@@ -5,5 +5,3 @@ export const ChampionHoverInfo = () => {
     </div>
   )
 }
-
-export default ChampionHoverInfo

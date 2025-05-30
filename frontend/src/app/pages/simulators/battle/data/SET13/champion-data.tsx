@@ -154,6 +154,111 @@ export const champions = [
         durability: 0,
         omnivamp: 12,
         items: [],
+    },
+    {
+        name: 'Ambessa',
+        cost: 4,
+        image: '../assets/SET13/champions/centered/Ambessa.png'
+    },
+    {
+        name: 'Amumu',
+        cost: 1,
+        image: '../assets/SET13/champions/centered/Amumu.png'
+    },
+    {
+        name: 'Blitzcrank',
+        cost: 1,
+        image: '../assets/SET13/champions/centered/Blitzcrank.png'
+    },
+    {
+        name: 'Caitlyn',
+        cost: 1,
+        image: '../assets/SET13/champions/centered/Caitlyn.png'
+    },
+    {
+        name: 'Cassiopeia',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/Cassiopeia.png'
+    },
+    {
+        name: 'Ekko',
+        cost: 4,
+        image: '../assets/SET13/champions/centered/Ekko.png'
+    },
+    {
+        name: 'Elise',
+        cost: 1,
+        image: '../assets/SET13/champions/centered/Elise.png'
+    },
+    {
+        name: 'Heimerdinger',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/Heimerdinger.png'
+    },
+    {
+        name: 'Illaoi',
+        cost: 3,
+        image: '../assets/SET13/champions/centered/Illaoi.png'
+    },
+    {
+        name: 'Irelia',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/Irelia.png'
+    },
+    {
+        name: 'Jayce',
+        cost: 4,
+        image: '../assets/SET13/champions/centered/Jayce.png'
+    },
+    {
+        name: 'Jinx',
+        cost: 3,
+        image: '../assets/SET13/champions/centered/Jinx.png'
+    },
+    {
+        name: 'KogMaw',
+        cost: 1,
+        image: '../assets/SET13/champions/centered/KogMaw.png'
+    },
+    {
+        name: 'LeBlanc',
+        cost: 3,
+        image: '../assets/SET13/champions/centered/LeBlanc.png'
+    },
+    {
+        name: 'Leona',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/Leona.png'
+    },
+    {
+        name: 'Loris',
+        cost: 3,
+        image: '../assets/SET13/champions/centered/Loris.png'
+    },
+    {
+        name: 'Maddie',
+        cost: 1,
+        image: '../assets/SET13/champions/centered/Maddie.png'
+    },
+    {
+        name: 'Malzahar',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/Malzahar.png'
+    },
+    {
+        name: 'Mel',
+        cost: 6,
+        image: '../assets/SET13/champions/centered/Mel.png'
+    },
+    {
+        name: 'Morgana',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/Morgana.png'
+    },
+    {
+        name: 'Nocturne',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/Nocturne.png'
     }
 ];
 
