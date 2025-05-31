@@ -161,23 +161,18 @@ export const champions = [
         image: '../assets/SET13/champions/centered/Ambessa.png'
     },
     {
-        name: 'Amumu',
-        cost: 1,
-        image: '../assets/SET13/champions/centered/Amumu.png'
-    },
-    {
         name: 'Blitzcrank',
-        cost: 1,
+        cost: 3,
         image: '../assets/SET13/champions/centered/Blitzcrank.png'
     },
     {
         name: 'Caitlyn',
-        cost: 1,
+        cost: 5,
         image: '../assets/SET13/champions/centered/Caitlyn.png'
     },
     {
         name: 'Cassiopeia',
-        cost: 2,
+        cost: 3,
         image: '../assets/SET13/champions/centered/Cassiopeia.png'
     },
     {
@@ -187,42 +182,42 @@ export const champions = [
     },
     {
         name: 'Elise',
-        cost: 1,
+        cost: 4,
         image: '../assets/SET13/champions/centered/Elise.png'
     },
     {
         name: 'Heimerdinger',
-        cost: 2,
+        cost: 4,
         image: '../assets/SET13/champions/centered/Heimerdinger.png'
     },
     {
         name: 'Illaoi',
-        cost: 3,
+        cost: 4,
         image: '../assets/SET13/champions/centered/Illaoi.png'
     },
     {
         name: 'Irelia',
-        cost: 2,
+        cost: 1,
         image: '../assets/SET13/champions/centered/Irelia.png'
     },
     {
         name: 'Jayce',
-        cost: 4,
+        cost: 5,
         image: '../assets/SET13/champions/centered/Jayce.png'
     },
     {
         name: 'Jinx',
-        cost: 3,
+        cost: 5,
         image: '../assets/SET13/champions/centered/Jinx.png'
     },
     {
-        name: 'KogMaw',
-        cost: 1,
+        name: 'Kog\'Maw',
+        cost: 3,
         image: '../assets/SET13/champions/centered/KogMaw.png'
     },
     {
         name: 'LeBlanc',
-        cost: 3,
+        cost: 5,
         image: '../assets/SET13/champions/centered/LeBlanc.png'
     },
     {
@@ -236,13 +231,8 @@ export const champions = [
         image: '../assets/SET13/champions/centered/Loris.png'
     },
     {
-        name: 'Maddie',
-        cost: 1,
-        image: '../assets/SET13/champions/centered/Maddie.png'
-    },
-    {
         name: 'Malzahar',
-        cost: 2,
+        cost: 5,
         image: '../assets/SET13/champions/centered/Malzahar.png'
     },
     {
@@ -252,13 +242,223 @@ export const champions = [
     },
     {
         name: 'Morgana',
-        cost: 2,
+        cost: 1,
         image: '../assets/SET13/champions/centered/Morgana.png'
     },
     {
         name: 'Nocturne',
         cost: 2,
         image: '../assets/SET13/champions/centered/Nocturne.png'
+    },
+    {
+        name: 'Mordekaiser',
+        cost: 5,
+        image: '../assets/SET13/champions/centered/Mordekaiser.png'
+    },
+    {
+        name: 'Corki',
+        cost: 4,
+        image: '../assets/SET13/champions/centered/Corki.png'
+    },
+    {
+        name: 'Dr Mundo',
+        cost: 4,
+        image: '../assets/SET13/champions/centered/DrMundo.png'
+    },
+    {
+        name: 'Twitch',
+        cost: 4,
+        image: '../assets/SET13/champions/centered/Twitch.png'
+    },
+    {
+        name: 'Vi',
+        cost: 4,
+        image: '../assets/SET13/champions/centered/Vi.png'  
+    },
+    {
+        name: 'Zoe',
+        cost: 4,
+        image: '../assets/SET13/champions/centered/Zoe.png'
+    },
+    {
+        name: 'Ezreal',
+        cost: 3,
+        image: '../assets/SET13/champions/centered/Ezreal.png'
+    },
+    {
+        name: 'Gangplank',
+        cost: 3,
+        image: '../assets/SET13/champions/centered/Gangplank.png'
+    },
+    {
+        name: 'Nami',
+        cost: 3,
+        image: '../assets/SET13/champions/centered/Nami.png'
+    },
+    {
+        name: 'Nunu & Willump',
+        cost: 3,
+        image: '../assets/SET13/champions/centered/NunuWillump.png'
+    },
+    {
+        name: 'Scar',
+        cost: 3,
+        image: '../assets/SET13/champions/centered/Scar.png'
+    },
+    {
+        name: 'Swain',
+        cost: 3,
+        image: '../assets/SET13/champions/centered/Swain.png'
+    },
+    {
+        name: 'Twisted Fate',
+        cost: 3,
+        image: '../assets/SET13/champions/centered/TwistedFate.png'
+    },
+    {
+        name: 'Camille',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/Camille.png'
+    },
+    {
+        name: 'Rell',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/Rell.png'
+    },
+    {
+        name: 'Renata Glasc',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/RenataGlasc.png'
+    },
+    {
+        name: 'Sett',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/Sett.png'    
+    },
+    {
+        name: 'Tristana',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/Tristana.png'
+    },
+    {
+        name: 'Urgot',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/Urgot.png'
+    },
+    {
+        name: 'Vander',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/Vander.png'
+    },
+    {
+        name: 'Vladimir',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/Vladimir.png'
+    },
+    {
+        name: 'Zeri',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/Zeri.png'
+    },
+    {
+        name: 'Ziggs',
+        cost: 2,
+        image: '../assets/SET13/champions/centered/Ziggs.png'
+    },
+    {
+        name: 'Draven',
+        cost: 1,
+        image: '../assets/SET13/champions/centered/Draven.png'
+    },
+    {
+        name: 'Lux',
+        cost: 1,
+        image: '../assets/SET13/champions/centered/Lux.png'
+    },
+    {
+        name: 'Rumble',
+        cost: 5,
+        image: '../assets/SET13/champions/centered/Rumble.png'
+    },
+    {
+        name: 'Zyra',
+        cost: 1,
+        image: '../assets/SET13/champions/centered/Zyra.png'
+    },
+    {
+        name: 'Singed',
+        cost: 1,
+        image: '../assets/SET13/champions/centered/Singed.png'
+    },
+    {
+        name: 'Steb',
+        cost: 1,
+        image: '../assets/SET13/champions/centered/Steb.png'
+    },
+    {
+        name: 'Maddie',
+        cost: 1,
+        image: '../assets/SET13/champions/centered/Maddie.png'
+    },
+    {
+        name: 'Trundle',
+        cost: 1,
+        image: '../assets/SET13/champions/centered/Trundle.png'
+    },
+    {
+        name: 'Vex',
+        cost: 1,
+        image: '../assets/SET13/champions/centered/Vex.png'
+    },
+    {
+        name: 'Violet',
+        cost: 1,
+        image: '../assets/SET13/champions/centered/Violet.png'
+    },
+    {
+        name: 'Viktor',
+        cost: 6,
+        image: '../assets/SET13/champions/centered/Viktor.png'
+    },
+    {
+        name: 'Sevika',
+        cost: 5,
+        image: '../assets/SET13/champions/centered/Sevika.png'
+    },
+    {
+        name: 'Powder',
+        cost: 1,
+        image: '../assets/SET13/champions/centered/Powder.png'
+    },
+    {
+        name: 'Renni',
+        cost: 3,
+        image: '../assets/SET13/champions/centered/Renni.png'
+    },
+    {
+        name: 'Smeech',
+        cost: 3,
+        image: '../assets/SET13/champions/centered/Smeech.png'
+    },
+    {
+        name: 'Garen',
+        cost: 4,
+        image: '../assets/SET13/champions/centered/Garen.png'
+    },
+    {
+        name: 'Silco',
+        cost: 4,
+        image: '../assets/SET13/champions/centered/Silco.png'
+    },
+    {
+        name: 'Malzahar',
+        cost: 5,
+        image: '../assets/SET13/champions/centered/Malzahar.png'
+    },
+    {
+        name: 'Leblanc',
+        cost: 5,
+        image: '../assets/SET13/champions/centered/LeBlanc.png'
     }
 ];
 

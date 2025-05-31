@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { champions } from "../../data/SET13/champion-data"
-import ChampionHoverInfo from "./ChampionHoverInfo";
+import { ChampionHoverInfo } from "./ChampionHoverInfo";
 
 export const UnitAugmentContainer = () => {
     const [hoveredChampionId, setHoveredChampionId] = useState<string | null>(null);
     const [clickedChampionId, setClickedChampionId] = useState<string | null>(null);
 
     return (
-        <div className="flex gap-2 select-none">
-            {champions.map(champion => (
+        <div className="select-none">
+            <div className="flex flex-wrap items-center w-[40rem] gap-2">
+              {champions.map(champion => (
                 <div key={champion.name} className="flex flex-col items-center relative">
                         <img    
                             src={champion.image} 
@@ -20,12 +21,18 @@ export const UnitAugmentContainer = () => {
                                 clickedChampionId === champion.name ? null : champion.name
                             )}
                         />
-                        <p className='text-[0.65rem] text-center'>{champion.name}</p>
+                       <p
+                        className="text-[0.65rem] w-12 truncate overflow-hidden whitespace-nowrap text-center"
+                        title={champion.name}
+                        >
+                        {champion.name}
+                        </p>
                         {(hoveredChampionId === champion.name || clickedChampionId === champion.name) && (
                             <ChampionHoverInfo />
                         )}
                 </div>
-            ))}
+              ))}  
+            </div>
         </div>
     )
 };
