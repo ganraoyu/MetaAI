@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { useTFTSetContext } from '../../../../../utilities/TFTSetContext';
 import ChampionCardHover from './ChampionCardHover';
 
 interface ChampionCardProps {
@@ -56,6 +57,8 @@ export const ChampionCard = ({
   range = 0,
   starLevel = 1,
 }: ChampionCardProps) => {
+  const {set} = useTFTSetContext();
+
   const [toggleChampionCardHover, setToggleChampionCardHover] = useState(false);
   const [clickChampionCardHover, setClickChampionCardHover] = useState(false);
 
@@ -77,7 +80,7 @@ export const ChampionCard = ({
     >
       <div className="relative">
         <img 
-          src={`../assets/SET13/champions/centered/${champion}.png`} 
+          src={`../assets/${set}/champions/centered/${champion}.png`} 
           alt={champion}
           className="w-10 h-10 rounded-full border-2 border-gray-600"
         />

@@ -7,6 +7,8 @@ export const UnitFilter = () => {
   const [sortByCost, setSortByCost] = useState(true);
   const [sortByAlphabet, setSortByAlphabet] = useState(false);
   const [filterByTrait, setFilterByTrait] = useState("");
+  const [toggleUnits, setToggleUnits] = useState(true);
+  const [toggleAugments, setToggleAugments] = useState(false);
 
   const handleSortByCost = () => {
     setSortByCost(prev => !prev);
@@ -44,7 +46,7 @@ export const UnitFilter = () => {
             <img
               src="../assets/icons/coin.png"
               alt="Coin"
-              className="filter invert brightness-0 h-4 w-4"
+            className="filter invert brightness-0 h-4 w-4"
             />
           </button>
 
@@ -58,7 +60,12 @@ export const UnitFilter = () => {
           </button>
         </div>
 
-        {/* Filter Button Placeholder (You can add it here later) */}
+        {/* Filter By Trait Dropdown */}
+        <div>
+            <select>
+              <option value=''>Default</option>
+            </select>
+        </div>
 
       </div>
     </div>

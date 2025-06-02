@@ -1,7 +1,9 @@
 import { useEffect, useState, RefObject } from 'react';
+import { useTFTSetContext } from '../../../../../utilities/TFTSetContext';
+
 import { combinedItems } from '../../data/item-data';
 import { ItemHover } from './SlotHover/ItemSlotHover';
-import { abilityData } from '../../data/SET13/ability-data';
+import { abilityData } from '../../data/SET13/ability-data.ts';
 import { AbilitySlotHover } from './SlotHover/AbilitySlotHover';
 
 interface ItemData {
@@ -98,6 +100,7 @@ const ChampionCardHover = ({
   starLevel,
   parentRef
 }: ChampionCardHoverProps) => {
+  const { set } = useTFTSetContext();
 
   const [toggleChampionItemHover, setToggleChampionItemHover] = useState(true);
   const [abilityHover, setAbilityHover] = useState(false);
@@ -162,7 +165,7 @@ const ChampionCardHover = ({
         'border-red-500'
       }`}>
         <img 
-          src={`../assets/SET13/champions/splash/${champion}.png`} 
+          src={`../assets/${set}/champions/splash/${champion}.png`} 
           alt={champion}
           className="rounded-t-md w-full h-24 object-cover"
         />
@@ -187,19 +190,19 @@ const ChampionCardHover = ({
         <div className="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-black/80 to-transparent">
           {trait1 && (
             <div className="flex items-center gap-1 mb-1">
-              <img src={`../assets/SET13/traits/${trait1}.png`} className="h-4 w-4" alt={trait1} />
+              <img src={`../assets/${set}/traits/${trait1}.png`} className="h-4 w-4" alt={trait1} />
               <p className="text-white text-[0.7rem] text-outline">{trait1}</p>
             </div>
           )}
           {trait2 && (
             <div className="flex items-center gap-1 mb-1">
-              <img src={`../assets/SET13/traits/${trait2}.png`} className="h-4 w-4" alt={trait2} />
+              <img src={`../assets/${set}/traits/${trait2}.png`} className="h-4 w-4" alt={trait2} />
               <p className="text-white text-[0.7rem] text-outline">{trait2}</p>
             </div>
           )}
           {trait3 && (
             <div className="flex items-center gap-1">
-              <img src={`../assets/SET13/traits/${trait3}.png`} className="h-4 w-4" alt={trait3} />
+              <img src={`../assets/${set}/traits/${trait3}.png`} className="h-4 w-4" alt={trait3} />
               <p className="text-white text-[0.7rem] text-outline">{trait3}</p>
             </div>
           )}
@@ -336,7 +339,7 @@ const ChampionCardHover = ({
       )}
       {item2Hover && item2 && (
         <ItemHover 
-           name={item2 || ''}
+          name={item2 || ''}
           description={item2Data?.description || ''}
           components={item2Data?.components || []}
           componentsImages={item2Data?.componentsImages || []}

@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
-import { HexCells } from './HexCells';
+import { HexCells } from './components/HexCells';
 import { useTitle } from '../../../utilities/useTitle';
+
 import axios from 'axios';
+
 import { MdClose, MdPlayArrow, MdAnalytics, MdSave, MdFolderOpen, MdSettings } from "react-icons/md";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
@@ -9,7 +11,7 @@ import { Filter } from './components/BattleLogCards/_Filter';
 import { AutoAttack } from './components/BattleLogCards/AutoAttack';
 import { Ability } from './components/BattleLogCards/Ability';
 import { HealCard } from './components/BattleLogCards/HealCard';
-import { champions } from './data/SET13/champion-data';
+
 import { UnitAugmentContainer } from './components/UnitAugmentContainer/UnitAugmentContainer';
 
 interface BattleLog {
@@ -27,7 +29,7 @@ interface BattleData {
 
 const Battle = () => {
   useTitle('TFT Battle Simulator - Builder');
-  
+
   const parentRef = useRef<HTMLDivElement>(null);
 
   const [champion, setChampion] = useState<string | null>(null);
