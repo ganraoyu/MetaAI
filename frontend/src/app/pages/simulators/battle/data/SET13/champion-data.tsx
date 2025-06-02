@@ -450,15 +450,5 @@ export const champions = [
         cost: 4,
         image: '../assets/SET13/champions/centered/Silco.png'
     },
-    {
-        name: 'Malzahar',
-        cost: 5,
-        image: '../assets/SET13/champions/centered/Malzahar.png'
-    },
-    {
-        name: 'Leblanc',
-        cost: 5,
-        image: '../assets/SET13/champions/centered/LeBlanc.png'
-    }
 ];
 

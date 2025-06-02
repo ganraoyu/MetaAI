@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { HexCells } from './HexCells';
 import { useTitle } from '../../../utilities/useTitle';
 import axios from 'axios';
-import { MdClose, MdPlayArrow, MdAnalytics, MdSave, MdFolderOpen, MdAutorenew, MdSettings } from "react-icons/md";
+import { MdClose, MdPlayArrow, MdAnalytics, MdSave, MdFolderOpen, MdSettings } from "react-icons/md";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 import { Filter } from './components/BattleLogCards/_Filter';
@@ -100,9 +100,10 @@ const Battle = () => {
           <button className='btn btn-outline btn-secondary btn-sm flex items-center gap-1'>
             <FaArrowRight className="text-lg h-4 w-4" />
           </button>
-        </div>
+        </div>          
+
+        {/* Left side - Traits */}
         <div className='flex flex-row items-start justify-between h-[35rem] w-[70rem] mx-auto p-4 bg-hexCellBackground rounded-t-2xl'>
-          {/* Left side - Traits */}
           <div className='w-1/4 text-white'>
             <p className="font-semibold">
               Traits
@@ -119,76 +120,76 @@ const Battle = () => {
           <div className="flex-1 flex items-center justify-center mr-[3rem] mt-[2.6rem]">
             <div className="grid grid-cols-1 justify-items-center">
               <div className='flex justify-center items-center gap-0 mr-8 mb-[-1.1rem]'>
-                <HexCells champion={null} row={0} col={0} occupied={false} />
-                <HexCells champion={null} row={0} col={1} occupied={false} />
-                <HexCells champion={null} row={0} col={2} occupied={false} />
-                <HexCells champion={null} row={0} col={3} occupied={false} />
-                <HexCells champion={null} row={0} col={4} occupied={false} />
-                <HexCells champion={null} row={0} col={5} occupied={false} />
-                <HexCells champion={null} row={0} col={6} occupied={false} />
+                <HexCells champion={null} row={0} col={0} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={0} col={1} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={0} col={2} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={0} col={3} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={0} col={4} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={0} col={5} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={0} col={6} occupied={false} team={'opponent'} />
               </div>
               <div className='flex justify-center items-center gap-0 ml-10 mb-[-1.1rem]'>
-                <HexCells champion={null} row={1} col={0} occupied={false} />
-                <HexCells champion={null} row={1} col={1} occupied={false} />
-                <HexCells champion={null} row={1} col={2} occupied={false} />
-                <HexCells champion={null} row={1} col={3} occupied={false} />
-                <HexCells champion={null} row={1} col={4} occupied={false} />
-                <HexCells champion={null} row={1} col={5} occupied={false} />
-                <HexCells champion={null} row={1} col={6} occupied={false} />
+                <HexCells champion={null} row={1} col={0} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={1} col={1} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={1} col={2} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={1} col={3} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={1} col={4} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={1} col={5} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={1} col={6} occupied={false} team={'opponent'} />
               </div>
               <div className='flex justify-center items-center gap-0 mr-8 mb-[-1.1rem]'>
-                <HexCells champion={null} row={2} col={0} occupied={false} />
-                <HexCells champion={null} row={2} col={1} occupied={false} />
-                <HexCells champion={null} row={2} col={2} occupied={false} />
-                <HexCells champion={null} row={2} col={3} occupied={false} />
-                <HexCells champion={null} row={2} col={4} occupied={false} />
-                <HexCells champion={null} row={2} col={5} occupied={false} />
-                <HexCells champion={null} row={2} col={6} occupied={false} />
+                <HexCells champion={null} row={2} col={0} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={2} col={1} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={2} col={2} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={2} col={3} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={2} col={4} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={2} col={5} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={2} col={6} occupied={false} team={'opponent'} />
               </div>
               <div className='flex justify-center items-center gap-0 ml-10 mb-[-1.1rem]'>
-                <HexCells champion={null} row={3} col={0} occupied={false} />
-                <HexCells champion={null} row={3} col={1} occupied={false} />
-                <HexCells champion={null} row={3} col={2} occupied={false} />
-                <HexCells champion={null} row={3} col={3} occupied={false} />
-                <HexCells champion={null} row={3} col={4} occupied={false} />
-                <HexCells champion={null} row={3} col={5} occupied={false} />
-                <HexCells champion={null} row={3} col={6} occupied={false} />
+                <HexCells champion={null} row={3} col={0} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={3} col={1} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={3} col={2} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={3} col={3} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={3} col={4} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={3} col={5} occupied={false} team={'opponent'} />
+                <HexCells champion={null} row={3} col={6} occupied={false} team={'opponent'} />
               </div>
               <div className='flex justify-center items-center gap-0 mt-[0.5rem] mr-8 mb-[-1.1rem]'>
-                <HexCells champion={null} row={0} col={0} occupied={false} />
-                <HexCells champion={null} row={0} col={1} occupied={false} />
-                <HexCells champion={null} row={0} col={2} occupied={false} />
-                <HexCells champion={null} row={0} col={3} occupied={false} />
-                <HexCells champion={null} row={0} col={4} occupied={false} />
-                <HexCells champion={null} row={0} col={5} occupied={false} />
-                <HexCells champion={null} row={0} col={6} occupied={false} />
+                <HexCells champion={null} row={0} col={0} occupied={false} team={'player'} />
+                <HexCells champion={null} row={0} col={1} occupied={false} team={'player'} />
+                <HexCells champion={null} row={0} col={2} occupied={false} team={'player'} />
+                <HexCells champion={null} row={0} col={3} occupied={false} team={'player'} />
+                <HexCells champion={null} row={0} col={4} occupied={false} team={'player'} />
+                <HexCells champion={null} row={0} col={5} occupied={false} team={'player'} />
+                <HexCells champion={null} row={0} col={6} occupied={false} team={'player'} />
               </div>
               <div className='flex justify-center items-center gap-0 ml-10 mb-[-1.1rem]'>
-                <HexCells champion={null} row={1} col={0} occupied={false} />
-                <HexCells champion={null} row={1} col={1} occupied={false} />
-                <HexCells champion={null} row={1} col={2} occupied={false} />
-                <HexCells champion={null} row={1} col={3} occupied={false} />
-                <HexCells champion={null} row={1} col={4} occupied={false} />
-                <HexCells champion={null} row={1} col={5} occupied={false} />
-                <HexCells champion={null} row={1} col={6} occupied={false} />
+                <HexCells champion={null} row={1} col={0} occupied={false} team={'player'} />
+                <HexCells champion={null} row={1} col={1} occupied={false} team={'player'} />
+                <HexCells champion={null} row={1} col={2} occupied={false} team={'player'} />
+                <HexCells champion={null} row={1} col={3} occupied={false} team={'player'} />
+                <HexCells champion={null} row={1} col={4} occupied={false} team={'player'} />
+                <HexCells champion={null} row={1} col={5} occupied={false} team={'player'} />
+                <HexCells champion={null} row={1} col={6} occupied={false} team={'player'} />
               </div>
               <div className='flex justify-center items-center gap-0 mr-8 mb-[-1.1rem]'>
-                <HexCells champion={null} row={2} col={0} occupied={false} />
-                <HexCells champion={null} row={2} col={1} occupied={false} />
-                <HexCells champion={null} row={2} col={2} occupied={false} />
-                <HexCells champion={null} row={2} col={3} occupied={false} />
-                <HexCells champion={null} row={2} col={4} occupied={false} />
-                <HexCells champion={null} row={2} col={5} occupied={false} />
-                <HexCells champion={null} row={2} col={6} occupied={false} />
+                <HexCells champion={null} row={2} col={0} occupied={false} team={'player'} />
+                <HexCells champion={null} row={2} col={1} occupied={false} team={'player'} />
+                <HexCells champion={null} row={2} col={2} occupied={false} team={'player'} />
+                <HexCells champion={null} row={2} col={3} occupied={false} team={'player'} />
+                <HexCells champion={null} row={2} col={4} occupied={false} team={'player'} />
+                <HexCells champion={null} row={2} col={5} occupied={false} team={'player'} />
+                <HexCells champion={null} row={2} col={6} occupied={false} team={'player'} />
               </div>
               <div className='flex justify-center items-center gap-0 ml-10 mb-[-1.1rem]'>
-                <HexCells champion={null} row={3} col={0} occupied={false} />
-                <HexCells champion={null} row={3} col={1} occupied={false} />
-                <HexCells champion={null} row={3} col={2} occupied={false} />
-                <HexCells champion={null} row={3} col={3} occupied={false} />
-                <HexCells champion={null} row={3} col={4} occupied={false} />
-                <HexCells champion={null} row={3} col={5} occupied={false} />
-                <HexCells champion={null} row={3} col={6} occupied={false} />
+                <HexCells champion={null} row={3} col={0} occupied={false} team={'player'} />
+                <HexCells champion={null} row={3} col={1} occupied={false} team={'player'} />
+                <HexCells champion={null} row={3} col={2} occupied={false} team={'player'} />
+                <HexCells champion={null} row={3} col={3} occupied={false} team={'player'} />
+                <HexCells champion={null} row={3} col={4} occupied={false} team={'player'} />
+                <HexCells champion={null} row={3} col={5} occupied={false} team={'player'} />
+                <HexCells champion={null} row={3} col={6} occupied={false} team={'player'} />
               </div>
             </div>
           </div>
@@ -317,15 +318,11 @@ const Battle = () => {
         {/* Bottom section - Units and Augments */}
         <div className='h-[40rem] w-[70rem] bg-hexCellBackground rounded-b-2xl mt-[-1.5rem] pl-[1.5rem]'>
           <div className=''>
-            <button>Units</button>
-            <button>Augments</button>
-            <div>
               {toggleUnits && (
                 <div className='flex gap-2 select-none'>
                   <UnitAugmentContainer />
                 </div>
-                )}
-            </div>
+              )}
           </div>
         </div>  
       </div>

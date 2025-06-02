@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { champions } from "../../data/SET13/champion-data"
 import { ChampionHoverInfo } from "./ChampionHoverInfo";
+import { UnitFilter } from "./Filters/UnitFilter";
 
 export const UnitAugmentContainer = () => {
     const [hoveredChampionId, setHoveredChampionId] = useState<string | null>(null);
@@ -8,13 +9,23 @@ export const UnitAugmentContainer = () => {
 
     return (
         <div className="select-none">
-            <div className="flex flex-wrap items-center w-[40rem] gap-2">
+            <div className=''>
+                <UnitFilter />
+            </div>
+            <div className="flex flex-wrap items-center w-[46rem] gap-[0.3rem] bg-hexCellComponents p-6 rounded-lg">
               {champions.map(champion => (
-                <div key={champion.name} className="flex flex-col items-center relative">
+                <div key={champion.name} className="flex flex-col items-center relative ">
                         <img    
                             src={champion.image} 
                             alt={champion.name} 
-                            className="w-10 h-10 border border-gray-600" 
+                            className={`w-10 h-10  rounded-[0.09rem] outline outline-2 ${
+                                champion.cost === 1 ? "outline-gray-400" :
+                                champion.cost === 2 ? "outline-blue-500" :
+                                champion.cost === 3 ? "outline-blue-500" :
+                                champion.cost === 4 ? "outline-purple-700" :
+                                champion.cost === 5 ? "outline-orange-500" :
+                                "outline-red-500"
+                            }`}
                             onMouseEnter={() => setHoveredChampionId(champion.name)}
                             onMouseLeave={() => setHoveredChampionId(null)}
                             onClick={() => setClickedChampionId(
@@ -22,7 +33,7 @@ export const UnitAugmentContainer = () => {
                             )}
                         />
                        <p
-                        className="text-[0.65rem] w-12 truncate overflow-hidden whitespace-nowrap text-center"
+                        className="text-[0.7rem] w-12 truncate overflow-hidden whitespace-nowrap text-center"
                         title={champion.name}
                         >
                         {champion.name}

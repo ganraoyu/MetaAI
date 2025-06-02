@@ -188,19 +188,19 @@ const ChampionCardHover = ({
           {trait1 && (
             <div className="flex items-center gap-1 mb-1">
               <img src={`../assets/SET13/traits/${trait1}.png`} className="h-4 w-4" alt={trait1} />
-              <p className="text-white text-xs text-outline">{trait1}</p>
+              <p className="text-white text-[0.7rem] text-outline">{trait1}</p>
             </div>
           )}
           {trait2 && (
             <div className="flex items-center gap-1 mb-1">
               <img src={`../assets/SET13/traits/${trait2}.png`} className="h-4 w-4" alt={trait2} />
-              <p className="text-white text-xs text-outline">{trait2}</p>
+              <p className="text-white text-[0.7rem] text-outline">{trait2}</p>
             </div>
           )}
           {trait3 && (
             <div className="flex items-center gap-1">
               <img src={`../assets/SET13/traits/${trait3}.png`} className="h-4 w-4" alt={trait3} />
-              <p className="text-white text-xs text-outline">{trait3}</p>
+              <p className="text-white text-[0.7rem] text-outline">{trait3}</p>
             </div>
           )}
         </div>
