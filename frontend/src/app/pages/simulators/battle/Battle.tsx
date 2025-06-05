@@ -73,36 +73,60 @@ const Battle = () => {
           <p className='text-white text-[0.8rem]'>Get real-time replays of battles with our TFT Battle Simulator</p>
         </div>        
         <div className='flex items-center gap-1 mb-[0.5rem]'>
-          {/* Existing buttons */}
-          <button className='btn btn-outline btn-success btn-sm flex items-center gap-1' onClick={() => {setClicked(true); fetchBattleHistory();}}>
-            <MdPlayArrow className="text-lg h-4 w-4" /> Start Battle
-          </button>
-          <button className='btn btn-outline btn-error btn-sm flex items-center gap-1' onClick={() => setBattleHistory(null)}>
-            <MdClose className="text-lg h-4 w-4" /> Clear Board
-          </button>
-          <button className='btn btn-outline btn-info btn-sm flex items-center gap-1'>
-            <MdAnalytics className="text-lg h-4 w-4" /> View Details
+          
+          {/* Main action buttons */}
+          <button 
+            className='h-8 px-3 rounded-md bg-hexCellComponents text-green-400 border border-green-600/60 text-xs font-medium flex items-center gap-1 hover:bg-hexCellComponents/90 transition-all' 
+            onClick={() => {setClicked(true); fetchBattleHistory();}}
+          >
+            <MdPlayArrow className="h-4 w-4" /> Start Battle
           </button>
           
-          {/* New buttons */}
-          <button className='btn btn-outline btn-primary btn-sm flex items-center gap-1'>
-            <MdSave className="text-lg h-4 w-4" /> Save Board
+          <button 
+            className='h-8 px-3 rounded-md bg-hexCellComponents text-red-400 border border-red-600/60 text-xs font-medium flex items-center gap-1 hover:bg-hexCellComponents/90 transition-all' 
+            onClick={() => setBattleHistory(null)}
+          >
+            <MdClose className="h-4 w-4" /> Clear Board
           </button>
-          <button className='btn btn-outline btn-primary btn-sm flex items-center gap-1'>
-            <MdFolderOpen className="text-lg h-4 w-4" /> Load Board
+          
+          <button 
+            className='h-8 px-3 rounded-md bg-hexCellComponents text-blue-400 border border-blue-500/60 text-xs font-medium flex items-center gap-1 hover:bg-hexCellComponents/90 transition-all'
+          >
+            <MdAnalytics className="h-4 w-4" /> View Details
           </button>
-          <button className='btn btn-outline btn-accent btn-sm flex items-center gap-1'>
-            <MdSettings className="text-lg h-4 w-4" /> Options
+          
+          {/* File buttons */}
+          <button 
+            className='h-8 px-3 rounded-md bg-hexCellComponents text-blue-400 border border-blue-500/60 text-xs font-medium flex items-center gap-1 hover:bg-hexCellComponents/90 transition-all'
+          >
+            <MdSave className="h-4 w-4" /> Save Board
+          </button>
+          
+          <button 
+            className='h-8 px-3 rounded-md bg-hexCellComponents text-blue-400 border border-blue-500/60 text-xs font-medium flex items-center gap-1 hover:bg-hexCellComponents/90 transition-all'
+          >
+            <MdFolderOpen className="h-4 w-4" /> Load Board
+          </button>
+          
+          <button 
+            className='h-8 px-3 rounded-md bg-hexCellComponents text-yellow-400 border border-yellow-500/60 text-xs font-medium flex items-center gap-1 hover:bg-hexCellComponents/90 transition-all'
+          >
+            <MdSettings className="h-4 w-4" /> Options
           </button>
           
           {/* Navigation buttons */}
-          <button className='btn btn-outline btn-secondary btn-sm flex items-center gap-1'>
-            <FaArrowLeft className="text-lg h-4 w-4" />
+          <button 
+            className='h-8 w-8 rounded-md bg-hexCellComponents text-gray-300 border border-gray-600/60 text-xs font-medium flex items-center justify-center hover:bg-hexCellComponents/90 transition-all'
+          >
+            <FaArrowLeft className="h-3 w-3" />
           </button>
-          <button className='btn btn-outline btn-secondary btn-sm flex items-center gap-1'>
-            <FaArrowRight className="text-lg h-4 w-4" />
+          
+          <button 
+            className='h-8 w-8 rounded-md bg-hexCellComponents text-gray-300 border border-gray-600/60 text-xs font-medium flex items-center justify-center hover:bg-hexCellComponents/90 transition-all'
+          >
+            <FaArrowRight className="h-3 w-3" />
           </button>
-        </div>          
+        </div>
 
         {/* Left side - Traits */}
         <div className='flex flex-row items-start justify-between h-[35rem] w-[70rem] mx-auto p-4 bg-hexCellBackground rounded-t-2xl'>

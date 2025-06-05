@@ -14,6 +14,7 @@ module.exports = {
         hexCellHover: '#374151',
         hexCellBackground: '#191919',
         hexCellComponents: '#1e1e1e',
+        darkerHexCellComponents: '#26262F',
         hexCellComponentsFont: '#4d4d4d',
         playerHexCell: '#426D9D   ',
         opponentHexCell: '#7C3232  ',

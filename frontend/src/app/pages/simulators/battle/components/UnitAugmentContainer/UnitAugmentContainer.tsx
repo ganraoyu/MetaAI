@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useTFTSetContext } from "../../../../../utilities/TFTSetContext";
 import { ChampionHoverInfo } from "./ChampionHoverInfo";
 import { UnitFilter } from "./Filters/UnitFilter";
-import { getChampionBySet } from "../../data/championDataLoader";
+import { getChampionBySet } from "../../data/Loaders/championDataLoader";
 
 export const UnitAugmentContainer = () => {
     const { set } = useTFTSetContext();
@@ -26,7 +26,7 @@ export const UnitAugmentContainer = () => {
                         <img    
                             src={champion.image} 
                             alt={champion.name} 
-                            className={`w-10 h-10 rounded-[0.09rem] outline outline-2 ${
+                            className={`w-9 h-9 rounded-[0.09rem] outline outline-2 ${
                                 champion.cost === 1 ? "outline-gray-400" :
                                 champion.cost === 2 ? "outline-blue-500" :
                                 champion.cost === 3 ? "outline-blue-500" :
