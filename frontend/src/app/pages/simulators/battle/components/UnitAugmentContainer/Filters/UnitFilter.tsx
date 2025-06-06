@@ -13,11 +13,12 @@ export const UnitFilter = () => {
   const [sortByCost, setSortByCost] = useState(true);
   const [sortByAlphabet, setSortByAlphabet] = useState(false);
   const [filterByTrait, setFilterByTrait] = useState("");
-  const [toggleUnits, setToggleUnits] = useState(true);
-  const [toggleAugments, setToggleAugments] = useState(false);
+
+  const [toggleUnitsOrAugments, setToggleUnitsOrAugments] = useState(true);  {/* True is Units */}
 
   const [open, setOpen ] = useState(false);
   const [clickedTraitDropDown, setClickedTraitDropDown] = useState("");
+
 
   useEffect(() => {
     setTraits(getTraitBySet(set));
@@ -74,36 +75,55 @@ export const UnitFilter = () => {
         </div>
 
         {/* Filter By Trait Dropdown */}
-        <div onClick={() => setOpen(!open)}>
-            <div className="flex items-center justify-center bg-darkerHexCellComponents w-32 h-7 rounded-md hover:outline hover:outline-1 hover:outline-yellow-300 hover:bg-lightGray">
-              <div>
-                <img className="h-3 w-3"alt="Default"/>
-                <p className="text-[0.8rem]">All Senergies</p>
-                <FaChevronDown
+        <div className='relative w-32'>
+          <div
+            className={`flex items-center justify-center bg-darkerHexCellComponents h-7 ${open ? 'rounded-t-md' : 'rounded-md' } \ hover:bg-lightGray cursor-pointer`}
+            onClick={() => setOpen(!open)}
+          >
+            <div className="flex items-center justify-center gap-1">
+              <img
+                className="h-3 w-3 filter invert brightness-0"
+                src="../assets/icons/synergies.svg"
+                alt="Default"
+              />
+              <p className="text-[0.8rem]">All Synergies</p>
+              <FaChevronDown
                 className={`h-2.5 w-2.5 transition-transform duration-200 ${open ? "rotate-180" : "rotate-0"}`}
-                />
-              </div>
-              {open &&  (
-                <div>
-                  {(traits || []).map(trait => (
-                    <div className="flex items-center justify-center gap-2 " onClick={() => setOpen(!open)}>
-                      <img src={trait.image} className="h-3 w-3"/>
-                      <p className="text-[0.8rem]">{trait.name}</p>
-                      <FaChevronDown
-                      className={`h-2.5 w-2.5 transition-transform duration-200 ${open ? "rotate-180" : "rotate-0"}`}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
+              />
             </div>
-        </div>
-        
-        {/* Toggle Units or Augments */}
-        <div>
+          </div>
 
+          {open && (
+            <div className="absolute top-full overflow-auto h-48 bg-darkerHexCellComponents w-full rounded-b-md shadow-md z-10">
+              {(traits || []).map(trait => (
+                <div
+                  key={trait.name}
+                  className="flex items-center gap-2 px-2 py-1 hover:bg-lightGray cursor-pointer"
+                  onClick={() => setOpen(false)}
+                >
+                  <img src={trait.image} className="h-3 w-3" alt={trait.name} />
+                  <p className="text-[0.8rem]">{trait.name}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-        
+
+        {/* Toggle Units or Augments */}
+        <div className="flex items-center  ml-32 gap-2 ">
+          <p className="text-xs">Items</p>
+          <div
+            onClick={() => setToggleUnitsOrAugments(!toggleUnitsOrAugments)}
+            className={`w-9 h-3 flex items-center rounded-full outline outline-2 outline-lightGray cursor-pointer transition-colors duration-300 bg-darkerHexCellComponents`}
+          >
+            <div
+              className={`bg-white w-2.5 h-2.5 rounded-full shadow-md transform transition-transform duration-300 ${
+                toggleUnitsOrAugments ? "translate-x-[1.5rem]" : "translate-x-1"
+              }`}
+            ></div>
+          </div>
+          <p className="text-xs">Units</p>
+        </div>
       </div>
     </div>
   );
