@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useUnitAugmentContext, UnitAugmentProvider } from "../UnitAugmentContext"; 
 import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
 import { getTraitBySet } from "../../../data/Loaders/traitDataLoader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,11 +11,11 @@ export const UnitFilter = () => {
   const [traits, setTraits] = useState(getTraitBySet(set));  
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortByCost, setSortByCost] = useState(true);
-  const [sortByAlphabet, setSortByAlphabet] = useState(false);
+  const {sortByCost, setSortByCost} = useUnitAugmentContext();
+  const {sortByAlphabet, setSortByAlphabet }= useUnitAugmentContext();
   const [filterByTrait, setFilterByTrait] = useState("");
 
-  const [toggleUnitsOrAugments, setToggleUnitsOrAugments] = useState(true);  {/* True is Units */}
+  const {toggleUnitsOrAugments, setToggleUnitsOrAugments} = useUnitAugmentContext();
 
   const [open, setOpen ] = useState(false);
   const [clickedTraitDropDown, setClickedTraitDropDown] = useState("");
@@ -111,18 +112,18 @@ export const UnitFilter = () => {
 
         {/* Toggle Units or Augments */}
         <div className="flex items-center  ml-32 gap-2 ">
-          <p className="text-xs">Items</p>
+          <p className="text-xs">Units</p>
           <div
             onClick={() => setToggleUnitsOrAugments(!toggleUnitsOrAugments)}
             className={`w-9 h-3 flex items-center rounded-full outline outline-2 outline-lightGray cursor-pointer transition-colors duration-300 bg-darkerHexCellComponents`}
           >
             <div
-              className={`bg-white w-2.5 h-2.5 rounded-full shadow-md transform transition-transform duration-300 ${
-                toggleUnitsOrAugments ? "translate-x-[1.5rem]" : "translate-x-1"
+              className={`bg-white w-3 h-3 rounded-full shadow-md transform transition-transform duration-300 ${
+                toggleUnitsOrAugments ? "translate-x-0" : "translate-x-6"
               }`}
             ></div>
           </div>
-          <p className="text-xs">Units</p>
+          <p className="text-xs">Augments</p>
         </div>
       </div>
     </div>

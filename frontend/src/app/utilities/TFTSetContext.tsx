@@ -14,7 +14,7 @@ export const TFTSetProvider = ({ children }: { children: ReactNode }) => {
     const [set, setSet] = useState("SET13");
 
     return (
-        <TFTSetContext.Provider value={{ set, setSet}}>
+        <TFTSetContext.Provider value={{ set, setSet }}>
             {children}
         </TFTSetContext.Provider>
     );
