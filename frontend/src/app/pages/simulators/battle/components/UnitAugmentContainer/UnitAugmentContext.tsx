@@ -35,13 +35,22 @@ export const UnitAugmentProvider = ({ children }: UnitAugmentProviderProps) => {
   const [clickedTraitDropDown, setClickedTraitDropDown] = useState("");
 
   const handleSortByCost = () => {
-    setSortByCost(prev => !prev);
-    setSortByAlphabet(false);
+    if(sortByCost){
+        return; 
+    } else{
+        setSortByCost(prev => !prev);
+        setSortByAlphabet(false);
+    }
+
   }
 
   const handleSortByAlphabet = () => {
-    setSortByAlphabet(prev => !prev);
-    setSortByCost(false);
+    if(sortByAlphabet){
+        return; 
+    } else{
+        setSortByAlphabet(prev => !prev);
+        setSortByCost(false);
+    }
   }
 
   return (

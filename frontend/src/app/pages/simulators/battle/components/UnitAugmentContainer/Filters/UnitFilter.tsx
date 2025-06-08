@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useUnitAugmentContext, UnitAugmentProvider } from "../UnitAugmentContext"; 
+import { useUnitAugmentContext } from "../UnitAugmentContext"; 
 import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
 import { getTraitBySet } from "../../../data/Loaders/traitDataLoader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,12 +10,14 @@ export const UnitFilter = () => {
   const { set } = useTFTSetContext();
   const [traits, setTraits] = useState(getTraitBySet(set));  
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const {sortByCost, setSortByCost} = useUnitAugmentContext();
-  const {sortByAlphabet, setSortByAlphabet }= useUnitAugmentContext();
-  const [filterByTrait, setFilterByTrait] = useState("");
-
-  const {toggleUnitsOrAugments, setToggleUnitsOrAugments} = useUnitAugmentContext();
+  const {
+    searchTerm, setSearchTerm, 
+    sortByCost, setSortByCost, 
+    sortByAlphabet, setSortByAlphabet, 
+    filterByTrait, setFilterByTrait, 
+    handleSortByAlphabet, handleSortByCost,
+    toggleUnitsOrAugments, setToggleUnitsOrAugments,
+  }= useUnitAugmentContext();
 
   const [open, setOpen ] = useState(false);
   const [clickedTraitDropDown, setClickedTraitDropDown] = useState("");
@@ -23,17 +25,7 @@ export const UnitFilter = () => {
 
   useEffect(() => {
     setTraits(getTraitBySet(set));
-  }, [set]);
-
-  const handleSortByCost = () => {
-    setSortByCost(prev => !prev);
-    setSortByAlphabet(false);
-  }
-  
-  const handleSortByAlphabet = () => {
-    setSortByAlphabet(prev => !prev);
-    setSortByCost(false);
-  }
+  }, [set]);  
 
   return (
     <div>
@@ -111,7 +103,7 @@ export const UnitFilter = () => {
         </div>
 
         {/* Toggle Units or Augments */}
-        <div className="flex items-center  ml-32 gap-2 ">
+        <div className="flex items-center  ml-40 gap-2 ">
           <p className="text-xs">Units</p>
           <div
             onClick={() => setToggleUnitsOrAugments(!toggleUnitsOrAugments)}

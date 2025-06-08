@@ -15,7 +15,7 @@ export const UnitAugmentContainer = () => {
 
 const UnitAugmentContainerContent = () => {
     const { set } = useTFTSetContext();
-    const { toggleUnitsOrAugments, sortByCost, sortByAlphabet } = useUnitAugmentContext();
+    const { toggleUnitsOrAugments, sortByCost, sortByAlphabet, searchTerm } = useUnitAugmentContext();
 
     const [champions, setChampions] = useState(getChampionBySet(set));
     const [hoveredChampionId, setHoveredChampionId] = useState<string | null>(null);
@@ -31,16 +31,25 @@ const UnitAugmentContainerContent = () => {
         
         const championList = [...champions || []];
         
+        if(searchTerm.length > 0){
+            return championList.filter(champion => 
+                champion.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
         if (sortByAlphabet) {
             return championList.sort((a, b) => a.name.localeCompare(b.name));
         }
         
         if (sortByCost) {
-            return championList.sort((a, b) => a.cost - b.cost);
+
+            return championList
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .sort((a, b) => a.cost - b.cost);
         }
-        
+
         return championList;
-    }, [champions, toggleUnitsOrAugments, sortByAlphabet, sortByCost]);
+    }, [champions, toggleUnitsOrAugments, sortByAlphabet, sortByCost, searchTerm]);
 
     // Render a single champion card
     const renderChampionCard = (champion: any) => (
@@ -48,7 +57,7 @@ const UnitAugmentContainerContent = () => {
             <img    
                 src={champion.image} 
                 alt={champion.name} 
-                className={`w-9 h-9 rounded-[0.09rem] outline outline-2 ${
+                className={`w-10 h-10 rounded-[0.09rem] outline outline-2 ${
                     champion.cost === 1 ? "outline-gray-400" :
                     champion.cost === 2 ? "outline-blue-500" :
                     champion.cost === 3 ? "outline-blue-500" :
@@ -69,7 +78,7 @@ const UnitAugmentContainerContent = () => {
                 {champion.name}
             </p>
             {(hoveredChampionId === champion.name || clickedChampionId === champion.name) && (
-                <ChampionHoverInfo champion={champion} />
+                <ChampionHoverInfo/>
             )}
         </div>
     );
@@ -81,7 +90,7 @@ const UnitAugmentContainerContent = () => {
             </div>
 
             {/* Champion List */}
-            <div className="flex flex-wrap items-center w-[46rem] gap-[0.3rem] bg-hexCellComponents p-6 rounded-lg">
+            <div className="flex flex-wrap items-center w-[49rem] gap-[0.3rem] bg-hexCellComponents p-6 rounded-lg">
                 {sortedChampions.map(renderChampionCard)}
             </div>
         </div>
