@@ -161,7 +161,8 @@ const ChampionCardHover = ({
         cost === 2 ? 'border-green-500' : 
         cost === 3 ? 'border-blue-500' : 
         cost === 4 ? 'border-purple-700' : 
-        cost === 5 ? 'border-yellow-400' : 
+        cost === 5 ? 'border-yellow-500' : 
+        cost === 6 ? 'border-orange-500' :
         'border-red-500'
       }`}>
         <img 

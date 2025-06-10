@@ -116,9 +116,25 @@ export const UnitFilter = () => {
             )}
           </div>
         </div>
+        
+        {/* Clear Filters */}
+        <div>
+            <button 
+            className="text-xs text-yellow-500"
+            onClick={() => {
+              setSearchTerm("");
+              setSortByCost(true);
+              setSortByAlphabet(false);
+              setFilterByTrait("");
+              setToggleUnitsOrAugments(true);
+              setOpen(false);
+              setClickedTraitDropDown("");
+            }}
+            >Clear Filters</button>
+        </div>
 
         {/* Toggle Units or Augments */}
-        <div className="flex items-center  ml-40 gap-2 ">
+        <div className="flex items-center  ml-12 gap-2 ">
           <p className="text-xs">Units</p>
           <div
             onClick={() => setToggleUnitsOrAugments(!toggleUnitsOrAugments)}
