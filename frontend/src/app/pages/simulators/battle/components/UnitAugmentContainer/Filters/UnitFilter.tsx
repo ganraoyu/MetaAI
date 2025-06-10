@@ -36,7 +36,7 @@ export const UnitFilter = () => {
           <input
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            placeholder="Search for Unit/Trait"
+            placeholder={`${toggleUnitsOrAugments ? 'Search for Unit/Trait' : 'Search for Augment'}`}
             className="text-xs appearance-none border-none bg-transparent outline-none w-full text-white p-2"
           />
           <FontAwesomeIcon icon={faMagnifyingGlass} className="pr-2 w-3 h-3 text-lighterGray" />
@@ -68,9 +68,10 @@ export const UnitFilter = () => {
         </div>
 
         {/* Filter By Trait Dropdown */}
-        <div className='relative w-32'>
+        <div className="relative w-32">
+          {/* Toggle Button (Always stays in place) */}
           <div
-            className={`flex items-center justify-center bg-darkerHexCellComponents h-7 ${open ? 'rounded-t-md' : 'rounded-md' } \ hover:bg-lightGray cursor-pointer`}
+            className={`flex items-center justify-center bg-darkerHexCellComponents h-7 ${open ? 'rounded-t-md' : 'rounded-md'} hover:bg-lightGray cursor-pointer`}
             onClick={() => setOpen(!open)}
           >
             <div className="flex items-center justify-center gap-1">
@@ -79,27 +80,41 @@ export const UnitFilter = () => {
                 src="../assets/icons/synergies.svg"
                 alt="Default"
               />
-              <p className="text-[0.8rem]">All Synergies</p>
+              <p className="text-[0.8rem]">
+                {toggleUnitsOrAugments && (filterByTrait.length > 0 ? filterByTrait : 'All Synergies')}
+                {!toggleUnitsOrAugments && 'All Augments'}
+              </p>
               <FaChevronDown
-                className={`h-2.5 w-2.5 transition-transform duration-200 ${open ? "rotate-180" : "rotate-0"}`}
+                className={`h-2.5 w-2.5 transition-transform duration-200 ${
+                  open ? 'rotate-180' : 'rotate-0'
+                }`}
               />
             </div>
           </div>
 
-          {open && (
-            <div className="absolute top-full overflow-auto h-48 bg-darkerHexCellComponents w-full rounded-b-md shadow-md z-10">
-              {(traits || []).map(trait => (
+          {/* Dropdown sliding effect */}
+          <div
+            className={`absolute top-full left-0 w-full overflow-auto bg-darkerHexCellComponents rounded-b-md shadow-md z-10 transition-all duration-300 ease-in-out ${
+              open ? 'max-h-48 py-1' : 'max-h-0 py-0'
+            }`}
+          >
+            {/* Trait Options */}
+            {toggleUnitsOrAugments && (
+              (traits || []).map((trait) => (
                 <div
                   key={trait.name}
                   className="flex items-center gap-2 px-2 py-1 hover:bg-lightGray cursor-pointer"
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    setOpen(false);
+                    setFilterByTrait(trait.name)
+                  }}
                 >
                   <img src={trait.image} className="h-3 w-3" alt={trait.name} />
                   <p className="text-[0.8rem]">{trait.name}</p>
                 </div>
-              ))}
-            </div>
-          )}
+              ))
+            )}
+          </div>
         </div>
 
         {/* Toggle Units or Augments */}

@@ -53,7 +53,13 @@ const UnitAugmentContainerContent = () => {
 
     // Render a single champion card
     const renderChampionCard = (champion: any) => (
-        <div key={champion.name} className="flex flex-col items-center relative">
+        <div 
+            key={champion.name}
+            className="flex flex-col items-center relative"                
+            onMouseEnter={() => setHoveredChampionId(champion.name)}
+            onMouseLeave={() => setHoveredChampionId(null)}
+            onClick={() => setClickedChampionId(clickedChampionId === champion.name ? null : champion.name)}
+        >
             <img    
                 src={champion.image} 
                 alt={champion.name} 
@@ -62,14 +68,11 @@ const UnitAugmentContainerContent = () => {
                     champion.cost === 2 ? "outline-blue-500" :
                     champion.cost === 3 ? "outline-blue-500" :
                     champion.cost === 4 ? "outline-purple-700" :
-                    champion.cost === 5 ? "outline-orange-500" :
+                    champion.cost === 5 ? "outline-yellow-500" :
+                    champion.cost === 6 ? "outline-orange-500" :
                     "outline-red-500"
                 }`}
-                onMouseEnter={() => setHoveredChampionId(champion.name)}
-                onMouseLeave={() => setHoveredChampionId(null)}
-                onClick={() => setClickedChampionId(
-                    clickedChampionId === champion.name ? null : champion.name
-                )}
+
             />
             <p
                 className="text-[0.7rem] w-12 truncate overflow-hidden whitespace-nowrap text-center"
@@ -78,7 +81,7 @@ const UnitAugmentContainerContent = () => {
                 {champion.name}
             </p>
             {(hoveredChampionId === champion.name || clickedChampionId === champion.name) && (
-                <ChampionHoverInfo/>
+                <ChampionHoverInfo champion={champion.name}/>
             )}
         </div>
     );
