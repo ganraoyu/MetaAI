@@ -31,7 +31,7 @@ export const champions = [
         },
         attackSpeed: 0.6,
         abilityName: 'Obsolete Technology',
-        abilityDescription: 'Obsolete Technology: Passive: Amumu reduces all incoming damage. Every second, emit sparks that deal magic damage to adjacent enemies.',
+        abilityDescription: 'Passive: Amumu reduces all incoming damage. Every second, emit sparks that deal magic damage to adjacent enemies. Damage Reduction: 12/15/25 Damage: 10/15/25 AP',
         range: 5,
         mana: 1,
         manaPerAttack: 0,
@@ -158,32 +158,43 @@ export const champions = [
     {
         name: 'Ambessa',
         cost: 4,
-        image: '../assets/SET13/champions/centered/Ambessa.png'
+        image: '../assets/SET13/champions/centered/Ambessa.png',
+        abilityName: 'Unrelenting Huntress',
+        abilityDescription: 'Ambessa switches between two stances on cast: Chains: Gain +1 Range. Attacks deal physical damage. On cast, dash to target and strike in a half-circle, dealing (AD) physical damage to enemies hit. Fists: Gain Omnivamp and attack twice as fast. On cast, briefly Stun target before slamming them into the ground, dealing (AD) physical damage, then dash away. Chains damage: 150/150/350% AD Fists Omnivamp: 25/25/45% AP',
     },
     {
         name: 'Blitzcrank',
         cost: 3,
-        image: '../assets/SET13/champions/centered/Blitzcrank.png'
+        image: '../assets/SET13/champions/centered/Blitzcrank.png',
+        abilityName: 'Obsolete Technology', 
+        abilityDescription: 'Passive: After surviving damage, deal 0.03% of the damage absorbed as magic damage to target. Active: Blitzcrank gains a Shield for 4 seconds. Shock the nearest 3 enemies for magic damage and reduce their damage by 0.1% for 4 seconds. Shield: 450/470/520 AP Damage: 40/60/100 AP'
     },
     {
         name: 'Caitlyn',
         cost: 5,
-        image: '../assets/SET13/champions/centered/Caitlyn.png'
+        image: '../assets/SET13/champions/centered/Caitlyn.png',
+        abilityName: ''
     },
     {
         name: 'Cassiopeia',
         cost: 3,
-        image: '../assets/SET13/champions/centered/Cassiopeia.png'
+        image: '../assets/SET13/champions/centered/Cassiopeia.png',
+        abilityName: 'Thorned Miasma',
+        abilityDescription: 'Cassiopeia blasts a target and deals magic damage. Every third cast, splash miasma to 2 enemies within 3 hexes, dealing magic damage to each. Damage: 230/345/550 AP Third Cast Damage: 160/240/385 AP'
     },
     {
         name: 'Ekko',
         cost: 4,
-        image: '../assets/SET13/champions/centered/Ekko.png'
+        image: '../assets/SET13/champions/centered/Ekko.png',
+        abilityName: 'Splitting Seconds',
+        abilityDescription: "Summon an assault of afterimages that deals magic damage to the target and magic damage to other nearby enemies. Afterimages reduce their target's Magic Resist by 5 for the rest of combat. Damage: 285% / 430% / 1200% (AP). Secondary Damage: 145% / 215% / 400% (AP). Additional Targets: 2 / 2 / 4."
     },
     {
         name: 'Elise',
         cost: 4,
-        image: '../assets/SET13/champions/centered/Elise.png'
+        image: '../assets/SET13/champions/centered/Elise.png',
+        abilityName: 'Cocoon',
+        abilityDescription: 'Elise jumps to a nearby hex and web all enemies within 2 hexes, stunning them for some seconds and dealing magic damage and healing herself Stun: 1.75/2/8 sec Melee Damage: 120/180/1200% AP Melee Heal: 400/450/2000% AP Ranged Damage: 220/330/1000% AP Secondary Damage: 90/135/400% AP'
     },
     {
         name: 'Heimerdinger',
@@ -198,7 +209,7 @@ export const champions = [
     {
         name: 'Irelia',
         cost: 1,
-        image: '../assets/SET13/champions/centered/Irelia.png'
+        image: '../assets/SET13/champions/centered/Irelia.png',
     },
     {
         name: 'Jayce',
@@ -258,12 +269,16 @@ export const champions = [
     {
         name: 'Corki',
         cost: 4,
-        image: '../assets/SET13/champions/centered/Corki.png'
+        image: '../assets/SET13/champions/centered/Corki.png',
+        abilityName: 'Broadside Barrage',
+        abilityDescription: 'Corki locks onto a target and strafe to a nearby position, unleashing a barrage of missiles split between the target and all enemies within two hexes. Each missile deals physical damage and reduces Armor by 1. Every 7th missile deals physical damage and reduces Armor by 1 Missiles Barrage: 21/21/35 Damage: 0.35/0.35/0.6 + 6/9/36 AD Third Damage: 0.35/0.35/0.6 + 6/9/36 AD',
     },
     {
         name: 'Dr Mundo',
         cost: 4,
-        image: '../assets/SET13/champions/centered/DrMundo.png'
+        image: '../assets/SET13/champions/centered/DrMundo.png',
+        abilityName: 'Maximum Dosage',
+        abilityDescription: 'Dr. Mundo becomes energized and heals himself over 2 seconds. While energized, deal magic damage to a nearby enemy each second. Afterwards, deal (health) magic damage to all enemies within 2 hexes.Experiment Bonus: On takedown, gain max Health for the rest of combat. Heal: 500/600/1000 + 0.25 (Health & AP) Damage: 80/120/800 AP Health Damage: 0.12/0.12/0.4'
     },
     {
         name: 'Twitch',
@@ -283,7 +298,9 @@ export const champions = [
     {
         name: 'Ezreal',
         cost: 3,
-        image: '../assets/SET13/champions/centered/Ezreal.png'
+        image: '../assets/SET13/champions/centered/Ezreal.png',
+        abilityName: 'Essence Flux',
+        abilityDescription: 'Ezreal fires a shot towards current target that deals physical damage to all enemies within 1 hex. Then, deal physical damage to the unit in the center of the blast. Damage: 1.4 + 20/30/50 AD Center Damage: 1.4 + 20/30/50 AD'
     },
     {
         name: 'Gangplank',
@@ -318,7 +335,9 @@ export const champions = [
     {
         name: 'Camille',
         cost: 2,
-        image: '../assets/SET13/champions/centered/Camille.png'
+        image: '../assets/SET13/champions/centered/Camille.png',
+        abilityName: 'Adaptive Strike',
+        abilityDescription: 'Camille kicks the target, dealing Adaptive Damage. Heal for 0.4% of the damage dealt.Adaptive Damage: Uses the damage type the target resists less Adaptive Damage: 245/245/265%',
     },
     {
         name: 'Rell',
@@ -368,7 +387,9 @@ export const champions = [
     {
         name: 'Draven',
         cost: 1,
-        image: '../assets/SET13/champions/centered/Draven.png'
+        image: '../assets/SET13/champions/centered/Draven.png',
+        abilityName: 'Spinning Axe',
+        abilityDescription: 'Passive: If Draven has an empowered axe in hand, it replaces his next attack, dealing physical damage. Empowered axes return to Draven after hitting an enemy. Active: Spin an empowered axe. Damage: 10% / 15% / 25% (AP) + 140% / 140% / 150% / 150% (AD)'
     },
     {
         name: 'Lux',

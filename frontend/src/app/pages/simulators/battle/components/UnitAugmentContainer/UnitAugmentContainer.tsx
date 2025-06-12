@@ -65,7 +65,7 @@ const UnitAugmentContainerContent = () => {
                 alt={champion.name} 
                 className={`w-10 h-10 rounded-[0.09rem] outline outline-2 ${
                     champion.cost === 1 ? "outline-gray-400" :
-                    champion.cost === 2 ? "outline-blue-500" :
+                    champion.cost === 2 ? "outline-green-500" :
                     champion.cost === 3 ? "outline-blue-500" :
                     champion.cost === 4 ? "outline-purple-700" :
                     champion.cost === 5 ? "outline-yellow-500" :
@@ -81,7 +81,17 @@ const UnitAugmentContainerContent = () => {
                 {champion.name}
             </p>
             {(hoveredChampionId === champion.name || clickedChampionId === champion.name) && (
-                <ChampionHoverInfo champion={champion.name}/>
+                <ChampionHoverInfo 
+                    champion={champion.name}
+                    cost={champion.cost}
+                    mana={champion.mana}
+                    maxMana={champion.abilityManaCost}
+                    abilityName={champion.abilityName}
+                    abilityDescription={champion.abilityDescription}
+                    trait1={champion.traitsList[0] || ''}
+                    trait2={champion.traitsList[1] || ''}
+                    trait3={champion.traitsList[2] || ''}
+                />
             )}
         </div>
     );
@@ -96,6 +106,8 @@ const UnitAugmentContainerContent = () => {
             <div className="flex flex-wrap items-center w-[49rem] gap-[0.3rem] bg-hexCellComponents p-6 rounded-lg">
                 {sortedChampions.map(renderChampionCard)}
             </div>
+
+            
         </div>
     );
 };

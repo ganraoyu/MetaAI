@@ -156,7 +156,7 @@ const ChampionCardHover = ({
         left: `${position.left}px` 
       }}
     >
-      <div className={`relative border-2 rounded-t-md ${
+      <div className={`relative border rounded-t-md ${
         cost === 1 ? 'border-gray-400' : 
         cost === 2 ? 'border-green-500' : 
         cost === 3 ? 'border-blue-500' : 

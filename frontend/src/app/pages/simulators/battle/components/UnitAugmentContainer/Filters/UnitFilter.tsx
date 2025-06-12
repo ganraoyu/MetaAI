@@ -20,8 +20,6 @@ export const UnitFilter = () => {
   }= useUnitAugmentContext();
 
   const [open, setOpen ] = useState(false);
-  const [clickedTraitDropDown, setClickedTraitDropDown] = useState("");
-
 
   useEffect(() => {
     setTraits(getTraitBySet(set));
@@ -68,7 +66,7 @@ export const UnitFilter = () => {
         </div>
 
         {/* Filter By Trait Dropdown */}
-        <div className="relative w-32">
+        <div className="relative w-32 ">
           {/* Toggle Button (Always stays in place) */}
           <div
             className={`flex items-center justify-center bg-darkerHexCellComponents h-7 ${open ? 'rounded-t-md' : 'rounded-md'} hover:bg-lightGray cursor-pointer`}
@@ -128,14 +126,15 @@ export const UnitFilter = () => {
               setFilterByTrait("");
               setToggleUnitsOrAugments(true);
               setOpen(false);
-              setClickedTraitDropDown("");
             }}
             >Clear Filters</button>
         </div>
 
         {/* Toggle Units or Augments */}
         <div className="flex items-center  ml-12 gap-2 ">
-          <p className="text-xs">Units</p>
+          <p className={`text-xs ${!toggleUnitsOrAugments ? 'text-gray-400' : ''}`}>
+            Units
+          </p>
           <div
             onClick={() => setToggleUnitsOrAugments(!toggleUnitsOrAugments)}
             className={`w-9 h-3 flex items-center rounded-full outline outline-2 outline-lightGray cursor-pointer transition-colors duration-300 bg-darkerHexCellComponents`}
@@ -146,7 +145,9 @@ export const UnitFilter = () => {
               }`}
             ></div>
           </div>
-          <p className="text-xs">Augments</p>
+          <p className={`text-xs ${toggleUnitsOrAugments ? 'text-gray-400' : ''}`}>
+            Augments
+          </p>
         </div>
       </div>
     </div>
