@@ -56,7 +56,7 @@ export const ChampionHoverInfo = ({
     cost === 4 ? 'border-purple-700' :
     cost === 5 ? 'border-yellow-500' :
     cost === 6 ? 'border-orange-500' :
-    'border-red-500';
+    'border-red-500'; 
 
   return (
     <div className="absolute -top-[17rem] z-50  bg-hexCell text-white rounded-md w-64 origin-bottom animate-grow-in shadow-2xl shadow-gray-900">

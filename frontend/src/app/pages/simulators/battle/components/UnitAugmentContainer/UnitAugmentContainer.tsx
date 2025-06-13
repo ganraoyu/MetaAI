@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { UnitAugmentProvider, useUnitAugmentContext } from "./UnitAugmentContext";
 import { useTFTSetContext } from "../../../../../utilities/TFTSetContext";
 import { ChampionHoverInfo } from "./ChampionHoverInfo";
-import { UnitFilter } from "./Filters/UnitFilter";
+import { UnitFilter } from "./Filters/_UnitFilter";
 import { getChampionBySet } from "../../data/Loaders/championDataLoader";
 
 export const UnitAugmentContainer = () => {
