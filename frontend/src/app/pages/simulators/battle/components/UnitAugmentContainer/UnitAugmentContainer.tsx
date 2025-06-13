@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { UnitAugmentProvider, useUnitAugmentContext } from "./UnitAugmentContext";
 import { useTFTSetContext } from "../../../../../utilities/TFTSetContext";
 import { ChampionHoverInfo } from "./ChampionHoverInfo";
-import { UnitFilter } from "./Filters/_UnitFilter";
+import { FilterContainer } from "./Filters/_FilterContainer";
 import { getChampionBySet } from "../../data/Loaders/championDataLoader";
 
 export const UnitAugmentContainer = () => {
@@ -99,7 +99,7 @@ const UnitAugmentContainerContent = () => {
     return (
         <div className="select-none">
             <div>
-                <UnitFilter />
+                <FilterContainer />
             </div>
 
             {/* Champion List */}

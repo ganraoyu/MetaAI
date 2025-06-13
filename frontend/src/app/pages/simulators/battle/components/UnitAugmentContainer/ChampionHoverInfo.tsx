@@ -43,92 +43,75 @@ export const ChampionHoverInfo = ({
 }: ChampionHoverInfoProps) => {
   const { set } = useTFTSetContext();
 
-  let imageAbilityName = abilityName.replace(/\s/g, '');
-
-  if (abilityName.trim().split(/\s+/).length > 1) {
-    imageAbilityName = abilityName.replace(/\s/g, '');
-  }
+  const imageAbilityName = abilityName.replace(/\s/g, "");
 
   const borderColor =
-    cost === 1 ? 'border-gray-400' :
-    cost === 2 ? 'border-green-500' :
-    cost === 3 ? 'border-blue-500' :
-    cost === 4 ? 'border-purple-700' :
-    cost === 5 ? 'border-yellow-500' :
-    cost === 6 ? 'border-orange-500' :
-    'border-red-500'; 
+    cost === 1 ? "border-gray-400" :
+    cost === 2 ? "border-green-500" :
+    cost === 3 ? "border-blue-500" :
+    cost === 4 ? "border-purple-700" :
+    cost === 5 ? "border-yellow-500" :
+    cost === 6 ? "border-orange-500" :
+    "border-red-500";
 
   return (
-    <div className="absolute -top-[17rem] z-50  bg-hexCell text-white rounded-md w-64 origin-bottom animate-grow-in shadow-2xl shadow-gray-900">
-      
+    <div className="absolute z-50 bg-hexCell text-white rounded-md w-[16rem] origin-bottom animate-grow-in shadow-2xl shadow-gray-900 -top-[17rem]">
+
       {/* Image with border and traits in bottom-left */}
       <div className={`relative border-2 rounded-t-md overflow-hidden ${borderColor}`}>
-        <img 
-          src={`../assets/${set}/champions/splash/${champion}.png`} 
+        <img
+          src={`../assets/${set}/champions/splash/${champion}.png`}
           alt={champion}
-          className="w-full h-36 object-cover"
+          className="w-full h-[9rem] object-cover"
         />
 
         {/* Traits */}
-        <div className="absolute bottom-1 left-1 flex flex-col gap-0.5 p-2">
-          {trait1 && (
-            <div className="flex items-center gap-1">
-              <img src={`../assets/${set}/traits/${trait1}.png`} className="h-4 w-4" alt={trait1} />
-              <p className="text-white text-[0.8rem] text-outline">{trait1}</p>
-            </div>
-          )}
-          {trait2 && (
-            <div className="flex items-center gap-1">
-              <img src={`../assets/${set}/traits/${trait2}.png`} className="h-4 w-4" alt={trait2} />
-              <p className="text-white text-[0.8rem] text-outline">{trait2}</p>
-            </div>
-          )}
-          {trait3 && (
-            <div className="flex items-center gap-1">
-              <img src={`../assets/${set}/traits/${trait3}.png`} className="h-4 w-4" alt={trait3} />
-              <p className="text-white text-[0.8rem] text-outline">{trait3}</p>
-            </div>
+        <div className="absolute bottom-[0.25rem] left-[0.25rem] flex flex-col gap-[0.125rem] p-[0.5rem]">
+          {[trait1, trait2, trait3].map(
+            (trait, i) =>
+              trait && (
+                <div key={i} className="flex items-center gap-[0.25rem]">
+                  <img src={`../assets/${set}/traits/${trait}.png`} className="h-[1rem] w-[1rem]" alt={trait} />
+                  <p className="text-white text-[0.8rem] text-outline">{trait}</p>
+                </div>
+              )
           )}
         </div>
       </div>
 
       {/* Cost */}
-      <div className={`absolute top-[8.1rem] right-0.5 rounded-tl-md px-1.5 text-white font-bold flex items-center gap-1 bg-gradient-to-r ${
-        cost === 1 ? 'from-gray-600 to-gray-400' :
-        cost === 2 ? 'from-green-700 to-green-500' :
-        cost === 3 ? 'from-blue-700 to-blue-500' :
-        cost === 4 ? 'from-purple-900 to-purple-400' :
-        cost === 5 ? 'from-yellow-600 to-yellow-400' :
-        'from-red-700 to-red-500'
+      <div className={`absolute top-[8.1rem] right-[0.125rem] rounded-tl-md px-[0.375rem] font-bold flex items-center gap-[0.25rem] text-white text-xs bg-gradient-to-r ${
+        cost === 1 ? "from-gray-600 to-gray-400" :
+        cost === 2 ? "from-green-700 to-green-500" :
+        cost === 3 ? "from-blue-700 to-blue-500" :
+        cost === 4 ? "from-purple-900 to-purple-400" :
+        cost === 5 ? "from-yellow-600 to-yellow-400" :
+        "from-red-700 to-red-500"
       }`}>
-        <img src="../assets/icons/coin.png" className="h-2 w-2"/>
-        <p className="text-xs text-outline">{cost || 1}</p>
+        <img src="../assets/icons/coin.png" className="h-[0.5rem] w-[0.5rem]" />
+        <p className="text-outline">{cost || 1}</p>
       </div>
 
       {/* Champion Ability Slot */}
-      <div className="flex items-center justify-between p-2 bg-darkerHexCellComponents rounded-b-md">
-        <div className="flex items-center gap-2">
-          <img src={`../assets/${set}/abilities/${imageAbilityName}.png`} alt={abilityName} className="h-10 w-10"/>
-          <p className="text-xs">{abilityName}</p>
+      <div className="flex items-center justify-between p-[0.5rem] bg-darkerHexCellComponents rounded-b-md">
+        <div className="flex items-center gap-[0.5rem]">
+          <img src={`../assets/${set}/abilities/${imageAbilityName}.png`} alt={abilityName} className="h-[2.5rem] w-[2.5rem]" />
+          <p className="text-[0.75rem]">{abilityName}</p>
         </div>
-        <div className="flex items-end justify-center">
-          <img src="../assets/icons/mana.png" className='h-3 w-3 mr-1'/>
-          <p className="text-xs">{mana}/{maxMana}</p>
+        <div className="flex items-center justify-center">
+          <img src="../assets/icons/mana.png" className="h-[0.75rem] w-[0.75rem] mr-[0.25rem]" />
+          <p className="text-[0.75rem]">{mana}/{maxMana}</p>
         </div>
       </div>
 
       {/* Ability Description */}
       <div>
-        <p className="text-xs p-2 text-gray-300">
-          {abilityDescription}
-        </p>
-        
+        <p className="text-[0.75rem] p-[0.5rem] text-gray-300">{abilityDescription}</p>
       </div>
 
-      {/* Style */}
       <style>{`
         .text-outline {
-          text-shadow: 
+          text-shadow:
             -1px -1px 0 #000,
             1px -1px 0 #000,
             -1px 1px 0 #000,

@@ -9,7 +9,7 @@ import { TraitFilterDropdown } from "./TraitFilterDropdown";
 import { ClearFiltersButton } from "./ClearFiltersButton";
 import { ToggleUnitsAugmentsSwitch } from "./ToggleUnitsAugmentsSwitch";
 
-export const UnitFilter = () => {
+export const FilterContainer = () => {
   const { set } = useTFTSetContext();
   const [traits, setTraits] = useState(getTraitBySet(set));
 
