@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { UnitAugmentProvider, useUnitAugmentContext } from "./UnitAugmentContext";
 import { useTFTSetContext } from "../../../../../utilities/TFTSetContext";
-import { ChampionHoverInfo } from "./ChampionHoverInfo";
+import { ChampionHoverInfo } from "./ChampionHoverInfo/ChampionHoverInfo";
 import { FilterContainer } from "./Filters/_FilterContainer";
 import { getChampionBySet } from "../../data/Loaders/championDataLoader";
 
@@ -72,7 +72,6 @@ const UnitAugmentContainerContent = () => {
                     champion.cost === 6 ? "outline-orange-500" :
                     "outline-red-500"
                 }`}
-
             />
             <p
                 className="text-[0.7rem] w-12 truncate overflow-hidden whitespace-nowrap text-center"
@@ -91,6 +90,18 @@ const UnitAugmentContainerContent = () => {
                     trait1={champion.traitsList[0] || ''}
                     trait2={champion.traitsList[1] || ''}
                     trait3={champion.traitsList[2] || ''}
+                    currentHp={champion.currentHp || 0}
+                    maxHp={champion.maxHp || 0}
+                    armor={champion.armor || 0}
+                    magicResist={champion.magicResist || 0}
+                    attackDamage={champion.attackDamage || 0}
+                    attackSpeed={champion.attackSpeed || 0}
+                    critMultiplier={champion.critMultiplier || 0}
+                    critChance={champion.critChance || 0}
+                    range={champion.range || 0}
+                    starLevel={champion.starLevel || 1}
+                    attackType={champion.attackType || ''}
+                    items={champion.items || []}
                 />
             )}
         </div>

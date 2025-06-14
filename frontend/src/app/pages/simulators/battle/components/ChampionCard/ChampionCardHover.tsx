@@ -170,7 +170,7 @@ const ChampionCardHover = ({
           alt={champion}
           className="rounded-t-md w-full h-24 object-cover"
         />
-
+        <div className="absolute top-0 left-0 w-full h-24 rounded-t-md bg-gradient-to-r from-black/60 to-transparent pointer-events-none" />
         {/* Star level */}
         <div className="absolute top-2 left-2 flex space-x-1">
           {[1, 2, 3].map((star) => (

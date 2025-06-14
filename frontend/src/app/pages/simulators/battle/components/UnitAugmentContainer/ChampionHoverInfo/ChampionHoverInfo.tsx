@@ -1,4 +1,4 @@
-import { useTFTSetContext } from "../../../../../utilities/TFTSetContext";
+import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
 
 interface ChampionHoverInfoProps {
   champion: string;
@@ -9,7 +9,6 @@ interface ChampionHoverInfoProps {
   maxMana: number;
   abilityName: string;
   abilityDescription: string;
-  shield: number;
   trait1: string;
   trait2: string;
   trait3: string;
@@ -33,6 +32,8 @@ interface ChampionHoverInfoProps {
 export const ChampionHoverInfo = ({
   champion,
   cost,
+  currentHp,
+  maxHp,
   mana,
   maxMana,
   abilityName,
@@ -40,6 +41,21 @@ export const ChampionHoverInfo = ({
   trait1,
   trait2,
   trait3,
+  item1,
+  item2,
+  item3,
+  armor,
+  magicResist,
+  attackDamage,
+  attackSpeed,
+  critChance,
+  critDamage,
+  abilityPower,
+  damageAmp,
+  omnivamp,
+  reduction,
+  range,
+  starLevel,
 }: ChampionHoverInfoProps) => {
   const { set } = useTFTSetContext();
 
@@ -57,13 +73,15 @@ export const ChampionHoverInfo = ({
   return (
     <div className="absolute z-50 bg-hexCell text-white rounded-md w-[16rem] origin-bottom animate-grow-in shadow-2xl shadow-gray-900 -top-[17rem]">
 
-      {/* Image with border and traits in bottom-left */}
+      {/* Image with gradient overlay and traits */}
       <div className={`relative border-2 rounded-t-md overflow-hidden ${borderColor}`}>
         <img
           src={`../assets/${set}/champions/splash/${champion}.png`}
           alt={champion}
-          className="w-full h-[9rem] object-cover"
+          className="w-full h-[9rem] object-cover rounded-t-md"
         />
+        {/* Left-to-right gradient overlay */}
+        <div className="absolute top-0 left-0 w-full h-[9rem] bg-gradient-to-r from-black/60 to-transparent rounded-t-md pointer-events-none" />
 
         {/* Traits */}
         <div className="absolute bottom-[0.25rem] left-[0.25rem] flex flex-col gap-[0.125rem] p-[0.5rem]">
@@ -79,7 +97,7 @@ export const ChampionHoverInfo = ({
         </div>
       </div>
 
-      {/* Cost */}
+      {/* Cost Badge */}
       <div className={`absolute top-[8.1rem] right-[0.125rem] rounded-tl-md px-[0.375rem] font-bold flex items-center gap-[0.25rem] text-white text-xs bg-gradient-to-r ${
         cost === 1 ? "from-gray-600 to-gray-400" :
         cost === 2 ? "from-green-700 to-green-500" :
@@ -92,10 +110,14 @@ export const ChampionHoverInfo = ({
         <p className="text-outline">{cost || 1}</p>
       </div>
 
-      {/* Champion Ability Slot */}
-      <div className="flex items-center justify-between p-[0.5rem] bg-darkerHexCellComponents rounded-b-md">
+      {/* Ability Info */}
+      <div className="flex items-center justify-between p-[0.5rem] bg-hexCell rounded-b-md">
         <div className="flex items-center gap-[0.5rem]">
-          <img src={`../assets/${set}/abilities/${imageAbilityName}.png`} alt={abilityName} className="h-[2.5rem] w-[2.5rem]" />
+          <img
+            src={`../assets/${set}/abilities/${imageAbilityName}.png`}
+            alt={abilityName}
+            className="h-[2.5rem] w-[2.5rem]"
+          />
           <p className="text-[0.75rem]">{abilityName}</p>
         </div>
         <div className="flex items-center justify-center">
@@ -109,6 +131,7 @@ export const ChampionHoverInfo = ({
         <p className="text-[0.75rem] p-[0.5rem] text-gray-300">{abilityDescription}</p>
       </div>
 
+      {/* Outline text utility */}
       <style>{`
         .text-outline {
           text-shadow:
