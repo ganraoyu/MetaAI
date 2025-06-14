@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { UnitAugmentProvider, useUnitAugmentContext } from "./UnitAugmentContext";
 import { useTFTSetContext } from "../../../../../utilities/TFTSetContext";
-import { ChampionHoverInfo } from "./ChampionHoverInfo/ChampionHoverInfo";
+import { ChampionHoverInfo } from "./ChampionHoverInfo/_ChampionHoverInfo";
 import { FilterContainer } from "./Filters/_FilterContainer";
 import { getChampionBySet } from "../../data/Loaders/championDataLoader";
 
@@ -96,11 +96,9 @@ const UnitAugmentContainerContent = () => {
                     magicResist={champion.magicResist || 0}
                     attackDamage={champion.attackDamage || 0}
                     attackSpeed={champion.attackSpeed || 0}
-                    critMultiplier={champion.critMultiplier || 0}
                     critChance={champion.critChance || 0}
                     range={champion.range || 0}
                     starLevel={champion.starLevel || 1}
-                    attackType={champion.attackType || ''}
                     items={champion.items || []}
                 />
             )}
