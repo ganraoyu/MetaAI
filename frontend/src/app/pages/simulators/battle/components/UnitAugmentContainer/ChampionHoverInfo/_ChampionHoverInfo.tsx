@@ -1,6 +1,8 @@
 import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
 import { AbilityInfo } from "./AbilityInfo";
 import { ChampionImage } from "./ChampionImage";
+import { ChampionHoverInfoProvider, useChampionHoverInfoContext } from "./ChampoinHoverInfoContext";
+import { ToggleAbilityStatsSwitch } from "./ToggleAbilityStatsSwitch";
 
 interface ChampionHoverInfoProps {
   champion: string;
@@ -31,7 +33,15 @@ interface ChampionHoverInfoProps {
   starLevel?: number;
 }
 
-export const ChampionHoverInfo = ({
+export const ChampionHoverInfo = (props: ChampionHoverInfoProps) => {
+  return (
+    <ChampionHoverInfoProvider>
+      <ChampionHoverInfoContent {...props} />
+    </ChampionHoverInfoProvider>
+  );
+}
+
+const ChampionHoverInfoContent = ({
   champion,
   cost,
   currentHp,
@@ -60,6 +70,10 @@ export const ChampionHoverInfo = ({
   starLevel,
 }: ChampionHoverInfoProps) => {
   const { set } = useTFTSetContext();
+  const {
+    toggleAbilityStatsSwitch,
+    setToggleAbilityStatsSwitch,
+  } = useChampionHoverInfoContext();
 
   const imageAbilityName = abilityName.replace(/\s/g, "");
 
@@ -74,36 +88,45 @@ export const ChampionHoverInfo = ({
 
   return (
     <div className="absolute z-50 bg-hexCell text-white rounded-md w-[16rem] origin-bottom animate-grow-in shadow-2xl shadow-gray-900 -top-[17rem]">
+      <ChampionHoverInfoProvider>
+        <ChampionImage
+          set={set}
+          champion={champion}
+          trait1={trait1}
+          trait2={trait2}
+          trait3={trait3}
+          cost={cost}
+          borderColor={borderColor}
+        />
 
-      <ChampionImage
-        set={set}
-        champion={champion}
-        trait1={trait1}
-        trait2={trait2}
-        trait3={trait3}
-        cost={cost}
-        borderColor={borderColor}
-      />
+        <AbilityInfo
+          set={set}
+          imageAbilityName={imageAbilityName}
+          abilityName={abilityName}
+          abilityDescription={abilityDescription}
+          mana={mana}
+          maxMana={maxMana}
+        />
 
-      <AbilityInfo
-        set={set}
-        imageAbilityName={imageAbilityName}
-        abilityName={abilityName}
-        abilityDescription={abilityDescription}
-        mana={mana}
-        maxMana={maxMana}
-      />
+        <ToggleAbilityStatsSwitch 
+          toggleAbilityStatsSwitch={toggleAbilityStatsSwitch}
+          setToggleAbilityStatsSwitch={setToggleAbilityStatsSwitch}
+        />
 
-      {/* Outline text utility */}
-      <style>{`
-        .text-outline {
-          text-shadow:
-            -1px -1px 0 #000,
-            1px -1px 0 #000,
-            -1px 1px 0 #000,
-            1px 1px 0 #000;
-        }
-      `}</style>
+
+
+
+        {/* Outline text utility */}
+        <style>{`
+          .text-outline {
+            text-shadow:
+              -1px -1px 0 #000,
+              1px -1px 0 #000,
+              -1px 1px 0 #000,
+              1px 1px 0 #000;
+          }
+        `}</style>
+      </ChampionHoverInfoProvider>
     </div>
   );
 };

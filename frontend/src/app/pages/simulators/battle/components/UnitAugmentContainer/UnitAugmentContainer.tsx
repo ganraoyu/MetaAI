@@ -99,7 +99,6 @@ const UnitAugmentContainerContent = () => {
                     critChance={champion.critChance || 0}
                     range={champion.range || 0}
                     starLevel={champion.starLevel || 1}
-                    items={champion.items || []}
                 />
             )}
         </div>

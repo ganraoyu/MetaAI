@@ -2,7 +2,8 @@ interface ChampionStatsGridProps {
     // Define the props for ChampionStatsGrid if needed
 }
 
-export const ChampionStatsGrid = () => {
+export const ChampionStatsGrid = ({}: ChampionStatsGridProps) => {
+
   return (
     <div>
       
