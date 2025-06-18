@@ -1,14 +1,12 @@
 interface ChampionImageProps {
   set: string;
   champion: string;
-  trait1?: string;
-  trait2?: string;
-  trait3?: string;
+  traits: [string, string, string];
   cost: number;
   borderColor: string;
 }
 
-export const ChampionImage = ({set, champion, trait1, trait2, trait3, cost, borderColor}: ChampionImageProps) => {
+export const ChampionImage = ({set, champion, traits, cost, borderColor}: ChampionImageProps) => {
   return (
     <div>
     {/* Image with gradient overlay and traits */}
@@ -23,7 +21,7 @@ export const ChampionImage = ({set, champion, trait1, trait2, trait3, cost, bord
 
         {/* Traits */}
         <div className="absolute bottom-[0.25rem] left-[0.25rem] flex flex-col gap-[0.125rem] p-[0.5rem]">
-          {[trait1, trait2, trait3].map(
+          {traits.map(
             (trait, i) =>
               trait && (
                 <div key={i} className="flex items-center gap-[0.25rem]">

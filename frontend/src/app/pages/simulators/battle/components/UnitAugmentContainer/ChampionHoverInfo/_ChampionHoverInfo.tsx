@@ -3,35 +3,7 @@ import { AbilityInfo } from "./AbilityInfo";
 import { ChampionImage } from "./ChampionImage";
 import { ChampionHoverInfoProvider, useChampionHoverInfoContext } from "./ChampoinHoverInfoContext";
 import { ToggleAbilityStatsSwitch } from "./ToggleAbilityStatsSwitch";
-
-interface ChampionHoverInfoProps {
-  champion: string;
-  cost: number;
-  currentHp: number;
-  maxHp: number;
-  mana: number;
-  maxMana: number;
-  abilityName: string;
-  abilityDescription: string;
-  trait1: string;
-  trait2: string;
-  trait3: string;
-  item1?: string;
-  item2?: string;
-  item3?: string;
-  armor: number;
-  magicResist: number;
-  attackDamage: number;
-  attackSpeed: number;
-  critChance: number;
-  critDamage: number;
-  abilityPower: number;
-  damageAmp: number;
-  omnivamp: number;
-  reduction: number;
-  range: number;
-  starLevel?: number;
-}
+import { ChampionHoverInfoProps } from "./types";
 
 export const ChampionHoverInfo = (props: ChampionHoverInfoProps) => {
   return (
@@ -44,29 +16,10 @@ export const ChampionHoverInfo = (props: ChampionHoverInfoProps) => {
 const ChampionHoverInfoContent = ({
   champion,
   cost,
-  currentHp,
-  maxHp,
-  mana,
-  maxMana,
-  abilityName,
-  abilityDescription,
-  trait1,
-  trait2,
-  trait3,
-  item1,
-  item2,
-  item3,
-  armor,
-  magicResist,
-  attackDamage,
-  attackSpeed,
-  critChance,
-  critDamage,
-  abilityPower,
-  damageAmp,
-  omnivamp,
-  reduction,
-  range,
+  traits,
+  items,
+  stats,
+  starLevelStats,
   starLevel,
 }: ChampionHoverInfoProps) => {
   const { set } = useTFTSetContext();
@@ -75,7 +28,7 @@ const ChampionHoverInfoContent = ({
     setToggleAbilityStatsSwitch,
   } = useChampionHoverInfoContext();
 
-  const imageAbilityName = abilityName.replace(/\s/g, "");
+  const imageAbilityName = stats.abilityName.replace(/\s/g, "");
 
   const borderColor =
     cost === 1 ? "border-gray-400" :
@@ -92,20 +45,9 @@ const ChampionHoverInfoContent = ({
         <ChampionImage
           set={set}
           champion={champion}
-          trait1={trait1}
-          trait2={trait2}
-          trait3={trait3}
+          traits={traits}
           cost={cost}
           borderColor={borderColor}
-        />
-
-        <AbilityInfo
-          set={set}
-          imageAbilityName={imageAbilityName}
-          abilityName={abilityName}
-          abilityDescription={abilityDescription}
-          mana={mana}
-          maxMana={maxMana}
         />
 
         <ToggleAbilityStatsSwitch 
@@ -113,10 +55,19 @@ const ChampionHoverInfoContent = ({
           setToggleAbilityStatsSwitch={setToggleAbilityStatsSwitch}
         />
 
+        {!toggleAbilityStatsSwitch ? (
+          <AbilityInfo
+            set={set}
+            imageAbilityName={imageAbilityName}
+            abilityName={stats.abilityName}
+            abilityDescription={stats.abilityDescription}
+            mana={stats.mana}
+            maxMana={stats.abilityManaCost}
+          />
+        ) : (
+          <div>Hi</div> // You can replace this with your Stats component later
+        )}
 
-
-
-        {/* Outline text utility */}
         <style>{`
           .text-outline {
             text-shadow:
@@ -130,3 +81,4 @@ const ChampionHoverInfoContent = ({
     </div>
   );
 };
+

@@ -81,25 +81,65 @@ const UnitAugmentContainerContent = () => {
             </p>
             {(hoveredChampionId === champion.name || clickedChampionId === champion.name) && (
                 <ChampionHoverInfo 
-                    champion={champion.name}
-                    cost={champion.cost}
-                    mana={champion.mana}
-                    maxMana={champion.abilityManaCost}
-                    abilityName={champion.abilityName}
-                    abilityDescription={champion.abilityDescription}
-                    trait1={champion.traitsList[0] || ''}
-                    trait2={champion.traitsList[1] || ''}
-                    trait3={champion.traitsList[2] || ''}
-                    currentHp={champion.currentHp || 0}
-                    maxHp={champion.maxHp || 0}
-                    armor={champion.armor || 0}
-                    magicResist={champion.magicResist || 0}
-                    attackDamage={champion.attackDamage || 0}
-                    attackSpeed={champion.attackSpeed || 0}
-                    critChance={champion.critChance || 0}
-                    range={champion.range || 0}
-                    starLevel={champion.starLevel || 1}
+                champion={champion.name}
+                cost={champion.cost}
+                traits={[
+                    champion.traitsList[0] || '',
+                    champion.traitsList[1] || '',
+                    champion.traitsList[2] || '',
+                ]}
+                items={champion.items}
+                stats={{
+                    abilityName: champion.abilityName,
+                    abilityDescription: champion.abilityDescription,
+                    range: champion.range,
+                    mana: champion.mana,
+                    manaPerAttack: champion.manaPerAttack,
+                    abilityManaCost: champion.abilityManaCost,
+                    attackSpeed: champion.attackSpeed,
+                    attackCritChance: champion.attackCritChance,
+                    attackCritDamage: champion.attackCritDamage,
+                    abilityCritChance: champion.abilityCritChance,
+                    abilityCritDamage: champion.abilityCritDamage,
+                    damageAmp: champion.damageAmp,
+                    abilityPower: champion.abilityPower,
+                    durability: champion.durability,
+                    omnivamp: champion.omnivamp,
+                    sunder: champion.sunder,
+                    shred: champion.shred,
+                    wound: champion.wound,
+                    burn: champion.burn,
+                    immunity: champion.immunity,
+                }}
+                starLevelStats={{
+                    oneStar: {
+                    health: champion.statsByStarLevel[1].hp,
+                    armor: champion.statsByStarLevel[1].armor,
+                    magicResist: champion.statsByStarLevel[1].magicResist,
+                    attackDamage: champion.statsByStarLevel[1].attackDamage,
+                    abilityName: champion.abilityName,
+                    abilityDescription: champion.abilityDescription,
+                    },
+                    twoStar: {
+                    health: champion.statsByStarLevel[2].hp,
+                    armor: champion.statsByStarLevel[2].armor,
+                    magicResist: champion.statsByStarLevel[2].magicResist,
+                    attackDamage: champion.statsByStarLevel[2].attackDamage,
+                    abilityName: champion.abilityName,
+                    abilityDescription: champion.abilityDescription,
+                    },
+                    threeStar: {
+                    health: champion.statsByStarLevel[3].hp,
+                    armor: champion.statsByStarLevel[3].armor,
+                    magicResist: champion.statsByStarLevel[3].magicResist,
+                    attackDamage: champion.statsByStarLevel[3].attackDamage,
+                    abilityName: champion.abilityName,
+                    abilityDescription: champion.abilityDescription,
+                    },
+                }}
+                starLevel={champion.starLevel || 1}
                 />
+
             )}
         </div>
     );
