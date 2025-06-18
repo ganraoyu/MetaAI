@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { UnitAugmentProvider, useUnitAugmentContext } from "./UnitAugmentContext";
 import { useTFTSetContext } from "../../../../../utilities/TFTSetContext";
 import { ChampionHoverInfo } from "./ChampionHoverInfo/_ChampionHoverInfo";
@@ -20,29 +20,42 @@ const UnitAugmentContainerContent = () => {
     const [champions, setChampions] = useState(getChampionBySet(set));
     const [hoveredChampionId, setHoveredChampionId] = useState<string | null>(null);
     const [clickedChampionId, setClickedChampionId] = useState<string | null>(null);
+    const [showBelow, setShowBelow] = useState<boolean>(false);
+    const championRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
     useEffect(() => {
         setChampions(getChampionBySet(set));
     }, [set]);
 
+    // Check if champion card is near the top of the viewport
+    const checkPosition = (championName: string) => {
+        const element = championRefs.current[championName];
+        if (element) {
+            const rect = element.getBoundingClientRect();
+            const isNearTop = rect.top < 350; // 300px threshold from top
+            setShowBelow(isNearTop);
+        }
+    };
+
     // Sort champions based on the active sorting method
     const sortedChampions = useMemo(() => {
         if (!toggleUnitsOrAugments) return [];
         
-        const championList = [...champions || []];
+        let championList = [...champions || []];
         
+        // First filter by search term
         if(searchTerm.length > 0){
-            return championList.filter(champion => 
+            championList = championList.filter(champion => 
                 champion.name.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }
 
+        // Then apply sorting
         if (sortByAlphabet) {
             return championList.sort((a, b) => a.name.localeCompare(b.name));
         }
         
         if (sortByCost) {
-
             return championList
             .sort((a, b) => a.name.localeCompare(b.name))
             .sort((a, b) => a.cost - b.cost);
@@ -55,10 +68,19 @@ const UnitAugmentContainerContent = () => {
     const renderChampionCard = (champion: any) => (
         <div 
             key={champion.name}
+            ref={el => championRefs.current[champion.name] = el}
             className="flex flex-col items-center relative"                
-            onMouseEnter={() => setHoveredChampionId(champion.name)}
+            onMouseEnter={() => {
+                setHoveredChampionId(champion.name);
+                checkPosition(champion.name);
+            }}
             onMouseLeave={() => setHoveredChampionId(null)}
-            onClick={() => setClickedChampionId(clickedChampionId === champion.name ? null : champion.name)}
+            onClick={() => {
+                setClickedChampionId(clickedChampionId === champion.name ? null : champion.name);
+                if (clickedChampionId !== champion.name) {
+                    checkPosition(champion.name);
+                }
+            }}
         >
             <img    
                 src={champion.image} 
@@ -84,11 +106,13 @@ const UnitAugmentContainerContent = () => {
                 champion={champion.name}
                 cost={champion.cost}
                 traits={[
-                    champion.traitsList[0] || '',
-                    champion.traitsList[1] || '',
-                    champion.traitsList[2] || '',
+                (champion.traitsList?.[0] ?? ''),
+                (champion.traitsList?.[1] ?? ''),
+                (champion.traitsList?.[2] ?? ''),
                 ]}
+
                 items={champion.items}
+                showBelow={showBelow}
                 stats={{
                     abilityName: champion.abilityName,
                     abilityDescription: champion.abilityDescription,
@@ -117,29 +141,22 @@ const UnitAugmentContainerContent = () => {
                     armor: champion.statsByStarLevel[1].armor,
                     magicResist: champion.statsByStarLevel[1].magicResist,
                     attackDamage: champion.statsByStarLevel[1].attackDamage,
-                    abilityName: champion.abilityName,
-                    abilityDescription: champion.abilityDescription,
                     },
                     twoStar: {
                     health: champion.statsByStarLevel[2].hp,
                     armor: champion.statsByStarLevel[2].armor,
                     magicResist: champion.statsByStarLevel[2].magicResist,
                     attackDamage: champion.statsByStarLevel[2].attackDamage,
-                    abilityName: champion.abilityName,
-                    abilityDescription: champion.abilityDescription,
                     },
                     threeStar: {
                     health: champion.statsByStarLevel[3].hp,
                     armor: champion.statsByStarLevel[3].armor,
                     magicResist: champion.statsByStarLevel[3].magicResist,
                     attackDamage: champion.statsByStarLevel[3].attackDamage,
-                    abilityName: champion.abilityName,
-                    abilityDescription: champion.abilityDescription,
                     },
                 }}
                 starLevel={champion.starLevel || 1}
                 />
-
             )}
         </div>
     );
@@ -154,8 +171,6 @@ const UnitAugmentContainerContent = () => {
             <div className="flex flex-wrap items-center w-[49rem] gap-[0.3rem] bg-hexCellComponents p-6 rounded-lg">
                 {sortedChampions.map(renderChampionCard)}
             </div>
-
-            
         </div>
     );
 };

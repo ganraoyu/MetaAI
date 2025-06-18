@@ -42,4 +42,5 @@ export interface ChampionHoverInfoProps {
     threeStar: StarLevelStats;
     };
     starLevel: 1 | 2 | 3;
+    showBelow?: boolean;
 }

@@ -1,7 +1,10 @@
 import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
 import { AbilityInfo } from "./AbilityInfo";
 import { ChampionImage } from "./ChampionImage";
-import { ChampionHoverInfoProvider, useChampionHoverInfoContext } from "./ChampoinHoverInfoContext";
+import {
+  ChampionHoverInfoProvider,
+  useChampionHoverInfoContext,
+} from "./ChampoinHoverInfoContext";
 import { ToggleAbilityStatsSwitch } from "./ToggleAbilityStatsSwitch";
 import { ChampionHoverInfoProps } from "./types";
 
@@ -11,7 +14,7 @@ export const ChampionHoverInfo = (props: ChampionHoverInfoProps) => {
       <ChampionHoverInfoContent {...props} />
     </ChampionHoverInfoProvider>
   );
-}
+};
 
 const ChampionHoverInfoContent = ({
   champion,
@@ -21,6 +24,7 @@ const ChampionHoverInfoContent = ({
   stats,
   starLevelStats,
   starLevel,
+  showBelow = false,
 }: ChampionHoverInfoProps) => {
   const { set } = useTFTSetContext();
   const {
@@ -40,7 +44,10 @@ const ChampionHoverInfoContent = ({
     "border-red-500";
 
   return (
-    <div className="absolute z-50 bg-hexCell text-white rounded-md w-[16rem] origin-bottom animate-grow-in shadow-2xl shadow-gray-900 -top-[17rem]">
+    <div
+      className={`absolute z-50 bg-hexCell text-white rounded-md w-[16rem] origin-bottom animate-grow-in shadow-2xl shadow-gray-900
+        ${showBelow ? "top-full mt-2" : "bottom-full mb-2"}`}
+    >
       <ChampionHoverInfoProvider>
         <ChampionImage
           set={set}
@@ -65,7 +72,7 @@ const ChampionHoverInfoContent = ({
             maxMana={stats.abilityManaCost}
           />
         ) : (
-          <div>Hi</div> // You can replace this with your Stats component later
+          <div>Hi</div>
         )}
 
         <style>{`
@@ -81,4 +88,3 @@ const ChampionHoverInfoContent = ({
     </div>
   );
 };
-
