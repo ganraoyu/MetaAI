@@ -1,6 +1,7 @@
 import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
 import { AbilityInfo } from "./AbilityInfo";
 import { ChampionImage } from "./ChampionImage";
+import { ChampionStatsGrid } from "./ChampionStatsGrid";
 import {
   ChampionHoverInfoProvider,
   useChampionHoverInfoContext,
@@ -72,7 +73,7 @@ const ChampionHoverInfoContent = ({
             maxMana={stats.abilityManaCost}
           />
         ) : (
-          <div>Hi</div>
+          <ChampionStatsGrid/>
         )}
 
         <style>{`

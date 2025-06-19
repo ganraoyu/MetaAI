@@ -6,7 +6,10 @@ export const ChampionStatsGrid = ({}: ChampionStatsGridProps) => {
 
   return (
     <div>
-      
+      <div>
+        <p>Key</p>
+        
+      </div>
     </div>
   )
 }
