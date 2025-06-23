@@ -8,16 +8,17 @@ export const ToggleAbilityStatsSwitch = ({
   setToggleAbilityStatsSwitch,
 }: ToggleAbilityStatsSwitchProps) => {
   return (
-    <div className="flex flex-col items-center mb-2 bg-hexCell">
+    <div className="flex flex-col items-center mb-2 bg-hexCel">
       <div className="relative flex w-full">
-        {/* Ability Button */}
+        
+        {/* Ability Button */}        
         <button
           onClick={() => setToggleAbilityStatsSwitch(false)}
           className={`py-2 flex-1 text-center transition-colors duration-200
             ${!toggleAbilityStatsSwitch ? 'text-yellow-400' : 'text-gray-300'}
             bg-[#262324] hover:bg-[#3b3738] active:bg-[#4e4a4b]`}
         >
-          Ability
+          Stats
         </button>
 
         <button
@@ -26,9 +27,8 @@ export const ToggleAbilityStatsSwitch = ({
             ${toggleAbilityStatsSwitch ? 'text-yellow-400' : 'text-gray-300'}
             bg-[#262324] hover:bg-[#3b3738] active:bg-[#4e4a4b]`}
         >
-          Stats
+          Ability
         </button>
-
 
         {/* Underline */}
         <div className="absolute bottom-0 h-[0.15rem] w-full flex">

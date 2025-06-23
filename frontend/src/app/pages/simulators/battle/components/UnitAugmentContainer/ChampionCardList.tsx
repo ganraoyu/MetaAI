@@ -5,168 +5,175 @@ import { getChampionBySet } from "../../data/Loaders/championDataLoader";
 import { ChampionHoverInfo } from "./ChampionHoverInfo/_ChampionHoverInfo";
 
 export const ChampionCardList = ({ set }: { set: string }) => {
-    const {
-        toggleUnitsOrAugments = true,
-        sortByCost = false,
-        sortByAlphabet = false,
-        searchTerm = ""
-    } = useUnitAugmentContext();
+	const {
+		toggleUnitsOrAugments = true,
+		sortByCost = false,
+		sortByAlphabet = false,
+		searchTerm = ""
+	} = useUnitAugmentContext();
 
-    const [champions, setChampions] = useState(() => getChampionBySet(set) || []);
-    const [hoveredChampionId, setHoveredChampionId] = useState<string | null>(null);
-    const [clickedChampionId, setClickedChampionId] = useState<string | null>(null);
-    const [showBelow, setShowBelow] = useState<boolean>(false);
-    const championRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+	const {showBelow, setShowBelow} = useUnitAugmentContext();
+	const [overExtend, setOverExtend] = useState<boolean>(false);
+	const [champions, setChampions] = useState(() => getChampionBySet(set) || []);
+	const [hoveredChampionId, setHoveredChampionId] = useState<string | null>(null);
+	const [clickedChampionId, setClickedChampionId] = useState<string | null>(null);
+	const championRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
-    useEffect(() => {
-        setChampions(getChampionBySet(set) || []);
-    }, [set]);
+	useEffect(() => {
+		setChampions(getChampionBySet(set) || []);
+	}, [set]);
 
-    const checkPosition = (championName: string) => {
-        const element = championRefs.current[championName];
-        if (element) {
-            const rect = element.getBoundingClientRect();
-            const isNearTop = rect.top < 350;
-            setShowBelow(isNearTop);
-        }
-    };
+	const checkPosition = (championName: string) => {
+		const element = championRefs.current[championName];
+		if (element) {
+			const rect = element.getBoundingClientRect();
+			const isNearTop = rect.top < 425;
+			setShowBelow(isNearTop);
 
-    const sortedChampions = useMemo(() => {
-        if (!toggleUnitsOrAugments) return [];
+			const isOverExtended = rect.bottom > window.innerHeight - 100;
+			setOverExtend(isOverExtended);
+		}
+	};
 
-        let championList = [...(champions || [])];
+	const sortedChampions = useMemo(() => {
+		if (!toggleUnitsOrAugments) return [];
 
-        if (searchTerm.length > 0) {
-            championList = championList.filter(champion =>
-                (champion?.name || "").toLowerCase().includes(searchTerm.toLowerCase())
-            );
-        }
+		let championList = [...(champions || [])];
 
-        if (sortByAlphabet) {
-            championList.sort((a, b) =>
-                (a?.name || "").localeCompare(b?.name || "")
-            );
-        }
+		if (searchTerm.length > 0) {
+			championList = championList.filter(champion =>
+				(champion?.name || "").toLowerCase().includes(searchTerm.toLowerCase())
+			);
+		}
 
-        if (sortByCost) {
-            championList.sort((a, b) =>
-                (a?.name || "").localeCompare(b?.name || "")
-            ).sort((a, b) =>
-                (a?.cost || 0) - (b?.cost || 0)
-            );
-        }
+		if (sortByAlphabet) {
+			championList.sort((a, b) =>
+				(a?.name || "").localeCompare(b?.name || "")
+			);
+		}
 
-        return championList;
-    }, [champions, toggleUnitsOrAugments, sortByAlphabet, sortByCost, searchTerm]);
+		if (sortByCost) {
+			championList.sort((a, b) =>
+				(a?.name || "").localeCompare(b?.name || "")
+			).sort((a, b) =>
+				(a?.cost || 0) - (b?.cost || 0)
+			);
+		}
 
-    return (
-        <div className="flex flex-wrap items-center w-[49rem] gap-[0.3rem] bg-hexCellComponents p-6 rounded-lg">
-            {sortedChampions.map(champion => {
-                const name = champion?.name || "Unknown";
-                const cost = champion?.cost || 1;
+		return championList;
+	}, [champions, toggleUnitsOrAugments, sortByAlphabet, sortByCost, searchTerm]);
 
-                return (
-                    <div
-                        key={name}
-                        ref={el => championRefs.current[name] = el}
-                        className="flex flex-col items-center relative"
-                        onMouseEnter={() => {
-                            setHoveredChampionId(name);
-                            checkPosition(name);
-                        }}
-                        onMouseLeave={() => setHoveredChampionId(null)}
-                        onClick={() => {
-                            setClickedChampionId(
-                                clickedChampionId === name ? null : name
-                            );
-                            if (clickedChampionId !== name) {
-                                checkPosition(name);
-                            }
-                        }}
-                    >
-                        <img
-                            src={champion.image || "/placeholder.png"}
-                            alt={name}
-                            className={`w-10 h-10 rounded-[0.09rem] outline outline-2 ${
-                                cost === 1 ? "outline-gray-400" :
-                                cost === 2 ? "outline-green-500" :
-                                cost === 3 ? "outline-blue-500" :
-                                cost === 4 ? "outline-purple-700" :
-                                cost === 5 ? "outline-yellow-500" :
-                                cost === 6 ? "outline-orange-500" :
-                                "outline-red-500"
-                            }`}
-                        />
-                        <p
-                            className="text-[0.7rem] w-12 truncate overflow-hidden whitespace-nowrap text-center"
-                            title={name}
-                        >
-                            {name}
-                        </p>
+	return (
+		<div className="flex flex-wrap items-center w-[49rem] gap-[0.3rem] bg-hexCellComponents p-6 rounded-lg hover:cursor-pointer">
+			{sortedChampions.map(champion => {
+				const name = champion?.name || "Unknown";
+				const cost = champion?.cost || 1;
 
-                        {(hoveredChampionId === name || clickedChampionId === name) && (
-                            <ChampionHoverInfo
-                                champion={name}
-                                cost={cost}
-                                traits={[
-                                    champion?.traitsList?.[0] ?? "",
-                                    champion?.traitsList?.[1] ?? "",
-                                    champion?.traitsList?.[2] ?? ""
-                                ]}
-                                items={[
-                                    champion?.items?.[0],
-                                    champion?.items?.[1],
-                                    champion?.items?.[2]
-                                ]}
-                                showBelow={showBelow}
-                                stats={{
-                                    abilityName: champion?.abilityName || "Unknown",
-                                    abilityDescription: champion?.abilityDescription || "No description available",
-                                    range: champion?.range ?? 0,
-                                    mana: champion?.mana ?? 0,
-                                    manaPerAttack: champion?.manaPerAttack ?? 0,
-                                    abilityManaCost: champion?.abilityManaCost ?? 0,
-                                    attackSpeed: champion?.attackSpeed ?? 0,
-                                    attackCritChance: champion?.attackCritChance ?? 0,
-                                    attackCritDamage: champion?.attackCritDamage ?? 0,
-                                    abilityCritChance: champion?.abilityCritChance ?? 0,
-                                    abilityCritDamage: champion?.abilityCritDamage ?? 0,
-                                    damageAmp: champion?.damageAmp ?? 0,
-                                    abilityPower: champion?.abilityPower ?? 0,
-                                    durability: champion?.durability ?? 0,
-                                    omnivamp: champion?.omnivamp ?? 0,
-                                    sunder: champion?.sunder ?? false,
-                                    shred: champion?.shred ?? false,
-                                    wound: champion?.wound ?? false,
-                                    burn: champion?.burn ?? false,
-                                    immunity: champion?.immunity ?? false,
-                                }}
-                                starLevelStats={{
-                                    oneStar: {
-                                        health: champion?.statsByStarLevel?.[1]?.hp ?? 0,
-                                        armor: champion?.statsByStarLevel?.[1]?.armor ?? 0,
-                                        magicResist: champion?.statsByStarLevel?.[1]?.magicResist ?? 0,
-                                        attackDamage: champion?.statsByStarLevel?.[1]?.attackDamage ?? 0,
-                                    },
-                                    twoStar: {
-                                        health: champion?.statsByStarLevel?.[2]?.hp ?? 0,
-                                        armor: champion?.statsByStarLevel?.[2]?.armor ?? 0,
-                                        magicResist: champion?.statsByStarLevel?.[2]?.magicResist ?? 0,
-                                        attackDamage: champion?.statsByStarLevel?.[2]?.attackDamage ?? 0,
-                                    },
-                                    threeStar: {
-                                        health: champion?.statsByStarLevel?.[3]?.hp ?? 0,
-                                        armor: champion?.statsByStarLevel?.[3]?.armor ?? 0,
-                                        magicResist: champion?.statsByStarLevel?.[3]?.magicResist ?? 0,
-                                        attackDamage: champion?.statsByStarLevel?.[3]?.attackDamage ?? 0,
-                                    },
-                                }}
-                                starLevel={1}
-                            />
-                        )}
-                    </div>
-                );
-            })}
-        </div>
-    );
+				return (
+					<div
+						key={name}
+						ref={el => championRefs.current[name] = el}
+						className="flex flex-col items-center relative"
+						 onMouseEnter={() => {
+							setHoveredChampionId(name);
+							checkPosition(name);
+							setOverExtend(false);
+						}}
+						onMouseLeave={() => setHoveredChampionId(null)}
+						onClick={() => {
+							setClickedChampionId(
+								clickedChampionId === name ? null : name
+							);
+							if (clickedChampionId !== name) {
+								checkPosition(name);
+								setOverExtend(false);
+							}
+						}}
+					>		
+						<img
+							src={champion.image || "/placeholder.png"}
+							alt={name}
+							className={`w-10 h-10 rounded-[0.09rem] outline outline-2 ${
+								cost === 1 ? "outline-gray-400" :
+								cost === 2 ? "outline-green-500" :
+								cost === 3 ? "outline-blue-500" :
+								cost === 4 ? "outline-purple-700" :
+								cost === 5 ? "outline-yellow-500" :
+								cost === 6 ? "outline-orange-500" :
+								"outline-red-500"
+							}`}
+						/>
+						<p
+							className="text-[0.7rem] w-12 truncate overflow-hidden whitespace-nowrap text-center"
+							title={name}
+						>
+							{name}
+						</p>
+
+						{(hoveredChampionId === name || clickedChampionId === name) && (
+							<ChampionHoverInfo
+								champion={name}
+								cost={cost}
+								traits={[
+									champion?.traitsList?.[0] ?? "",
+									champion?.traitsList?.[1] ?? "",
+									champion?.traitsList?.[2] ?? ""
+								]}
+								items={[
+									champion?.items?.[0],
+									champion?.items?.[1],
+									champion?.items?.[2]
+								]}
+								showBelow={showBelow}
+								overExtend={overExtend}
+								stats={{
+									abilityName: champion?.abilityName || "Unknown",
+									abilityDescription: champion?.abilityDescription || "No description available",
+									range: champion?.range ?? 0,
+									mana: champion?.mana ?? 0,
+									manaPerAttack: champion?.manaPerAttack ?? 0,
+									abilityManaCost: champion?.abilityManaCost ?? 0,
+									attackSpeed: champion?.attackSpeed ?? 0,
+									attackCritChance: champion?.attackCritChance ?? 0,
+									attackCritDamage: champion?.attackCritDamage ?? 0,
+									abilityCritChance: champion?.abilityCritChance ?? 0,
+									abilityCritDamage: champion?.abilityCritDamage ?? 0,
+									damageAmp: champion?.damageAmp ?? 0,
+									abilityPower: champion?.abilityPower ?? 0,
+									durability: champion?.durability ?? 0,
+									omnivamp: champion?.omnivamp ?? 0,
+									sunder: champion?.sunder ?? false,
+									shred: champion?.shred ?? false,
+									wound: champion?.wound ?? false,
+									burn: champion?.burn ?? false,
+									immunity: champion?.immunity ?? false,
+								}}
+								starLevelStats={{
+									oneStar: {
+										health: champion?.statsByStarLevel?.[1]?.hp ?? 0,
+										armor: champion?.statsByStarLevel?.[1]?.armor ?? 0,
+										magicResist: champion?.statsByStarLevel?.[1]?.magicResist ?? 0,
+										attackDamage: champion?.statsByStarLevel?.[1]?.attackDamage ?? 0,
+									},
+									twoStar: {
+										health: champion?.statsByStarLevel?.[2]?.hp ?? 0,
+										armor: champion?.statsByStarLevel?.[2]?.armor ?? 0,
+										magicResist: champion?.statsByStarLevel?.[2]?.magicResist ?? 0,
+										attackDamage: champion?.statsByStarLevel?.[2]?.attackDamage ?? 0,
+									},
+									threeStar: {
+										health: champion?.statsByStarLevel?.[3]?.hp ?? 0,
+										armor: champion?.statsByStarLevel?.[3]?.armor ?? 0,
+										magicResist: champion?.statsByStarLevel?.[3]?.magicResist ?? 0,
+										attackDamage: champion?.statsByStarLevel?.[3]?.attackDamage ?? 0,
+									},
+								}}
+								starLevel={1}
+							/>
+						)}
+					</div>
+				);
+			})}
+		</div>
+	);
 };

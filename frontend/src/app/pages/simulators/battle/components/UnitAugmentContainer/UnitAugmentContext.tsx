@@ -1,6 +1,9 @@
 import { useContext, useState, createContext, ReactNode } from "react"
 
 interface UnitAugmentContextType {
+  showBelow: boolean;
+  setShowBelow: (show: boolean) => void;
+
   searchTerm: string;
   setSearchTerm: (term: string) => void;
   sortByCost: boolean;
@@ -26,13 +29,15 @@ interface UnitAugmentProviderProps {
 }
 
 export const UnitAugmentProvider = ({ children }: UnitAugmentProviderProps) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortByCost, setSortByCost] = useState(true);
-  const [sortByAlphabet, setSortByAlphabet] = useState(false);
-  const [filterByTrait, setFilterByTrait] = useState("");
-  const [toggleUnitsOrAugments, setToggleUnitsOrAugments] = useState(true);
-  const [open, setOpen] = useState(false);
-  const [clickedTraitDropDown, setClickedTraitDropDown] = useState("");
+  const [showBelow, setShowBelow] = useState<boolean>(false);
+
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [sortByCost, setSortByCost] = useState<boolean>(true);
+  const [sortByAlphabet, setSortByAlphabet] = useState<boolean>(false);
+  const [filterByTrait, setFilterByTrait] = useState<string>("");
+  const [toggleUnitsOrAugments, setToggleUnitsOrAugments] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(false);
+  const [clickedTraitDropDown, setClickedTraitDropDown] = useState<string>("");
 
   const handleSortByCost = () => {
     if(sortByCost){
@@ -56,6 +61,8 @@ export const UnitAugmentProvider = ({ children }: UnitAugmentProviderProps) => {
   return (
     <UnitAugmentContext.Provider
       value={{
+        showBelow,
+        setShowBelow,
         searchTerm,
         setSearchTerm,
         sortByCost,

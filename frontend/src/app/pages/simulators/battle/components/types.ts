@@ -1,6 +1,7 @@
 export interface Stats {  
     abilityName: string;
     abilityDescription: string;
+    
     range: number;
     mana: number;
     manaPerAttack: number;
@@ -27,20 +28,20 @@ export interface StarLevelStats {
     armor: number;
     magicResist: number;
     attackDamage: number;
-
 }
 
 export interface ChampionHoverInfoProps {
-    champion: string;
-    cost: number;
-    traits: [string, string, string];
+    champion?: string;
+    cost?: number;
+    traits?: [string, string, string];
     items?: [string?, string?, string?];
-    stats: Stats;
-    starLevelStats: {
+    stats?: Stats;
+    starLevelStats?: {
     oneStar: StarLevelStats;
     twoStar: StarLevelStats;
     threeStar: StarLevelStats;
     };
-    starLevel: 1 | 2 | 3;
+    starLevel?: 1 | 2 | 3;
     showBelow?: boolean;
+    overExtend?: boolean;
 }

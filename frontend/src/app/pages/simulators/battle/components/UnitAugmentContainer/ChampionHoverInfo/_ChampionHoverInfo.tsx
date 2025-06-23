@@ -2,12 +2,9 @@ import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
 import { AbilityInfo } from "./AbilityInfo";
 import { ChampionImage } from "./ChampionImage";
 import { ChampionStatsGrid } from "./ChampionStatsGrid";
-import {
-  ChampionHoverInfoProvider,
-  useChampionHoverInfoContext,
-} from "./ChampoinHoverInfoContext";
+import { ChampionHoverInfoProvider, useChampionHoverInfoContext } from "./ChampoinHoverInfoContext";
 import { ToggleAbilityStatsSwitch } from "./ToggleAbilityStatsSwitch";
-import { ChampionHoverInfoProps } from "./types";
+import { ChampionHoverInfoProps } from "../../types";
 
 export const ChampionHoverInfo = (props: ChampionHoverInfoProps) => {
   return (
@@ -21,19 +18,16 @@ const ChampionHoverInfoContent = ({
   champion,
   cost,
   traits,
-  items,
   stats,
   starLevelStats,
   starLevel,
   showBelow = false,
+  overExtend =false,
 }: ChampionHoverInfoProps) => {
   const { set } = useTFTSetContext();
-  const {
-    toggleAbilityStatsSwitch,
-    setToggleAbilityStatsSwitch,
-  } = useChampionHoverInfoContext();
-
-  const imageAbilityName = stats.abilityName.replace(/\s/g, "");
+  const { toggleAbilityStatsSwitch, setToggleAbilityStatsSwitch } = useChampionHoverInfoContext();
+  
+  const imageAbilityName = stats?.abilityName?.replace(/\s/g, "") || "";
 
   const borderColor =
     cost === 1 ? "border-gray-400" :
@@ -46,36 +40,45 @@ const ChampionHoverInfoContent = ({
 
   return (
     <div
-      className={`absolute z-50 bg-hexCell text-white rounded-md w-[16rem] origin-bottom animate-grow-in shadow-2xl shadow-gray-900
-        ${showBelow ? "top-full mt-2" : "bottom-full mb-2"}`}
+      className={`absolute z-50 bg-hexCell text-white rounded-md w-[16rem]  animate-grow-in shadow-2xl shadow-gray-900
+        ${showBelow ? "top-full origin-top" : "bottom-full mb-2 origin-bottom"} 
+        ${overExtend ? "mt-5" : "mb-2"}`
+      } 
     >
       <ChampionHoverInfoProvider>
         <ChampionImage
           set={set}
-          champion={champion}
-          traits={traits}
-          cost={cost}
-          borderColor={borderColor}
+          champion={champion || ""}
+          traits={traits?traits : ["", "", ""]}
+          cost={cost || 1}
+          borderColor={borderColor || "border-gray-400"}
         />
 
-        <ToggleAbilityStatsSwitch 
-          toggleAbilityStatsSwitch={toggleAbilityStatsSwitch}
-          setToggleAbilityStatsSwitch={setToggleAbilityStatsSwitch}
-        />
+        <div className="border-b-2 border-l-2 border-r-2 border-lightGray rounded-b-md">
 
-        {!toggleAbilityStatsSwitch ? (
-          <AbilityInfo
-            set={set}
-            imageAbilityName={imageAbilityName}
-            abilityName={stats.abilityName}
-            abilityDescription={stats.abilityDescription}
-            mana={stats.mana}
-            maxMana={stats.abilityManaCost}
+          <ToggleAbilityStatsSwitch 
+            toggleAbilityStatsSwitch={toggleAbilityStatsSwitch}
+            setToggleAbilityStatsSwitch={setToggleAbilityStatsSwitch}
           />
-        ) : (
-          <ChampionStatsGrid/>
-        )}
 
+          {toggleAbilityStatsSwitch ? (
+            <AbilityInfo
+              set={set}
+              imageAbilityName={imageAbilityName}
+              abilityName={stats?.abilityName || "Unknown Ability"}
+              abilityDescription={stats?.abilityDescription || "No description available"}
+              mana={stats?.mana || 0}
+              maxMana={stats?.abilityManaCost || 0}
+            />
+          ) : (
+            <ChampionStatsGrid 
+              stats={stats}
+              starLevelStats={starLevelStats}
+              starLevel={starLevel}
+            />
+          )}
+        </div>
+        
         <style>{`
           .text-outline {
             text-shadow:
