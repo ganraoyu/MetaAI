@@ -40,7 +40,7 @@ const ChampionHoverInfoContent = ({
 
   return (
     <div
-      className={`absolute z-50 bg-hexCell text-white rounded-md w-[16rem]  animate-grow-in shadow-2xl shadow-gray-900
+      className={`absolute z-50 bg-hexCell text-white rounded-md w-[14rem]  animate-grow-in shadow-2xl shadow-gray-900
         ${showBelow ? "top-full origin-top" : "bottom-full mb-2 origin-bottom"} 
         ${overExtend ? "mt-5" : "mb-2"}`
       } 

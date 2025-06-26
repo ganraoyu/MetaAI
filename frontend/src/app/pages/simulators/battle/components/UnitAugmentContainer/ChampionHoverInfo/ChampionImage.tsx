@@ -14,7 +14,7 @@ export const ChampionImage = ({set, champion, traits, cost, borderColor}: Champi
         <img
           src={`../assets/${set}/champions/splash/${champion}.png`}
           alt={champion}
-          className="w-full h-[9rem] object-cover rounded-t-md"
+          className="w-full h-[7rem] object-cover rounded-t-md"
         />
         {/* Left-to-right gradient overlay */}
         <div className="absolute top-0 left-0 w-full h-[9rem] bg-gradient-to-r from-black/60 to-transparent rounded-t-md pointer-events-none" />
