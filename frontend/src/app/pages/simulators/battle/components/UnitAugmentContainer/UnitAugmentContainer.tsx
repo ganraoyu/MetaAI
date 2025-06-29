@@ -15,7 +15,7 @@ const UnitAugmentContainerContent = () => {
   const { set } = useTFTSetContext();
 
   return (
-    <div className="select-none">
+    <div>
         <FilterContainer />
         <ChampionCardList set={set} />
     </div>

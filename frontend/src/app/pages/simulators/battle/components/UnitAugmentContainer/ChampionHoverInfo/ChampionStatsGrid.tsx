@@ -27,7 +27,6 @@ const StatRow = ({
 export const ChampionStatsGrid = ({
   stats,
   starLevelStats,
-  starLevel,
 }: ChampionStatsGridProps) => {
   return (
     <div>
@@ -113,7 +112,7 @@ export const ChampionStatsGrid = ({
           label="Range"
           icon="../assets/icons/range.png"
           value={stats?.range}
-          size={{ width: '0.875rem', height: '0.875rem', pb- }}
+          size={{ width: '0.875rem', height: '0.875rem' }}
         />
       </div>
     </div>

@@ -7,7 +7,7 @@ export const AutoAttack = ({log, index, parentRef} : {log: any, index: number, p
     const [hoveredDamageId, setHoveredDamageId] = useState<number | null>(null)
     const [clickedDamageId, setClickedDamageId] = useState<number | null>(null)
 
-    const [position, setPosition] = useState({ top: 0, left: 0 });
+    const [setPosition] = useState({ top: 0, left: 0 });
 
     const handleDamageClicked = (id: number) => {
         if (clickedDamageId === id) {

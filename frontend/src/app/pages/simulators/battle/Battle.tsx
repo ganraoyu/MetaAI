@@ -1,69 +1,23 @@
-import { useState, useEffect, useRef } from 'react';
-import { HexCells } from './components/HexCells';
+import { useState } from 'react';
 import { useTitle } from '../../../utilities/useTitle';
-
-import axios from 'axios';
-
-import { MdClose, MdPlayArrow, MdAnalytics, MdSave, MdFolderOpen, MdSettings } from "react-icons/md";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-
-import { Filter } from './components/BattleLogCards/_Filter';
-import { AutoAttack } from './components/BattleLogCards/AutoAttack';
-import { Ability } from './components/BattleLogCards/Ability';
-import { HealCard } from './components/BattleLogCards/HealCard';
-
 import { UnitAugmentContainer } from './components/UnitAugmentContainer/UnitAugmentContainer';
+import { BattleButtons } from './components/BattleContainers/BattleButtons';
+import { BattleProvider } from './BattleContext';
+import { TraitsContainer } from './components/BattleContainers/TraitsContainer';
+import { HexBoard } from './components/BattleContainers/HexBoard';
+import { LogsDisplay } from './components/BattleContainers/LogDisplay';
+import { Filter } from './components/BattleLogCards/_Filter';
 
-interface BattleLog {
-  formattedTime: string;
-  type: string;
-  details: any;
-  isCrit?: boolean;
-  source: string;
-}
-
-interface BattleData {
-  battleLogs: BattleLog[];
-  duration: number;
-}
-
-const Battle = () => {
+const BattleContent = () => {
   useTitle('TFT Battle Simulator - Builder');
-
-  const parentRef = useRef<HTMLDivElement>(null);
-
-  const [champion, setChampion] = useState<string | null>(null);
-  const [battleHistory, setBattleHistory] = useState<BattleData | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [clicked, setClicked] = useState(false);
-
+  
   const [toggleAttack, setToggleAttack] = useState(true);
   const [toggleAbility, setToggleAbility] = useState(true);
   const [toggleHeal, setToggleHeal] = useState(true);
-
   const [toggleItemHeal, setToggleItemHeal] = useState(true);
   const [toggleMagicDamage, setToggleMagicDamage] = useState(true);
   const [toggleBurn, setToggleBurn] = useState(true);
-
-  const [toggleUnits, setToggleUnits] = useState(true);
-  const [toggleAugments, setToggleAugments] = useState(false);
-
-  const fetchBattleHistory = async () => {
-    setLoading(true);
-
-    try {
-      const response = await axios.get('http://localhost:3000/battle-simulator/battle-history');
-      console.log('Response data:', response.data); 
-      setBattleHistory(response.data);
-      setError(null);
-      setLoading(false);
-    } catch (err: any) {
-      setError('Failed to fetch battle history: ' + (err.response?.data?.message || err.message));
-      console.error('Error fetching battle history:', err);
-      setLoading(false);
-    }
-  };
+  const [toggleUnits] = useState(true);
 
   return (
     <div className='bg-mainBackground min-h-screen pt-[4.5rem]'>        
@@ -72,287 +26,69 @@ const Battle = () => {
           <h1 className='text-[1.2rem] w-full text-white font-semibold'>TFT Battle Simulator</h1>
           <p className='text-white text-[0.8rem]'>Get real-time replays of battles with our TFT Battle Simulator</p>
         </div>        
-        <div className='flex items-center gap-1 mb-[0.5rem]'>
-          
-          {/* Main action buttons */}
-          <button 
-            className='h-8 px-3 rounded-md bg-hexCellComponents text-green-400 border border-green-600/60 text-xs font-medium flex items-center gap-1 hover:bg-hexCellComponents/90 transition-all' 
-            onClick={() => {setClicked(true); fetchBattleHistory();}}
-          >
-            <MdPlayArrow className="h-4 w-4" /> Start Battle
-          </button>
-          
-          <button 
-            className='h-8 px-3 rounded-md bg-hexCellComponents text-red-400 border border-red-600/60 text-xs font-medium flex items-center gap-1 hover:bg-hexCellComponents/90 transition-all' 
-            onClick={() => setBattleHistory(null)}
-          >
-            <MdClose className="h-4 w-4" /> Clear Board
-          </button>
-          
-          <button 
-            className='h-8 px-3 rounded-md bg-hexCellComponents text-blue-400 border border-blue-500/60 text-xs font-medium flex items-center gap-1 hover:bg-hexCellComponents/90 transition-all'
-          >
-            <MdAnalytics className="h-4 w-4" /> View Details
-          </button>
-          
-          {/* File buttons */}
-          <button 
-            className='h-8 px-3 rounded-md bg-hexCellComponents text-blue-400 border border-blue-500/60 text-xs font-medium flex items-center gap-1 hover:bg-hexCellComponents/90 transition-all'
-          >
-            <MdSave className="h-4 w-4" /> Save Board
-          </button>
-          
-          <button 
-            className='h-8 px-3 rounded-md bg-hexCellComponents text-blue-400 border border-blue-500/60 text-xs font-medium flex items-center gap-1 hover:bg-hexCellComponents/90 transition-all'
-          >
-            <MdFolderOpen className="h-4 w-4" /> Load Board
-          </button>
-          
-          <button 
-            className='h-8 px-3 rounded-md bg-hexCellComponents text-yellow-400 border border-yellow-500/60 text-xs font-medium flex items-center gap-1 hover:bg-hexCellComponents/90 transition-all'
-          >
-            <MdSettings className="h-4 w-4" /> Options
-          </button>
-          
-          {/* Navigation buttons */}
-          <button 
-            className='h-8 w-8 rounded-md bg-hexCellComponents text-gray-300 border border-gray-600/60 text-xs font-medium flex items-center justify-center hover:bg-hexCellComponents/90 transition-all'
-          >
-            <FaArrowLeft className="h-3 w-3" />
-          </button>
-          
-          <button 
-            className='h-8 w-8 rounded-md bg-hexCellComponents text-gray-300 border border-gray-600/60 text-xs font-medium flex items-center justify-center hover:bg-hexCellComponents/90 transition-all'
-          >
-            <FaArrowRight className="h-3 w-3" />
-          </button>
-        </div>
+        <BattleButtons />
 
-        {/* Left side - Traits */}
+        {/* Main content section */}
         <div className='flex flex-row items-start justify-between h-[35rem] w-[70rem] mx-auto p-4 bg-hexCellBackground rounded-t-2xl'>
-          <div className='w-1/4 text-white'>
-            <p className="font-semibold">
-              Traits
-            </p>
-            <div className='bg-hexCellComponents rounded-2xl w-56 h-56 mb-6'>
-
-            </div>
-            <div className='bg-hexCellComponents rounded-2xl mb-2 w-56 h-56'>
-            </div>
-            {/* Trait content goes here */}
-          </div>
+          {/* Left side - Traits */}
+          <TraitsContainer />
           
           {/* Center - Hex Board */}
-          <div className="flex-1 flex items-center justify-center mr-[3rem] mt-[2.6rem]">
-            <div className="grid grid-cols-1 justify-items-center">
-              <div className='flex justify-center items-center gap-0 mr-8 mb-[-1.1rem]'>
-                <HexCells champion={null} row={0} col={0} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={0} col={1} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={0} col={2} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={0} col={3} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={0} col={4} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={0} col={5} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={0} col={6} occupied={false} team={'opponent'} />
-              </div>
-              <div className='flex justify-center items-center gap-0 ml-10 mb-[-1.1rem]'>
-                <HexCells champion={null} row={1} col={0} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={1} col={1} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={1} col={2} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={1} col={3} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={1} col={4} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={1} col={5} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={1} col={6} occupied={false} team={'opponent'} />
-              </div>
-              <div className='flex justify-center items-center gap-0 mr-8 mb-[-1.1rem]'>
-                <HexCells champion={null} row={2} col={0} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={2} col={1} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={2} col={2} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={2} col={3} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={2} col={4} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={2} col={5} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={2} col={6} occupied={false} team={'opponent'} />
-              </div>
-              <div className='flex justify-center items-center gap-0 ml-10 mb-[-1.1rem]'>
-                <HexCells champion={null} row={3} col={0} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={3} col={1} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={3} col={2} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={3} col={3} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={3} col={4} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={3} col={5} occupied={false} team={'opponent'} />
-                <HexCells champion={null} row={3} col={6} occupied={false} team={'opponent'} />
-              </div>
-              <div className='flex justify-center items-center gap-0 mt-[0.5rem] mr-8 mb-[-1.1rem]'>
-                <HexCells champion={null} row={0} col={0} occupied={false} team={'player'} />
-                <HexCells champion={null} row={0} col={1} occupied={false} team={'player'} />
-                <HexCells champion={null} row={0} col={2} occupied={false} team={'player'} />
-                <HexCells champion={null} row={0} col={3} occupied={false} team={'player'} />
-                <HexCells champion={null} row={0} col={4} occupied={false} team={'player'} />
-                <HexCells champion={null} row={0} col={5} occupied={false} team={'player'} />
-                <HexCells champion={null} row={0} col={6} occupied={false} team={'player'} />
-              </div>
-              <div className='flex justify-center items-center gap-0 ml-10 mb-[-1.1rem]'>
-                <HexCells champion={null} row={1} col={0} occupied={false} team={'player'} />
-                <HexCells champion={null} row={1} col={1} occupied={false} team={'player'} />
-                <HexCells champion={null} row={1} col={2} occupied={false} team={'player'} />
-                <HexCells champion={null} row={1} col={3} occupied={false} team={'player'} />
-                <HexCells champion={null} row={1} col={4} occupied={false} team={'player'} />
-                <HexCells champion={null} row={1} col={5} occupied={false} team={'player'} />
-                <HexCells champion={null} row={1} col={6} occupied={false} team={'player'} />
-              </div>
-              <div className='flex justify-center items-center gap-0 mr-8 mb-[-1.1rem]'>
-                <HexCells champion={null} row={2} col={0} occupied={false} team={'player'} />
-                <HexCells champion={null} row={2} col={1} occupied={false} team={'player'} />
-                <HexCells champion={null} row={2} col={2} occupied={false} team={'player'} />
-                <HexCells champion={null} row={2} col={3} occupied={false} team={'player'} />
-                <HexCells champion={null} row={2} col={4} occupied={false} team={'player'} />
-                <HexCells champion={null} row={2} col={5} occupied={false} team={'player'} />
-                <HexCells champion={null} row={2} col={6} occupied={false} team={'player'} />
-              </div>
-              <div className='flex justify-center items-center gap-0 ml-10 mb-[-1.1rem]'>
-                <HexCells champion={null} row={3} col={0} occupied={false} team={'player'} />
-                <HexCells champion={null} row={3} col={1} occupied={false} team={'player'} />
-                <HexCells champion={null} row={3} col={2} occupied={false} team={'player'} />
-                <HexCells champion={null} row={3} col={3} occupied={false} team={'player'} />
-                <HexCells champion={null} row={3} col={4} occupied={false} team={'player'} />
-                <HexCells champion={null} row={3} col={5} occupied={false} team={'player'} />
-                <HexCells champion={null} row={3} col={6} occupied={false} team={'player'} />
-              </div>
-            </div>
-          </div>
+          <HexBoard/> 
           
           {/* Right side - Battle Logs */}
-          <div className='mb-10'>
-            <div className='flex justify-center items-center h-17 w-[18rem] bg-hexCellComponents rounded-2xl pt-5 select-none'>
-              <Filter
-                toggleAttack={toggleAttack}
-                toggleAbility={toggleAbility}
-                toggleHeal={toggleHeal}
-                toggleItemHeal={toggleItemHeal}
-                toggleMagicDamage={toggleMagicDamage}
-                toggleBurn={toggleBurn}
-                setToggleAttack={setToggleAttack}
-                setToggleAbility={setToggleAbility}
-                setToggleHeal={setToggleHeal}
-                setToggleItemHeal={setToggleItemHeal}
-                setToggleMagicDamage={setToggleMagicDamage}
-                setToggleBurn={setToggleBurn}
-              />
-            </div>
-            <div className='mt-4 w-[18rem] h-[26rem] max-h-[calc(100%-3rem)] overflow-y-auto scrollbar-hide text-white bg-hexCellComponents rounded-2xl p-4' style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              <style jsx>{`
-                div::-webkit-scrollbar {
-                display: none;
-                }
-
-                @keyframes growIn {
-                  from {
-                    transform: scale(0.6);
-                    opacity: 0;
-                  }
-                  to {
-                    transform: scale(1);
-                    opacity: 1;
-                  }
-                }
-
-              .animate-grow-in {
-                animation: growIn 0.2s ease-out forwards;
-              }
-              `}</style>
-              {loading && clicked ? (
-                <p>Loading battle data...</p>
-              ) : error ? (
-                <div>
-                  <p>{error}</p>
-                  <button onClick={fetchBattleHistory}>Try Again</button>
-                </div>
-              ) : (
-                <div className='select-none'>
-                  {battleHistory && battleHistory.battleLogs && battleHistory.battleLogs.length > 0 ? (
-                    <div>
-                    <ul className="battle-log text-[0.8rem]">
-                      {battleHistory.battleLogs.map((log, index) => (
-                        <li key={index} className="mb-3 animate-fadeIn">
-                          {log.type === "attack" && toggleAttack && (
-                          <AutoAttack 
-                            log={log}
-                            index={index}
-                            parentRef={parentRef}
-                          />
-                        )}
-                        {log.type === "ability" && toggleAbility && (
-                          <Ability
-                            log={log}
-                            index={index}
-                            parentRef={parentRef}
-                          />
-                        )}
-                        {log.type === "heal" && toggleHeal && (
-                          <HealCard  
-                            log={log}
-                          />
-                        )}
-                        {log.type === "heal" && log.details.type === "item" && toggleItemHeal && (
-                          <div className='bg-gradient-to-r from-teal-900/40 to-teal-800/20 border-l-4 border-teal-500 rounded-md p-2 shadow-md'>
-                            <div className="flex justify-between items-start mb-2">
-                              <span className="text-xs text-gray-400">[{log.formattedTime}]</span>
-                              <span className="text-xs font-bold text-teal-400 bg-teal-400/20 px-2 py-0.5 rounded">
-                                +{log.details.healAmount}
-                              </span>
-                            </div>
-                            <div>Item healing from {log.details.item}</div>
-                          </div>
-                        )}
-                        {log.type === "magicDamage" && toggleMagicDamage && (
-                            <div className='bg-gradient-to-r from-purple-900/40 to-purple-800/20 border-l-4 border-purple-500 rounded-md p-2 shadow-md'>
-                            <span className="text-xs text-gray-400 block mb-1">[{log.formattedTime}]</span>
-                            <span className="font-medium">{log.details.champion}</span> deals magic damage to <span className="font-medium">{log.details.target}</span>
-                            <div className="text-xs opacity-75 mt-1">from {log.details.item}</div>
-                            <span className="float-right font-bold text-purple-400">{log.details.magicDamage}</span>
-                            </div>
-                            )}
-                            {log.type === 'burn' && toggleBurn && (
-                            <div className='bg-gradient-to-r from-orange-900/40 to-orange-800/20 border-l-4 border-orange-500 rounded-md p-2 shadow-md'>
-                            <span className="text-xs text-gray-400 block mb-1">[{log.formattedTime}]</span>
-                            <span className="font-medium">{log.details.champion}</span> burns <span className="font-medium">{log.details.target}</span>
-                            <div className="text-xs opacity-75 mt-1">from {log.details.item}</div>
-                            <span className="float-right font-bold text-orange-400">{log.details.burnDamage}</span>
-                            </div>
-                            )}
-                            {log.type === 'wound' && (
-                            <div className='bg-gradient-to-r from-rose-900/40 to-rose-800/20 border-l-4 border-rose-500 rounded-md p-2 shadow-md'> 
-                            <span className="text-xs text-gray-400 block mb-1">[{log.formattedTime}]</span>
-                            <span className="font-medium">{log.details.champion}</span> wounds <span className="font-medium">{log.details.target}</span>
-                            <div className="text-xs opacity-75 mt-1">from {log.details.item}</div>
-                            <span className="float-right font-bold text-rose-400">{log.details.woundDamage}</span>
-                            </div>
-                            )}
-                          </li>
-                            ))}
-                        </ul>
-                      </div>
-                    ) : (
-                        <div className='flex items-center justify-center h-full w-full mt-[10rem]'>
-                          <p className="text-hexCellComponentsFont text-center text-[0.9rem]">No battle logs available. Start a battle to see logs here.</p>
-                        </div>
-                    )}
-                </div>
-              )}
-            </div>
+          <div className="w-[18rem]">
+            <Filter 
+              toggleAttack={toggleAttack}
+              toggleAbility={toggleAbility}
+              toggleHeal={toggleHeal}
+              toggleItemHeal={toggleItemHeal}
+              toggleMagicDamage={toggleMagicDamage}
+              toggleBurn={toggleBurn}
+              setToggleAttack={setToggleAttack}
+              setToggleAbility={setToggleAbility}
+              setToggleHeal={setToggleHeal}
+              setToggleItemHeal={setToggleItemHeal}
+              setToggleMagicDamage={setToggleMagicDamage}
+              setToggleBurn={setToggleBurn}
+            />
+            <LogsDisplay 
+              toggleAttack={toggleAttack} 
+              toggleAbility={toggleAbility} 
+              toggleHeal={toggleHeal} 
+              toggleItemHeal={toggleItemHeal} 
+              toggleMagicDamage={toggleMagicDamage} 
+              toggleBurn={toggleBurn} 
+              setToggleAttack={setToggleAttack}
+              setToggleAbility={setToggleAbility}
+              setToggleHeal={setToggleHeal}
+              setToggleItemHeal={setToggleItemHeal}
+              setToggleMagicDamage={setToggleMagicDamage}
+              setToggleBurn={setToggleBurn}
+            />
           </div>
-        </div>   
+        </div> 
+
         {/* Bottom section - Units and Augments */}
         <div className='h-[40rem] w-[70rem] bg-hexCellBackground rounded-b-2xl mt-[-1.5rem] pl-[1.5rem]'>
           <div className=''>
-              {toggleUnits && (
-                <div className='flex gap-2 select-none'>
-                  <UnitAugmentContainer />
-                </div>
-              )}
+            {toggleUnits && (
+              <div className='flex gap-2 select-none'>
+                <UnitAugmentContainer />
+              </div>
+            )}
           </div>
         </div>  
       </div>
     </div>
+  );
+};
+
+const Battle = () => {
+  return (
+    <BattleProvider>
+      <BattleContent />
+    </BattleProvider>
   );
 };
 

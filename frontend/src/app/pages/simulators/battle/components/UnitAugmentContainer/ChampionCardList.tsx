@@ -1,4 +1,3 @@
-// ChampionCardList.tsx
 import { useState, useMemo, useRef, useEffect } from "react";
 import { useUnitAugmentContext } from "./UnitAugmentContext";
 import { getChampionBySet } from "../../data/Loaders/championDataLoader";
@@ -93,6 +92,7 @@ export const ChampionCardList = ({ set }: { set: string }) => {
 						<img
 							src={champion.image || "/placeholder.png"}
 							alt={name}
+							draggable='true'
 							className={`w-10 h-10 rounded-[0.09rem] outline outline-2 ${
 								cost === 1 ? "outline-gray-400" :
 								cost === 2 ? "outline-green-500" :
