@@ -15,7 +15,7 @@ interface DamageBreakdownProps {
     name: string;
     percentage: number;
   }[];
-  damageType: 'physical' | 'magical' | 'true';
+  damageType: 'physical' | 'magic' | 'true';
 }
 
 export const DamageHover: React.FC<DamageBreakdownProps> = ({
@@ -32,7 +32,7 @@ export const DamageHover: React.FC<DamageBreakdownProps> = ({
       <div className="flex justify-between items-center border-b border-gray-600 pb-1 mb-2">
         <div className="flex items-center gap-1.5">
           <img 
-            src={`../assets/icons/${damageType === 'physical' ? 'attack' : damageType === 'magical' ? 'abilitypower' : 'true-damage'}.png`} 
+            src={`../assets/icons/${damageType === 'physical' ? 'attack' : damageType === 'magic' ? 'abilitypower' : 'true-damage'}.png`} 
             className="h-4 w-4" 
             alt={`${damageType} damage`} 
           />
@@ -42,7 +42,7 @@ export const DamageHover: React.FC<DamageBreakdownProps> = ({
         </div>
         <span className={`font-bold ${
           damageType === 'physical' ? 'text-orange-400' : 
-          damageType === 'magical' ? 'text-blue-400' : 
+          damageType === 'magic' ? 'text-blue-400' : 
           'text-white'
         }`}>
           {finalDamage}

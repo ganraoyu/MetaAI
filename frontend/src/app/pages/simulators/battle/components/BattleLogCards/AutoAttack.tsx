@@ -1,46 +1,39 @@
-import { useState, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { ChampionCard } from '../ChampionCard/ChampionCard.tsx'
 import { DamageHover } from './CardHovers/DamageHover.tsx'
 import { GiSwordClash } from 'react-icons/gi'
 
-export const AutoAttack = ({log, index, parentRef} : {log: any, index: number, parentRef: any}) => {
+export const AutoAttack = ({log, index} : {log: any, index: number, parentRef: any}) => {
     const [hoveredDamageId, setHoveredDamageId] = useState<number | null>(null)
     const [clickedDamageId, setClickedDamageId] = useState<number | null>(null)
-
-    const [setPosition] = useState({ top: 0, left: 0 });
+    const damageRef = useRef<HTMLSpanElement>(null);
+    const [position, setPosition] = useState({ top: 0, left: 0 });
 
     const handleDamageClicked = (id: number) => {
         if (clickedDamageId === id) {
             setClickedDamageId(null);
         } else {
             setClickedDamageId(id);
+            // Update position immediately when clicked
+            updatePosition();
         }
     }
 
-    useEffect(() => {
-        if (parentRef?.current) {
-            const updatePosition = () => {
-                const rect = parentRef.current?.getBoundingClientRect();
-                if (!rect) return;
-                
-                const viewportWidth = window.innerWidth;
+    const updatePosition = () => {
+        if (!damageRef.current) return;
+        
+        const damageRect = damageRef.current.getBoundingClientRect();
 
-                let left = rect.right + 10;
-                
-                if (left + 180 > viewportWidth) {
-                    left = rect.left - 180;
-                }
-                
-                setPosition({
-                    top: rect.top,
-                    left: Math.max(10, left)
-                });
-            };
-            
-            // Initial position
+        let left = damageRect.right - 40;
+        let top = damageRect.top + 25;
+        setPosition({ top, left });
+    };
+
+    useEffect(() => {
+        // Only add event listeners if the hover is active
+        if (hoveredDamageId === index || clickedDamageId === index) {
             updatePosition();
-            
-            // Update position on scroll
+
             window.addEventListener('scroll', updatePosition);
             window.addEventListener('resize', updatePosition);
             
@@ -49,21 +42,29 @@ export const AutoAttack = ({log, index, parentRef} : {log: any, index: number, p
                 window.removeEventListener('resize', updatePosition);
             };
         }
-    }, [parentRef]);
+    }, [hoveredDamageId, clickedDamageId, index]);
+
     return (
     <div>
         <div className='bg-gradient-to-r from-red-900/40 to-red-800/20 border-l-4 border-red-600 rounded-md p-2 shadow-md'>
             <div className="flex justify-between items-start mb-2 cursor-pointer">
                 <span className="text-xs text-gray-400">[{log.formattedTime}]</span>
                 <span 
-                className="text-xs font-bold text-red-400 bg-red-400/20 px-2 py-0.5 rounded  "
-                onMouseEnter={() => setHoveredDamageId(index)}
+                ref={damageRef}
+                className="text-xs font-bold text-red-400 bg-red-400/20 px-2 py-0.5 rounded relative"
+                onMouseEnter={() => { setHoveredDamageId(index); updatePosition(); }}
                 onMouseLeave={() => setHoveredDamageId(null)}
                 onClick={() => handleDamageClicked(index)}
                 >
                 -{log.details.damage}
                     {(hoveredDamageId === index || clickedDamageId === index) && (
-                    <div className="absolute mt-1 animate-grow-in origin-top-right z-50 cursor-auto">
+                    <div 
+                        className="fixed animate-grow-in origin-top-left z-50 cursor-auto"
+                        style={{ 
+                            top: `${position.top}px`, 
+                            left: `${position.left}px` 
+                        }}
+                    >
                         <DamageHover 
                             rawDamage={-Math.round(log.details.attacker.attackDamage) || 0}
                             finalDamage={-log.details.damage || 0}
@@ -154,4 +155,3 @@ export const AutoAttack = ({log, index, parentRef} : {log: any, index: number, p
     </div>
     )
 }
-

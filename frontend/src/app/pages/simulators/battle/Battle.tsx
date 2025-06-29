@@ -26,6 +26,7 @@ const BattleContent = () => {
           <h1 className='text-[1.2rem] w-full text-white font-semibold'>TFT Battle Simulator</h1>
           <p className='text-white text-[0.8rem]'>Get real-time replays of battles with our TFT Battle Simulator</p>
         </div>        
+        {/* Top - Battle Control Buttons */}
         <BattleButtons />
 
         {/* Main content section */}

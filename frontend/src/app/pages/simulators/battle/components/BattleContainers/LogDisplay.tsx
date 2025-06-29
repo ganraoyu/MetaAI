@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { AutoAttack } from '../BattleLogCards/AutoAttack';
 import { useBattleContext } from '../../BattleContext';
+import { Ability } from '../BattleLogCards/Ability';
 
 export interface LogsDisplayProps {
   toggleAttack: boolean;
@@ -50,11 +51,22 @@ export const LogsDisplay = ({
                     <li key={index} className="mb-3 animate-fadeIn">
                       {/* Render log items based on type */}
                       {log.type === "attack" && toggleAttack && (
-                        <AutoAttack 
-                          log={log}
-                          index={index}
-                          parentRef={parentRef}
-                        />
+                        <div>
+                          <div className='mb-2'>
+                            <AutoAttack 
+                              log={log}
+                              index={index}
+                              parentRef={parentRef}
+                            />  
+                          </div>
+                          <div>
+                            <Ability
+                              log={log}
+                              index={index}
+                            />
+                          </div>
+                        </div>
+                      
                       )}
                       {/* Add other log types here */}
                     </li>
