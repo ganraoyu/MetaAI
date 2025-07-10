@@ -2,6 +2,8 @@ import { useRef } from 'react';
 import { AutoAttack } from '../BattleLogCards/AutoAttack';
 import { useBattleContext } from '../../BattleContext';
 import { Ability } from '../BattleLogCards/Ability';
+import { Heal } from '../BattleLogCards/Heal';
+import Burn from '../BattleLogCards/Burn';
 
 export interface LogsDisplayProps {
   toggleAttack: boolean;
@@ -51,23 +53,36 @@ export const LogsDisplay = ({
                     <li key={index} className="mb-3 animate-fadeIn">
                       {/* Render log items based on type */}
                       {log.type === "attack" && toggleAttack && (
-                        <div>
                           <div className='mb-2'>
                             <AutoAttack 
                               log={log}
                               index={index}
                               parentRef={parentRef}
                             />  
-                          </div>
-                          <div>
+                          </div>                      
+                      )}
+                      {log.type === "ability" && toggleAbility && (
+                          <div className='mb-2'>
                             <Ability
                               log={log}
                               index={index}
                             />
                           </div>
-                        </div>
-                      
                       )}
+                      {log.type === 'heal' && toggleHeal && (
+                        <div className='mb-2'>
+                          <Heal
+                            log={log}
+                          />
+                        </div>
+                      )}
+                      {log.type === 'burn' && toggleBurn && (
+                        <div className='mb-2'>
+                          <Burn
+                          />
+                        </div>
+                      )
+                      }
                       {/* Add other log types here */}
                     </li>
                   ))}

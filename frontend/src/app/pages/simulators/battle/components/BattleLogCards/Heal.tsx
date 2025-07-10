@@ -1,6 +1,7 @@
 import { ChampionCard } from '../ChampionCard/ChampionCard'
+import { HealHover } from './CardHovers/HealHover'
 
-export const HealCard = ({log}: {log: any}) => {
+export const Heal = ({log}: {log: any}) => {
   return (
     <div>
         <div className='bg-gradient-to-r from-green-900/40 to-green-800/20 border-l-4 border-green-500 rounded-md p-2 shadow-md'>        
@@ -8,6 +9,9 @@ export const HealCard = ({log}: {log: any}) => {
                 <span className="text-xs text-gray-400">[{log.formattedTime}]</span>
                 <span className="text-xs font-bold text-green-400 bg-green-400/20 px-2 py-0.5 rounded ">
                 +{log.details.healAmount}
+                <HealHover 
+                    healAmount={log.details.healAmount}
+                    source={log.details.source}/>
                 </span>
             </div>
             <div className='grid grid-cols-3 gap-2 mb-2'>

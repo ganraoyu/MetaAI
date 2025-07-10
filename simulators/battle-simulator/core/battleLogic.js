@@ -444,6 +444,7 @@ function startBattle() {
 
 placeChampionByName('Akali', 7, 3, 3, 'player');
 placeChampionByName('Darius', 3, 3, 3, 'opponent'); 
+addItemByName(board.getChampion(7, 3), 'Sunfire Cape');
 
 board.displayBoard();
 

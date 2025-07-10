@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { ChampionCard } from '../ChampionCard/ChampionCard'
-import { DamageHover } from './CardHovers/DamageHover.tsx'
+import { DamageHover } from './CardHovers/DamageAbilityHover.tsx'
 
 export const Ability = ({log, index}: {log: any, index: number}) => {
   const [hoveredDamageId, setHoveredDamageId] = useState<number | null>(null)
