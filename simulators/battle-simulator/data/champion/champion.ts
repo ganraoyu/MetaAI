@@ -577,7 +577,10 @@ export class Champion {
                         maxHp: this.statsByStarLevel[this.starLevel].hp,
                     },                        
                     healAmount: actualHeal,
-                    source: 'omnivamp',
+                    source: {
+                        'type': 'ability',
+                        'abilityName': this.abilityName
+                    },
                     time: this.battleTime,
                     message: `[${formattedTime}] ${this.name}'s ability heals for ${actualHeal} health`,
                 }, this.battleTime);
