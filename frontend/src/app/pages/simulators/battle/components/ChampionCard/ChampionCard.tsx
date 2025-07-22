@@ -5,8 +5,8 @@ import ChampionCardHover from './ChampionCardHover';
 interface ChampionCardProps {
   champion: string;
   cost?: number;
-  currentHp: number;
-  maxHp: number;
+  currentHp?: number;
+  maxHp?: number;
   mana?: number;
   maxMana?: number;
   shield?: number;
@@ -31,10 +31,10 @@ interface ChampionCardProps {
 }
 
 export const ChampionCard = ({
-  champion,
-  cost,
-  currentHp,
-  maxHp,
+  champion = '',
+  cost = 6,
+  currentHp = 0,
+  maxHp = 0,
   mana = 0,
   maxMana = 100,
   shield = 0,

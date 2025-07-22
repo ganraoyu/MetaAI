@@ -1,18 +1,69 @@
+import { useState, useRef, useEffect } from 'react'
 import { ChampionCard } from '../ChampionCard/ChampionCard'
 import { HealHover } from './CardHovers/HealHover'
 
-export const Heal = ({ log }: { log: any }) => {
+export const Heal = ({ log, index }: { log: any, index: number }) => {
+  const [hoveredHealId, setHoveredHealId] = useState<number | null>(null)
+  const [clickedHoverId, setClickedHoverId] = useState<number | null>(null)
+  const healRef = useRef<HTMLSpanElement>(null)
+  const [position, setPosition] = useState({ top: 0, left: 0 })
+
+  const handleHealClicked = (id: number) => {
+    if (clickedHoverId === id) {
+      setClickedHoverId(null)
+    } else {
+      setClickedHoverId(id)
+      updatePosition()
+    }
+  }
+
+  const updatePosition = () => {
+    if (!healRef.current) return
+    const rect = healRef.current.getBoundingClientRect()
+    const left = rect.right - 40
+    const top = rect.top + 25
+    setPosition({ top, left })
+  }
+
+  useEffect(() => {
+    if (hoveredHealId === index || clickedHoverId === index) {
+      updatePosition()
+      window.addEventListener('scroll', updatePosition)
+      window.addEventListener('resize', updatePosition)
+      return () => {
+        window.removeEventListener('scroll', updatePosition)
+        window.removeEventListener('resize', updatePosition)
+      }
+    }
+  }, [hoveredHealId, clickedHoverId, index])
+
   return (
     <div>
       <div className="bg-gradient-to-r from-green-900/40 to-green-800/20 border-l-4 border-green-500 rounded-md p-2 shadow-md">
         <div className="flex justify-between items-start mb-2">
           <span className="text-xs text-gray-400">[{log.formattedTime}]</span>
-          <span className="text-xs font-bold text-green-400 bg-green-400/20 px-2 py-0.5 rounded">
+          <span
+            ref={healRef}
+            className="text-xs font-bold text-green-400 bg-green-400/20 px-2 py-0.5 rounded cursor-pointer"
+            onMouseEnter={() => { setHoveredHealId(index); updatePosition() }}
+            onMouseLeave={() => setHoveredHealId(null)}
+            onClick={() => handleHealClicked(index)}
+          >
             +{log.details.healAmount}
-            <HealHover
-              healAmount={log.details.healAmount}
-              source={log.details.source}
-            />
+            {(hoveredHealId === index || clickedHoverId === index) && (
+              <div
+                className="fixed animate-grow-in origin-top-left z-50 cursor-auto"
+                style={{
+                  top: `${position.top}px`,
+                  left: `${position.left}px`
+                }}
+              >
+                <HealHover
+                  healAmount={log.details.healAmount}
+                  source={log.details.source}
+                />
+              </div>
+            )}
           </span>
         </div>
         <div className="grid grid-cols-3 gap-2 mb-2">

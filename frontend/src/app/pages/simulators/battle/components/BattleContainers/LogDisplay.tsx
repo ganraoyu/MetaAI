@@ -3,7 +3,7 @@ import { AutoAttack } from '../BattleLogCards/AutoAttack';
 import { useBattleContext } from '../../BattleContext';
 import { Ability } from '../BattleLogCards/Ability';
 import { Heal } from '../BattleLogCards/Heal';
-import Burn from '../BattleLogCards/Burn';
+import { Burn } from '../BattleLogCards/Burn';
 
 export interface LogsDisplayProps {
   toggleAttack: boolean;
@@ -73,12 +73,15 @@ export const LogsDisplay = ({
                         <div className='mb-2'>
                           <Heal
                             log={log}
+                            index={index}
                           />
                         </div>
                       )}
                       {log.type === 'burn' && toggleBurn && (
                         <div className='mb-2'>
                           <Burn
+                          log={log}
+                          index={index}
                           />
                         </div>
                       )
