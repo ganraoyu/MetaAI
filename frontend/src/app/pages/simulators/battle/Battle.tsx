@@ -14,9 +14,7 @@ const BattleContent = () => {
   const [toggleAttack, setToggleAttack] = useState(true);
   const [toggleAbility, setToggleAbility] = useState(true);
   const [toggleHeal, setToggleHeal] = useState(true);
-  const [toggleItemHeal, setToggleItemHeal] = useState(true);
-  const [toggleMagicDamage, setToggleMagicDamage] = useState(true);
-  const [toggleBurn, setToggleBurn] = useState(true);
+  const [toggleItem, setToggleItem] = useState(true);
   const [toggleUnits] = useState(true);
 
   return (
@@ -43,29 +41,21 @@ const BattleContent = () => {
               toggleAttack={toggleAttack}
               toggleAbility={toggleAbility}
               toggleHeal={toggleHeal}
-              toggleItemHeal={toggleItemHeal}
-              toggleMagicDamage={toggleMagicDamage}
-              toggleBurn={toggleBurn}
+              toggleItem={toggleItem}
               setToggleAttack={setToggleAttack}
               setToggleAbility={setToggleAbility}
               setToggleHeal={setToggleHeal}
-              setToggleItemHeal={setToggleItemHeal}
-              setToggleMagicDamage={setToggleMagicDamage}
-              setToggleBurn={setToggleBurn}
+              setToggleItem={setToggleItem}
             />
             <LogsDisplay 
               toggleAttack={toggleAttack} 
               toggleAbility={toggleAbility} 
               toggleHeal={toggleHeal} 
-              toggleItemHeal={toggleItemHeal} 
-              toggleMagicDamage={toggleMagicDamage} 
-              toggleBurn={toggleBurn} 
+              toggleItem={toggleItem} 
               setToggleAttack={setToggleAttack}
               setToggleAbility={setToggleAbility}
               setToggleHeal={setToggleHeal}
-              setToggleItemHeal={setToggleItemHeal}
-              setToggleMagicDamage={setToggleMagicDamage}
-              setToggleBurn={setToggleBurn}
+              setToggleitem={setToggleItem}
             />
           </div>
         </div> 

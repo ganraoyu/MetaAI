@@ -9,24 +9,18 @@ export interface LogsDisplayProps {
   toggleAttack: boolean;
   toggleAbility: boolean;
   toggleHeal: boolean;
-  toggleItemHeal: boolean;
-  toggleMagicDamage: boolean;
-  toggleBurn: boolean;
+  toggleItem: boolean;
   setToggleAttack: React.Dispatch<React.SetStateAction<boolean>>;
   setToggleAbility: React.Dispatch<React.SetStateAction<boolean>>;
   setToggleHeal: React.Dispatch<React.SetStateAction<boolean>>;
-  setToggleItemHeal: React.Dispatch<React.SetStateAction<boolean>>;
-  setToggleMagicDamage: React.Dispatch<React.SetStateAction<boolean>>;
-  setToggleBurn: React.Dispatch<React.SetStateAction<boolean>>;
+  setToggleitem: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const LogsDisplay = ({
   toggleAttack,
   toggleAbility,
   toggleHeal,
-  toggleItemHeal,
-  toggleMagicDamage,
-  toggleBurn,
+  toggleItem,
 }: LogsDisplayProps) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const { battleHistory, loading, error, fetchBattleHistory } =
@@ -77,7 +71,7 @@ export const LogsDisplay = ({
                           <Heal log={log} index={index} />
                         </div>
                       )}
-                      {log.type === "burn" && toggleBurn && (
+                      {log.type === "burn" && toggleItem && (
                         <div className="mb-2">
                           <Burn log={log} index={index} />
                         </div>

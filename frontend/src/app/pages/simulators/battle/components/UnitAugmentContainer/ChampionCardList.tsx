@@ -113,6 +113,7 @@ export const ChampionCardList = ({ set }: { set: string }) => {
 						{(hoveredChampionId === name || clickedChampionId === name) && (
 							<ChampionHoverInfo
 								champion={name}
+                type={champion?.type || ''}
 								cost={cost}
 								traits={[
 									champion?.traitsList?.[0] ?? "",

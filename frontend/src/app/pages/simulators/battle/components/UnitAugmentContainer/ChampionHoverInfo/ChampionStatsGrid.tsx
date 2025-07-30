@@ -12,14 +12,19 @@ const StatRow = ({
   label: string
   icon?: string
   value: React.ReactNode
-  size: { width: string; height: string; }
+  size: { width: string; height: string }
 }) => {
   return (
-    <div className="flex flex-col justify-center items-center px-2 py-1">
-      <div className="flex items-center gap-2">
-        {icon && <img src={icon} alt={`${label} icon`} style={size} />}
-        <p className="text-white text-[0.75rem] font-[400]">{value}</p>
-      </div>
+    <div className="flex items-center gap-2 px-2 py-1">
+      {icon && (
+        <div
+          style={{ width: '1.5rem', height: '1.5rem' }}
+          className="flex items-center justify-center shrink-0"
+        >
+          <img src={icon} alt={`${label} icon`} style={size} className="shrink-0" />
+        </div>
+      )}
+      <p className="text-white text-[0.75rem] font-[400]">{value}</p>
     </div>
   )
 }
@@ -30,28 +35,6 @@ export const ChampionStatsGrid = ({
 }: ChampionStatsGridProps) => {
   return (
     <div>
-      <div>
-        <div className='flex flex-col items-center justify-center gap-1'>
-          <p className='text-[1rem]'>Key</p>
-          <div className='flex items-center gap-1'>
-            <div className='flex items-center gap-1'>
-              <Star textColor='text-gray-500' fillColor='fill-gray-500' />
-              <p>/</p>
-            </div>
-            <div className='flex items-center gap-1'>
-              <Star textColor='text-gray-500' fillColor='fill-gray-500' />
-              <Star textColor='text-gray-500' fillColor='fill-gray-500' />
-              <p>/</p>
-            </div>
-            <div className='flex items-center gap-1'>
-              <Star textColor='text-yellow-500' fillColor='fill-yellow-500' />
-              <Star textColor='text-yellow-500' fillColor='fill-yellow-500' />
-              <Star textColor='text-yellow-500' fillColor='fill-yellow-500' />
-            </div>
-          </div>
-        </div>
-      </div> 
-
       {/* Stats */}
       <div className="grid grid-rows-5 grid-cols-2 gap-y-1 gap-x-4">
         <StatRow

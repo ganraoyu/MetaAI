@@ -32,8 +32,9 @@ export interface StarLevelStats {
 
 export interface ChampionHoverInfoProps {
     champion?: string;
-    cost?: number;
-    traits?: [string, string, string];
+    cost: number;
+    type: string;
+    traits: [string, string, string];
     items?: [string?, string?, string?];
     stats?: Stats;
     starLevelStats?: {

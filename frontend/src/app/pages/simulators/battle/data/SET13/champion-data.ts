@@ -1,6 +1,7 @@
 export const champions = [
     {
         name: 'Amumu',
+        type: 'Magic Tank',
         image: '../assets/SET13/champions/centered/Amumu.png',
         cost: 1,
         shield: 0,
@@ -53,6 +54,7 @@ export const champions = [
     },
     {
         name: 'Darius',
+        type: 'Attack Fighter',
         image: '../assets/SET13/champions/centered/Darius.png',
         cost: 1,
         shield: 0,
@@ -105,6 +107,7 @@ export const champions = [
     },
     {
         name: 'Akali',
+        type: 'Magic Reaper',
         image: '../assets/SET13/champions/centered/Akali.png',
         cost: 2,
         shield: 2000,
