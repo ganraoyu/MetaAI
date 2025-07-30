@@ -110,14 +110,74 @@ export function brambleVestEffect(champion: Champion, surroundingOpponents: Cham
             target.magicDamageTakenArray.push(100);
             state.effectUsed = false;
             state.timeSinceEffectUsed = battleTime;
+
             logBattleEvent('magicDamage', {
-                champion: champion.name,
-                target: target.name,
-                magicDamage: 100,
-                item: item.name,
-                type: 'item',
-                source: 'Bramble Vest',
-                message: `${champion.name} dealt 100 magic damage to ${target.name} from Bramble Vest`,
+              attacker: {
+                  champion: champion.name,
+                  starLevel: champion.starLevel,
+                  cost: champion.cost,
+                  traits: champion.traitsList,
+                  items: champion.items,
+
+                  currentHp: champion.currentHp,
+                  maxHp: champion.statsByStarLevel[champion.starLevel].hp,
+                  shield: champion.shield,
+                  attackDamage: champion.statsByStarLevel[champion.starLevel].attackDamage,
+                  attackSpeed: champion.attackSpeed,
+                  critChance: champion.attackCritChance,
+                  critDamage: champion.attackCritDamage,
+                  abilityPower: champion.abilityPower,
+                  damageAmp: champion.damageAmp - 1,
+                  omnivamp: champion.omnivamp,
+                  range: champion.range,
+
+                  // Defensive stats
+                  armor: champion.getStats().armor,
+                  magicResist: champion.getStats().magicResist,
+                  durability: champion.durability,
+
+                  // Mana information
+                  mana: champion.mana,
+                  manaGained: champion.manaPerAttack,
+                  manaPerAttack: champion.manaPerAttack,
+              },
+              target: {
+                // Basic info
+                champion: target.name,
+                starLevel: target.starLevel,
+                cost: target.cost,
+                traits: target.traitsList,
+                items: target.items,
+
+                // Health stats
+                currentHp: target.currentHp,
+                maxHp: target.statsByStarLevel[target.starLevel].hp,
+                shield: target.shield,
+
+                // Offensive stats
+                attackDamage: target.statsByStarLevel[target.starLevel].attackDamage,
+                attackSpeed: target.attackSpeed,
+                critChance: target.attackCritChance,
+                critDamage: target.attackCritDamage,
+                abilityPower: target.abilityPower,
+                damageAmp: target.damageAmp - 1,
+                omnivamp: target.omnivamp,
+
+                // Defensive stats
+                armor: target.getStats().armor,
+                magicResist: target.getStats().magicResist,
+                durability: target.durability,
+
+                // Other stats
+                range: target.range,
+                mana: target.mana,
+              },
+              champion: champion.name,
+              magicDamage: 100,
+              item: item.name,
+              type: 'item',
+              source: 'Bramble Vest',
+              message: `${champion.name} dealt 100 magic damage to ${target.name} from Bramble Vest`,
             }, battleTime)
                     
             console.log(`[${formattedTime}] ${champion.name} dealt 100 magic damage to ${target.name} from Bramble Vest`);
