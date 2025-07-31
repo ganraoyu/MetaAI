@@ -16,7 +16,7 @@ interface BoardState {
 }
 
 interface ChampionPosition {
-  champion: string;
+  championName: string;
   cellId: string;
 }
 
@@ -52,7 +52,6 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
   const [boardArray, setBoardArray] = useState<ChampionPosition[]>([]);
 
   const placeChampion = (cellId: string, championData: ChampionData) => {
-    // Update boardState
     setBoardState((prev) => ({
       ...prev,
       [cellId]: {
@@ -61,15 +60,15 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
       },
     }));
 
-    // Update boardArray - remove old entry for this cell, then add new
     setBoardArray((prev) => {
       const filtered = prev.filter((entry) => entry.cellId !== cellId);
-      filtered.push({ champion: championData.name, cellId });
+      filtered.push({ championName: championData.name, cellId });
+      console.log("Updated boardArray inside setter:", filtered);
       return filtered;
     });
 
     console.log(`Placed ${championData.name} in cell ${cellId}`);
-     console.log(boardArray);
+    console.log(boardArray);
   };
 
   const removeChampion = (cellId: string) => {
@@ -78,8 +77,7 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
       delete newState[cellId];
       return newState;
     });
-
-    // Remove from boardArray by cellId
+    
     setBoardArray((prev) => prev.filter((entry) => entry.cellId !== cellId));
 
     console.log(`Removed champion from cell ${cellId}`);
@@ -103,7 +101,10 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
       if (!championEntry) return prev;
 
       const filtered = prev.filter((entry) => entry.cellId !== fromCellId);
-      filtered.push({ champion: championEntry.champion, cellId: toCellId });
+      filtered.push({
+        championName: championEntry.championName,
+        cellId: toCellId,
+      });
 
       return filtered;
     });

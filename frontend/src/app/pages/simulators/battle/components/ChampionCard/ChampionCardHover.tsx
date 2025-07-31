@@ -100,6 +100,10 @@ const ChampionCardHover = ({
   starLevel,
   parentRef
 }: ChampionCardHoverProps) => {
+  console.log('🔍 TRAIT DEBUG:');
+  console.log('trait1:', trait1, 'type:', typeof trait1);
+  console.log('trait2:', trait2, 'type:', typeof trait2);
+  console.log('trait3:', trait3, 'type:', typeof trait3);
   const { set } = useTFTSetContext();
 
   const [toggleChampionItemHover, setToggleChampionItemHover] = useState(true);

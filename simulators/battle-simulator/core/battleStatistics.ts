@@ -2,89 +2,115 @@ import { Champion } from "../data/champion/champion.js";
 import { Request, Response } from "express";
 import { Item } from "../data/item/item.js";
 
-const { startBattle } = require("./battleLogic.js");
+// Battle data caching system
+let cachedBattleData: any = null;
 
-const { player, opponent, battlePlayer, battleOpponent } = startBattle();
+function setBattleData(battleData: any) {
+  cachedBattleData = battleData;
+}
 
-const playerChampions = [...player];
-const opponentChampions = [...opponent];
+function getBattleData() {
+  if (!cachedBattleData) {
+    throw new Error("No battle data available. Please run a battle first.");
+  }
+  return cachedBattleData;
+}
 
-const playerStatistics = player.map((champion: Champion, index: number) => {
-  if (index < battlePlayer.length) {
-    champion.damageTakenArray = battlePlayer[index].damageTakenArray || [];
-    champion.trueDamageTakenArray = battlePlayer[index].trueDamageTaken || [];
-    champion.magicDamageTakenArray = battlePlayer[index].magicDamageTakenArray || [];
-    champion.shieldDamageTakenArray = battlePlayer[index].shieldDamageTaken || [];
-    champion.damageArray = battlePlayer[index].damageArray || [];
-    champion.trueDamageArray = battlePlayer[index].trueDamageArray || [];
-    champion.magicDamageArray = battlePlayer[index].magicDamageArray || [];
-    champion.abilityArray = battlePlayer[index].abilityArray || [];
-    champion.healArray = battlePlayer[index].healArray || [];
+function clearBattleData() {
+  cachedBattleData = null;
+}
+
+function getPlayerStatistics(): any[] {
+  const battleData = getBattleData();
+  const { player, battlePlayer } = battleData;
+  
+  if (!player || player.length === 0) {
+    return [];
   }
 
-  return {
-    name: champion.name,
-    items: champion.items,
-    HP: index < battlePlayer.length ? battlePlayer[index].currentHp : 0,
-    shield: champion.shield,
-    baseHP: champion.statsByStarLevel[champion.starLevel].hp,
-    damageTaken: champion.damageTakenArray,
-    trueDamageTaken: champion.trueDamageTakenArray,
-    magicDamageTaken: champion.magicDamageTakenArray,
-    shieldDamageTaken: champion.shieldDamageTakenArray,
-    damageArray: champion.damageArray,
-    trueDamageArray: champion.trueDamageArray,
-    magicDamageArray: champion.magicDamageArray,
-    abilityArray: champion.abilityArray,
-    healArray: champion.healArray,
-  };
-});
+  return player.map((champion: Champion, index: number) => {
+    if (index < battlePlayer.length) {
+      champion.damageTakenArray = battlePlayer[index].damageTakenArray || [];
+      champion.trueDamageTakenArray = battlePlayer[index].trueDamageTaken || [];
+      champion.magicDamageTakenArray = battlePlayer[index].magicDamageTakenArray || [];
+      champion.shieldDamageTakenArray = battlePlayer[index].shieldDamageTaken || [];
+      champion.damageArray = battlePlayer[index].damageArray || [];
+      champion.trueDamageArray = battlePlayer[index].trueDamageArray || [];
+      champion.magicDamageArray = battlePlayer[index].magicDamageArray || [];
+      champion.abilityArray = battlePlayer[index].abilityArray || [];
+      champion.healArray = battlePlayer[index].healArray || [];
+    }
 
-const opponentStatistics = opponent.map((champion: Champion, index: number) => {
-  if (index < battleOpponent.length) {
-    champion.damageTakenArray = battleOpponent[index].damageTakenArray || [];
-    champion.trueDamageTakenArray = battleOpponent[index].trueDamageTaken || [];
-    champion.magicDamageTakenArray =
-      battleOpponent[index].magicDamageTakenArray || [];
-    champion.shieldDamageTakenArray =
-      battleOpponent[index].shieldDamageTaken || [];
-    champion.damageArray = battleOpponent[index].damageArray || [];
-    champion.trueDamageArray = battleOpponent[index].trueDamageArray || [];
-    champion.magicDamageArray = battleOpponent[index].magicDamageArray || [];
-    champion.abilityArray = battleOpponent[index].abilityArray || [];
-    champion.healArray = battleOpponent[index].healArray || [];
+    return {
+      name: champion.name,
+      items: champion.items,
+      HP: index < battlePlayer.length ? battlePlayer[index].currentHp : 0,
+      shield: champion.shield,
+      baseHP: champion.statsByStarLevel[champion.starLevel].hp,
+      damageTaken: champion.damageTakenArray,
+      trueDamageTaken: champion.trueDamageTakenArray,
+      magicDamageTaken: champion.magicDamageTakenArray,
+      shieldDamageTaken: champion.shieldDamageTakenArray,
+      damageArray: champion.damageArray,
+      trueDamageArray: champion.trueDamageArray,
+      magicDamageArray: champion.magicDamageArray,
+      abilityArray: champion.abilityArray,
+      healArray: champion.healArray,
+    };
+  });
+}
+
+function getOpponentStatistics(): any[] {
+  const battleData = getBattleData();
+  const { opponent, battleOpponent } = battleData;
+  
+  if (!opponent || opponent.length === 0) {
+    return [];
   }
 
-  return {
-    name: champion.name,
-    items: champion.items,
-    HP: index < battleOpponent.length ? battleOpponent[index].currentHp : 0,
-    shield: champion.shield,
-    baseHP: champion.statsByStarLevel[champion.starLevel].hp,
-    damageTaken: champion.damageTakenArray,
-    trueDamageTaken: champion.trueDamageTakenArray,
-    magicDamageTaken: champion.magicDamageTakenArray,
-    shieldDamageTaken: champion.shieldDamageTakenArray,
-    damageArray: champion.damageArray,
-    trueDamageArray: champion.trueDamageArray,
-    magicDamageArray: champion.magicDamageArray,
-    abilityArray: champion.abilityArray,
-    healArray: champion.healArray,
-  };
-});
+  return opponent.map((champion: Champion, index: number) => {
+    if (index < battleOpponent.length) {
+      champion.damageTakenArray = battleOpponent[index].damageTakenArray || [];
+      champion.trueDamageTakenArray = battleOpponent[index].trueDamageTaken || [];
+      champion.magicDamageTakenArray = battleOpponent[index].magicDamageTakenArray || [];
+      champion.shieldDamageTakenArray = battleOpponent[index].shieldDamageTaken || [];
+      champion.damageArray = battleOpponent[index].damageArray || [];
+      champion.trueDamageArray = battleOpponent[index].trueDamageArray || [];
+      champion.magicDamageArray = battleOpponent[index].magicDamageArray || [];
+      champion.abilityArray = battleOpponent[index].abilityArray || [];
+      champion.healArray = battleOpponent[index].healArray || [];
+    }
 
+    return {
+      name: champion.name,
+      items: champion.items,
+      HP: index < battleOpponent.length ? battleOpponent[index].currentHp : 0,
+      shield: champion.shield,
+      baseHP: champion.statsByStarLevel[champion.starLevel].hp,
+      damageTaken: champion.damageTakenArray,
+      trueDamageTaken: champion.trueDamageTakenArray,
+      magicDamageTaken: champion.magicDamageTakenArray,
+      shieldDamageTaken: champion.shieldDamageTakenArray,
+      damageArray: champion.damageArray,
+      trueDamageArray: champion.trueDamageArray,
+      magicDamageArray: champion.magicDamageArray,
+      abilityArray: champion.abilityArray,
+      healArray: champion.healArray,
+    };
+  });
+}
+
+// Interfaces
 interface ChampionStatistic {
   name: string;
   items: Item[];
   HP: number;
   shield: number;
   baseHP: number;
-
   damageTaken: number[];
   trueDamageTaken: number[];
   magicDamageTaken: number[];
   shieldDamageTaken: number[];
-
   damageArray: number[];
   trueDamageArray: number[];
   magicDamageArray: number[];
@@ -145,23 +171,192 @@ interface ChampionItemData {
   items: Item[];
 }
 
-const startBattleData: BattleResult = startBattle();
+// INTERNAL CALCULATION FUNCTIONS (NO HTTP RESPONSES)
+const calculateWinRateInternal = (): { playerWinRate: string; opponentWinRate: string } => {
+  try {
+    const startBattleData: BattleResult = getBattleData();
+    const { playerWinRate, opponentWinRate } = startBattleData;
+    return { playerWinRate, opponentWinRate };
+  } catch (error) {
+    throw error;
+  }
+};
 
+const calculateAttackDamageInternal = (): {
+  totalPlayerDamage: DamageData[];
+  totalOpponentDamage: DamageData[];
+} => {
+  const playerStatistics = getPlayerStatistics();
+  const opponentStatistics = getOpponentStatistics();
+
+  if (playerStatistics.length === 0 && opponentStatistics.length === 0) {
+    throw new Error("No attack damage data available.");
+  }
+
+  const totalPlayerDamage = playerStatistics.map(
+    (champion: ChampionStatistic) => ({
+      name: champion.name,
+      totalDamage: champion.damageArray.reduce(
+        (total, damage) => total + damage,
+        0
+      ),
+    })
+  );
+
+  const totalOpponentDamage = opponentStatistics.map(
+    (champion: ChampionStatistic) => ({
+      name: champion.name,
+      totalDamage: champion.damageArray.reduce(
+        (total, damage) => total + damage,
+        0
+      ),
+    })
+  );
+
+  return { totalPlayerDamage, totalOpponentDamage };
+};
+
+const calculateTrueDamageInternal = (): {
+  totalPlayerTrueDamage: TrueDamageData[];
+  totalOpponentTrueDamage: TrueDamageData[];
+} => {
+  const playerStatistics = getPlayerStatistics();
+  const opponentStatistics = getOpponentStatistics();
+
+  if (playerStatistics.length === 0 && opponentStatistics.length === 0) {
+    throw new Error("No true damage data available.");
+  }
+
+  const totalPlayerTrueDamage = playerStatistics.map(
+    (champion: ChampionStatistic) => ({
+      name: champion.name,
+      totalTrueDamage: champion.trueDamageArray.reduce(
+        (total, damage) => total + damage,
+        0
+      ),
+    })
+  );
+
+  const totalOpponentTrueDamage = opponentStatistics.map(
+    (champion: ChampionStatistic) => ({
+      name: champion.name,
+      totalTrueDamage: champion.trueDamageArray.reduce(
+        (total, damage) => total + damage,
+        0
+      ),
+    })
+  );
+
+  return { totalPlayerTrueDamage, totalOpponentTrueDamage };
+};
+
+const calculateAbilityDamageInternal = (): {
+  totalPlayerAbilityDamage: AbilityDamageData[];
+  totalOpponentAbilityDamage: AbilityDamageData[];
+} => {
+  const playerStatistics = getPlayerStatistics();
+  const opponentStatistics = getOpponentStatistics();
+
+  if (playerStatistics.length === 0 && opponentStatistics.length === 0) {
+    throw new Error("No ability damage data available.");
+  }
+
+  const totalPlayerAbilityDamage = playerStatistics.map(
+    (champion: ChampionStatistic) => ({
+      name: champion.name,
+      totalAbilityDamage: champion.abilityArray.reduce(
+        (total, abilityDamage) => total + abilityDamage,
+        0
+      ),
+    })
+  );
+
+  const totalOpponentAbilityDamage = opponentStatistics.map(
+    (champion: ChampionStatistic) => ({
+      name: champion.name,
+      totalAbilityDamage: champion.abilityArray.reduce(
+        (total, abilityDamage) => total + abilityDamage,
+        0
+      ),
+    })
+  );
+
+  return { totalPlayerAbilityDamage, totalOpponentAbilityDamage };
+};
+
+const calculateHealingInternal = (): {
+  totalPlayerHealing: HealingData[];
+  totalOpponentHealing: HealingData[];
+} => {
+  const playerStatistics = getPlayerStatistics();
+  const opponentStatistics = getOpponentStatistics();
+
+  const totalPlayerHealing = playerStatistics.map(
+    (champion: ChampionStatistic) => ({
+      name: champion.name,
+      totalHealing: champion.healArray.reduce(
+        (total, heal) => total + heal,
+        0
+      ),
+    })
+  );
+
+  const totalOpponentHealing = opponentStatistics.map(
+    (champion: ChampionStatistic) => ({
+      name: champion.name,
+      totalHealing: champion.healArray.reduce(
+        (total, heal) => total + heal,
+        0
+      ),
+    })
+  );
+
+  return { totalPlayerHealing, totalOpponentHealing };
+};
+
+const calculateIsAliveOrDeadInternal = (): {
+  checkPlayerChampionAliveOrDead: ChampionStatusData[];
+  checkOpponentChampionAliveOrDead: ChampionStatusData[];
+} => {
+  const playerStatistics = getPlayerStatistics();
+  const opponentStatistics = getOpponentStatistics();
+
+  const checkPlayerChampionAliveOrDead = playerStatistics.map(
+    (champion: ChampionStatistic) => ({
+      name: champion.name,
+      shield: champion.shield,
+      HP: champion.HP,
+      baseHP: champion.baseHP,
+      isAlive: champion.HP > 0,
+    })
+  );
+
+  const checkOpponentChampionAliveOrDead = opponentStatistics.map(
+    (champion: ChampionStatistic) => ({
+      name: champion.name,
+      shield: champion.shield,
+      HP: champion.HP,
+      baseHP: champion.baseHP,
+      isAlive: champion.HP > 0,
+    })
+  );
+
+  return { checkPlayerChampionAliveOrDead, checkOpponentChampionAliveOrDead };
+};
+
+// HTTP ENDPOINT FUNCTIONS (ONLY THESE SEND RESPONSES)
 const calculateWinRate = async (
   req: Request,
   res: Response
 ): Promise<{ playerWinRate: string; opponentWinRate: string }> => {
   try {
-    const { playerWinRate, opponentWinRate } = startBattleData;
-    console.log("Player win rate is " + playerWinRate);
-    console.log("Opponent win rate is " + opponentWinRate);
-
-    return { playerWinRate, opponentWinRate };
+    const result = calculateWinRateInternal();
+    console.log("Player win rate is " + result.playerWinRate);
+    console.log("Opponent win rate is " + result.opponentWinRate);
+    return result;
   } catch (error) {
     console.error("Error: " + error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while calculating win rate." });
+    res.status(500).json({ error: "An error occurred while calculating win rate." });
     throw error;
   }
 };
@@ -174,6 +369,9 @@ const calculateChampionItems = async (
   opponentChampionItems: ChampionItemData[];
 }> => {
   try {
+    const playerStatistics = getPlayerStatistics();
+    const opponentStatistics = getOpponentStatistics();
+
     const playerChampionItems = playerStatistics.map(
       (champion: ChampionStatistic) => ({
         name: champion.name,
@@ -191,9 +389,7 @@ const calculateChampionItems = async (
     return { playerChampionItems, opponentChampionItems };
   } catch (error) {
     console.error("Error: " + error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while fetching champion items." });
+    res.status(500).json({ error: "An error occurred while fetching champion items." });
     throw error;
   }
 };
@@ -206,39 +402,12 @@ const calculateAttackDamageDelt = async (
   totalOpponentDamage: DamageData[];
 }> => {
   try {
-    if (playerStatistics.length === 0 || opponentStatistics.length === 0) {
-      res.status(400).json({ error: "No attack damage data available." });
-      throw new Error("No attack damage data available.");
-    }
-
-    const totalPlayerDamage = playerStatistics.map(
-      (champion: ChampionStatistic) => ({
-        name: champion.name,
-        totalDamage: champion.damageArray.reduce(
-          (total, damage) => total + damage,
-          0
-        ),
-      })
-    );
-
-    const totalOpponentDamage = opponentStatistics.map(
-      (champion: ChampionStatistic) => ({
-        name: champion.name,
-        totalDamage: champion.damageArray.reduce(
-          (total, damage) => total + damage,
-          0
-        ),
-      })
-    );
-
-    return { totalPlayerDamage, totalOpponentDamage };
+    return calculateAttackDamageInternal();
   } catch (error) {
     console.error("Error: " + error);
-    res
-      .status(500)
-      .json({
-        error: "An error occurred while calculating total attack damage.",
-      });
+    res.status(500).json({
+      error: "An error occurred while calculating total attack damage.",
+    });
     throw error;
   }
 };
@@ -251,39 +420,12 @@ const calculateTrueDamageDelt = async (
   totalOpponentTrueDamage: TrueDamageData[];
 }> => {
   try {
-    if (playerStatistics.length === 0 || opponentStatistics.length === 0) {
-      res.status(400).json({ error: "No true damage data available." });
-      throw new Error("No true damage data available.");
-    }
-
-    const totalPlayerTrueDamage = playerStatistics.map(
-      (champion: ChampionStatistic) => ({
-        name: champion.name,
-        totalTrueDamage: champion.trueDamageArray.reduce(
-          (total, damage) => total + damage,
-          0
-        ),
-      })
-    );
-
-    const totalOpponentTrueDamage = opponentStatistics.map(
-      (champion: ChampionStatistic) => ({
-        name: champion.name,
-        totalTrueDamage: champion.trueDamageArray.reduce(
-          (total, damage) => total + damage,
-          0
-        ),
-      })
-    );
-
-    return { totalPlayerTrueDamage, totalOpponentTrueDamage };
+    return calculateTrueDamageInternal();
   } catch (error) {
     console.error("Error: " + error);
-    res
-      .status(500)
-      .json({
-        error: "An error occurred while calculating total true damage.",
-      });
+    res.status(500).json({
+      error: "An error occurred while calculating total true damage.",
+    });
     throw error;
   }
 };
@@ -296,42 +438,12 @@ const calculateAbilityDamageDelt = async (
   totalOpponentAbilityDamage: AbilityDamageData[];
 }> => {
   try {
-    if (playerStatistics.length === 0 || opponentStatistics.length === 0) {
-      res.status(400).json({ error: "No ability damage data available." });
-      throw new Error("No ability damage data available.");
-    }
-
-    const totalPlayerAbilityDamage = playerStatistics.map(
-      (champion: ChampionStatistic) => ({
-        name: champion.name,
-        totalAbilityDamage: champion.abilityArray.reduce(
-          (total, abilityDamage) => total + abilityDamage,
-          0
-        ),
-      })
-    );
-
-    const totalOpponentAbilityDamage = opponentStatistics.map(
-      (champion: ChampionStatistic) => ({
-        name: champion.name,
-        totalAbilityDamage: champion.abilityArray.reduce(
-          (total, abilityDamage) => total + abilityDamage,
-          0
-        ),
-      })
-    );
-
-    console.log(totalPlayerAbilityDamage);
-    console.log(totalOpponentAbilityDamage);
-
-    return { totalPlayerAbilityDamage, totalOpponentAbilityDamage };
+    return calculateAbilityDamageInternal();
   } catch (error) {
     console.error("Error: " + error);
-    res
-      .status(500)
-      .json({
-        error: "An error occurred while calculating total ability damage.",
-      });
+    res.status(500).json({
+      error: "An error occurred while calculating total ability damage.",
+    });
     throw error;
   }
 };
@@ -344,30 +456,30 @@ const calculateAllDamageDelt = async (
   allOpponentDamage: AllDamageData[];
 }> => {
   try {
-    if (playerStatistics.length === 0 || opponentStatistics.length === 0) {
-      res.status(400).json({ error: "No total damage data available." });
-      throw new Error("No data available");
+    const playerStatistics = getPlayerStatistics();
+    const opponentStatistics = getOpponentStatistics();
+
+    if (playerStatistics.length === 0 && opponentStatistics.length === 0) {
+      throw new Error("No total damage data available");
     }
 
-    const { totalPlayerDamage, totalOpponentDamage } =
-      await calculateAttackDamageDelt(req, res);
-    const { totalPlayerTrueDamage, totalOpponentTrueDamage } =
-      await calculateTrueDamageDelt(req, res);
-    const { totalPlayerAbilityDamage, totalOpponentAbilityDamage } =
-      await calculateAbilityDamageDelt(req, res);
+    // Use internal functions instead of async HTTP functions
+    const { totalPlayerDamage, totalOpponentDamage } = calculateAttackDamageInternal();
+    const { totalPlayerTrueDamage, totalOpponentTrueDamage } = calculateTrueDamageInternal();
+    const { totalPlayerAbilityDamage, totalOpponentAbilityDamage } = calculateAbilityDamageInternal();
 
     const allPlayerDamage = totalPlayerDamage.map(
       (champion: DamageData, index: number) => ({
         name: champion.name,
         totalAttackDamage: champion.totalDamage,
-        totalTrueDamage: totalPlayerTrueDamage[index].totalTrueDamage,
+        totalTrueDamage: totalPlayerTrueDamage[index]?.totalTrueDamage || 0,
         totalMagicDamage: 0,
-        totalAbilityDamage: totalPlayerAbilityDamage[index].totalAbilityDamage,
+        totalAbilityDamage: totalPlayerAbilityDamage[index]?.totalAbilityDamage || 0,
         allDamage:
           champion.totalDamage +
-          totalPlayerTrueDamage[index].totalTrueDamage +
-          totalPlayerAbilityDamage[index].totalAbilityDamage,
-        items: playerStatistics[index].items,
+          (totalPlayerTrueDamage[index]?.totalTrueDamage || 0) +
+          (totalPlayerAbilityDamage[index]?.totalAbilityDamage || 0),
+        items: playerStatistics[index]?.items || [],
       })
     );
 
@@ -375,24 +487,21 @@ const calculateAllDamageDelt = async (
       (champion: DamageData, index: number) => ({
         name: champion.name,
         totalAttackDamage: champion.totalDamage,
-        totalTrueDamage: totalOpponentTrueDamage[index].totalTrueDamage,
+        totalTrueDamage: totalOpponentTrueDamage[index]?.totalTrueDamage || 0,
         totalMagicDamage: 0,
-        totalAbilityDamage:
-          totalOpponentAbilityDamage[index].totalAbilityDamage,
+        totalAbilityDamage: totalOpponentAbilityDamage[index]?.totalAbilityDamage || 0,
         allDamage:
           champion.totalDamage +
-          totalOpponentTrueDamage[index].totalTrueDamage +
-          totalOpponentAbilityDamage[index].totalAbilityDamage,
-        items: opponentStatistics[index].items,
+          (totalOpponentTrueDamage[index]?.totalTrueDamage || 0) +
+          (totalOpponentAbilityDamage[index]?.totalAbilityDamage || 0),
+        items: opponentStatistics[index]?.items || [],
       })
     );
 
     return { allPlayerDamage, allOpponentDamage };
   } catch (error) {
     console.error("Error: " + error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while calculating total damage." });
+    res.status(500).json({ error: "An error occurred while calculating total damage." });
     throw error;
   }
 };
@@ -405,32 +514,10 @@ const calculateHealing = async (
   totalOpponentHealing: HealingData[];
 }> => {
   try {
-    const totalPlayerHealing = playerStatistics.map(
-      (champion: ChampionStatistic) => ({
-        name: champion.name,
-        totalHealing: champion.healArray.reduce(
-          (total, heal) => total + heal,
-          0
-        ),
-      })
-    );
-
-    const totalOpponentHealing = opponentStatistics.map(
-      (champion: ChampionStatistic) => ({
-        name: champion.name,
-        totalHealing: champion.healArray.reduce(
-          (total, heal) => total + heal,
-          0
-        ),
-      })
-    );
-
-    return { totalPlayerHealing, totalOpponentHealing };
+    return calculateHealingInternal();
   } catch (error) {
     console.log("Error" + error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while calculating healing." });
+    res.status(500).json({ error: "An error occurred while calculating healing." });
     throw error;
   }
 };
@@ -443,33 +530,12 @@ const calculateIsAliveOrDead = async (
   checkOpponentChampionAliveOrDead: ChampionStatusData[];
 }> => {
   try {
-    const checkPlayerChampionAliveOrDead = playerStatistics.map(
-      (champion: ChampionStatistic) => ({
-        name: champion.name,
-        HP: champion.HP,
-        baseHP: champion.baseHP,
-        isAlive: champion.HP > 0 ? true : false,
-      })
-    );
-
-    const checkOpponentChampionAliveOrDead = opponentStatistics.map(
-      (champion: ChampionStatistic) => ({
-        name: champion.name,
-        HP: champion.HP,
-        baseHP: champion.baseHP,
-        isAlive: champion.HP > 0 ? true : false,
-      })
-    );
-
-    return { checkPlayerChampionAliveOrDead, checkOpponentChampionAliveOrDead };
+    return calculateIsAliveOrDeadInternal();
   } catch (error) {
     console.log("Error", error);
-    res
-      .status(500)
-      .json({
-        error:
-          "An error occurred while checking if champions are alive or dead.",
-      });
+    res.status(500).json({
+      error: "An error occurred while checking if champions are alive or dead.",
+    });
     throw error;
   }
 };
@@ -510,17 +576,11 @@ const calculateAllBattleStatistics = async (
   opponentChamionStatistics: OpponentStatistics[];
 }> => {
   try {
-    const { playerWinRate, opponentWinRate } = await calculateWinRate(req, res);
-    const { allPlayerDamage, allOpponentDamage } = await calculateAllDamageDelt(
-      req,
-      res
-    );
-    const { totalPlayerHealing, totalOpponentHealing } = await calculateHealing(
-      req,
-      res
-    );
-    const { checkPlayerChampionAliveOrDead, checkOpponentChampionAliveOrDead } =
-      await calculateIsAliveOrDead(req, res);
+    // Use internal functions to avoid multiple HTTP responses
+    const { playerWinRate, opponentWinRate } = calculateWinRateInternal();
+    const { allPlayerDamage, allOpponentDamage } = await calculateAllDamageDelt(req, res);
+    const { totalPlayerHealing, totalOpponentHealing } = calculateHealingInternal();
+    const { checkPlayerChampionAliveOrDead, checkOpponentChampionAliveOrDead } = calculateIsAliveOrDeadInternal();
 
     const playerChampionStatistics: PlayerStatistics[] = [
       {
@@ -528,21 +588,17 @@ const calculateAllBattleStatistics = async (
         playerStatistics: allPlayerDamage.map((champion, index) => ({
           name: champion.name,
           items: champion.items || [],
-          hp: checkPlayerChampionAliveOrDead[index].HP,
-          isAlive: checkPlayerChampionAliveOrDead[index].isAlive,
+          hp: checkPlayerChampionAliveOrDead[index]?.HP || 0,
+          isAlive: checkPlayerChampionAliveOrDead[index]?.isAlive || false,
           totalChampionDamage: champion.totalAttackDamage,
           totalChampionTrueDamage: champion.totalTrueDamage,
           totalChampionMagicDamage: champion.totalMagicDamage,
           totalChampionAbilityDamage: champion.totalAbilityDamage,
           allChampionDamage: champion.allDamage,
-          totalChampionHealing: totalPlayerHealing[index].totalHealing,
+          totalChampionHealing: totalPlayerHealing[index]?.totalHealing || 0,
         })),
       },
     ];
-
-    checkPlayerChampionAliveOrDead.forEach((champion, index) => {
-      console.log(`Champion ${index + 1} HP:`, champion.HP);
-    });
 
     const opponentChamionStatistics: OpponentStatistics[] = [
       {
@@ -550,14 +606,14 @@ const calculateAllBattleStatistics = async (
         opponentStatistics: allOpponentDamage.map((champion, index) => ({
           name: champion.name,
           items: champion.items || [],
-          hp: checkOpponentChampionAliveOrDead[index].HP,
-          isAlive: checkOpponentChampionAliveOrDead[index].isAlive,
+          hp: checkOpponentChampionAliveOrDead[index]?.HP || 0,
+          isAlive: checkOpponentChampionAliveOrDead[index]?.isAlive || false,
           totalChampionDamage: champion.totalAttackDamage,
           totalChampionTrueDamage: champion.totalTrueDamage,
           totalChampionMagicDamage: champion.totalMagicDamage,
           totalChampionAbilityDamage: champion.totalAbilityDamage,
           allChampionDamage: champion.allDamage,
-          totalChampionHealing: totalOpponentHealing[index].totalHealing,
+          totalChampionHealing: totalOpponentHealing[index]?.totalHealing || 0,
         })),
       },
     ];
@@ -565,11 +621,9 @@ const calculateAllBattleStatistics = async (
     return { playerChampionStatistics, opponentChamionStatistics };
   } catch (error) {
     console.log("Error", error);
-    res
-      .status(500)
-      .json({
-        error: "An error occurred while calculating alasdal battle statistics.",
-      });
+    res.status(500).json({
+      error: "An error occurred while calculating battle statistics.",
+    });
     throw error;
   }
 };
@@ -579,7 +633,10 @@ const calculateChampionStatistics = async (
   res: Response
 ): Promise<{ playerChampions: any[]; opponentChampions: any[] }> => {
   try {
-    const serializablePlayerChampions = playerChampions.map((champion) => ({
+    const battleData = getBattleData();
+    const { player: playerChampions, opponent: opponentChampions } = battleData;
+
+    const serializablePlayerChampions = playerChampions.map((champion: any) => ({
       id: champion.id,
       name: champion.name,
       team: champion.team,
@@ -596,7 +653,7 @@ const calculateChampionStatistics = async (
       magicResist: champion.magicResist,
     }));
 
-    const serializableOpponentChampions = opponentChampions.map((champion) => ({
+    const serializableOpponentChampions = opponentChampions.map((champion: any) => ({
       id: champion.id,
       name: champion.name,
       team: champion.team,
@@ -619,33 +676,27 @@ const calculateChampionStatistics = async (
     };
   } catch (error) {
     console.log("Error", error);
-    res
-      .status(500)
-      .json({
-        error: "An error occurred while calculating champion statistics.",
-      });
+    res.status(500).json({
+      error: "An error occurred while calculating champion statistics.",
+    });
     throw error;
   }
 };
 
 const calculateBattleHistory = async (req: Request, res: Response) => {
   try {
+    const battleData = getBattleData();
     const { getBattleHistory } = require("./battleLogic.js");
-    return getBattleHistory();
+    const battleHistory = getBattleHistory();
+    return battleHistory;
   } catch (error) {
-    console.log("Error", error);
+    console.log("Error getting battle history:", error);
+    res.status(500).json({ 
+      error: "An error occurred while fetching battle history." 
+    });
     throw error;
   }
 };
-/* 
-calculateWinRate();
-calculateAbilityDamageDelt();
-calculateAttackDamageDelt();
-calculateAllDamageDelt();
-calculateHealing();
-calculateIsAliveOrDead();
-calculateAllBattleStatistics();
-*/
 
 module.exports = {
   calculateWinRate,
@@ -658,4 +709,6 @@ module.exports = {
   calculateAllBattleStatistics,
   calculateChampionStatistics,
   calculateBattleHistory,
+  setBattleData,      
+  clearBattleData,  
 };

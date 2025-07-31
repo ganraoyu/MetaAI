@@ -41,14 +41,13 @@ export const BattleProvider = ({ children }: BattleProviderProps) => {
   const [error, setError] = useState<string | null>(null)
 
   const fetchBattleHistory = async () => {
-    setLoading(true)
+    setLoading(true)  
     setError(null)
 
     try {
       const response = await axios.get(
         "http://localhost:3000/battle-simulator/battle-history"
       )
-      console.log("Response data:", response.data)
       setBattleHistory(response.data)
     } catch (err: any) {
       setError(

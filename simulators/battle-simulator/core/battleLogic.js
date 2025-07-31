@@ -185,36 +185,26 @@ function addAdditionalTraitStatistics(champion) {
       trait.trait === traitStatsForTrait.name &&
       traitCounts[traitStatsForTrait.name] >= 1
     ) {
-      champion.statsByStarLevel[champion.starLevel].hp +=
-        parseFloat(traitStatsForTrait.stats.additionalHealth) || 0;
-      champion.currentHp +=
-        parseFloat(traitStatsForTrait.stats.additionalHealth) || 0;
-      champion.statsByStarLevel[champion.starLevel].armor +=
-        parseFloat(traitStatsForTrait.stats.additionalArmor) || 0;
-      champion.statsByStarLevel[champion.starLevel].attackDamage +=
-        parseFloat(traitStatsForTrait.stats.additionalAttackDamage) || 0;
-      champion.statsByStarLevel[champion.starLevel].attackSpeed +=
-        parseFloat(traitStatsForTrait.stats.additionalAttackSpeed) || 0;
-      champion.statsByStarLevel[champion.starLevel].magicResist +=
-        parseFloat(traitStatsForTrait.stats.additionalMagicResist) || 0;
-      champion.statsByStarLevel[champion.starLevel].mana +=
-        parseFloat(traitStatsForTrait.stats.additionalMana) || 0;
-      champion.statsByStarLevel[champion.starLevel].manaPerAttack +=
-        parseFloat(traitStatsForTrait.stats.additionalManaPerAttack) || 0;
-      champion.statsByStarLevel[champion.starLevel].abilityPower +=
-        parseFloat(traitStatsForTrait.stats.additionalAbilityPower) || 0;
-      champion.statsByStarLevel[champion.starLevel].abilityManaCost -=
-        parseFloat(traitStatsForTrait.stats.reducedMaxMana) || 0;
-      champion.statsByStarLevel[champion.starLevel].attackCritChance +=
-        parseFloat(traitStatsForTrait.stats.additionalCritChance) || 0;
-      champion.statsByStarLevel[champion.starLevel].attackCritDamage +=
-        parseFloat(traitStatsForTrait.stats.additionalCritDamage) || 0;
-      champion.statsByStarLevel[champion.starLevel].omnivamp +=
-        parseFloat(traitStatsForTrait.stats.additionalOmnivamp) || 0;
-      champion.statsByStarLevel[champion.starLevel].durability +=
-        parseFloat(traitStatsForTrait.stats.additionalDurability) || 0;
-      champion.statsByStarLevel[champion.starLevel].range +=
-        parseFloat(traitStatsForTrait.stats.additionalAttackRange) || 0;
+      const stats = champion.statsByStarLevel[champion.starLevel];
+      const traitStats = traitStatsForTrait?.stats || {};
+
+      stats.hp += parseFloat(traitStats.additionalHealth) || 0;
+      champion.currentHp += parseFloat(traitStats.additionalHealth) || 0;
+
+      stats.armor += parseFloat(traitStats.additionalArmor) || 0;
+      stats.attackDamage += parseFloat(traitStats.additionalAttackDamage) || 0;
+      stats.attackSpeed += parseFloat(traitStats.additionalAttackSpeed) || 0;
+      stats.magicResist += parseFloat(traitStats.additionalMagicResist) || 0;
+      stats.mana += parseFloat(traitStats.additionalMana) || 0;
+      stats.manaPerAttack += parseFloat(traitStats.additionalManaPerAttack) || 0;
+      stats.abilityPower += parseFloat(traitStats.additionalAbilityPower) || 0;
+      stats.abilityManaCost -= parseFloat(traitStats.reducedMaxMana) || 0;
+      stats.attackCritChance += parseFloat(traitStats.additionalCritChance) || 0;
+      stats.attackCritDamage += parseFloat(traitStats.additionalCritDamage) || 0;
+      stats.omnivamp += parseFloat(traitStats.additionalOmnivamp) || 0;
+      stats.durability += parseFloat(traitStats.additionalDurability) || 0;
+      stats.range += parseFloat(traitStats.additionalAttackRange) || 0;
+
     } else {
       console.log("Error: Trait not processed correctly");
     }
@@ -520,14 +510,46 @@ function startBattle() {
   };
 }
 
-placeChampionByName("Akali", 7, 3, 3, "player");
-placeChampionByName("Darius", 3, 3, 3, "opponent");
-addItemByName(board.getChampion(7, 3), "Sunfire Cape");
+function clearBoard() {
+  // Clear all champions from the board
+  for (let row = 0; row < board.rows; row++) {
+    for (let col = 0; col < board.columns; col++) {
+      const champion = board.getChampion(row, col);
+      if (champion) {
+        board.removeChampion(row, col);
+        console.log(`Removed ${champion.name} from position ${row},${col}`);
+      }
+    }
+  }
 
-board.displayBoard();
+  // Reset battle time
+  currentBattleTime = 0;
+  try {
+    if (battleLogger && battleLogger.clearHistory) {
+      battleLogger.clearHistory();
+      console.log("✅ Battle history cleared via clearHistory()");
+    } else if (battleLogger && battleLogger.battleHistory) {
+      battleLogger.battleHistory = [];
+    }
+  } catch (error) {
+    console.log("❌ Error clearing battle history:", error);
+    try {
+      delete require.cache[require.resolve('./battleLogger.ts')];
+    } catch (cacheError) {
+      console.log("❌ Could not clear battle logger cache:", cacheError);
+    }
+  }
+  board.displayBoard();
+}
+
+// placeChampionByName("Akali", 7, 3, 3, "player");
+// placeChampionByName("Darius", 3, 3, 3, "opponent");
+// addItemByName(board.getChampion(7, 3), "Sunfire Cape");
 
 module.exports = {
   router,
   startBattle,
+  clearBoard,
+  placeChampionByName,
   getBattleHistory: () => battleLogger.getBattleHistory(currentBattleTime),
 };

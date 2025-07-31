@@ -1,4 +1,4 @@
-const battleLogs: Object[] = [];
+let battleHistory: any[] = [];
 
 function getFormattedTime(time: number) {
     const minutes = Math.floor(time / 6000);
@@ -9,7 +9,7 @@ function getFormattedTime(time: number) {
 export function logBattleEvent(eventType: string, details: object, currentTime: number) {
     const timeStamp = getFormattedTime(currentTime);
 
-    battleLogs.push({
+    battleHistory.push({
         formattedTime: timeStamp,
         type: eventType,
         details: details
@@ -17,10 +17,13 @@ export function logBattleEvent(eventType: string, details: object, currentTime: 
     
 }
 
-export function getBattleHistory(currentBattleTime: number) {
-    return {
-        battleLogs,
-        duration: currentBattleTime ? currentBattleTime/100 : 0
-    };
-}
+export const getBattleHistory = (battleTime: number) => {
+  return {
+    battleLogs: battleHistory,
+    duration: battleTime / 100
+  };
+};
 
+export const clearHistory = () => {
+  battleHistory = [];
+};

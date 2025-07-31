@@ -11,7 +11,9 @@ const {
     getAliveOrDead,
     getAllBattleStatistics,
     getChampionStatistics,
-    getBattleHistory
+    getBattleHistory,
+    sendLineUp,
+    startBattleWithBoard 
     } = require('../../../controllers/battle-simulator/battle-simulator.controller.js');
 
 router.get('/winRate', getWinRate);
@@ -24,5 +26,8 @@ router.get('/aliveOrDead', getAliveOrDead);
 router.get('/allBattleStatistics', getAllBattleStatistics);
 router.get('/championStatistics', getChampionStatistics);
 router.get('/battle-history', getBattleHistory);
+router.post('/sendLineUp', sendLineUp);
+
+router.post('/start-battle', startBattleWithBoard);
 
 module.exports = router;
