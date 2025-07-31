@@ -1,4 +1,3 @@
-import { Star } from '../../../utils/Star'
 import { ChampionHoverInfoProps } from '../../types'
 
 interface ChampionStatsGridProps extends ChampionHoverInfoProps {}

@@ -4,7 +4,7 @@ interface ToggleUnitsAugmentsSwitchProps {
 }
 
 export const ToggleUnitsAugmentsSwitch = ({ toggleUnitsOrAugments, setToggleUnitsOrAugments }: ToggleUnitsAugmentsSwitchProps) => (
-  <div className="flex items-center ml-12 gap-2">
+  <div className="flex items-center ml-16 gap-2">
     <p className={`text-xs ${!toggleUnitsOrAugments ? "text-gray-400" : ""}`}>
       Units
     </p>

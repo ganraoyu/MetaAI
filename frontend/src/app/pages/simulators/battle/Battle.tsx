@@ -4,9 +4,10 @@ import { UnitAugmentContainer } from './components/UnitAugmentContainer/UnitAugm
 import { BattleButtons } from './components/BattleContainers/BattleButtons';
 import { BattleProvider } from './BattleContext';
 import { TraitsContainer } from './components/BattleContainers/TraitsContainer';
-import { HexBoard } from './components/BattleContainers/HexBoard';
+import { HexBoard } from './components/BattleContainers/HexBoard/HexBoard';
 import { LogsDisplay } from './components/BattleContainers/LogDisplay';
 import { Filter } from './components/BattleLogCards/_Filter';
+import { HexBoardProvider } from './components/BattleContainers/HexBoard/HexBoardContext';
 
 const BattleContent = () => {
   useTitle('TFT Battle Simulator - Builder');
@@ -78,7 +79,9 @@ const BattleContent = () => {
 const Battle = () => {
   return (
     <BattleProvider>
-      <BattleContent />
+      <HexBoardProvider>
+        <BattleContent />
+      </HexBoardProvider>
     </BattleProvider>
   );
 };

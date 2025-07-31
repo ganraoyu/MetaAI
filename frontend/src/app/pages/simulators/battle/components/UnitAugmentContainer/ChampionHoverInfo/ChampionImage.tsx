@@ -34,7 +34,6 @@ function getTypeTextColor(type: string): string {
   }
 }
 
-
 function getCostGradientBg(cost: number): string {
   switch (cost) {
     case 1:
@@ -62,6 +61,7 @@ export const ChampionImage = ({
 }: ChampionImageProps) => {
   return (
     <div>
+
       {/* Image with gradient overlay and traits */}
       <div
         className={`relative border-2 rounded-t-md overflow-hidden ${borderColor}`}
@@ -69,7 +69,7 @@ export const ChampionImage = ({
         <img
           src={`../assets/${set}/champions/splash/${champion}.png`}
           alt={champion}
-          className="w-full h-[10rem] object-cover rounded-t-md"
+          className="w-full h-[9rem] object-cover rounded-t-md"
         />
         {/* Left-to-right gradient overlay */}
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-black/60 to-transparent rounded-t-md pointer-events-none" />
@@ -104,11 +104,14 @@ export const ChampionImage = ({
 
       {/* Cost Badge */}
       <div
-        className={`absolute top-[9.1rem] right-[0.125rem] rounded-tl-md px-[0.375rem] font-bold flex items-center gap-[0.25rem] text-white text-xs bg-gradient-to-r ${getCostGradientBg(cost)}`}
+        className={`absolute top-[8.2rem] right-[0.125rem] rounded-tl-md px-[0.375rem] font-bold flex items-center gap-[0.25rem] text-white text-xs bg-gradient-to-r ${getCostGradientBg(
+          cost
+        )}`}
       >
         <img src="../assets/icons/coin.png" className="h-[0.5rem] w-[0.5rem]" />
         <p className="text-outline">{cost || 1}</p>
       </div>
+
     </div>
   );
 };
