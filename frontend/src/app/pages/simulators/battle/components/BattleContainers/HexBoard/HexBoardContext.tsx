@@ -23,11 +23,15 @@ interface ChampionPosition {
   starLevel: number | 1;
 }
 
+interface TraitCountMap {
+  [trait: string]: number;
+}
+
 interface HexBoardContextType {
   boardState: BoardState;
   boardArray: ChampionPosition[];
-  playerTraitsArray: string[];
-  opponentTraitsArray: string[];
+  playerTraitsArray: TraitCountMap;
+  opponentTraitsArray: TraitCountMap;
   setBoardState: React.Dispatch<React.SetStateAction<BoardState>>;
   setBoardArray: React.Dispatch<React.SetStateAction<ChampionPosition[]>>;
   placeChampion: (cellId: string, championData: ChampionData) => void;
@@ -55,19 +59,38 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [boardState, setBoardState] = useState<BoardState>({});
   const [boardArray, setBoardArray] = useState<ChampionPosition[]>([]);
-  const [playerTraitsArray, setPlayerTraitsArray] = useState<string[]>([]);
-  const [opponentTraitsArray, setOpponentTraitsArray] = useState<string[]>([]);
+  const [playerTraitsArray, setPlayerTraitsArray] = useState<TraitCountMap>({});
+  const [opponentTraitsArray, setOpponentTraitsArray] = useState<TraitCountMap>({});
 
   useEffect(() => {
-    const playerTraits: string[] = [];
-    const opponentTraits: string[] = [];
+    const playerTraits: TraitCountMap = {};
+    const opponentTraits: TraitCountMap = {};
+    
+    const filteredBoardArray: ChampionPosition[] = [];
 
     for (const champion of boardArray) {
+      const row = parseInt(champion.cellId[1]); // e.g. 'r3c2' → '3'
+      const isPlayer = row >= 4;
+
+      if (!filteredBoardArray.some(c =>
+        c.championName === champion.championName &&
+        ((parseInt(c.cellId[1]) >= 4) === isPlayer) 
+      )) {
+        filteredBoardArray.push(champion);
+      }
+      
+    }
+
+    for (const champion of filteredBoardArray) {
       const row = parseInt(champion.cellId[1]); // e.g. "r3c2" → '3'
       if (row >= 4) {
-        playerTraits.push(...champion.traitsList);
+        for (const trait of champion.traitsList) {
+          playerTraits[trait] = (playerTraits[trait] || 0) + 1;
+        }
       } else {
-        opponentTraits.push(...champion.traitsList);
+        for (const trait of champion.traitsList) {
+          opponentTraits[trait] = (opponentTraits[trait] || 0) + 1;
+        }
       }
     }
 

@@ -1,98 +1,128 @@
-export const traits = [
-    {
-        "name": "Conqueror",
-        "image": "../assets/SET13/traits/Conqueror.png",
-        "description": "Academy champions gain bonus health and ability power.",
-        "tiers": {
-        1: { health: 100, abilityPower: 10 },
-        2: { health: 200, abilityPower: 20 },
-        3: { health: 300, abilityPower: 30 },
-        4: { health: 400, abilityPower: 40 },
-        5: { health: 500, abilityPower: 50 }
-        }
-    },
-    {
-        "name": "Quickstriker",
-        "image": "../assets/SET13/traits/Quickstriker.png",
-        "description": "Quickstriker gain attack speed and critical strike chance.",
-        "tiers": {
-            1: { attackSpeed: 0.1, critChance: 0.05 },
-            2: { attackSpeed: 0.2, critChance: 0.1 },
-            3: { attackSpeed: 0.3, critChance: 0.15 },
-            4: { attackSpeed: 0.4, critChance: 0.2 },
-            5: { attackSpeed: 0.5, critChance: 0.25 }
-        }
-    },
-    {
-        "name": "Rebel",
-        "image": "../assets/SET13/traits/Rebel.png",
-        "description": "Rebel gain mana regeneration and spell power.",
-        "tiers": {
-            1: { manaRegen: 2, spellPower: 10 },
-            2: { manaRegen: 4, spellPower: 20 },
-            3: { manaRegen: 6, spellPower: 30 },
-            4: { manaRegen: 8, spellPower: 40 },
-            5: { manaRegen: 10, spellPower: 50 }
-        }
-    },
-    {
-        "name": "Watcher",
-        "image": "../assets/SET13/traits/Watcher.png",
-        "description": "Watcher gain magic resistance and healing power.",
-        "tiers": {
-            1: { magicResist: 20, healingPower: 10 },
-            2: { magicResist: 40, healingPower: 20 },
-            3: { magicResist: 60, healingPower: 30 },
-            4: { magicResist: 80, healingPower: 40 },
-            5: { magicResist: 100, healingPower: 50 }
-        }
-    },
-    {
-        "name": "Brawler",
-        "image": "../assets/SET13/traits/Brawler.png",
-        "description": "Brawler gain bonus health and attack damage.",
-        "tiers": {
-            1: { health: 150, attackDamage: 10 },
-            2: { health: 300, attackDamage: 20 },
-            3: { health: 450, attackDamage: 30 },
-            4: { health: 600, attackDamage: 40 },
-            5: { health: 750, attackDamage: 50 }
-        }
-    },
-    {
-        "name": "Sorcerer",
-        "image": "../assets/SET13/traits/Sorcerer.png",
-        "description": "Sorcerers gain bonus ability power and spell penetration.",
-        "tiers": {
-            1: { abilityPower: 20, spellPenetration: 5 },
-            2: { abilityPower: 40, spellPenetration: 10 },
-            3: { abilityPower: 60, spellPenetration: 15 },
-            4: { abilityPower: 80, spellPenetration: 20 },
-            5: { abilityPower: 100, spellPenetration: 25 }
-        }
-    },
-    {
-        "name": "Guardian",
-        "image": "../assets/SET13/traits/Guardian.png",
-        "description": "Guardians gain bonus armor and shield power.",
-        "tiers": {
-            1: { armor: 20, shieldPower: 10 },
-            2: { armor: 40, shieldPower: 20 },
-            3: { armor: 60, shieldPower: 30 },
-            4: { armor: 80, shieldPower: 40 },
-            5: { armor: 100, shieldPower: 50 }
-        }
-    },
-    {
-        "name": "Assassin",
-        "image": "../assets/SET13/traits/Assassin.png",
-        "description": "Assassins gain bonus critical strike chance and attack damage.",
-        "tiers": {
-            1: { critChance: 0.1, attackDamage: 10 },
-            2: { critChance: 0.2, attackDamage: 20 },
-            3: { critChance: 0.3, attackDamage: 30 },
-            4: { critChance: 0.4, attackDamage: 40 },
-            5: { critChance: 0.5, attackDamage: 50 }
-        }
-    }
-]
+import { Trait } from "../types";
+
+export const traitsSET13: Trait[] = [
+  {
+    name: "Watcher",
+    image: "../assets/SET13/traits/Watcher.png",
+    description: "Watcher champions gain bonus health.",
+    tiers: [
+      {
+        count: 1,
+        tierLabel: "Bronze",
+        effect: "Watchers gain 100 bonus health.",
+        stats: { health: 100 },
+      },
+      {
+        count: 3,
+        tierLabel: "Silver",
+        effect: "Watchers gain 250 bonus health.",
+        stats: { health: 250 },
+      },
+      {
+        count: 5,
+        tierLabel: "Gold",
+        effect: "Watchers gain 450 bonus health.",
+        stats: { health: 450 },
+      },
+      {
+        count: 7,
+        tierLabel: "Prismatic",
+        effect: "Watchers gain 700 bonus health.",
+        stats: { health: 700 },
+      },
+    ],
+  },
+  {
+    name: "Automata",
+    image: "../assets/SET13/traits/Automaton.png",
+    description: "Automaton champions gain bonus attack damage and armor.",
+    tiers: [
+      {
+        count: 3,
+        tierLabel: "Bronze",
+        effect: "Automatons gain 10 bonus attack damage and 15 armor.",
+        stats: { attackDamage: 10, armor: 15 },
+      },
+      {
+        count: 4,
+        tierLabel: "Silver",
+        effect: "Automatons gain 25 bonus attack damage and 35 armor.",
+        stats: { attackDamage: 25, armor: 35 },
+      },
+      {
+        count: 5,
+        tierLabel: "Gold",
+        effect: "Automatons gain 40 bonus attack damage and 60 armor.",
+        stats: { attackDamage: 40, armor: 60 },
+      },
+      {
+        count: 7,
+        tierLabel: "Prismatic",
+        effect: "Automatons gain 60 bonus attack damage and 90 armor.",
+        stats: { attackDamage: 60, armor: 90 },
+      },
+    ],
+  },
+  {
+    name: "Conqueror",
+    image: "../assets/SET13/traits/Conqueror.png",
+    description: "Conqueror champions gain bonus health.",
+    tiers: [
+      {
+        count: 2,
+        tierLabel: "Bronze",
+        effect: "Conquerors gain 100 bonus health.",
+        stats: { health: 100 },
+      },
+      {
+        count: 3,
+        tierLabel: "Silver",
+        effect: "Conquerors gain 250 bonus health.",
+        stats: { health: 250 },
+      },
+      {
+        count: 5,
+        tierLabel: "Gold",
+        effect: "Conquerors gain 450 bonus health.",
+        stats: { health: 450 },
+      },
+      {
+        count: 7,
+        tierLabel: "Prismatic",
+        effect: "Conquerors gain 700 bonus health.",
+        stats: { health: 700 },
+      },
+    ],
+  },
+  {
+    name: "Rebel",
+    image: "../assets/SET13/traits/Rebel.png",
+    description: "Rebel champions gain mana regeneration and spell power.",
+    tiers: [
+      {
+        count: 1,
+        tierLabel: "Bronze",
+        effect: "Rebels gain 2 mana regeneration and 10 spell power.",
+        stats: { manaRegen: 2, spellPower: 10 },
+      },
+      {
+        count: 3,
+        tierLabel: "Silver",
+        effect: "Rebels gain 5 mana regeneration and 25 spell power.",
+        stats: { manaRegen: 5, spellPower: 25 },
+      },
+      {
+        count: 5,
+        tierLabel: "Gold",
+        effect: "Rebels gain 9 mana regeneration and 50 spell power.",
+        stats: { manaRegen: 9, spellPower: 50 },
+      },
+      {
+        count: 7,
+        tierLabel: "Prismatic",
+        effect: "Rebels gain 15 mana regeneration and 80 spell power.",
+        stats: { manaRegen: 15, spellPower: 80 },
+      },
+    ],
+  },
+];

@@ -3,7 +3,7 @@ import { useTitle } from '../../../utilities/useTitle';
 import { UnitAugmentContainer } from './components/UnitAugmentContainer/UnitAugmentContainer';
 import { BattleButtons } from './components/BattleContainers/BattleButtons';
 import { BattleProvider } from './BattleContext';
-import { TraitsContainer } from './components/BattleContainers/TraitsContainer';
+import { TraitsContainer } from './components/BattleContainers/TraitsContainer/TraitsContainer';
 import { HexBoard } from './components/BattleContainers/HexBoard/HexBoard';
 import { LogsDisplay } from './components/BattleContainers/LogDisplay';
 import { Filter } from './components/BattleLogCards/_Filter';
