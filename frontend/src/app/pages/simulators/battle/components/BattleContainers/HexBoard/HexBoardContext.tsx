@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 interface ChampionData {
   name: string;
+  traitsList: string[];
   image: string;
   cost: number;
   starLevel: number;
@@ -18,11 +19,15 @@ interface BoardState {
 interface ChampionPosition {
   championName: string;
   cellId: string;
+  traitsList: string[];
+  starLevel: number | 1;
 }
 
 interface HexBoardContextType {
   boardState: BoardState;
   boardArray: ChampionPosition[];
+  playerTraitsArray: string[];
+  opponentTraitsArray: string[];
   setBoardState: React.Dispatch<React.SetStateAction<BoardState>>;
   setBoardArray: React.Dispatch<React.SetStateAction<ChampionPosition[]>>;
   placeChampion: (cellId: string, championData: ChampionData) => void;
@@ -50,6 +55,25 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [boardState, setBoardState] = useState<BoardState>({});
   const [boardArray, setBoardArray] = useState<ChampionPosition[]>([]);
+  const [playerTraitsArray, setPlayerTraitsArray] = useState<string[]>([]);
+  const [opponentTraitsArray, setOpponentTraitsArray] = useState<string[]>([]);
+
+  useEffect(() => {
+    const playerTraits: string[] = [];
+    const opponentTraits: string[] = [];
+
+    for (const champion of boardArray) {
+      const row = parseInt(champion.cellId[1]); // e.g. "r3c2" → '3'
+      if (row >= 4) {
+        playerTraits.push(...champion.traitsList);
+      } else {
+        opponentTraits.push(...champion.traitsList);
+      }
+    }
+
+    setPlayerTraitsArray(playerTraits);
+    setOpponentTraitsArray(opponentTraits);
+  }, [boardArray]);
 
   const placeChampion = (cellId: string, championData: ChampionData) => {
     setBoardState((prev) => ({
@@ -62,13 +86,16 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
 
     setBoardArray((prev) => {
       const filtered = prev.filter((entry) => entry.cellId !== cellId);
-      filtered.push({ championName: championData.name, cellId });
-      console.log("Updated boardArray inside setter:", filtered);
-      return filtered;
+      return [
+        ...filtered,
+        {
+          championName: championData.name,
+          cellId,
+          traitsList: championData.traitsList,
+          starLevel: championData.starLevel || 1,
+        },
+      ];
     });
-
-    console.log(`Placed ${championData.name} in cell ${cellId}`);
-    console.log(boardArray);
   };
 
   const removeChampion = (cellId: string) => {
@@ -77,11 +104,8 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
       delete newState[cellId];
       return newState;
     });
-    
-    setBoardArray((prev) => prev.filter((entry) => entry.cellId !== cellId));
 
-    console.log(`Removed champion from cell ${cellId}`);
-    console.log(boardArray);
+    setBoardArray((prev) => prev.filter((entry) => entry.cellId !== cellId));
   };
 
   const moveChampion = (fromCellId: string, toCellId: string) => {
@@ -101,12 +125,16 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
       if (!championEntry) return prev;
 
       const filtered = prev.filter((entry) => entry.cellId !== fromCellId);
-      filtered.push({
-        championName: championEntry.championName,
-        cellId: toCellId,
-      });
 
-      return filtered;
+      return [
+        ...filtered,
+        {
+          championName: championEntry.championName,
+          cellId: toCellId,
+          traitsList: championEntry.traitsList,
+          starLevel: championEntry.starLevel,
+        },
+      ];
     });
   };
 
@@ -119,6 +147,8 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         boardState,
         boardArray,
+        playerTraitsArray,
+        opponentTraitsArray,
         setBoardState,
         setBoardArray,
         placeChampion,

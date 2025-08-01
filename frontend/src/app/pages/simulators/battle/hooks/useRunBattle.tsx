@@ -9,7 +9,7 @@ export const useRunBattle = () => {
   const runBattle = async () => {
     try {
       setLoading(true);
-      // Send board state to the backend
+
       const response = await axios.post(
         "http://localhost:3000/battle-simulator/start-battle",
         { boardState }

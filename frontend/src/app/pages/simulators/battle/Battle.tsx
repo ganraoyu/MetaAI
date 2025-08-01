@@ -30,6 +30,7 @@ const BattleContent = () => {
 
         {/* Main content section */}
         <div className='flex flex-row items-start justify-between h-[35rem] w-[70rem] mx-auto p-4 bg-hexCellBackground rounded-t-2xl'>
+          
           {/* Left side - Traits */}
           <TraitsContainer />
           

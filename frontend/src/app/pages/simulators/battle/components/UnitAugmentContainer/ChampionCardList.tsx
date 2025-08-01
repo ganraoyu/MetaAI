@@ -40,9 +40,9 @@ export const ChampionCardList = ({ set }: { set: string }) => {
       name: champion.name,
       image: champion.image,
       cost: champion.cost,
-      starLevel: 1, // Default star level
+      starLevel: 1,
       type: champion.type,
-      traits: champion.traitsList || [],
+      traitsList: champion.traitsList || [],
       stats: champion.statsByStarLevel?.[1] || {},
       abilityName: champion.abilityName,
       abilityDescription: champion.abilityDescription,
