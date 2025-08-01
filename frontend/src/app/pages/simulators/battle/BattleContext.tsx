@@ -20,6 +20,7 @@ interface BattleContextType {
   battleHistory: BattleData | null;
   setBattleHistory: (data: BattleData | null) => void;
   loading: boolean;
+  setLoading: (loading: boolean) => void; // Add this
   error: string | null;
   fetchBattleHistory: () => Promise<void>;
 }
@@ -66,6 +67,7 @@ export const BattleProvider = ({ children }: BattleProviderProps) => {
     battleHistory,
     setBattleHistory,
     loading,
+    setLoading, // Add this
     error,
     fetchBattleHistory,
   };
