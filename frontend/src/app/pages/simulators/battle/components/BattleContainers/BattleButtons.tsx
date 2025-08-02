@@ -10,7 +10,7 @@ import {
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useBattleContext } from "../../BattleContext";
 import { useHexBoardContext } from "./HexBoard/HexBoardContext";
-import { useRunBattle } from "../../hooks/useRunBattle";
+import { useRunBattle } from "../../hooks/useRunBattle.ts";
 
 export const BattleButtons = () => {
   const { setStartBattle, setBattleHistory, battleHistory, loading } =

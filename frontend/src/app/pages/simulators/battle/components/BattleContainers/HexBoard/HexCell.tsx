@@ -20,6 +20,8 @@ export const HexCell: React.FC<HexCellProps> = ({ row, col, cellId, team }) => {
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "copy";
+    // console.log(row)
+    // console.log(col)
   };
 
   const handleDrop = (e: React.DragEvent) => {

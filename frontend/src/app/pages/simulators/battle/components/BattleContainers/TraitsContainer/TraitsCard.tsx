@@ -24,7 +24,7 @@ export const TraitsCard = ({
   count: number;
 }) => {
   const { set } = useTFTSetContext();
-  const traitObj = getTraitByName(trait);
+  const traitObj = getTraitByName(trait, set);
 
   if (!traitObj || !traitObj.tiers || traitObj.tiers.length === 0) return null;
 
