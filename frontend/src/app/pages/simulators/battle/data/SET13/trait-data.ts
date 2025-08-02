@@ -7,7 +7,7 @@ export const traitsSET13: Trait[] = [
     description: "Watcher champions gain bonus health.",
     tiers: [
       {
-        count: 1,
+        count: 2,
         tierLabel: "Bronze",
         effect: "Watchers gain 100 bonus health.",
         stats: { health: 100 },

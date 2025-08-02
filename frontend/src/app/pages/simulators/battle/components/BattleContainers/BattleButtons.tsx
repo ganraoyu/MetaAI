@@ -19,8 +19,8 @@ export const BattleButtons = () => {
   const { boardState, setBoardState, boardArray, setBoardArray } = useHexBoardContext();
 
   const [error, setError] = useState<string | null>(null);
-  const [showAnalytics, setShowAnalytics] = useState(false);
-  const [currentBattleIndex, setCurrentBattleIndex] = useState(0);
+  const [showAnalytics, setShowAnalytics] = useState<boolean>(false);
+  const [currentBattleIndex, setCurrentBattleIndex] = useState<number>(0);
 
   const { runBattle } = useRunBattle();
 
