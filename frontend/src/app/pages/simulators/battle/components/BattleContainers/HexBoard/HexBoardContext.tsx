@@ -25,10 +25,16 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [orderedPlayerTraits, setOrderedPlayerTraits] = useState<TraitCountEntry[]>([]);
   const [orderedOpponentTraits, setOrderedOpponentTraits] = useState<TraitCountEntry[]>([]);
-
   useTraitCountingEffect(boardArray, setPlayerTraitsArray, setOpponentTraitsArray);
-  useTraitOrderingEffect(boardArray, playerTraitsObj, setOrderedPlayerTraits);
 
+  useTraitOrderingEffect(
+    boardArray,
+    playerTraitsObj,
+    opponentTraitsObj,
+    setOrderedPlayerTraits,
+    setOrderedOpponentTraits
+  );
+  
   const placeChampion = (cellId: string, championData: ChampionData) => {
     setBoardState((prev) => ({
       ...prev,

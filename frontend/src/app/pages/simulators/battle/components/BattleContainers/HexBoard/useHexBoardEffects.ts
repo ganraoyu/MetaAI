@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { getTraitByName } from "../../../data/dataUtils";
 import { ChampionPosition, TraitCountMap, TraitCountEntry } from "./types";
 import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
 
@@ -49,26 +48,25 @@ export function useTraitCountingEffect(
 export function useTraitOrderingEffect(
   boardArray: ChampionPosition[],
   playerTraitsObj: TraitCountMap,
-  setOrderedPlayerTraits: React.Dispatch<React.SetStateAction<TraitCountEntry[]>>
+  opponentTraitsObj: TraitCountMap,
+  setOrderedPlayerTraits: React.Dispatch<React.SetStateAction<TraitCountEntry[]>>,
+  setOrderedOpponentTraits: React.Dispatch<React.SetStateAction<TraitCountEntry[]>>
 ) {
   const { set } = useTFTSetContext();
 
   useEffect(() => {
-    const fullTraitsData: object[] = [];
-
-    for (const champion of boardArray) {
-      champion.traitsList.forEach((traitName) => {
-        const traitData = getTraitByName(traitName, set);
-        if (traitData) {
-          fullTraitsData.push(traitData);
-        }
-      });
-    }
-
-    const orderedTraits = Object.entries(playerTraitsObj).sort(
+    // Sort player traits by count descending
+    const orderedPlayerTraits = Object.entries(playerTraitsObj).sort(
       ([, countA], [, countB]) => countB - countA
     );
 
-    setOrderedPlayerTraits(orderedTraits);
-  }, [boardArray, playerTraitsObj, setOrderedPlayerTraits, set]);
-};
+    // Sort opponent traits by count descending
+    const orderedOpponentTraits = Object.entries(opponentTraitsObj).sort(
+      ([, countA], [, countB]) => countB - countA
+    );
+
+    setOrderedPlayerTraits(orderedPlayerTraits);
+    setOrderedOpponentTraits(orderedOpponentTraits);
+
+  }, [boardArray, playerTraitsObj, opponentTraitsObj, setOrderedPlayerTraits, setOrderedOpponentTraits, set]);
+}
