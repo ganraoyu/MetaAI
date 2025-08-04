@@ -6,7 +6,7 @@ export const TraitsContainer = () => {
 
   return (
     <div>
-      <div className='mt-1 w-1/4 text-white'>
+      <div className='w-1/4 text-white'>
 
         <div className='bg-hexCellComponents rounded-2xl w-56 h-60 mb-5'>
           {orderedOpponentTraits.map(([trait, count]) => (

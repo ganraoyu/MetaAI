@@ -25,7 +25,7 @@ export const Filter = ({
   const [showToggle, setShowToggle] = useState<boolean>(false)
 
   return (
-    <div className='mb-4 bg-hexCellComponents rounded-2xl p-[0.1rem]'>
+  <div className='mb-4 bg-hexCellComponents rounded-2xl p-[0.1rem]'>
       <div className='flex justify-center items-center h-17 w-[18rem] bg-hexCellComponents rounded-2xl pt-5 select-none'></div>
       <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
 

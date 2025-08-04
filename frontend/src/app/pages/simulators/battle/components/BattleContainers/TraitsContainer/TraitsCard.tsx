@@ -63,8 +63,8 @@ export const TraitsCard = ({
             clipPath:
               "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
             boxShadow: `0 0 8px 2px ${bgColor}`,
-            width: "28px",
-            height: "28px",
+            width: "31px",
+            height: "31px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -73,19 +73,30 @@ export const TraitsCard = ({
           <img
             src={`../assets/${set}/traits/${trait}.png`}
             alt={`${trait} icon`}
-            className="w-5 h- object-contain"
+            className="w-5 h-5 object-contain"
           />
         </div>
       </div>
 
       {/* Count */}
-      <div className="h-5 w-5 bg-[#392d2d] rounded-sm flex items-center justify-center text-white font-semibold">
+      <div className="h-6 w-6 bg-[#392d2d] rounded-sm flex items-center justify-center text-white font-semibold">
         {count}
       </div>
 
       {/* Trait Name/Tiers */}
       <div>
-        <p className="">{trait}</p>
+        <p className="text-xs">{trait}</p>
+          <div className="flex flex-row items-center gap-1">
+            {traitObj.tiers.map((tier: any, index: number) => (
+              <p key={index} className="m-0 text-[0.65rem]">
+                <div className={`${tier.count > count ? 'text-[#7d7777]' : 'text-white'}`}>
+                  {tier.count}
+                  {index < traitObj.tiers.length - 1 ? " / " : ''}
+                </div>
+
+              </p>
+            ))}
+          </div>
       </div>
     </div>
   );
