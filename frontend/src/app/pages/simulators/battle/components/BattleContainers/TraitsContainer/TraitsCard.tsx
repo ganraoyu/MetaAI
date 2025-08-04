@@ -3,16 +3,46 @@ import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
 
 function mapTraitTierColor(tierLabel: string): string {
   switch (tierLabel) {
+    case "Bronze": {
+      const dark = "#583a26";   // darker color
+      const light = "#b07c4a";  // original lighter color
+      return `linear-gradient(to bottom, ${dark} 0%, ${light} 30%, ${light} 30%, ${dark} 100%)`;  
+    }
+    case "Silver": {
+      const dark = "#34435a";
+      const light = "#c3cbd2";
+      return `linear-gradient(to bottom, ${dark} 0%, ${light} 30%, ${light} 30%, ${dark} 100%)`;
+    }
+    case "Gold": {
+      const dark = "#7a6e39";
+      const light = "#f4d77a";
+      return `linear-gradient(to bottom, ${dark} 0%, ${light} 30%, ${light} 30%, ${dark} 100%)`;
+    }
+    case "Prismatic": {
+      const dark = "#6800cc";
+      const light = "#d088ff";
+      return `linear-gradient(to bottom, ${dark} 0%, ${light} 30%, ${light} 30%, ${dark} 100%)`;
+    }
+    default: {
+      const dark = "#444444";
+      const light = "#888888";
+      return `linear-gradient(to bottom, ${dark} 0%, ${light} 30%, ${light} 30%, ${dark} 100%)`;
+    }
+  }
+}
+
+function mapTraitTierBorderColor(tierLabel: string): string {
+  switch (tierLabel) {
     case "Bronze":
-      return "#8c5a2c";
+      return "#7a5c3d";
     case "Silver":
-      return "#a8aeb4";
+      return "#b0b6bc";
     case "Gold":
-      return "#e0b13d";
+      return "#d1a83d";
     case "Prismatic":
-      return "#be40ff";
+      return "#a84fff";
     default:
-      return "#6c6c6c";
+      return "#666666";
   }
 }
 
@@ -37,15 +67,13 @@ export const TraitsCard = ({
 
   const isActive = count >= activeTier.count;
 
-  const bgColor = mapTraitTierColor(activeTier.tierLabel || "");
-
-  const backgroundColor = isActive ? bgColor : "#2f2828"; 
-
-  const outerBorderColor = isActive ? "#000000" : "#555555";
+  const gradientBg = mapTraitTierColor(activeTier.tierLabel || "");
+  const borderColor = mapTraitTierBorderColor(activeTier.tierLabel || "");
+  const fillBackground = isActive ? gradientBg : "#2f2828";
+  const outerBorderColor = isActive ? borderColor : "#555555";
 
   return (
     <div className="flex items-center gap-2 pt-3 pl-4 pr-4">
-
       {/* Outer border wrapper */}
       <div
         style={{
@@ -59,10 +87,11 @@ export const TraitsCard = ({
       >
         <div
           style={{
-            backgroundColor: backgroundColor,
+            background: fillBackground,
+            backgroundSize: "cover", // add this so gradient renders fully
             clipPath:
               "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-            boxShadow: `0 0 8px 2px ${bgColor}`,
+            boxShadow: `0 0 8px 2px ${isActive ? borderColor : "#000000"}`,
             width: "31px",
             height: "31px",
             display: "flex",
@@ -83,20 +112,23 @@ export const TraitsCard = ({
         {count}
       </div>
 
-      {/* Trait Name/Tiers */}
+      {/* Trait Name and Tier Counts */}
       <div>
         <p className="text-xs">{trait}</p>
-          <div className="flex flex-row items-center gap-1">
-            {traitObj.tiers.map((tier: any, index: number) => (
-              <p key={index} className="m-0 text-[0.65rem]">
-                <div className={`${tier.count > count ? 'text-[#7d7777]' : 'text-white'}`}>
-                  {tier.count}
-                  {index < traitObj.tiers.length - 1 ? " / " : ''}
-                </div>
-
-              </p>
-            ))}
-          </div>
+        <div className="flex flex-row items-center gap-1">
+          {traitObj.tiers.map((tier: any, index: number) => (
+            <p key={index} className="m-0 text-[0.65rem]">
+              <span
+                className={`${
+                  tier.count > count ? "text-[#7d7777]" : "text-white"
+                }`}
+              >
+                {tier.count}
+                {index < traitObj.tiers.length - 1 ? " / " : ""}
+              </span>
+            </p>
+          ))}
+        </div>
       </div>
     </div>
   );
