@@ -55,12 +55,9 @@ export function useTraitOrderingEffect(
   const { set } = useTFTSetContext();
 
   useEffect(() => {
-    // Sort player traits by count descending
     const orderedPlayerTraits = Object.entries(playerTraitsObj).sort(
       ([, countA], [, countB]) => countB - countA
     );
-
-    // Sort opponent traits by count descending
     const orderedOpponentTraits = Object.entries(opponentTraitsObj).sort(
       ([, countA], [, countB]) => countB - countA
     );

@@ -85,7 +85,7 @@ export const TraitsCard = ({
 
       {/* Trait Name/Tiers */}
       <div>
-        <p>{trait}</p>
+        <p className="">{trait}</p>
       </div>
     </div>
   );

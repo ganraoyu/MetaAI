@@ -28,7 +28,7 @@ export const LogsDisplay = ({
 
   return (
     <div
-      className="mt- w-[18rem] h-[30rem] max-h-[calc(100%-3rem)] overflow-y-auto scrollbar-hide text-white bg-hexCellComponents rounded-2xl py-2 px-6"
+      className="w-[18rem] h-[30rem] max-h-[calc(100%-3rem)] overflow-y-auto scrollbar-hide text-white bg-hexCellComponents rounded-2xl py-2 px-6"
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       <LogStyles />

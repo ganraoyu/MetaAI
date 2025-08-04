@@ -9,10 +9,9 @@ interface HexCellProps {
   image: string | null;
 }
 
-export const HexCell: React.FC<HexCellProps> = ({ row, col, cellId, team }) => {
+export const HexCell: React.FC<HexCellProps> = ({ row, col, cellId }) => {
   const { placeChampion, removeChampion, getChampion } = useHexBoardContext();
 
-  // Get champion data from context
   const championData = getChampion(cellId);
   const champion = championData?.name || null;
   const image = championData?.image || null;
@@ -20,8 +19,6 @@ export const HexCell: React.FC<HexCellProps> = ({ row, col, cellId, team }) => {
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "copy";
-    // console.log(row)
-    // console.log(col)
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -57,7 +54,7 @@ export const HexCell: React.FC<HexCellProps> = ({ row, col, cellId, team }) => {
     >
       {/* Outer hexagon (border) */}
       <div
-        className="absolute inset-0 bg-black shadow-md"
+        className="absolute inset-0 bg-[#0f131a] shadow-md"
         style={{
           clipPath:
             "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
@@ -77,23 +74,11 @@ export const HexCell: React.FC<HexCellProps> = ({ row, col, cellId, team }) => {
         />
       )}
 
-      {/* Inner hexagon (content) */}
+      {/* Inner hexagon */}
       <div
         className={`
-        absolute inset-[1px]
-        ${
-          !image
-            ? team === "player"
-              ? "bg-playerHexCell bg-opacity-50"
-              : team === "opponent"
-              ? "bg-opponentHexCell bg-opacity-50"
-              : "bg-hexCell"
-            : "bg-transparent"
-        }
-        ${!image && champion ? "bg-opacity-20" : ""}
-        ${!image ? "hover:bg-hexCellHover" : ""}
-        transition-colors
-        duration-300
+        absolute inset-[1.5px]
+        ${!image ? "bg-[#222222]" : "bg-transparent"}
         flex
         items-center
         justify-center

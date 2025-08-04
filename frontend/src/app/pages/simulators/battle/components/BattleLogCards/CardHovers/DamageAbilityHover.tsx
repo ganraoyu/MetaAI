@@ -27,7 +27,7 @@ export const DamageHover: React.FC<DamageBreakdownProps> = ({
   damageType
 }) => {
   return (
-    <div className="absolute bg-gray-800 text-white rounded-md p-2 shadow-lg border border-gray-700 w-52 z-50 text-sm">
+    <div className="absolute bg-[#1e1924] text-white rounded-md p-2 shadow-lg border border-gray-700 w-52 z-50 text-sm">
       {/* Header with damage type and final value */}
       <div className="flex justify-between items-center border-b border-gray-600 pb-1 mb-2">
         <div className="flex items-center gap-1.5">
