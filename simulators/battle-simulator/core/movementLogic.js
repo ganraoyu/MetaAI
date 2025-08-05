@@ -9,8 +9,17 @@ function getFormattedTime(battleTime) {
     return `${mins}:${secs.toString().padStart(2, '0')}.${cents.toString().padStart(2, '0')}`;
 }
 
+function offsetToAxial(row, col) {
+  const q = col - Math.floor(row / 2);
+  const r = row;
+  return [q, r];
+}
+
 function getDistanceBetweenCells(row1, col1, row2, col2) {
-    return Math.abs(row1 - row2) + Math.abs(col1 - col2);
+  const [q1, r1] = offsetToAxial(row1, col1);
+  const [q2, r2] = offsetToAxial(row2, col2);
+
+  return (Math.abs(q1 - q2) + Math.abs(q1 + r1 - q2 - r2) + Math.abs(r1 - r2)) / 2;
 }
 
 function findClosestEnemy(champion, enemyTeam, board) {

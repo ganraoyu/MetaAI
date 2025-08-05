@@ -3,8 +3,7 @@ import { useHexBoardContext } from "./HexBoardContext";
 import { Star } from "../../../utils/Star";
 
 interface HexCellProps {
-  row: number;
-  col: number;
+
   cellId: string;
   team: "player" | "opponent" | "";
 }
@@ -26,7 +25,7 @@ function getBorderColor(cost: number): string {
   }
 }
 
-export const HexCell: React.FC<HexCellProps> = ({ row, col, cellId }) => {
+export const HexCell: React.FC<HexCellProps> = ({cellId}) => {
   const {
     placeChampion,
     removeChampion,
@@ -124,7 +123,7 @@ export const HexCell: React.FC<HexCellProps> = ({ row, col, cellId }) => {
         {image && (
           <p
             role="button"
-            tabIndex={0} // makes it keyboard-focusable
+            tabIndex={0}
             onClick={() => console.log("Clicked!")}
             className="absolute inset-0 flex items-center justify-center text-white text-[0.6rem] z-10 cursor-pointer"
             style={{

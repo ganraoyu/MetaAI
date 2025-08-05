@@ -542,10 +542,12 @@ function clearBoard() {
   board.displayBoard();
 }
 
-// placeChampionByName("Akali", 7, 3, 3, "player");
-// placeChampionByName("Darius", 3, 3, 3, "opponent");
-// addItemByName(board.getChampion(7, 3), "Sunfire Cape");
 
+placeChampionByName("Akali", 4, 4, 3, "player");
+placeChampionByName("Darius", 3, 2, 3, "opponent");
+// addItemByName(board.getChampion(7, 3), "Sunfire Cape");
+board.displayBoard();
+startBattle()
 module.exports = {
   router,
   startBattle,

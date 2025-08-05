@@ -4,6 +4,7 @@ import { useBattleContext } from "../../BattleContext";
 import { Ability } from "../BattleLogCards/Ability";
 import { Heal } from "../BattleLogCards/Heal";
 import { Burn } from "../BattleLogCards/Burn";
+import { Movement } from "../BattleLogCards/Movement";
 
 export interface LogsDisplayProps {
   toggleAttack: boolean;
@@ -52,6 +53,13 @@ export const LogsDisplay = ({
                   {battleHistory.battleLogs.map((log: any, index: number) => (
                     <li key={index} className="mb-3 animate-fadeIn">
                       {/* Render log items based on type */}
+                      {log.type === 'movement' && (
+                        <div className="mb-2">
+                          <Movement
+
+                          />
+                        </div>
+                      )}
                       {log.type === "attack" && toggleAttack && (
                         <div className="mb-2">
                           <AutoAttack

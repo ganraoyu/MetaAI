@@ -57,75 +57,85 @@ export const ChampionCard = ({
   range = 0,
   starLevel = 1,
 }: ChampionCardProps) => {
-  const {set} = useTFTSetContext();
-
+  const { set } = useTFTSetContext();
   const [toggleChampionCardHover, setToggleChampionCardHover] = useState(false);
   const [clickChampionCardHover, setClickChampionCardHover] = useState(false);
-
   const cardRef = useRef<HTMLDivElement>(null);
 
   const hpPercentage = (currentHp / maxHp) * 100;
-  const hpColor = hpPercentage > 60 ? 'bg-green-500' : 
-          hpPercentage > 30 ? 'bg-yellow-500' : 'bg-red-500';
+  const hpColor =
+    hpPercentage > 60
+      ? 'bg-green-500'
+      : hpPercentage > 30
+      ? 'bg-yellow-500'
+      : 'bg-red-500';
 
   return (
-    <div 
+    <div
       ref={cardRef}
-      className="flex flex-col items-center rounded-md relative cursor-pointer" 
-      onMouseEnter={() => setToggleChampionCardHover(true)} 
+      className="flex flex-col items-center justify-center rounded-md relative cursor-pointer w-14 h-20"
+      onMouseEnter={() => setToggleChampionCardHover(true)}
       onMouseLeave={() => {
         setTimeout(() => setToggleChampionCardHover(false), 100);
       }}
       onClick={() => setClickChampionCardHover(!clickChampionCardHover)}
     >
-      <div className="relative">
-        <img 
-          src={`../assets/${set}/champions/centered/${champion}.png`} 
-          alt={champion}
-          className="w-10 h-10 rounded-full border-2 border-gray-600"
-        />
-        <div className="absolute bottom-0 w-full px-1">
-          <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
-            <div
-              className={`h-full ${hpColor} transition-all duration-300`}
-              style={{ width: `${hpPercentage}%` }}
-            />
-          </div>
+      <div className="flex flex-col items-center">
+         
+        {/* Champion Image */}
+        <div className="relative w-10 h-10">
+          <img
+            src={`../assets/${set}/champions/centered/${champion}.png`}
+            alt={champion}
+            className="w-full h-full rounded-full border-2 border-gray-600 object-cover"
+          />
+        </div>
+
+        {/* HP Bar */}
+        <div className="w-10 bg-gray-700 h-2 rounded-full overflow-hidden">
+          <div
+            className={`h-full ${hpColor} transition-all duration-300`}
+            style={{ width: `${hpPercentage}%` }}
+          />
+        </div>
+
+        {/* HP Text */}
+        <div className="text-[0.65rem] text-white font-semibold text-center w-full">
+          {Math.round(currentHp)}/{maxHp}
         </div>
       </div>
-      <div className="text-[0.7rem] text-white mt-1 font-semibold">
-        {Math.round(currentHp)}/{maxHp}
-      </div>
-        {(toggleChampionCardHover || clickChampionCardHover) && 
-          <ChampionCardHover 
-            champion={champion} 
-            trait1={trait1}
-            trait2={trait2}
-            trait3={trait3}
-            item1={item1}
-            item2={item2}
-            item3={item3}
-            cost={cost || 0}
-            currentHp={currentHp}
-            maxHp={maxHp}
-            mana={mana}
-            maxMana={maxMana}
-            shield={shield}
-            armor={armor}
-            magicResist={magicResist}
-            attackDamage={attackDamage}
-            attackSpeed={attackSpeed}
-            critChance={critChance}
-            critDamage={critDamage}
-            abilityPower={abilityPower}
-            damageAmp={damageAmp}
-            omnivamp={omnivamp}
-            reduction={reduction}
-            range={range}
-            starLevel={starLevel}
-            parentRef={cardRef}
-          />
-        }
+
+      {(toggleChampionCardHover || clickChampionCardHover) && (
+        <ChampionCardHover
+          champion={champion}
+          trait1={trait1}
+          trait2={trait2}
+          trait3={trait3}
+          item1={item1}
+          item2={item2}
+          item3={item3}
+          cost={cost}
+          currentHp={currentHp}
+          maxHp={maxHp}
+          mana={mana}
+          maxMana={maxMana}
+          shield={shield}
+          armor={armor}
+          magicResist={magicResist}
+          attackDamage={attackDamage}
+          attackSpeed={attackSpeed}
+          critChance={critChance}
+          critDamage={critDamage}
+          abilityPower={abilityPower}
+          damageAmp={damageAmp}
+          omnivamp={omnivamp}
+          reduction={reduction}
+          range={range}
+          starLevel={starLevel}
+          parentRef={cardRef}
+        />
+      )}
+
       <style>{`
         @keyframes growOut {
           from {

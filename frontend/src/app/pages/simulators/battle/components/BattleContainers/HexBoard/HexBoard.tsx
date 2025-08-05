@@ -22,7 +22,7 @@ export const HexBoard = () => {
                 const cellId = `r${row}c${col}`;
 
                 return (
-                  <HexCell row={row} col={col} cellId={cellId} team={team} />
+                  <HexCell cellId={cellId} team={team} />
                 );
               })}
             </div>

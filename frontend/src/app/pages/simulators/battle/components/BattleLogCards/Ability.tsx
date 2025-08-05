@@ -18,17 +18,17 @@ export const Ability = ({log, index}: {log: any, index: number}) => {
   }
 
   const updatePosition = () => {
-        if (!damageRef.current) return;
-        
-        const damageRect = damageRef.current.getBoundingClientRect();
+    if (!damageRef.current) return;
+    
+    const damageRect = damageRef.current.getBoundingClientRect();
 
-        let left = damageRect.right - 40;
-        let top = damageRect.top + 25;
-        setPosition({ top, left });
-    };
+    let left = damageRect.right - 40;
+    let top = damageRect.top + 25;
+    setPosition({ top, left });
+  };
 
   useEffect(() => {
-    // Only add event listeners if the hover is active
+    // Add event listeners for scroll and resize when hover or click is active
     if (hoveredDamageId === index || clickedDamageId === index) {
       updatePosition();
 
@@ -44,9 +44,14 @@ export const Ability = ({log, index}: {log: any, index: number}) => {
 
   return (
     <div>
+      {/* Outer container with gradient background and border */}
       <div className='bg-gradient-to-r from-blue-900/40 to-blue-800/20 border-l-4 border-blue-500 rounded-md p-2 shadow-md'>
-        <div className="flex justify-between items-start mb-2">
+        
+        {/* Header row: timestamp and damage value */}
+        <div className="flex justify-between items-start">
           <span className="text-xs text-gray-400">[{log.formattedTime}]</span>
+
+          {/* Damage value with hover and click handlers */}
           <span 
             ref={damageRef}
             className="text-xs font-bold text-blue-400 bg-blue-400/20 px-2 py-0.5 rounded cursor-pointer"
@@ -55,6 +60,8 @@ export const Ability = ({log, index}: {log: any, index: number}) => {
             onClick={() => handleDamageClicked(index)}
           >
             -{log.details.damage}
+
+            {/* Hover popup showing detailed damage breakdown */}
             {(hoveredDamageId === index || clickedDamageId === index) && (
               <div 
                 className="fixed animate-grow-in origin-top-left z-50 cursor-auto"
@@ -81,7 +88,11 @@ export const Ability = ({log, index}: {log: any, index: number}) => {
             )}
           </span>
         </div>
-        <div className='grid grid-cols-3 gap-2 mb-2'>
+
+        {/* Main grid: attacker card, ability icon + name, target card */}
+        <div className='grid grid-cols-3 gap-2'>
+          
+          {/* Attacker's champion card aligned right */}
           <div className="flex justify-end">
             <ChampionCard 
               champion={log.details.attacker.champion}
@@ -102,14 +113,16 @@ export const Ability = ({log, index}: {log: any, index: number}) => {
               range={log.details.attacker.range || 0}
             />
           </div>
+
+          {/* Ability icon and ability name centered */}
           <div className="flex flex-col items-center justify-center">
             <div className="w-8 h-8 rounded-full bg-blue-500/30 flex items-center justify-center">
-              <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
-              </svg>
+             <img src="../assets/icons/abilitypower.png" className="w-4 h-4" />
             </div>
             <div className="mt-1 text-xs font-semibold text-blue-400">{log.details.ability}</div>
           </div>
+
+          {/* Target's champion card aligned left */}
           <div className="flex justify-start">
             <ChampionCard 
               champion={log.details.target.champion}
