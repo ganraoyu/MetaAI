@@ -23,8 +23,6 @@ export const HexBoard = () => {
 
                 return (
                   <HexCell
-                    champion={null}
-                    image={null}
                     row={row}
                     col={col}
                     cellId={cellId}

@@ -1,21 +1,37 @@
 import { useHexBoardContext } from "./HexBoardContext";
 
 interface HexCellProps {
-  champion: string | null;
   row: number;
   col: number;
   cellId: string;
   team: "player" | "opponent" | "";
-  image: string | null;
+}
+
+function getBorderColor(cost: number): string {
+  switch (cost) {
+    case 1:
+      return "#9E9E9E"; // Gray
+    case 2:
+      return "#4CAF50"; // Green
+    case 3:
+      return "#2196F3"; // Blue
+    case 4:
+      return "#9C27B0"; // Purple
+    case 5:
+      return "#FFC107"; // Amber
+    default:
+      return "#000000"; // Black fallback
+  }
 }
 
 export const HexCell: React.FC<HexCellProps> = ({ row, col, cellId }) => {
-  const { placeChampion, removeChampion, getChampion } = useHexBoardContext();
+  const { placeChampion, removeChampion, getChampion, moveChampion } =
+    useHexBoardContext();
 
   const championData = getChampion(cellId);
   const champion = championData?.name || null;
   const image = championData?.image || null;
-
+  
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "copy";
@@ -54,13 +70,17 @@ export const HexCell: React.FC<HexCellProps> = ({ row, col, cellId }) => {
     >
       {/* Outer hexagon (border) */}
       <div
-        className="absolute inset-0 bg-[#0f131a] shadow-md"
+        className="absolute inset-0 shadow-md"
         style={{
+          border: championData
+            ? `20px solid ${getBorderColor(championData.cost)}`
+            : "none",
+          backgroundColor: championData ? "transparent" : "#0f131a",
           clipPath:
             "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
         }}
       />
- 
+
       {/* Champion image */}
       {image && (
         <img
@@ -71,22 +91,23 @@ export const HexCell: React.FC<HexCellProps> = ({ row, col, cellId }) => {
             clipPath:
               "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
           }}
+          draggable={true}
         />
       )}
 
       {/* Inner hexagon */}
       <div
         className={`
-        absolute inset-[1.5px]
-        ${!image ? "bg-[#222222]" : "bg-transparent"}
-        flex
-        items-center
-        justify-center
-        text-white
-        text-xs
-        font-bold
-        text-center
-      `}
+          absolute inset-[3px]
+          ${!image ? "bg-[#222222]" : "bg-transparent"}
+          flex
+          items-center
+          justify-center
+          text-white
+          text-xs
+          font-bold
+          text-center
+        `}
         style={{
           clipPath:
             "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
