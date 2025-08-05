@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useHexBoardContext } from "./HexBoardContext";
+import { Star } from "../../../utils/Star";
 
 interface HexCellProps {
   row: number;
@@ -25,13 +27,18 @@ function getBorderColor(cost: number): string {
 }
 
 export const HexCell: React.FC<HexCellProps> = ({ row, col, cellId }) => {
-  const { placeChampion, removeChampion, getChampion, moveChampion } =
-    useHexBoardContext();
+  const {
+    placeChampion,
+    removeChampion,
+    getChampion,
+    moveChampion,
+    setChampionStarLevel,
+  } = useHexBoardContext();
 
   const championData = getChampion(cellId);
   const champion = championData?.name || null;
   const image = championData?.image || null;
-  
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "copy";
@@ -73,7 +80,7 @@ export const HexCell: React.FC<HexCellProps> = ({ row, col, cellId }) => {
         className="absolute inset-0 shadow-md"
         style={{
           border: championData
-            ? `20px solid ${getBorderColor(championData.cost)}`
+            ? `1px solid ${getBorderColor(championData.cost)}`
             : "none",
           backgroundColor: championData ? "transparent" : "#0f131a",
           clipPath:
@@ -98,7 +105,7 @@ export const HexCell: React.FC<HexCellProps> = ({ row, col, cellId }) => {
       {/* Inner hexagon */}
       <div
         className={`
-          absolute inset-[3px]
+          absolute inset-[1px]
           ${!image ? "bg-[#222222]" : "bg-transparent"}
           flex
           items-center
@@ -113,8 +120,56 @@ export const HexCell: React.FC<HexCellProps> = ({ row, col, cellId }) => {
             "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
         }}
       >
-        {!image && champion && <span className="text-shadow">{champion}</span>}
+        {/* Champion Name */}
+        {image && (
+          <p
+            role="button"
+            tabIndex={0} // makes it keyboard-focusable
+            onClick={() => console.log("Clicked!")}
+            className="absolute inset-0 flex items-center justify-center text-white text-[0.6rem] z-10 cursor-pointer"
+            style={{
+              userSelect: "none",
+              outline: "none",
+              textShadow: `
+                -1px -1px 0 #000,
+                1px -1px 0 #000,
+                -1px  1px 0 #000,
+                1px  1px 0 #000
+              `,
+              clipPath:
+                "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+            }}
+          >
+            {champion}
+          </p>
+        )}
       </div>
+
+      {/* Set Champion Star Level */}
+      {image && championData && (
+        <div
+          className="absolute top-[-2px] left-1 right-1 flex justify-center items-center space-x-1 z-50"
+          style={{ pointerEvents: "auto" }}
+        >
+          {[1, 2, 3].map((star) => (
+            <div
+              key={star}
+              onClick={() => setChampionStarLevel(cellId, star)}
+              className="cursor-pointer"
+              title={`${star} star${star > 1 ? "s" : ""}`}
+            >
+              <Star
+                textColor={"#FFFF00"}
+                fillColor={
+                  star <= (championData.starLevel || 1)
+                    ? "#FFFF00"
+                    : "transparent"
+                }
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

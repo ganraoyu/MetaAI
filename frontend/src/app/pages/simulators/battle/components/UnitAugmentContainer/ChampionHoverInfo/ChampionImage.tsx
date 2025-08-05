@@ -104,7 +104,7 @@ export const ChampionImage = ({
 
       {/* Cost Badge */}
       <div
-        className={`absolute top-[8.2rem] right-[0.125rem] rounded-tl-md px-[0.375rem] font-bold flex items-center gap-[0.25rem] text-white text-xs bg-gradient-to-r ${getCostGradientBg(
+        className={`absolute top-[8.2rem] right-[15rem] rounded-tl-md px-[0.375rem] font-bold flex items-center gap-[0.25rem] text-white text-xs bg-gradient-to-r ${getCostGradientBg(
           cost
         )}`}
       >

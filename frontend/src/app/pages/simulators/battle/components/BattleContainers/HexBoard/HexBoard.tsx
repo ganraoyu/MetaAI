@@ -19,15 +19,10 @@ export const HexBoard = () => {
               } ${row === 4 ? "mt-[0.5rem]" : ""}`}
             >
               {[...Array(NUM_COLS)].map((_, col) => {
-                const cellId = `r${row}c${col}`; 
+                const cellId = `r${row}c${col}`;
 
                 return (
-                  <HexCell
-                    row={row}
-                    col={col}
-                    cellId={cellId}
-                    team={team}
-                  />
+                  <HexCell row={row} col={col} cellId={cellId} team={team} />
                 );
               })}
             </div>

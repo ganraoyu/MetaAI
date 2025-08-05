@@ -44,6 +44,7 @@ export interface HexBoardContextType {
   removeChampion: (cellId: string) => void;
   moveChampion: (fromCellId: string, toCellId: string) => void;
   getChampion: (cellId: string) => ChampionData | null;
+  setChampionStarLevel: (cellId: string, starLevel: number) => void;
 };
 
 export type TraitCountEntry = [string, number]

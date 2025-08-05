@@ -1,8 +1,20 @@
-import React, { createContext, useContext, useState} from "react";
-import { useTraitCountingEffect, useTraitOrderingEffect } from "./useHexBoardEffects.ts";
-import { ChampionData, BoardState, ChampionPosition, TraitCountMap, HexBoardContextType, TraitCountEntry} from './types'
+import React, { createContext, useContext, useState } from "react";
+import {
+  useTraitCountingEffect,
+  useTraitOrderingEffect,
+} from "./useHexBoardEffects.ts";
+import {
+  ChampionData,
+  BoardState,
+  ChampionPosition,
+  TraitCountMap,
+  HexBoardContextType,
+  TraitCountEntry,
+} from "./types";
 
-const HexBoardContext = createContext<HexBoardContextType | undefined>(undefined);
+const HexBoardContext = createContext<HexBoardContextType | undefined>(
+  undefined
+);
 
 export const useHexBoardContext = () => {
   const context = useContext(HexBoardContext);
@@ -21,11 +33,21 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
   const [boardArray, setBoardArray] = useState<ChampionPosition[]>([]);
 
   const [playerTraitsObj, setPlayerTraitsArray] = useState<TraitCountMap>({});
-  const [opponentTraitsObj, setOpponentTraitsArray] = useState<TraitCountMap>({});
+  const [opponentTraitsObj, setOpponentTraitsArray] = useState<TraitCountMap>(
+    {}
+  );
 
-  const [orderedPlayerTraits, setOrderedPlayerTraits] = useState<TraitCountEntry[]>([]);
-  const [orderedOpponentTraits, setOrderedOpponentTraits] = useState<TraitCountEntry[]>([]);
-  useTraitCountingEffect(boardArray, setPlayerTraitsArray, setOpponentTraitsArray);
+  const [orderedPlayerTraits, setOrderedPlayerTraits] = useState<
+    TraitCountEntry[]
+  >([]);
+  const [orderedOpponentTraits, setOrderedOpponentTraits] = useState<
+    TraitCountEntry[]
+  >([]);
+  useTraitCountingEffect(
+    boardArray,
+    setPlayerTraitsArray,
+    setOpponentTraitsArray
+  );
 
   useTraitOrderingEffect(
     boardArray,
@@ -34,7 +56,7 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
     setOrderedPlayerTraits,
     setOrderedOpponentTraits
   );
-  
+
   const placeChampion = (cellId: string, championData: ChampionData) => {
     setBoardState((prev) => ({
       ...prev,
@@ -101,6 +123,33 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
     return boardState[cellId]?.champion || null;
   };
 
+  const setChampionStarLevel = (cellId: string, starLevel: number) => {
+    setBoardState((prev) => {
+      const cell = prev[cellId];
+      if (!cell) return prev;
+
+      const currentChampion = cell.champion;
+
+      return {
+        ...prev,
+        [cellId]: {
+          ...cell,
+          starLevel,
+          champion: {
+            ...currentChampion,
+            starLevel,
+          } as ChampionData,
+        },
+      };
+    });
+
+    setBoardArray((prev) =>
+      prev.map((entry) =>
+        entry.cellId === cellId ? { ...entry, starLevel } : entry
+      )
+    );
+  };
+
   return (
     <HexBoardContext.Provider
       value={{
@@ -118,6 +167,7 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
         removeChampion,
         moveChampion,
         getChampion,
+        setChampionStarLevel,
       }}
     >
       {children}

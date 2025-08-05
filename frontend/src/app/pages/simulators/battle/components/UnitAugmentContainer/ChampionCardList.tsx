@@ -119,7 +119,7 @@ export const ChampionCardList = ({ set }: { set: string }) => {
               alt={name}
               draggable={true}
               onDragStart={(e) => handleDragStart(e, champion)}
-              className={`w-10 h-10 rounded-[0.09rem] outline outline-2 cursor-grab active:cursor-grabbing ${
+              className={`w-10 h-10 outline outline-2 cursor-grab active:cursor-grabbing ${
                 cost === 1 ? "outline-gray-400" :
                 cost === 2 ? "outline-green-500" :
                 cost === 3 ? "outline-blue-500" :

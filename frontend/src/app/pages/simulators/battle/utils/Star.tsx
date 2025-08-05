@@ -1,18 +1,27 @@
+import React from "react";
+
 interface StarProps {
-  textColor: string;
-  fillColor: string;
+  textColor?: string;  // stroke color
+  fillColor?: string;  // fill color (optional)
+  className?: string;
 }
 
-export const Star = ({textColor, fillColor}: StarProps) => {
+export const Star: React.FC<StarProps> = ({
+  textColor,
+  fillColor,
+  className = "w-4 h-4",
+}) => {
   return (
-    <svg 
-      className={`w-5 h-5 ${textColor} ${fillColor}`}
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="black" 
-      strokeWidth="1">
-      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-    </svg>                
-  )
-}
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill={fillColor ?? "none"}
+      stroke={textColor}
+      strokeWidth={1}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polygon points="12 2 15 9 22 9 17 14 19 22 12 18 5 22 7 14 2 9 9 9" />
+    </svg>
+  );
+};
