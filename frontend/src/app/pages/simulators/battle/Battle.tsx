@@ -12,6 +12,7 @@ import { HexBoardProvider } from "./components/BattleContainers/HexBoard/HexBoar
 const BattleContent = () => {
   useTitle("TFT Battle Simulator - Builder");
 
+  const [toggleMovement, setToggleMovement] = useState(true);
   const [toggleAttack, setToggleAttack] = useState(true);
   const [toggleAbility, setToggleAbility] = useState(true);
   const [toggleHeal, setToggleHeal] = useState(true);
@@ -43,20 +44,24 @@ const BattleContent = () => {
           {/* Right side - Battle Logs */}
           <div className="w-[18rem]">
             <Filter
+              toggleMovement={toggleMovement}
               toggleAttack={toggleAttack}
               toggleAbility={toggleAbility}
               toggleHeal={toggleHeal}
               toggleItem={toggleItem}
+              setToggleMovement={setToggleMovement}
               setToggleAttack={setToggleAttack}
               setToggleAbility={setToggleAbility}
               setToggleHeal={setToggleHeal}
               setToggleItem={setToggleItem}
             />
             <LogsDisplay
+              toggleMovement={toggleMovement}
               toggleAttack={toggleAttack}
               toggleAbility={toggleAbility}
               toggleHeal={toggleHeal}
               toggleItem={toggleItem}
+              setToggleMovement={setToggleMovement}
               setToggleAttack={setToggleAttack}
               setToggleAbility={setToggleAbility}
               setToggleHeal={setToggleHeal}

@@ -7,10 +7,12 @@ import { Burn } from "../BattleLogCards/Burn";
 import { Movement } from "../BattleLogCards/Movement";
 
 export interface LogsDisplayProps {
+  toggleMovement: boolean;
   toggleAttack: boolean;
   toggleAbility: boolean;
   toggleHeal: boolean;
   toggleItem: boolean;
+  setToggleMovement:React.Dispatch<React.SetStateAction<boolean>>;
   setToggleAttack: React.Dispatch<React.SetStateAction<boolean>>;
   setToggleAbility: React.Dispatch<React.SetStateAction<boolean>>;
   setToggleHeal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,6 +20,7 @@ export interface LogsDisplayProps {
 }
 
 export const LogsDisplay = ({
+  toggleMovement,
   toggleAttack,
   toggleAbility,
   toggleHeal,
@@ -53,7 +56,7 @@ export const LogsDisplay = ({
                   {battleHistory.battleLogs.map((log: any, index: number) => (
                     <li key={index} className="mb-3 animate-fadeIn">
                       {/* Render log items based on type */}
-                      {log.type === 'movement' && (
+                      {log.type === 'movement' && toggleMovement &&  (
                         <div className="mb-2">
                           <Movement
                             log={log}

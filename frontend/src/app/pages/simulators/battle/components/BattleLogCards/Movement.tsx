@@ -13,30 +13,26 @@ export const Movement = ({
 
   return (
     <div className="font-mono">
-      <div className="bg-gradient-to-r from-teal-900/40 to-teal-800/20 border-l-4 border-teal-500 rounded-md p-2 shadow-md">
-        {/* Timestamp and position container - flex with justify-between to match AutoAttack */}
-        <div className="flex justify-between items-center cursor-pointer">
-          {/* Timestamp top left */}
-          <div className="text-xs text-gray-400 select-none">
+      <div className="bg-gradient-to-r from-teal-950/50 to-teal-800/30 border-l-4 border-teal-700 rounded-lg p-3 shadow-lg shadow-teal-900/40">
+        {/* Timestamp and movement positions */}
+        <div className="flex justify-between items-center cursor-pointer select-none">
+          <span className="text-xs text-gray-400 tracking-wide">
             [{log.formattedTime}]
-          </div>
+          </span>
 
-          {/* Positions top right */}
-          <div
-            className="text-xs font-bold text-teal-400 bg-teal-400/20 px-2 py-0.5 rounded select-none cursor-pointer flex items-center space-x-1"
-          >
-            <div>
+          <span className="text-xs font-semibold text-teal-400 bg-teal-400/20 px-1.5 py-0.5 rounded transition-colors hover:bg-teal-400/40 active:bg-teal-500/50 relative flex items-center gap-1">
+            <span>
               [{mover.prevPosition[0]}, {mover.prevPosition[1]}]
-            </div>
-              <p>{'->'}</p>
-            <div>
+            </span>
+            <span>→</span>
+            <span>
               [{mover.newPosition[0]}, {mover.newPosition[1]}]
-            </div>
-          </div>
+            </span>
+          </span>
         </div>
 
-        {/* Champion card centered with margin top same as AutoAttack */}
-        <div className="flex justify-center mt-2">
+        {/* Mover ChampionCard */}
+        <div className="flex justify-center mt-3">
           <ChampionCard
             champion={mover.champion}
             starLevel={mover.starLevel}

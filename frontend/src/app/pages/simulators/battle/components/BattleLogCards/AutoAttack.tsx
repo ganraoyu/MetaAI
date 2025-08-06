@@ -2,47 +2,28 @@ import { useState, useRef, useEffect } from "react";
 import { ChampionCard } from "../ChampionCard/ChampionCard.tsx";
 import { DamageHover } from "./CardHovers/DamageAbilityHover.tsx";
 
-export const AutoAttack = ({
-  log,
-  index,
-}: {
-  log: any;
-  index: number;
-  parentRef: any;
-}) => {
+export const AutoAttack = ({ log, index }: { log: any; index: number; parentRef: any }) => {
   const [hoveredDamageId, setHoveredDamageId] = useState<number | null>(null);
   const [clickedDamageId, setClickedDamageId] = useState<number | null>(null);
   const damageRef = useRef<HTMLSpanElement>(null);
   const [position, setPosition] = useState({ top: 0, left: 0 });
 
   const handleDamageClicked = (id: number) => {
-    if (clickedDamageId === id) {
-      setClickedDamageId(null);
-    } else {
-      setClickedDamageId(id);
-      // Update position immediately when clicked
-      updatePosition();
-    }
+    setClickedDamageId(clickedDamageId === id ? null : id);
+    updatePosition();
   };
 
   const updatePosition = () => {
     if (!damageRef.current) return;
-
     const damageRect = damageRef.current.getBoundingClientRect();
-
-    let left = damageRect.right - 40;
-    let top = damageRect.top + 25;
-    setPosition({ top, left });
+    setPosition({ top: damageRect.top + 28, left: damageRect.right - 42 });
   };
 
   useEffect(() => {
-    // Only add event listeners if the hover is active
     if (hoveredDamageId === index || clickedDamageId === index) {
       updatePosition();
-
       window.addEventListener("scroll", updatePosition);
       window.addEventListener("resize", updatePosition);
-
       return () => {
         window.removeEventListener("scroll", updatePosition);
         window.removeEventListener("resize", updatePosition);
@@ -52,38 +33,28 @@ export const AutoAttack = ({
 
   return (
     <div className="font-mono">
-      <div className="bg-gradient-to-r from-red-900/40 to-red-800/20 border-l-4 border-red-600 rounded-md p-2 shadow-md">
-        
-        {/* Timestamp and damage value */}
-        <div className="flex justify-between items-start cursor-pointer font-mono">
-          <span className="text-xs text-gray-400">[{log.formattedTime}]</span>
+      <div className="bg-gradient-to-r from-red-950/50 to-red-800/30 border-l-4 border-red-700 rounded-lg p-3 shadow-lg shadow-red-900/40">
+        {/* Timestamp and damage row */}
+        <div className="flex justify-between items-center cursor-pointer select-none">
+          <span className="text-xs text-gray-400 tracking-wide">[{log.formattedTime}]</span>
 
-          {/* Damage value with hover and click handlers */}
+          {/* Damage value */}
           <span
             ref={damageRef}
-            className="text-xs font-bold text-red-400 bg-red-400/20 px-2 py-0.5 rounded relative"
-            onMouseEnter={() => {
-              setHoveredDamageId(index);
-              updatePosition();
-            }}
+            className="text-xs text-red-500 bg-red-500/20 px-1.5 py-0.5 rounded transition-colors hover:bg-red-500/40 active:bg-red-600/50 relative"
+            onMouseEnter={() => setHoveredDamageId(index)}
             onMouseLeave={() => setHoveredDamageId(null)}
             onClick={() => handleDamageClicked(index)}
           >
             -{log.details.damage}
 
-            {/* Hover popup showing damage breakdown */}
             {(hoveredDamageId === index || clickedDamageId === index) && (
               <div
-                className="fixed animate-grow-in origin-top-left z-50 cursor-auto"
-                style={{
-                  top: `${position.top}px`,
-                  left: `${position.left}px`,
-                }}
+                className="fixed animate-grow-in origin-top-left z-50 cursor-auto rounded-lg shadow-xl"
+                style={{ top: `${position.top}px`, left: `${position.left}px` }}
               >
                 <DamageHover
-                  rawDamage={
-                    -Math.round(log.details.attacker.attackDamage) || 0
-                  }
+                  rawDamage={-Math.round(log.details.attacker.attackDamage) || 0}
                   finalDamage={-log.details.damage || 0}
                   armorReduction={{
                     percentage: Math.round(log.details.target.armor || 0),
@@ -101,10 +72,9 @@ export const AutoAttack = ({
           </span>
         </div>
 
-        {/* Main grid: attacker card, attack icon + crit, target card */}
-        <div className="grid grid-cols-3 gap-2">
-          
-          {/* Attacker's champion card aligned right */}
+        {/* Main content grid */}
+        <div className="grid grid-cols-3 gap-4 mt-3">
+          {/* Attacker card */}
           <div className="flex justify-end">
             <ChampionCard
               champion={log.details.attacker.champion}
@@ -135,17 +105,17 @@ export const AutoAttack = ({
             />
           </div>
 
-          {/* Attack icon and crit indicator centered */}
+          {/* Attack icon + crit */}
           <div className="flex flex-col justify-center items-center">
-            <div className="w-8 h-8 rounded-full bg-red-500/30 flex items-center justify-center">
-              <img src="../assets/icons/attack.png" className="w-5 h-5" />
+            <div className="w-8 h-8 rounded-full bg-red-600/40 flex items-center justify-center shadow-lg">
+              <img src="../assets/icons/attack.png" className="w-5 h-5" alt="Attack icon" />
             </div>
-            <p className="text-xs font-bold text-red-500 animate-pulse mt-1 px-2 min-h-[1rem]">
+            <p className="text-sm font-bold text-red-600 animate-pulse min-h-[1.25rem]">
               {log.details.isCrit ? "CRIT" : ""}
             </p>
           </div>
 
-          {/* Target's champion card aligned left */}
+          {/* Target card */}
           <div className="flex justify-start">
             <ChampionCard
               champion={log.details.target.champion}
