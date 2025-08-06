@@ -51,11 +51,11 @@ export const AutoAttack = ({
   }, [hoveredDamageId, clickedDamageId, index]);
 
   return (
-    <div>
+    <div className="font-mono">
       <div className="bg-gradient-to-r from-red-900/40 to-red-800/20 border-l-4 border-red-600 rounded-md p-2 shadow-md">
         
         {/* Timestamp and damage value */}
-        <div className="flex justify-between items-start cursor-pointer">
+        <div className="flex justify-between items-start cursor-pointer font-mono">
           <span className="text-xs text-gray-400">[{log.formattedTime}]</span>
 
           {/* Damage value with hover and click handlers */}

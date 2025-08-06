@@ -686,7 +686,7 @@ const calculateChampionStatistics = async (
 const calculateBattleHistory = async (req: Request, res: Response) => {
   try {
     const battleData = getBattleData();
-    const { getBattleHistory } = require("./battleLogic.js");
+    const { getBattleHistory } = require("./battleSimulator.js");
     const battleHistory = getBattleHistory();
     return battleHistory;
   } catch (error) {

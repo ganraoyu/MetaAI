@@ -56,7 +56,8 @@ export const LogsDisplay = ({
                       {log.type === 'movement' && (
                         <div className="mb-2">
                           <Movement
-
+                            log={log}
+                            index={index}
                           />
                         </div>
                       )}

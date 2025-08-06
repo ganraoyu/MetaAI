@@ -196,11 +196,14 @@ function addAdditionalTraitStatistics(champion) {
       stats.attackSpeed += parseFloat(traitStats.additionalAttackSpeed) || 0;
       stats.magicResist += parseFloat(traitStats.additionalMagicResist) || 0;
       stats.mana += parseFloat(traitStats.additionalMana) || 0;
-      stats.manaPerAttack += parseFloat(traitStats.additionalManaPerAttack) || 0;
+      stats.manaPerAttack +=
+        parseFloat(traitStats.additionalManaPerAttack) || 0;
       stats.abilityPower += parseFloat(traitStats.additionalAbilityPower) || 0;
       stats.abilityManaCost -= parseFloat(traitStats.reducedMaxMana) || 0;
-      stats.attackCritChance += parseFloat(traitStats.additionalCritChance) || 0;
-      stats.attackCritDamage += parseFloat(traitStats.additionalCritDamage) || 0;
+      stats.attackCritChance +=
+        parseFloat(traitStats.additionalCritChance) || 0;
+      stats.attackCritDamage +=
+        parseFloat(traitStats.additionalCritDamage) || 0;
       stats.omnivamp += parseFloat(traitStats.additionalOmnivamp) || 0;
       stats.durability += parseFloat(traitStats.additionalDurability) || 0;
       stats.range += parseFloat(traitStats.additionalAttackRange) || 0;
@@ -256,9 +259,38 @@ function simulateRound(battlePlayer, battleOpponent, battleTime) {
             "movement",
             {
               mover: {
-                name: champion.name,
+                champion: champion.name,
                 team: champion.team,
                 prevPosition: prevPosition,
+                starLevel: champion.starLevel,
+                cost: champion.cost,
+                traits: champion.traitsList,
+                items: champion.items,
+
+                // Health stats
+                currentHp: champion.currentHp,
+                maxHp: champion.statsByStarLevel[champion.starLevel].hp,
+                shield: champion.shield,
+
+                // Offensive stats
+                attackDamage: champion.statsByStarLevel[champion.starLevel].attackDamage,
+                attackSpeed: champion.attackSpeed,
+                critChance: champion.attackCritChance,
+                critDamage: champion.attackCritDamage,
+                abilityPower: champion.abilityPower,
+                damageAmp: champion.damageAmp - 1,
+                omnivamp: champion.omnivamp,
+                range: champion.range,
+
+                // Defensive stats
+                armor: champion.getStats().armor,
+                magicResist: champion.getStats().magicResist,
+                durability: champion.durability,
+
+                // Mana information
+                mana: champion.mana,
+                manaGained: champion.manaPerAttack,
+                manaPerAttack: champion.manaPerAttack,
                 newPosition: board.getChampionPosition(champion),
               },
               target: {

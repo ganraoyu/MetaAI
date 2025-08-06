@@ -18,7 +18,7 @@ const {
     startBattle,
     clearBoard,
     getBattleHistory: getBattleHistoryFromLogic 
-} = require('../../../simulators/battle-simulator/core/battleLogic');
+} = require('../../../simulators/battle-simulator/core/_battleSimulator.js');
 
 // Helper function to parse cellId format from frontend
 function parseCellId(cellId) {

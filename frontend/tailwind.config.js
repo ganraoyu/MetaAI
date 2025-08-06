@@ -1,4 +1,3 @@
-// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{html,js,ts,tsx}'],
@@ -16,14 +15,27 @@ module.exports = {
         hexCellComponents: '#1e1e1e',
         darkerHexCellComponents: '#26262F',
         hexCellComponentsFont: '#4d4d4d',
-        playerHexCell: '#426D9D   ',
-        opponentHexCell: '#7C3232  ',
+        playerHexCell: '#426D9D',
+        opponentHexCell: '#7C3232',
       },
       fontFamily: {
-        'sans': ['Montserrat', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
-        'montserrat': ['Montserrat', 'sans-serif'],
+        sans: [
+          'Montserrat',
+          'ui-sans-serif',
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'Helvetica Neue',
+          'Arial',
+          'sans-serif',
+        ],
+        montserrat: ['Montserrat', 'sans-serif'],
+        inter: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],     
+        jetbrains: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'], 
       },
     },
   },
-  plugins: [require("daisyui")],
-}
+  plugins: [require('daisyui')],
+};

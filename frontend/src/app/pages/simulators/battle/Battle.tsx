@@ -19,7 +19,7 @@ const BattleContent = () => {
   const [toggleUnits] = useState(true);
 
   return (
-    <div className="bg-mainBackground min-h-screen pt-[4.5rem]">
+    <div className="bg-mainBackground min-h-screen pt-[4.5rem] font-mono">
       <div className="flex-col items-center w-[70rem] mx-auto">
         <div className="flex-col items-center justify-center mr-[2rem] ">
           <h1 className="text-[1.2rem] w-full text-white font-semibold">
