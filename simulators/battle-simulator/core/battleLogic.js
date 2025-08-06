@@ -204,7 +204,6 @@ function addAdditionalTraitStatistics(champion) {
       stats.omnivamp += parseFloat(traitStats.additionalOmnivamp) || 0;
       stats.durability += parseFloat(traitStats.additionalDurability) || 0;
       stats.range += parseFloat(traitStats.additionalAttackRange) || 0;
-
     } else {
       console.log("Error: Trait not processed correctly");
     }
@@ -214,24 +213,34 @@ function addAdditionalTraitStatistics(champion) {
 function simulateRound(battlePlayer, battleOpponent, battleTime) {
   let attackOccurred = false;
   let updatedBattleTime = battleTime;
-
   let movementOccurred = false;
 
-  for (const champion of battlePlayer) {
+  const allChampions = [
+    ...battlePlayer.map((c) => ({ champion: c, opponents: battleOpponent })),
+    ...battleOpponent.map((c) => ({ champion: c, opponents: battlePlayer })),
+  ];
+
+  for (const { champion, opponents } of allChampions) {
     if (champion.currentHp <= 0) continue;
 
     const { closestEnemy, distance } = findClosestEnemy(
       champion,
-      battleOpponent,
+      opponents,
       board
     );
 
     if (closestEnemy) {
       if (distance <= champion.range) {
+        // Attack if in range
         if (champion.attack(closestEnemy, updatedBattleTime)) {
           attackOccurred = true;
         }
       } else {
+        if (distance === 1) {
+          continue;
+        }
+
+        const prevPosition = board.getChampionPosition(champion);
         const moveTime = moveChampionTowardsTarget(
           champion,
           closestEnemy,
@@ -242,13 +251,15 @@ function simulateRound(battlePlayer, battleOpponent, battleTime) {
         if (moveTime) {
           updatedBattleTime += moveTime;
           movementOccurred = true;
+
           logBattleEvent(
             "movement",
             {
               mover: {
                 name: champion.name,
                 team: champion.team,
-                position: board.getChampionPosition(champion),
+                prevPosition: prevPosition,
+                newPosition: board.getChampionPosition(champion),
               },
               target: {
                 name: closestEnemy.name,
@@ -258,82 +269,22 @@ function simulateRound(battlePlayer, battleOpponent, battleTime) {
             },
             updatedBattleTime
           );
-          break;
         }
       }
     }
   }
 
-  if (!movementOccurred) {
-    for (const champion of battleOpponent) {
-      if (champion.currentHp <= 0) continue;
-
-      const { closestEnemy, distance } = findClosestEnemy(
-        champion,
-        battlePlayer,
-        board
-      );
-
-      if (closestEnemy) {
-        if (distance <= champion.range) {
-          if (champion.attack(closestEnemy, updatedBattleTime)) {
-            attackOccurred = true;
-          }
-        } else {
-          const moveTime = moveChampionTowardsTarget(
-            champion,
-            closestEnemy,
-            board,
-            updatedBattleTime
-          );
-          if (moveTime) {
-            updatedBattleTime += moveTime;
-            movementOccurred = true;
-            logBattleEvent(
-              "movement",
-              {
-                mover: {
-                  name: champion.name,
-                  team: champion.team,
-                  position: board.getChampionPosition(champion),
-                },
-                target: {
-                  name: closestEnemy.name,
-                  team: closestEnemy.team,
-                  position: board.getChampionPosition(closestEnemy),
-                },
-              },
-              updatedBattleTime
-            );
-            break;
-          }
-        }
-      }
-    }
-  }
-
-  battlePlayer.forEach((champion) => {
+  [...battlePlayer, ...battleOpponent].forEach((champion) => {
     if (champion.currentHp <= 0) {
       const [row, col] = board.getChampionPosition(champion);
-
       if (row !== undefined && col !== undefined) {
         board.removeChampion(row, col);
       }
     }
   });
 
-  battleOpponent.forEach((champion) => {
-    if (champion.currentHp <= 0) {
-      const [row, col] = board.getChampionPosition(champion);
-
-      if (row !== undefined && col !== undefined) {
-        board.removeChampion(row, col);
-      }
-    }
-  });
-
-  battlePlayer.filter((champion) => champion.currentHp > 0);
-  battleOpponent.filter((champion) => champion.currentHp > 0);
+  battlePlayer = battlePlayer.filter((champion) => champion.currentHp > 0);
+  battleOpponent = battleOpponent.filter((champion) => champion.currentHp > 0);
 
   return {
     battlePlayer,
@@ -534,7 +485,7 @@ function clearBoard() {
   } catch (error) {
     console.log("❌ Error clearing battle history:", error);
     try {
-      delete require.cache[require.resolve('./battleLogger.ts')];
+      delete require.cache[require.resolve("./battleLogger.ts")];
     } catch (cacheError) {
       console.log("❌ Could not clear battle logger cache:", cacheError);
     }
@@ -542,12 +493,11 @@ function clearBoard() {
   board.displayBoard();
 }
 
-
-placeChampionByName("Akali", 4, 4, 3, "player");
-placeChampionByName("Darius", 3, 2, 3, "opponent");
+// placeChampionByName("Akali", 4, 4, 3, "player");
+// placeChampionByName("Darius", 3, 2, 3, "opponent");
 // addItemByName(board.getChampion(7, 3), "Sunfire Cape");
-board.displayBoard();
-startBattle()
+// board.displayBoard();
+// startBattle()
 module.exports = {
   router,
   startBattle,
