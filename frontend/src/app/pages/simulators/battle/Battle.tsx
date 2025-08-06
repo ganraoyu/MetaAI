@@ -8,6 +8,7 @@ import { HexBoard } from "./components/BattleContainers/HexBoard/HexBoard";
 import { LogsDisplay } from "./components/BattleContainers/LogDisplay";
 import { Filter } from "./components/BattleLogCards/_Filter";
 import { HexBoardProvider } from "./components/BattleContainers/HexBoard/HexBoardContext";
+import { ItemContainer } from "./components/ItemContainer/ItemContainer";
 
 const BattleContent = () => {
   useTitle("TFT Battle Simulator - Builder");
@@ -17,7 +18,6 @@ const BattleContent = () => {
   const [toggleAbility, setToggleAbility] = useState(true);
   const [toggleHeal, setToggleHeal] = useState(true);
   const [toggleItem, setToggleItem] = useState(true);
-  const [toggleUnits] = useState(true);
 
   return (
     <div className="bg-mainBackground min-h-screen pt-[4.5rem] font-mono">
@@ -71,15 +71,13 @@ const BattleContent = () => {
         </div>
 
         {/* Bottom section - Units and Augments */}
-        <div className="h-[40rem] w-[70rem] bg-hexCellBackground rounded-b-2xl mt-[-1.5rem] pl-[1.5rem]">
-          <div className="">
-            {toggleUnits && (
-              <div className="flex gap-2 select-none">
-                <UnitAugmentContainer />
-              </div>
-            )}
+        <div className="h-[40rem] w-[70rem] bg-hexCellBackground rounded-b-2xl pl-[1rem] pt-[1.5rem]">
+          <div className="flex gap-4 select-none">
+            <UnitAugmentContainer />
+            <ItemContainer />
           </div>
         </div>
+    
       </div>
     </div>
   );

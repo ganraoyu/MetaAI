@@ -79,7 +79,7 @@ class Board {
         for (let row = 0; row < this.rows; row++) {
             for (let column = 0; column < this.columns; column++) {
                 if (this.getChampion(row, column) === champion) {
-                    return [row + 1, column + 1];
+                    return [row, column];
                 }
             }
         }

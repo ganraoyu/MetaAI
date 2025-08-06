@@ -65,7 +65,7 @@ export const Heal = ({ log, index }: { log: any; index: number }) => {
         </div>
 
         {/* Main content grid */}
-        <div className="grid grid-cols-3 gap-4 mt-3">
+        <div className="grid grid-cols-3 gap-4 mt-2">
           {/* Healer card */}
           <div className="flex justify-end">
             <ChampionCard

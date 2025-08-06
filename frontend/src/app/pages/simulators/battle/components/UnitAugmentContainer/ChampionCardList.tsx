@@ -86,7 +86,7 @@ export const ChampionCardList = ({ set }: { set: string }) => {
   }, [champions, toggleUnitsOrAugments, sortByAlphabet, sortByCost, searchTerm]);
 
   return (
-    <div className="flex flex-wrap items-center w-[49rem] gap-[0.3rem] bg-hexCellComponents p-6 rounded-lg hover:cursor-pointer"
+    <div className="flex flex-wrap items-center w-[45.6rem] gap-[0.3rem] bg-hexCellComponents p-6 rounded-b-lg hover:cursor-pointer"
       onDragOver={(e) => e.preventDefault()}
     >
       {sortedChampions.map(champion => {

@@ -42,7 +42,7 @@ export const FilterContainer = () => {
 
   return (
     <div>
-      <div className="pl-6 pt-5 flex items-center gap-4 h-8 w-[46] bg-hexCellComponents rounded-tl-md rounded-tr-md">
+      <div className="pl-6 pt-5 flex items-center gap-4 h-8 w-[45.6rem] bg-hexCellComponents rounded-tl-md rounded-tr-md">
         <SearchBar
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
