@@ -10,8 +10,6 @@ const playerStatsRoutes = require('./routes/player/playerStatistics.routes.js');
 const statisticsRoutes = require('./routes/statistics/statistics.routes.js');
 const battleSimulatorRoutes = require('./routes/battle-simulator/statistics/battleSimulator.routes.js');
 
-const { client } = require('./database/db.js')
-
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const PORT = process.env.PORT || 3000;
@@ -33,4 +31,3 @@ app.listen(PORT, () => {
 });     
 
 console.log('RIOT-API-KEY', process.env.RIOT_API_KEY)
-client.connect().then(()=> console.log("PostgreSQL connected"))
