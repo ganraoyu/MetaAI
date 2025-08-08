@@ -1,11 +1,11 @@
 import { SearchBar } from "./SearchBar"
-import { useItemContainerContext } from "../ItemContainerContext"
+import { ItemTypeToggle } from "./ItemTypeToggle"
 
 export const FilterContainer = () => {
-  const {searchTerm, setSearchTerm} = useItemContainerContext()
   return (
-    <div>
-      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
+    <div className="pt-1">
+      <SearchBar/>
+      <ItemTypeToggle />
     </div>
   )
 }
