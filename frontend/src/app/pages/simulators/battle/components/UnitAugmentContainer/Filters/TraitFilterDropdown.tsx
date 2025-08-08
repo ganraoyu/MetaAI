@@ -33,7 +33,7 @@ export const TraitFilterDropdown = ({
             src="../assets/icons/synergies.svg"
             alt="Default"
           />
-          <p className="text-[0.8rem]">
+          <p className="text-[0.75rem]">
             {toggleUnitsOrAugments && (filterByTrait.length > 0 ? filterByTrait : "All Synergies")}
             {!toggleUnitsOrAugments && "All Augments"}
           </p>
