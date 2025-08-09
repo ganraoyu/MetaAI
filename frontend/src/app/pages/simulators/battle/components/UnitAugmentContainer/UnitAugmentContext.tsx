@@ -20,13 +20,13 @@ interface UnitAugmentContextType {
   setClickedTraitDropDown: (trait: string) => void;
   handleSortByCost: () => void;
   handleSortByAlphabet: () => void;
-}
+};
 
 const UnitAugmentContext = createContext<UnitAugmentContextType | undefined>(undefined);
 
 interface UnitAugmentProviderProps {
   children: ReactNode;
-}
+};
 
 export const UnitAugmentProvider = ({ children }: UnitAugmentProviderProps) => {
   const [showBelow, setShowBelow] = useState<boolean>(false);
@@ -46,8 +46,7 @@ export const UnitAugmentProvider = ({ children }: UnitAugmentProviderProps) => {
         setSortByCost(prev => !prev);
         setSortByAlphabet(false);
     }
-
-  }
+  };
 
   const handleSortByAlphabet = () => {
     if(sortByAlphabet){
@@ -56,7 +55,7 @@ export const UnitAugmentProvider = ({ children }: UnitAugmentProviderProps) => {
         setSortByAlphabet(prev => !prev);
         setSortByCost(false);
     }
-  }
+  };
 
   return (
     <UnitAugmentContext.Provider

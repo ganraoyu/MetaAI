@@ -33,11 +33,11 @@ export const ItemContainerProvider = ({ children }: ItemContainerProviderProps) 
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   const [showBasicItems, setShowBasicItems] = useState<boolean>(true);
-  const [showCombinedItems, setShowCombinedItems] = useState<boolean>(true);
-  const [showRadiantItems, setShowRadiantItems] = useState<boolean>(true);
-  const [showArtifactItems, setShowArtifactItems] = useState<boolean>(true);
-  const [showSupportItems, setShowSupportItems] = useState<boolean>(true);
-  const [showEmblemItems, setShowEmblemItems] = useState<boolean>(true);
+  const [showCombinedItems, setShowCombinedItems] = useState<boolean>(false);
+  const [showRadiantItems, setShowRadiantItems] = useState<boolean>(false);
+  const [showArtifactItems, setShowArtifactItems] = useState<boolean>(false);
+  const [showSupportItems, setShowSupportItems] = useState<boolean>(false);
+  const [showEmblemItems, setShowEmblemItems] = useState<boolean>(false);
 
   return (
     <ItemContainerContext.Provider

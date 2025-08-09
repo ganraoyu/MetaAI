@@ -20,3 +20,5 @@ export const SearchBar = () => {
     </div>
   );
 };
+
+
