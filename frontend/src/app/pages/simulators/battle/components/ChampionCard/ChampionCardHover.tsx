@@ -1,7 +1,7 @@
 import { useEffect, useState, RefObject } from 'react';
 import { useTFTSetContext } from '../../../../../utilities/TFTSetContext';
 
-import { combinedItems } from '../../data/item-data';
+import { combinedItems } from '../../data/items/item-data.tsx';
 import { ItemHover } from './SlotHover/ItemSlotHover';
 import { abilityData } from '../../data/SET13/ability-data.ts';
 import { AbilitySlotHover } from './SlotHover/AbilitySlotHover';

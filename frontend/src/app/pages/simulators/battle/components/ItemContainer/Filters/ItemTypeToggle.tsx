@@ -1,8 +1,10 @@
-import { useItemContainerContext } from "../ItemContainerContext";
+import { useItemContainerContext } from '../ItemContainerContext'
+
+type ItemType = 'basic' | 'combined' | 'radiant' | 'artifact' | 'support' | 'emblem'
 
 export const ItemTypeToggle = () => {
   const baseButtonClass =
-    "bg-darkerHexCellComponents outline outline-lightGray outline-1 px-1 py-1 text-[0.54rem] rounded-[0.2rem] hover:bg-[#3a523a]";
+    'outline outline-lightGray outline-1 px-1 py-1 text-[0.54rem] rounded-[0.2rem] hover:bg-[#3d3d3d] hover:text-white'
 
   const {
     showBasicItems,
@@ -17,63 +19,72 @@ export const ItemTypeToggle = () => {
     setShowSupportItems,
     showEmblemItems,
     setShowEmblemItems,
-  } = useItemContainerContext();
+  } = useItemContainerContext()
+
+  const handleItemType = (type: ItemType) => {
+    setShowBasicItems(type === 'basic')
+    setShowCombinedItems(type === 'combined')
+    setShowRadiantItems(type === 'radiant')
+    setShowArtifactItems(type === 'artifact')
+    setShowSupportItems(type === 'support')
+    setShowEmblemItems(type === 'emblem')
+  }
 
   return (
-    <div className="flex gap-2 mt-3 justify-center">
+    <div className='flex gap-2 mt-3 justify-center'>
       <button
-        onClick={() => setShowBasicItems(!showBasicItems)}
+        onClick={() => handleItemType('basic')}
         className={`${baseButtonClass} ${
-          showBasicItems ? "text-white" : "text-[#D9CACA]"
+          showBasicItems ? 'text-white bg-[#3d3d3d]' : 'text-[#D9CACA]'
         }`}
       >
         Basic
       </button>
 
       <button
-        onClick={() => setShowCombinedItems(!showCombinedItems)}
+        onClick={() => handleItemType('combined')}
         className={`${baseButtonClass} ${
-          showCombinedItems ? "text-white" : "text-[#D9CACA]"
+          showCombinedItems ? 'text-white bg-[#3d3d3d]' : 'text-[#D9CACA]'
         }`}
       >
         Combined
       </button>
 
       <button
-        onClick={() => setShowRadiantItems(!showRadiantItems)}
+        onClick={() => handleItemType('radiant')}
         className={`${baseButtonClass} ${
-          showRadiantItems ? "text-white" : "text-[#D9CACA]"
+          showRadiantItems ? 'text-white bg-[#3d3d3d]' : 'text-[#D9CACA]'
         }`}
       >
         Radiant
       </button>
 
       <button
-        onClick={() => setShowArtifactItems(!showArtifactItems)}
+        onClick={() => handleItemType('artifact')}
         className={`${baseButtonClass} ${
-          showArtifactItems ? "text-white" : "text-[#D9CACA]"
+          showArtifactItems ? 'text-white bg-[#3d3d3d]' : 'text-[#D9CACA]'
         }`}
       >
         Artifact
       </button>
 
       <button
-        onClick={() => setShowSupportItems(!showSupportItems)}
+        onClick={() => handleItemType('support')}
         className={`${baseButtonClass} ${
-          showSupportItems ? "text-white" : "text-[#D9CACA]"
+          showSupportItems ? 'text-white bg-[#3d3d3d]' : 'text-[#D9CACA]'
         }`}
       >
         Support
       </button>
 
       <button
-        onClick={() => setShowEmblemItems(!showEmblemItems)}
+        onClick={() => handleItemType('emblem')}
         className={`${baseButtonClass} ${
-          showEmblemItems ? "text-white" : "text-[#D9CACA]"
+          showEmblemItems ? 'text-white bg-[#3d3d3d]' : 'text-[#D9CACA]'
         }`}
       >
         Emblems
       </button>
     </div>
-  );
-};
+  )
+}

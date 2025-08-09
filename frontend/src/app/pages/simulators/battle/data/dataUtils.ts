@@ -11,3 +11,4 @@ export function getTraitByName(traitName: string, set: string) {
 
   return trait;
 }
+
