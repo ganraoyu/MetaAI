@@ -1,16 +1,20 @@
 import { useState } from "react";
 import { ItemCardHover } from "./ItemCardHover";
+import { useItemContainerContext } from "../ItemContainerContext";
 
 type ItemCardProps = {
   itemTypeArray: any[];
 };
 
 export const ItemCard = ({ itemTypeArray }: ItemCardProps) => {
+  const { searchTerm } = useItemContainerContext();
   const [hoveredItemName, setHoveredItemName] = useState<string | null>(null);
+
+  const filteredItems = itemTypeArray.filter(item => item.name.includes(searchTerm));
 
   return (
     <div className="flex flex-wrap gap-2 m-1">
-      {itemTypeArray.map((item, index) => (
+      {filteredItems.map((item, index) => (
         <div 
           key={index} 
           className="relative flex flex-col justify-center items-center w-[2rem]"
