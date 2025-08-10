@@ -32,8 +32,8 @@ interface ItemContainerProviderProps {
 export const ItemContainerProvider = ({ children }: ItemContainerProviderProps) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  const [showBasicItems, setShowBasicItems] = useState<boolean>(true);
-  const [showCombinedItems, setShowCombinedItems] = useState<boolean>(false);
+  const [showBasicItems, setShowBasicItems] = useState<boolean>(false);
+  const [showCombinedItems, setShowCombinedItems] = useState<boolean>(true);
   const [showRadiantItems, setShowRadiantItems] = useState<boolean>(false);
   const [showArtifactItems, setShowArtifactItems] = useState<boolean>(false);
   const [showSupportItems, setShowSupportItems] = useState<boolean>(false);

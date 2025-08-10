@@ -1,3 +1,77 @@
+export const basicItems = [
+  {
+    name: 'B.F. Sword',
+    description: 'Grants 10% bonus Attack Damage.',
+    additionalAttackDamage: 1.1,
+    image: '../assets/items/basic/BFSword.png',
+    components: [],
+    componentsImages: [],
+  },
+  {
+    name: 'Recursive Bow',
+    description: 'Increases Attack Speed by 10%.',
+    additionalAttackSpeed: 1.1,
+    image: '../assets/items/basic/RecurveBow.png',
+    components: [],
+    componentsImages: [],
+  },
+  {
+    name: 'Tear of the Goddess',
+    description: 'Provides 15 bonus Starting Mana',
+    additionalStartingMana: 15,
+    image: '../assets/items/basic/TearOfTheGoddess.png',
+    components: [],
+    componentsImages: [],
+  },
+  {
+    name: 'Needlessly Large Rod',
+    description: 'Increases Ability Power by 10.',
+    additionalAbilityPower: 10,
+    image: '../assets/items/basic/NeedlesslyLargeRod.png',
+    components: [],
+    componentsImages: [],
+  },
+  {
+    name: 'Chain Vest',
+    description: 'Grants 20 Armor',
+    additionalArmor: 20,
+    image: '../assets/items/basic/ChainVest.png',
+    components: [],
+    componentsImages: [],
+  },
+  {
+    name: 'Negatron Cloak',
+    description: 'Grants 20 Magic Resist',
+    additionalMagicResist: 20,
+    image: '../assets/items/basic/NegatronCloak.png',
+    components: [],
+    componentsImages: [],
+  },
+  {
+    name: 'Giant\'s Belt',
+    description: 'Increases Health by 200',
+    additionalHealth: 200,
+    image: '../assets/items/basic/GiantsBelt.png',
+    components: [],
+    componentsImages: [],
+  },
+  {
+    name: 'Sparring Gloves',
+    description: 'Increases Critical Chance by 15',
+    additionalCritChance: 20,
+    image: '../assets/items/basic/SparringGloves.png',
+    components: [],
+    componentsImages: [],
+  },
+  {
+    name: 'Spatula',
+    description: 'It must do something...',
+    image: '../assets/items/basic/Spatula.png',
+    components: [],
+    componentsImages: [],
+  },
+];
+
 export const combinedItems = [
     {
         name: 'Guinsoo\'s Rageblade',
@@ -60,7 +134,7 @@ export const combinedItems = [
         additionalAbilityPower: 15, // 15 ability power
         image: '../assets/items/combined/SpearOfShojin.png',
         components: ['Tear of the Goddess', 'B.F. Sword'],
-        componentsImages: ['../assets/items/basic/TearoftheGoddess.png', '../assets/items/basic/BFSword.png']
+        componentsImages: ['../assets/items/basic/TearOfTheGoddess.png', '../assets/items/basic/BFSword.png']
     },
     {
         name: 'Death Blade',
@@ -127,7 +201,7 @@ export const combinedItems = [
         additionalAbilityPowerPerStack: 30, // 30 ability power
         image: '../assets/items/combined/ArchangelsStaff.png',
         components: ['Tear of the Goddess', 'Needlessly Large Rod'],
-        componentsImages: ['../assets/items/basic/TearoftheGoddess.png', '../assets/items/basic/NeedlesslyLargeRod.png']
+        componentsImages: ['../assets/items/basic/TearOfTheGoddess.png', '../assets/items/basic/NeedlesslyLargeRod.png']
     },
     {
         name: 'Giant Slayer',
@@ -200,7 +274,7 @@ export const combinedItems = [
         additionalCritChance: 20,
         image: '../assets/items/combined/HandOfJustice.png',
         components: ['Sparring Gloves', 'Tear of the Goddess'],
-        componentsImages: ['../assets/items/basic/SparringGloves.png', '../assets/items/basic/TearoftheGoddess.png']
+        componentsImages: ['../assets/items/basic/SparringGloves.png', '../assets/items/basic/TearOfTheGoddess.png']
     },
     {
         name: 'Guardbreaker',
@@ -209,7 +283,7 @@ export const combinedItems = [
         additionalAttackSpeed: 1.2,
         additionalCritChance: 20,
         additionalAbilityPower: 20,
-        image: '../assets/items/combined/Guardbreaker.png',
+        image: '../assets/items/combined/GuardBreaker.png',
         components: ['Giant\'s Belt', 'Sparring Gloves'],
         componentsImages: ['../assets/items/basic/GiantsBelt.png', '../assets/items/basic/SparringGloves.png']
     },
@@ -243,7 +317,7 @@ export const combinedItems = [
         shieldAmount: 0.30,
         image: '../assets/items/combined/ProtectorsVow.png',
         components: ['Chain Vest', 'Tear of the Goddess'],
-        componentsImages: ['../assets/items/basic/ChainVest.png', '../assets/items/basic/TearoftheGoddess.png']
+        componentsImages: ['../assets/items/basic/ChainVest.png', '../assets/items/basic/TearOfTheGoddess.png']
     },
     {
         name: 'Red Buff',
@@ -308,7 +382,7 @@ export const combinedItems = [
         additionalMagicResist: 20,
         image: '../assets/items/combined/AdaptiveHelm.png',
         components: ['Negatron Cloak', 'Tear of the Goddess'],
-        componentsImages: ['../assets/items/basic/NegatronCloak.png', '../assets/items/basic/TearoftheGoddess.png']
+        componentsImages: ['../assets/items/basic/NegatronCloak.png', '../assets/items/basic/TearOfTheGoddess.png']
     },
     {
         name: 'Evenshroud',
@@ -328,7 +402,7 @@ export const combinedItems = [
         heal: true,
         image: '../assets/items/combined/Redemption.png',
         components: ['Tear of the Goddess', 'Giant\'s Belt'],
-        componentsImages: ['../assets/items/basic/TearoftheGoddess.png', '../assets/items/basic/GiantsBelt.png']
+        componentsImages: ['../assets/items/basic/TearOfTheGoddess.png', '../assets/items/basic/GiantsBelt.png']
     },
     {
         name: 'Edge of Night',
@@ -348,7 +422,7 @@ export const combinedItems = [
         shred: true,
         image: '../assets/items/combined/StatikkShiv.png',
         components: ['Tear of the Goddess', 'Recurve Bow'],
-        componentsImages: ['../assets/items/basic/TearoftheGoddess.png', '../assets/items/basic/RecurveBow.png']
+        componentsImages: ['../assets/items/basic/TearOfTheGoddess.png', '../assets/items/basic/RecurveBow.png']
     }, 
     {
         name: 'Quick Silver',
@@ -368,6 +442,6 @@ export const combinedItems = [
         additionalDamageAmp: 0.05,
         image: '../assets/items/combined/BlueBuff.png',
         components: ['Tear of the Goddess', 'Tear of the Goddess'],
-        componentsImages: ['../assets/items/basic/TearoftheGoddess.png', '../assets/items/basic/TearoftheGoddess.png']
+        componentsImages: ['../assets/items/basic/TearOfTheGoddess.png', '../assets/items/basic/TearOfTheGoddess.png']
     },
 ];

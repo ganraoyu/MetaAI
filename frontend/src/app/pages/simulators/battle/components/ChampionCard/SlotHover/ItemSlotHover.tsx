@@ -164,11 +164,13 @@ export const ItemHover = ({
             )}
         </div>
       </div>
+
       {/* Description */}
       <div className="p-2">
         <p className="text-[0.65rem] text-gray-200">{description}</p>
       </div>
+      
     </div>
   )
-} 
+};
 

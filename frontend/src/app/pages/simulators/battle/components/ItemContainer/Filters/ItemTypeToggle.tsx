@@ -4,7 +4,7 @@ type ItemType = 'basic' | 'combined' | 'radiant' | 'artifact' | 'support' | 'emb
 
 export const ItemTypeToggle = () => {
   const baseButtonClass =
-    'outline outline-lightGray outline-1 px-1 py-1 text-[0.54rem] rounded-[0.2rem] hover:bg-[#3d3d3d] hover:text-white'
+    'outline outline-lightGray outline-1 px-1 py-1 text-[0.54rem] rounded-[0.1rem] hover:bg-[#3d3d3d] hover:text-white'
 
   const {
     showBasicItems,
@@ -31,7 +31,7 @@ export const ItemTypeToggle = () => {
   }
 
   return (
-    <div className='flex gap-2 mt-3 justify-center'>
+    <div className='flex gap-2 mt-3 justify-center items-center'>
       <button
         onClick={() => handleItemType('basic')}
         className={`${baseButtonClass} ${
