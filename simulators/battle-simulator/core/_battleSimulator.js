@@ -535,5 +535,8 @@ module.exports = {
   startBattle,
   clearBoard,
   placeChampionByName,
+  board,
+  addItemByName,
+  addAdditionalItemStatistics,
   getBattleHistory: () => battleLogger.getBattleHistory(currentBattleTime),
 };
