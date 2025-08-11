@@ -12,10 +12,11 @@ function getFormattedTime(champion: any) {
 }
 
 // Basic Stats
-export function addAdditionalItemStatistics(champion: Champion) {
+export function addAdditionalItemStatistics(champion: Champion, row: number, col: number) {
   if (!champion || !champion.items || !champion.items.length)
     return "No items equipped";
-
+  if (!row || !col) return;
+  
   if (champion.items.length > 0 && champion.items.length <= 3) {
     champion.items.forEach((item: ItemProps) => {
       champion.currentHp += item.additionalHealth || 0;

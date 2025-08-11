@@ -49,18 +49,83 @@ function getFormattedTime(time) {
   return `${minutes}:${seconds}`;
 }
 
+function deepClone(obj) {
+  if (obj === null || typeof obj !== "object") return obj;
+  if (obj instanceof Date) return new Date(obj.getTime());
+  if (obj instanceof Array) return obj.map(item => deepClone(item));
+  if (typeof obj === "object") {
+    const clonedObj = {};
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        clonedObj[key] = deepClone(obj[key]);
+      }
+    }
+    return clonedObj;
+  }
+}
+
+// Enhanced deep clone specifically for items to avoid circular references
+function deepCloneItem(item) {
+  if (!item) return item;
+  
+  // Create a clean item object with only the necessary properties
+  return {
+    name: item.name,
+    description: item.description,
+    additionalAttackDamage: item.additionalAttackDamage || 0,
+    additionalAttackSpeed: item.additionalAttackSpeed || 0,
+    additionalCritChance: item.additionalCritChance || 0,
+    additionalCritDamage: item.additionalCritDamage || 0,
+    additionalDamageAmp: item.additionalDamageAmp || 0,
+    additionalHealth: item.additionalHealth || 0,
+    additionalPercentageHealth: item.additionalPercentageHealth || 0,
+    additionalArmor: item.additionalArmor || 0,
+    additionalMagicResist: item.additionalMagicResist || 0,
+    additionalDurability: item.additionalDurability || 0,
+    additionalAbilityPower: item.additionalAbilityPower || 0,
+    additionalManaPerAttack: item.additionalManaPerAttack || 0,
+    additionalStartingMana: item.additionalStartingMana || 0,
+    reducedMaxMana: item.reducedMaxMana || 0,
+    abilityCritStrike: item.abilityCritStrike || false,
+    externalAttackDamage: item.externalAttackDamage || 0,
+    externalMagicDamage: item.externalMagicDamage || 0,
+    reduction: item.reduction || false,
+    heal: item.heal || false,
+    shield: item.shield || false,
+    sunder: item.sunder || false,
+    shred: item.shred || false,
+    wound: item.wound || false,
+    burn: item.burn || false,
+    reductionAmount: item.reductionAmount || 0,
+    healAmount: item.healAmount || 0,
+    shieldAmount: item.shieldAmount || 0,
+    shieldDuration: item.shieldDuration || 0,
+    sunderAmount: item.sunderAmount || 0,
+    shredAmount: item.shredAmount || 0,
+    abilityPowerStackInterval: item.abilityPowerStackInterval || 0,
+    sunderRadius: item.sunderRadius || 0,
+    shredRadius: item.shredRadius || 0,
+    attackSpeedStacking: item.attackSpeedStacking || false,
+    abilityPowerStacking: item.abilityPowerStacking || false,
+    additionalAttackSpeedPerStack: item.additionalAttackSpeedPerStack || 0,
+    additionalAbilityPowerPerStack: item.additionalAbilityPowerPerStack || 0,
+    additionalAttackRange: item.additionalAttackRange || 0
+  };
+}
+
 function placeChampionByName(championName, row, column, starLevel, team) {
   const champion = getChampionByName(championName);
   if (typeof champion === "string") {
     console.log(champion);
   } else {
+    // Deep clone all the champion data to ensure each instance is independent
     const newChampion = new Champion(
       champion.name,
       champion.cost,
       champion.movementSpeed,
-      champion.traitsList,
+      deepClone(champion.traitsList),
       champion.shield,
-      champion.statsByStarLevel,
+      deepClone(champion.statsByStarLevel),
       champion.attackSpeed,
       champion.abilityName,
       champion.range,
@@ -81,14 +146,17 @@ function placeChampionByName(championName, row, column, starLevel, team) {
       champion.omnivamp,
       champion.durability,
       champion.timeUntilAttack,
-      champion.attackArray,
-      champion.abilityArray,
-      champion.healArray,
-      champion.items
+      deepClone(champion.attackArray),
+      deepClone(champion.abilityArray),
+      deepClone(champion.healArray),
+      // Start with empty items array - items should be added individually
+      []
     );
     newChampion.setStarLevel(starLevel);
     newChampion.team = team; // Assign the team to the champion
     board.placeChampion(newChampion, row, column);
+    
+    console.log(`Placed ${championName} at (${row}, ${column}) with independent stats and empty items`);
   }
 }
 
@@ -134,7 +202,8 @@ function addItemByName(champion, itemName) {
   if (typeof item === "string") {
     throw new Error(item);
   } else {
-    champion.items.push(item);
+    const clonedItem = deepCloneItem(item);
+    champion.items.push(clonedItem);
   }
 }
 
@@ -525,11 +594,12 @@ function clearBoard() {
   board.displayBoard();
 }
 
-// placeChampionByName("Akali", 4, 4, 3, "player");
-// placeChampionByName("Darius", 3, 2, 3, "opponent");
-// addItemByName(board.getChampion(7, 3), "Sunfire Cape");
-// board.displayBoard();
-// startBattle()
+placeChampionByName("Akali", 4, 4, 3, "player");
+placeChampionByName("Akali", 3, 2, 3, "opponent");
+addItemByName(board.getChampion(3, 2), "Warmog's Armor");
+board.displayBoard();
+startBattle()
+
 module.exports = {
   router,
   startBattle,

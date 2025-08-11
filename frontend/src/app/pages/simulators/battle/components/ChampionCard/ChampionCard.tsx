@@ -101,7 +101,7 @@ export const ChampionCard = ({
 
         {/* HP Text */}
         <div className="text-[0.65rem] text-white font-semibold text-center w-full">
-          {Math.round(currentHp)}/{maxHp}
+          {Math.round(currentHp)}/{Math.round(maxHp)}
         </div>
       </div>
 
@@ -115,8 +115,8 @@ export const ChampionCard = ({
           item2={item2}
           item3={item3}
           cost={cost}
-          currentHp={currentHp}
-          maxHp={maxHp}
+          currentHp={Math.round(currentHp)}
+          maxHp={Math.round(maxHp)}
           mana={mana}
           maxMana={maxMana}
           shield={shield}

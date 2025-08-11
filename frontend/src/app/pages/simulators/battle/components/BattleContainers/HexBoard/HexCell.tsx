@@ -10,17 +10,17 @@ interface HexCellProps {
 const getBorderColor = (cost: number): string => {
   switch (cost) {
     case 1:
-      return "#9E9E9E"; // Gray
+      return "#9E9E9E"; 
     case 2:
-      return "#4CAF50"; // Green
+      return "#4CAF50"; 
     case 3:
-      return "#2196F3"; // Blue
+      return "#2196F3"; 
     case 4:
-      return "#9C27B0"; // Purple
+      return "#9C27B0"; 
     case 5:
-      return "#FFC107"; // Amber
+      return "#FFC107";
     default:
-      return "#000000"; // Black fallback
+      return "#000000"; 
   }
 };
 
@@ -31,7 +31,7 @@ const itemPositionMapping = (index: number, total: number) => {
     if (index === 0 ) {
       return "left-3.5 bottom-[0.7px]";
     } else {
-      return "left-9 bottom-[0.7px]"
+      return "left-8 bottom-[0.7px]"
     }
   } else if (total === 3) {
     if (index === 0 ) {
@@ -42,7 +42,6 @@ const itemPositionMapping = (index: number, total: number) => {
       return "left-[2.625rem] bottom-[0.7px]"
     }
   }
-
 };
 
 export const HexCell: React.FC<HexCellProps> = ({ cellId }) => {

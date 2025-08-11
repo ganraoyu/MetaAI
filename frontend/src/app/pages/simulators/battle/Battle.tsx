@@ -42,7 +42,7 @@ const BattleContent = () => {
           {/* Center - Hex Board */}
           <div>
             <HexBoard />
-            <BattleEndStats />
+            
           </div>
 
           {/* Right side - Battle Logs */}

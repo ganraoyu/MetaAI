@@ -268,7 +268,7 @@ const startBattleWithBoard = async (req, res) => {
             addItemByName(championInstance, item);
           });
 
-          addAdditionalItemStatistics(championInstance);
+          addAdditionalItemStatistics(championInstance, row, col);
         }
 
         if (result === false) {
