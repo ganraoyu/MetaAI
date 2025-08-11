@@ -5,7 +5,7 @@ const NUM_COLS = 7;
 
 export const HexBoard = () => {
   return (
-    <div className="flex-1 flex items-center justify-center mt-[3.5rem]">
+    <div className="flex-1 flex items-center justify-center">
       <div className="grid grid-cols-1 justify-items-center">
         {[...Array(NUM_ROWS)].map((_, row) => {
           const isEvenRow = row % 2 === 0;

@@ -48,7 +48,7 @@ export const Ability = ({ log, index }: { log: any; index: number }) => {
             onMouseLeave={() => setHoveredDamageId(null)}
             onClick={() => handleDamageClicked(index)}
           >
-            -{log.details.damage}
+            -{Math.round(log.details.damage)}
             {(hoveredDamageId === index || clickedDamageId === index) && (
               <div
                 className="fixed animate-grow-in origin-top-left z-50 cursor-auto rounded-lg shadow-xl"
@@ -58,7 +58,7 @@ export const Ability = ({ log, index }: { log: any; index: number }) => {
                   rawDamage={
                     -Math.round(log.details.attacker.abilityPower) || 0
                   }
-                  finalDamage={-log.details.damage || 0}
+                  finalDamage={-Math.round(log.details.damage) || 0}
                   armorReduction={{
                     percentage: Math.round(log.details.target.armor || 0),
                     value: log.details.target.armor || 0,

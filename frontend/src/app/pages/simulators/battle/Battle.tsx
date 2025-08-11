@@ -9,6 +9,7 @@ import { LogsDisplay } from "./components/BattleContainers/LogDisplay";
 import { Filter } from "./components/BattleLogCards/_Filter";
 import { HexBoardProvider } from "./components/BattleContainers/HexBoard/HexBoardContext";
 import { ItemContainer } from "./components/ItemContainer/ItemContainer";
+import { BattleEndStats } from "./components/BattleContainers/BattleEndStats";
 
 const BattleContent = () => {
   useTitle("TFT Battle Simulator - Builder");
@@ -39,7 +40,10 @@ const BattleContent = () => {
           <TraitsContainer />
 
           {/* Center - Hex Board */}
-          <HexBoard />
+          <div>
+            <HexBoard />
+            <BattleEndStats />
+          </div>
 
           {/* Right side - Battle Logs */}
           <div className="w-[18rem]">

@@ -5,7 +5,7 @@ import { faGithub, faPaypal } from '@fortawesome/free-brands-svg-icons';
 
 const Header = () => {
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 font-mono bg-gray-500 h-[65px]">
+    <div className="fixed top-0 left-0 right-0 z-50 font-mono bg-gray-500 h-[65px] z-[9999999]">
       <div className="flex justify-between items-center h-full bg-mainBackground px-6 border-b border-gray-700">
         
         {/* Logo + Title */}

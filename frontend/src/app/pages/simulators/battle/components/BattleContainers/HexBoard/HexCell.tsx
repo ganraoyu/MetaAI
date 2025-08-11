@@ -1,13 +1,13 @@
-import { useState } from "react";
 import { useHexBoardContext } from "./HexBoardContext";
 import { Star } from "../../../utils/Star";
+import { itemMap } from "../../../utils/ItemMapping";
 
 interface HexCellProps {
   cellId: string;
   team: "player" | "opponent" | "";
 }
 
-function getBorderColor(cost: number): string {
+const getBorderColor = (cost: number): string => {
   switch (cost) {
     case 1:
       return "#9E9E9E"; // Gray
@@ -22,7 +22,28 @@ function getBorderColor(cost: number): string {
     default:
       return "#000000"; // Black fallback
   }
-}
+};
+
+const itemPositionMapping = (index: number, total: number) => {
+  if (total === 1) {
+    return "left-6 bottom-[0.7px]";
+  } else if (total === 2) {
+    if (index === 0 ) {
+      return "left-3.5 bottom-[0.7px]";
+    } else {
+      return "left-9 bottom-[0.7px]"
+    }
+  } else if (total === 3) {
+    if (index === 0 ) {
+      return "left-1.5 bottom-[0.7px]";
+    } else if (index === 1) {
+      return "left-6 bottom-[0.7px]"
+    } else {
+      return "left-[2.625rem] bottom-[0.7px]"
+    }
+  }
+
+};
 
 export const HexCell: React.FC<HexCellProps> = ({ cellId }) => {
   const {
@@ -37,6 +58,8 @@ export const HexCell: React.FC<HexCellProps> = ({ cellId }) => {
   const championData = getChampion(cellId);
   const champion = championData?.name || null;
   const image = championData?.image || null;
+  const championItem = championData?.items || null;
+  const itemImage = (itemName: string) => itemMap[itemName];
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -55,19 +78,17 @@ export const HexCell: React.FC<HexCellProps> = ({ cellId }) => {
       if (data.type === "champion") {
         placeChampion(cellId, data.championData);
       } else if (data.type === "item") {
-
         const championHere = getChampion(cellId);
         if (championHere) {
           addItemToChampion(cellId, data.name);
-          console.log('Placed: ', data.name, 'to', championHere.name)
-          console.log(championHere)
+          console.log("Placed: ", data.name, "to", championHere.name);
+          console.log(championHere);
         } else {
           alert(
             "No champion in this cell. Place a champion first before adding items."
           );
         }
       }
-
     } catch (error) {
       console.error("Error parsing drop data:", error);
     }
@@ -135,7 +156,7 @@ export const HexCell: React.FC<HexCellProps> = ({ cellId }) => {
         }}
       >
         {/* Champion Name */}
-        {image && (
+        {image ? (
           <p
             role="button"
             tabIndex={0}
@@ -155,6 +176,10 @@ export const HexCell: React.FC<HexCellProps> = ({ cellId }) => {
             }}
           >
             {champion}
+          </p>
+        ) : (
+          <p className="text-[0.5rem]">
+            [{parseInt(cellId[1]) + 1},{parseInt(cellId[3]) + 1}]
           </p>
         )}
       </div>
@@ -184,6 +209,18 @@ export const HexCell: React.FC<HexCellProps> = ({ cellId }) => {
           ))}
         </div>
       )}
+
+      {/* Add Equiped Champion Item Images */}
+      <div className="w-full absolute bottom-0 left-0">
+        {championItem?.map((item, index) => {
+          const positions = itemPositionMapping(index, championItem.length);
+          return (
+            <div key={item} className={`absolute ${positions} border border-yellow-300 z-[51]`}>
+              <img src={itemImage(item).image} className="w-4 h-4"/>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

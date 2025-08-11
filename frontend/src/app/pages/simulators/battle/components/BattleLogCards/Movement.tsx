@@ -21,11 +21,11 @@ export const Movement = ({
 
         <span className="text-xs font-semibold text-teal-400 bg-teal-400/20 px-1.5 py-0.5 rounded transition-colors hover:bg-teal-400/40 active:bg-teal-500/50 relative flex items-center gap-1">
           <span>
-            [{mover.prevPosition[0]}, {mover.prevPosition[1]}]
+            [{mover.prevPosition[0] + 1}, {mover.prevPosition[1] + 1}]
           </span>
           <span>→</span>
           <span>
-            [{mover.newPosition[0]}, {mover.newPosition[1]}]
+            [{mover.newPosition[0] + 1}, {mover.newPosition[1] + 1}]
           </span>
         </span>
       </div>

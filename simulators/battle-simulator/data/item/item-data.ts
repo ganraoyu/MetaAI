@@ -160,7 +160,7 @@ export const combinedItems = [
         description: 'Attacks fire a bolt at a nearby enemy, dealing 55% Attack Damage as physical damage.',
         additionalAttacKSpeed: 1.1, // 10% attack speed
         additionalAttackDamage: 1.1, // 10% attack damage
-        additonalMagicResist: 20, // 20 more magic resist
+        additionalMagicResist: 20, // 20 more magic resist
     }),
     new Item({
         name: 'Sterak\'s Gage',
@@ -591,16 +591,16 @@ export const radiantItems = [
         additionalStartingMana: 30, // 30 starting mana
         additionalAttackSpeed: 1.6, // 60% attack speed
     })
-]
+];
 
 export function getItemByName(name: string){
     if(!name){
         return 'Champion name cannt be Empty'
-    }
+    };
 
-    const basicItem = basicItems.find(basicItems => basicItems.name === name)
-    const combinedItem = combinedItems.find(combinedItems => combinedItems.name === name)
-    const radiantItem = radiantItems.find(radiantItems => radiantItems.name === name)
+    const basicItem = basicItems.find(basicItems => basicItems.name === name);
+    const combinedItem = combinedItems.find(combinedItems => combinedItems.name === name);
+    const radiantItem = radiantItems.find(radiantItems => radiantItems.name === name);
 
     if(basicItem){
         return basicItem
@@ -608,12 +608,12 @@ export function getItemByName(name: string){
         return combinedItem
     } else if(radiantItem){
         return radiantItem
-    }
+    };
 
     if(!basicItems || !combinedItems){
         return 'Item not found'
-    }
-}
+    };
+};
 
 // console.log(combinedItems[6])
 
