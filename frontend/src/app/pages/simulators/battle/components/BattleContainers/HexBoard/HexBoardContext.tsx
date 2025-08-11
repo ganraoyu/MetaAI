@@ -150,6 +150,27 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
     );
   };
 
+  const addItemToChampion = (cellId: string, itemName: string) => {
+    setBoardState((prev) => {
+      const cell = prev[cellId];
+      if (!cell) return prev; // no champion here
+
+      const champion = cell.champion;
+      const existingItems = champion?.items || [];
+
+      return {
+        ...prev,
+        [cellId]: {
+          ...cell,
+          champion: {
+            ...champion,
+            items: [...existingItems, itemName],
+          } as ChampionData,
+        },
+      };
+    });
+  };
+
   return (
     <HexBoardContext.Provider
       value={{
@@ -168,6 +189,7 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
         moveChampion,
         getChampion,
         setChampionStarLevel,
+        addItemToChampion
       }}
     >
       {children}

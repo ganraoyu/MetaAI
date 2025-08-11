@@ -3,7 +3,6 @@ import { useHexBoardContext } from "./HexBoardContext";
 import { Star } from "../../../utils/Star";
 
 interface HexCellProps {
-
   cellId: string;
   team: "player" | "opponent" | "";
 }
@@ -25,13 +24,14 @@ function getBorderColor(cost: number): string {
   }
 }
 
-export const HexCell: React.FC<HexCellProps> = ({cellId}) => {
+export const HexCell: React.FC<HexCellProps> = ({ cellId }) => {
   const {
     placeChampion,
     removeChampion,
     getChampion,
     moveChampion,
     setChampionStarLevel,
+    addItemToChampion,
   } = useHexBoardContext();
 
   const championData = getChampion(cellId);
@@ -47,14 +47,29 @@ export const HexCell: React.FC<HexCellProps> = ({cellId}) => {
     e.preventDefault();
 
     try {
-      const championDataString = e.dataTransfer.getData("application/json");
-      if (championDataString) {
-        const championData = JSON.parse(championDataString);
-        console.log(`Dropping ${championData.name} on cell ${cellId}`);
-        placeChampion(cellId, championData);
+      const dataString = e.dataTransfer.getData("application/json");
+      if (!dataString) return;
+
+      const data = JSON.parse(dataString);
+
+      if (data.type === "champion") {
+        placeChampion(cellId, data.championData);
+      } else if (data.type === "item") {
+
+        const championHere = getChampion(cellId);
+        if (championHere) {
+          addItemToChampion(cellId, data.name);
+          console.log('Placed: ', data.name, 'to', championHere.name)
+          console.log(championHere)
+        } else {
+          alert(
+            "No champion in this cell. Place a champion first before adding items."
+          );
+        }
       }
+
     } catch (error) {
-      console.error("Error parsing champion data:", error);
+      console.error("Error parsing drop data:", error);
     }
   };
 

@@ -49,7 +49,7 @@ export const ChampionCardList = ({ set }: { set: string }) => {
     };
 
     console.log('Dragging champion:', championData.name);
-    e.dataTransfer.setData("application/json", JSON.stringify(championData));
+    e.dataTransfer.setData("application/json", JSON.stringify({ championData: championData, type: "champion" }));
     e.dataTransfer.effectAllowed = "copy";
 
     // Hide hover info during drag

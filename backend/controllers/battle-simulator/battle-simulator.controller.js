@@ -20,7 +20,6 @@ const {
     getBattleHistory: getBattleHistoryFromLogic 
 } = require('../../../simulators/battle-simulator/core/_battleSimulator.js');
 
-// Helper function to parse cellId format from frontend
 function parseCellId(cellId) {
   const match = cellId.match(/^([pr])(\d+)c(\d+)$/);
   if (!match) throw new Error(`Invalid cellId format: ${cellId}`);
@@ -117,7 +116,6 @@ function createPreciseCircularReplacer() {
 // Helper function to safely convert data to JSON while preserving all important data
 function safeBattleDataToJSON(data) {
   try {
-    // First, let's try a deep clone approach that handles circular refs more precisely
     const cleanData = JSON.parse(JSON.stringify(data, createPreciseCircularReplacer()));
     return cleanData;
   } catch (error) {
@@ -158,7 +156,6 @@ function safeBattleDataToJSON(data) {
   }
 }
 
-// Alternative approach: Send battle history directly without circular refs
 function getBattleHistoryClean() {
   try {
     const rawHistory = getBattleHistoryFromLogic();
@@ -297,7 +294,6 @@ const startBattleWithBoard = async (req, res) => {
   }
 };
 
-// Rest of your existing functions...
 const getWinRate = async (req, res) => {
     try{
         const winRate = await calculateWinRate(req, res);
