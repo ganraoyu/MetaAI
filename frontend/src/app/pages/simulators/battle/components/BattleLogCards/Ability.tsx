@@ -86,7 +86,7 @@ export const Ability = ({ log, index }: { log: any; index: number }) => {
               currentHp={log.details.attacker.currentHp || 0}
               maxHp={log.details.attacker.maxHp || 100}
               mana={log.details.attacker.mana || 0}
-              maxMana={log.details.attacker.maxMana || 100}
+              maxMana={log.details.attacker.abilityManaCost || 100}
               shield={log.details.attacker.shield || 0}
               trait1={log.details.attacker.traits?.[0] || ""}
               trait2={log.details.attacker.traits?.[1] || ""}
@@ -131,7 +131,7 @@ export const Ability = ({ log, index }: { log: any; index: number }) => {
               currentHp={log.details.target.currentHp || 0}
               maxHp={log.details.target.maxHp || 100}
               mana={log.details.target.mana || 0}
-              maxMana={log.details.target.maxMana || 100}
+              maxMana={log.details.target.abilityManaCost || 100}
               shield={log.details.target.shield || 0}
               trait1={log.details.target.traits?.[0] || ""}
               trait2={log.details.target.traits?.[1] || ""}

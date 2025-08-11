@@ -374,6 +374,7 @@ export class Champion {
 
           // Mana information
           mana: this.mana,
+          abilityManaCost: this.abilityManaCost,
           manaGained: this.manaPerAttack,
           manaPerAttack: this.manaPerAttack,
         },
@@ -409,6 +410,7 @@ export class Champion {
           // Other stats
           range: target.range,
           mana: target.mana,
+          abilityManaCost: target.abilityManaCost,
         },
       },
       this.battleTime
@@ -565,6 +567,7 @@ export class Champion {
           attacker: {
             champion: this.name,
             mana: this.mana,
+            abilityManaCost: this.abilityManaCost,
             abilityPower: this.abilityPower,
             attackSpeed: this.attackSpeed,
             currentHp: this.currentHp,
@@ -575,6 +578,8 @@ export class Champion {
           target: {
             champion: target.name,
             currentHp: target.currentHp,
+            mana: target.mana,
+            abilityManaCost: target.abilityManaCost,
             maxHp: target.statsByStarLevel[target.starLevel].hp,
             armor: target.armor,
             magicResist: target.magicResist,

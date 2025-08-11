@@ -52,6 +52,7 @@ export const HexCell: React.FC<HexCellProps> = ({ cellId }) => {
     moveChampion,
     setChampionStarLevel,
     addItemToChampion,
+    removeItemFromChampion
   } = useHexBoardContext();
 
   const championData = getChampion(cellId);
@@ -214,7 +215,7 @@ export const HexCell: React.FC<HexCellProps> = ({ cellId }) => {
         {championItem?.map((item, index) => {
           const positions = itemPositionMapping(index, championItem.length);
           return (
-            <div key={item} className={`absolute ${positions} border border-yellow-300 z-[51]`}>
+            <div key={item} className={`absolute ${positions} border border-yellow-300 z-[51]`} onMouseDown={() => removeItemFromChampion(cellId, item)}>
               <img src={itemImage(item).image} className="w-4 h-4"/>
             </div>
           );

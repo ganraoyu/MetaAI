@@ -64,7 +64,6 @@ function deepClone(obj) {
   }
 }
 
-// Enhanced deep clone specifically for items to avoid circular references
 function deepCloneItem(item) {
   if (!item) return item;
   
@@ -149,16 +148,14 @@ function placeChampionByName(championName, row, column, starLevel, team) {
       deepClone(champion.attackArray),
       deepClone(champion.abilityArray),
       deepClone(champion.healArray),
-      // Start with empty items array - items should be added individually
       []
     );
     newChampion.setStarLevel(starLevel);
-    newChampion.team = team; // Assign the team to the champion
+    newChampion.team = team; 
     board.placeChampion(newChampion, row, column);
-    
-    console.log(`Placed ${championName} at (${row}, ${column}) with independent stats and empty items`);
+
   }
-}
+};
 
 function initializeTeams() {
   let player = [];

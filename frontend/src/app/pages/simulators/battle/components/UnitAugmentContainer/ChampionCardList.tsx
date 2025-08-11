@@ -8,14 +8,18 @@ export const ChampionCardList = ({ set }: { set: string }) => {
     toggleUnitsOrAugments = true,
     sortByCost = false,
     sortByAlphabet = false,
-    searchTerm = ""
+    searchTerm = "",
   } = useUnitAugmentContext();
 
   const { showBelow, setShowBelow } = useUnitAugmentContext();
   const [overExtend, setOverExtend] = useState<boolean>(false);
   const [champions, setChampions] = useState(() => getChampionBySet(set) || []);
-  const [hoveredChampionId, setHoveredChampionId] = useState<string | null>(null);
-  const [clickedChampionId, setClickedChampionId] = useState<string | null>(null);
+  const [hoveredChampionId, setHoveredChampionId] = useState<string | null>(
+    null
+  );
+  const [clickedChampionId, setClickedChampionId] = useState<string | null>(
+    null
+  );
   const championRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
@@ -48,8 +52,11 @@ export const ChampionCardList = ({ set }: { set: string }) => {
       abilityDescription: champion.abilityDescription,
     };
 
-    console.log('Dragging champion:', championData.name);
-    e.dataTransfer.setData("application/json", JSON.stringify({ championData: championData, type: "champion" }));
+    console.log("Dragging champion:", championData.name);
+    e.dataTransfer.setData(
+      "application/json",
+      JSON.stringify({ championData: championData, type: "champion" })
+    );
     e.dataTransfer.effectAllowed = "copy";
 
     // Hide hover info during drag
@@ -63,40 +70,43 @@ export const ChampionCardList = ({ set }: { set: string }) => {
     let championList = [...(champions || [])];
 
     if (searchTerm.length > 0) {
-      championList = championList.filter(champion =>
+      championList = championList.filter((champion) =>
         (champion?.name || "").toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     if (sortByAlphabet) {
-      championList.sort((a, b) =>
-        (a?.name || "").localeCompare(b?.name || "")
-      );
+      championList.sort((a, b) => (a?.name || "").localeCompare(b?.name || ""));
     }
 
     if (sortByCost) {
-      championList.sort((a, b) =>
-        (a?.name || "").localeCompare(b?.name || "")
-      ).sort((a, b) =>
-        (a?.cost || 0) - (b?.cost || 0)
-      );
+      championList
+        .sort((a, b) => (a?.name || "").localeCompare(b?.name || ""))
+        .sort((a, b) => (a?.cost || 0) - (b?.cost || 0));
     }
 
     return championList;
-  }, [champions, toggleUnitsOrAugments, sortByAlphabet, sortByCost, searchTerm]);
+  }, [
+    champions,
+    toggleUnitsOrAugments,
+    sortByAlphabet,
+    sortByCost,
+    searchTerm,
+  ]);
 
   return (
-    <div className="flex flex-wrap items-center w-[45.6rem] gap-[0.3rem] bg-hexCellComponents p-6 rounded-b-lg hover:cursor-pointer"
+    <div
+      className="flex flex-wrap items-center w-[45.6rem] gap-[0.3rem] bg-hexCellComponents p-6 rounded-b-lg hover:cursor-pointer"
       onDragOver={(e) => e.preventDefault()}
     >
-      {sortedChampions.map(champion => {
+      {sortedChampions.map((champion) => {
         const name = champion?.name || "Unknown";
         const cost = champion?.cost || 1;
 
         return (
           <div
             key={name}
-            ref={el => championRefs.current[name] = el}
+            ref={(el) => (championRefs.current[name] = el)}
             className="flex flex-col items-center relative"
             onMouseEnter={() => {
               setHoveredChampionId(name);
@@ -105,9 +115,7 @@ export const ChampionCardList = ({ set }: { set: string }) => {
             }}
             onMouseLeave={() => setHoveredChampionId(null)}
             onClick={() => {
-              setClickedChampionId(
-                clickedChampionId === name ? null : name
-              );
+              setClickedChampionId(clickedChampionId === name ? null : name);
               if (clickedChampionId !== name) {
                 checkPosition(name);
                 setOverExtend(false);
@@ -115,18 +123,24 @@ export const ChampionCardList = ({ set }: { set: string }) => {
             }}
           >
             <img
-              src={champion.image || "/placeholder.png"}
+              src={champion.image}
               alt={name}
               draggable={true}
               onDragStart={(e) => handleDragStart(e, champion)}
               className={`w-10 h-10 outline outline-2 cursor-grab active:cursor-grabbing ${
-                cost === 1 ? "outline-gray-400" :
-                cost === 2 ? "outline-green-500" :
-                cost === 3 ? "outline-blue-500" :
-                cost === 4 ? "outline-purple-700" :
-                cost === 5 ? "outline-yellow-500" :
-                cost === 6 ? "outline-orange-500" :
-                "outline-red-500"
+                cost === 1
+                  ? "outline-gray-400"
+                  : cost === 2
+                  ? "outline-green-500"
+                  : cost === 3
+                  ? "outline-blue-500"
+                  : cost === 4
+                  ? "outline-purple-700"
+                  : cost === 5
+                  ? "outline-yellow-500"
+                  : cost === 6
+                  ? "outline-orange-500"
+                  : "outline-red-500"
               }`}
             />
             <p
@@ -139,23 +153,24 @@ export const ChampionCardList = ({ set }: { set: string }) => {
             {(hoveredChampionId === name || clickedChampionId === name) && (
               <ChampionHoverInfo
                 champion={name}
-                type={champion?.type || ''}
+                type={champion?.type || ""}
                 cost={cost}
                 traits={[
                   champion?.traitsList?.[0] ?? "",
                   champion?.traitsList?.[1] ?? "",
-                  champion?.traitsList?.[2] ?? ""
+                  champion?.traitsList?.[2] ?? "",
                 ]}
                 items={[
                   champion?.items?.[0],
                   champion?.items?.[1],
-                  champion?.items?.[2]
+                  champion?.items?.[2],
                 ]}
                 showBelow={showBelow}
                 overExtend={overExtend}
                 stats={{
                   abilityName: champion?.abilityName || "Unknown",
-                  abilityDescription: champion?.abilityDescription || "No description available",
+                  abilityDescription:
+                    champion?.abilityDescription || "No description available",
                   range: champion?.range ?? 0,
                   mana: champion?.mana ?? 0,
                   manaPerAttack: champion?.manaPerAttack ?? 0,
@@ -179,20 +194,26 @@ export const ChampionCardList = ({ set }: { set: string }) => {
                   oneStar: {
                     health: champion?.statsByStarLevel?.[1]?.hp ?? 0,
                     armor: champion?.statsByStarLevel?.[1]?.armor ?? 0,
-                    magicResist: champion?.statsByStarLevel?.[1]?.magicResist ?? 0,
-                    attackDamage: champion?.statsByStarLevel?.[1]?.attackDamage ?? 0,
+                    magicResist:
+                      champion?.statsByStarLevel?.[1]?.magicResist ?? 0,
+                    attackDamage:
+                      champion?.statsByStarLevel?.[1]?.attackDamage ?? 0,
                   },
                   twoStar: {
                     health: champion?.statsByStarLevel?.[2]?.hp ?? 0,
                     armor: champion?.statsByStarLevel?.[2]?.armor ?? 0,
-                    magicResist: champion?.statsByStarLevel?.[2]?.magicResist ?? 0,
-                    attackDamage: champion?.statsByStarLevel?.[2]?.attackDamage ?? 0,
+                    magicResist:
+                      champion?.statsByStarLevel?.[2]?.magicResist ?? 0,
+                    attackDamage:
+                      champion?.statsByStarLevel?.[2]?.attackDamage ?? 0,
                   },
                   threeStar: {
                     health: champion?.statsByStarLevel?.[3]?.hp ?? 0,
                     armor: champion?.statsByStarLevel?.[3]?.armor ?? 0,
-                    magicResist: champion?.statsByStarLevel?.[3]?.magicResist ?? 0,
-                    attackDamage: champion?.statsByStarLevel?.[3]?.attackDamage ?? 0,
+                    magicResist:
+                      champion?.statsByStarLevel?.[3]?.magicResist ?? 0,
+                    attackDamage:
+                      champion?.statsByStarLevel?.[3]?.attackDamage ?? 0,
                   },
                 }}
                 starLevel={1}

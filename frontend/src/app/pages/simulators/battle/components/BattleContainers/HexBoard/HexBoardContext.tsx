@@ -171,6 +171,29 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
+  const removeItemFromChampion = (cellId: string, itemName: string) => {
+    setBoardState((prev) => {
+      const cell = prev[cellId];
+      if (!cell) return prev;
+
+      const champion = cell?.champion;
+      const itemList = champion?.items;
+
+      const newItemList = itemList?.filter((item: any) => item.name === itemName);
+
+      return {
+        ...prev,
+        [cellId]: {
+          ...cell,
+          champion: {
+            ...champion,
+            items: newItemList
+          } as ChampionData,
+        }
+      }
+    })
+  }
+
   return (
     <HexBoardContext.Provider
       value={{
@@ -189,7 +212,8 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
         moveChampion,
         getChampion,
         setChampionStarLevel,
-        addItemToChampion
+        addItemToChampion,
+        removeItemFromChampion
       }}
     >
       {children}

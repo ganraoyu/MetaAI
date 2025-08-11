@@ -47,6 +47,7 @@
     getChampion: (cellId: string) => ChampionData | null;
     setChampionStarLevel: (cellId: string, starLevel: number) => void;
     addItemToChampion: (cellId: string, itemName: string) => void;
+    removeItemFromChampion: (cellId: string, itemName: string) => void;
   };
 
   export type TraitCountEntry = [string, number]

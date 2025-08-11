@@ -100,5 +100,8 @@ export const itemMap: ItemMap = {
     },
     'Blue Buff': {
         image: '../assets/items/combined/BlueBuff.png'
+    },
+    'Spear of Shojin': {
+        image: '../assets/items/combined/SpearOfShojin.png'
     }
 };
