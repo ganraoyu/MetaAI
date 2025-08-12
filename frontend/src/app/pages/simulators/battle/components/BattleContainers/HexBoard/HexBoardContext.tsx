@@ -12,9 +12,7 @@ import {
   TraitCountEntry,
 } from "./types";
 
-const HexBoardContext = createContext<HexBoardContextType | undefined>(
-  undefined
-);
+const HexBoardContext = createContext<HexBoardContextType | undefined>(undefined);
 
 export const useHexBoardContext = () => {
   const context = useContext(HexBoardContext);

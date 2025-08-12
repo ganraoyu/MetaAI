@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   MdClose,
   MdPlayArrow,
@@ -10,13 +10,20 @@ import {
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useBattleContext } from "../../BattleContext";
 import { useHexBoardContext } from "./HexBoard/HexBoardContext";
+import { useBattleStatsContext } from "./BattleStatsContainer/BattleStatsContext.tsx";
 import { useRunBattle } from "../../hooks/useRunBattle.ts";
 
 export const BattleButtons = () => {
-  const { setStartBattle, setBattleHistory, battleHistory, loading } =
-    useBattleContext();
+  const { setStartBattle, setBattleHistory, battleHistory, loading } = useBattleContext();
 
   const { boardState, setBoardState, boardArray, setBoardArray } = useHexBoardContext();
+
+  const { 
+      toggleTraits, 
+      setToggleTraits,
+      toggleBattleEndStats, 
+      setToggleBattleEndStats
+    } = useBattleStatsContext()
 
   const [error, setError] = useState<string | null>(null);
   const [showAnalytics, setShowAnalytics] = useState<boolean>(false);
@@ -24,6 +31,7 @@ export const BattleButtons = () => {
 
   const { runBattle } = useRunBattle();
 
+  useEffect(() => {}, [toggleTraits])
   const handleStartBattle = async () => {
     setError(null);
 
@@ -112,7 +120,11 @@ export const BattleButtons = () => {
               ? "opacity-50 cursor-not-allowed"
               : ""
           }`}
-          onClick={handleStartBattle}
+          onClick={() => {
+            handleStartBattle();
+            setToggleTraits(false);
+            setToggleBattleEndStats(true);
+          }}
           disabled={loading || championsOnBoard === 0}
         >
           <MdPlayArrow className="h-4 w-4" />
@@ -124,7 +136,11 @@ export const BattleButtons = () => {
             ${baseButtonClass} text-red-400 border border-red-600/60
             ${boardArray.length === 0 ? "opacity-50 cursor-not-allowed" : ""}
             `}
-          onClick={handleClearBoard}
+          onClick={() => {
+            handleClearBoard();
+            setToggleBattleEndStats(false);
+            setToggleTraits(true);
+          }}
         >
           <MdClose className="h-4 w-4" /> Clear Board
         </button>

@@ -9,7 +9,7 @@ import { LogsDisplay } from "./components/BattleContainers/LogDisplay";
 import { Filter } from "./components/BattleLogCards/_Filter";
 import { HexBoardProvider } from "./components/BattleContainers/HexBoard/HexBoardContext";
 import { ItemContainer } from "./components/ItemContainer/ItemContainer";
-import { BattleEndStats } from "./components/BattleContainers/BattleStatsContainer/BattleEndStats";
+import { BattleStatsProvider } from "./components/BattleContainers/BattleStatsContainer/BattleStatsContext";
 
 const BattleContent = () => {
   useTitle("TFT Battle Simulator - Builder");
@@ -90,9 +90,11 @@ const BattleContent = () => {
 const Battle = () => {
   return (
     <BattleProvider>
-      <HexBoardProvider>
-        <BattleContent />
-      </HexBoardProvider>
+      <BattleStatsProvider>
+        <HexBoardProvider>
+          <BattleContent />
+        </HexBoardProvider>  
+      </BattleStatsProvider>
     </BattleProvider>
   );
 };
