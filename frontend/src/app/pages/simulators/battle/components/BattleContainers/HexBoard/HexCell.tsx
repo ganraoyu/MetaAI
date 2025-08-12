@@ -83,11 +83,7 @@ export const HexCell: React.FC<HexCellProps> = ({ cellId }) => {
           addItemToChampion(cellId, data.name);
           console.log("Placed: ", data.name, "to", championHere.name);
           console.log(championHere);
-        } else {
-          alert(
-            "No champion in this cell. Place a champion first before adding items."
-          );
-        }
+        } 
       }
     } catch (error) {
       console.error("Error parsing drop data:", error);
@@ -215,7 +211,7 @@ export const HexCell: React.FC<HexCellProps> = ({ cellId }) => {
         {championItem?.map((item, index) => {
           const positions = itemPositionMapping(index, championItem.length);
           return (
-            <div key={item} className={`absolute ${positions} border border-yellow-300 z-[51]`} onMouseDown={() => removeItemFromChampion(cellId, item)}>
+            <div key={item} className={`absolute ${positions} border border-yellow-300 z-[51] hover:cursor-pointer`} onMouseDown={() => removeItemFromChampion(cellId, item)}>
               <img src={itemImage(item).image} className="w-4 h-4"/>
             </div>
           );

@@ -3,13 +3,13 @@ import { useTitle } from "../../../utilities/useTitle";
 import { UnitAugmentContainer } from "./components/UnitAugmentContainer/UnitAugmentContainer";
 import { BattleButtons } from "./components/BattleContainers/BattleButtons";
 import { BattleProvider } from "./BattleContext";
-import { TraitsContainer } from "./components/BattleContainers/TraitsContainer/TraitsContainer";
+import { BattleStatsContainer } from "./components/BattleContainers/BattleStatsContainer/BattleStatsContainer";
 import { HexBoard } from "./components/BattleContainers/HexBoard/HexBoard";
 import { LogsDisplay } from "./components/BattleContainers/LogDisplay";
 import { Filter } from "./components/BattleLogCards/_Filter";
 import { HexBoardProvider } from "./components/BattleContainers/HexBoard/HexBoardContext";
 import { ItemContainer } from "./components/ItemContainer/ItemContainer";
-import { BattleEndStats } from "./components/BattleContainers/BattleEndStats";
+import { BattleEndStats } from "./components/BattleContainers/BattleStatsContainer/BattleEndStats";
 
 const BattleContent = () => {
   useTitle("TFT Battle Simulator - Builder");
@@ -37,7 +37,7 @@ const BattleContent = () => {
         {/* Main content section */}
         <div className="flex flex-row items-start justify-between h-[35rem] w-[70rem] mx-auto p-4 bg-hexCellBackground rounded-t-2xl">
           {/* Left side - Traits */}
-          <TraitsContainer />
+          <BattleStatsContainer />
 
           {/* Center - Hex Board */}
           <div>

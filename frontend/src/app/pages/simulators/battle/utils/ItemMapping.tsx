@@ -60,7 +60,7 @@ export const itemMap: ItemMap = {
         image: '../assets/items/combined/HandOfJustice.png'
     },
     'Guardbreaker': {
-        image: '../assets/items/combined/Guardbreaker.png'
+        image: '../assets/items/combined/GuardBreaker.png'
     },
     'Nashor\'s Tooth': {
         image: '../assets/items/combined/NashorsTooth.png'
@@ -71,7 +71,7 @@ export const itemMap: ItemMap = {
     'Protector\'s Vow': {
         image: '../assets/items/combined/ProtectorsVow.png'
     },
-    'Red BUff': {
+    'Red Bff': {
         image: '../assets/items/combined/RedBuff.png'
     },
     'Gargoyle Stoneplate': {
@@ -86,8 +86,8 @@ export const itemMap: ItemMap = {
     'Adaptive Helm': {
         image: '../assets/items/combined/AdaptiveHelm.png'
     },
-    'Evenshround': {
-        image: '../assets/items/combined/Evenshround.png'
+    'Evenshroud': {
+        image: '../assets/items/combined/Evenshroud.png'
     },
     'Redemption': {
         image: '../assets/items/combined/Redemption.png'
@@ -103,5 +103,14 @@ export const itemMap: ItemMap = {
     },
     'Spear of Shojin': {
         image: '../assets/items/combined/SpearOfShojin.png'
+    },
+    'Bloodthrister': {
+      image: '../assets/items/combined/Bloodthrister.png'
+    },
+    'Morellonomicon': {
+      image: '../assets/items/combined/Morellonomicon.png'
+    },
+    'Edge of Night': {
+      image: '../assets/items/combined/EdgeOfNight.png'
     }
 };

@@ -179,8 +179,8 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
       const champion = cell?.champion;
       const itemList = champion?.items;
 
-      const newItemList = itemList?.filter((item: any) => item.name === itemName);
-
+      const newItemList = itemList?.filter((item: any) => item !== itemName); 
+      console.log(newItemList, 'newItemList')
       return {
         ...prev,
         [cellId]: {
