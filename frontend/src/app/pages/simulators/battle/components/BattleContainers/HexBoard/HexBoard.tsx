@@ -32,7 +32,6 @@ export const HexBoard = () => {
 
       {/* Player Board */}
       <div className="flex flex-col items-center">
-        <BattleEndStats />
         {[...Array(4)].map((_, i) => {
           const row = i + 4;
           const isEvenRow = row % 2 === 0;
