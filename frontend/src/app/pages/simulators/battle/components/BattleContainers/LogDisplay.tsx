@@ -12,7 +12,7 @@ export interface LogsDisplayProps {
   toggleAbility: boolean;
   toggleHeal: boolean;
   toggleItem: boolean;
-  setToggleMovement:React.Dispatch<React.SetStateAction<boolean>>;
+  setToggleMovement: React.Dispatch<React.SetStateAction<boolean>>;
   setToggleAttack: React.Dispatch<React.SetStateAction<boolean>>;
   setToggleAbility: React.Dispatch<React.SetStateAction<boolean>>;
   setToggleHeal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -40,9 +40,12 @@ export const LogsDisplay = ({
       {/* Battle Logs */}
       <div>
         {loading ? (
-          <p>Loading battle data...</p>
+          <div className="flex flex-col items-center mt-[11rem]">
+            <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+            <p className="mt-2 text-white text-sm">Loading battle data...</p>
+          </div>
         ) : error ? (
-          <div>
+          <div className="">
             <p>{error}</p>
             <button onClick={fetchBattleHistory}>Try Again</button>
           </div>
@@ -56,12 +59,9 @@ export const LogsDisplay = ({
                   {battleHistory.battleLogs.map((log: any, index: number) => (
                     <li key={index} className="mb-3 animate-fadeIn">
                       {/* Render log items based on type */}
-                      {log.type === 'movement' && toggleMovement &&  (
+                      {log.type === "movement" && toggleMovement && (
                         <div className="mb-2">
-                          <Movement
-                            log={log}
-                            index={index}
-                          />
+                          <Movement log={log} index={index} />
                         </div>
                       )}
                       {log.type === "attack" && toggleAttack && (

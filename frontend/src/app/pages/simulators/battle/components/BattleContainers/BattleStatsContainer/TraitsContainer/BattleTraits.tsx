@@ -1,4 +1,4 @@
-import { useHexBoardContext } from "../HexBoard/HexBoardContext";
+import { useHexBoardContext } from "../../HexBoard/HexBoardContext";
 import { TraitsCard } from "./TraitsCard";
 
 export const BattleTraits = () => {

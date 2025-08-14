@@ -1,4 +1,4 @@
-import { BattleEndStats } from "../BattleStatsContainer/BattleEndStats";
+import { BattleEndStats } from "../BattleStatsContainer/BattleEndContainer/BattleEndStats";
 import { HexCell } from "./HexCell";
 
 const NUM_ROWS = 8;
