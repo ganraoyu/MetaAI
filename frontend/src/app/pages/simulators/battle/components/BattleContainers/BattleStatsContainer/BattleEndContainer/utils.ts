@@ -1,17 +1,18 @@
 export const getTypeColor = (type: string): string => {
   switch (type) {
     case "totalChampionTrueDamage":
-      return "#ffffff"; // white
+      return "rgba(255, 255, 255, 0.7)"; // white with 70% opacity
     case "totalChampionMagicDamage":
-      return "#3b82f6"; // blue
+      return "rgba(59, 130, 246, 0.7)"; // blue
     case "totalChampionDamage":
-      return "#ef4444"; // red (physical)
+      return "rgba(239, 68, 68, 0.7)"; // red (physical)
     case "totalChampionAbilityDamage":
-      return "#3b82f6"; // blue (ability damage)
+      return "rgba(59, 130, 246, 0.7)"; // blue (ability damage)
     default:
-      return "#9ca3af"; // gray fallback
+      return "rgba(156, 163, 175, 0.7)"; // gray fallback
   }
 };
+
 
 export const getDamagePercentages = (damage: number, totalDamage: number): number => {
   return totalDamage === 0 ? 0 : (damage / totalDamage) * 100;

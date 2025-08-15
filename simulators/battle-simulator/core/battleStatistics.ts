@@ -573,7 +573,7 @@ const calculateAllBattleStatistics = async (
   res: Response
 ): Promise<{
   playerChampionStatistics: PlayerStatistics[];
-  opponentChamionStatistics: OpponentStatistics[];
+  opponentChampionStatistics: OpponentStatistics[];
 }> => {
   try {
     // Use internal functions to avoid multiple HTTP responses
@@ -600,7 +600,7 @@ const calculateAllBattleStatistics = async (
       },
     ];
 
-    const opponentChamionStatistics: OpponentStatistics[] = [
+    const opponentChampionStatistics: OpponentStatistics[] = [
       {
         opponentWinRate,
         opponentStatistics: allOpponentDamage.map((champion, index) => ({
@@ -618,7 +618,7 @@ const calculateAllBattleStatistics = async (
       },
     ];
 
-    return { playerChampionStatistics, opponentChamionStatistics };
+    return { playerChampionStatistics, opponentChampionStatistics };
   } catch (error) {
     console.log("Error", error);
     res.status(500).json({
