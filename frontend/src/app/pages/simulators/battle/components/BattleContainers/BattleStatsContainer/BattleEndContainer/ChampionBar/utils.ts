@@ -1,4 +1,4 @@
-export const getTypeColor = (type: string): string => {
+export const getDamageTypeColor = (type: string): string => {
   switch (type) {
     case "totalChampionTrueDamage":
       return "rgba(255, 255, 255, 0.7)"; // white with 70% opacity
@@ -30,9 +30,10 @@ export const buildDamageGradient = (
   const physicalEnd = abilityEnd + physicalPercent;
 
   return `linear-gradient(to right,
-    ${getTypeColor("totalChampionTrueDamage")} 0% ${trueEnd}%,
-    ${getTypeColor("totalChampionMagicDamage")} ${trueEnd}% ${magicEnd}%,
-    ${getTypeColor("totalChampionAbilityDamage")} ${magicEnd}% ${abilityEnd}%,
-    ${getTypeColor("totalChampionDamage")} ${abilityEnd}% ${physicalEnd}%
+    ${getDamageTypeColor("totalChampionTrueDamage")} 0% ${trueEnd}%,
+    ${getDamageTypeColor("totalChampionMagicDamage")} ${trueEnd}% ${magicEnd}%,
+    ${getDamageTypeColor("totalChampionAbilityDamage")} ${magicEnd}% ${abilityEnd}%,
+    ${getDamageTypeColor("totalChampionDamage")} ${abilityEnd}% ${physicalEnd}%
   )`;
 };
+
