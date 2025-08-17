@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useBattleContext } from "../../../../BattleContext";
 import { useTFTSetContext } from "../../../../../../../utilities/TFTSetContext";
 import { ChampionDamageBar } from "./ChampionBar/ChampionDamagebar";
+import { ChampionHealShieldBar } from "./ChampionBar/ChampionHealShieldBar";
 
 export const BattleEndStats = () => {
   const { set } = useTFTSetContext();
@@ -41,12 +42,10 @@ export const BattleEndStats = () => {
                       <ChampionDamageBar
                         key={j}
                         champion={champion}
-                        set={set}
                       />
-                      <ChampionDamageBar
+                      <ChampionHealShieldBar 
                         key={j}
                         champion={champion}
-                        set={set}
                       />
                     </div>
                   ))}

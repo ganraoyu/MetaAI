@@ -20,20 +20,58 @@ export const getDamagePercentages = (damage: number, totalDamage: number): numbe
 
 export const buildDamageGradient = (
   truePercent: number,
+  physicalPercent: number,
   magicPercent: number,
-  abilityPercent: number,
-  physicalPercent: number
+  abilityPercent: number
 ): string => {
   const trueEnd = truePercent;
-  const magicEnd = trueEnd + magicPercent;
+  const physicalEnd = trueEnd + physicalPercent;
+  const magicEnd = physicalEnd + magicPercent;
   const abilityEnd = magicEnd + abilityPercent;
-  const physicalEnd = abilityEnd + physicalPercent;
 
   return `linear-gradient(to right,
     ${getDamageTypeColor("totalChampionTrueDamage")} 0% ${trueEnd}%,
-    ${getDamageTypeColor("totalChampionMagicDamage")} ${trueEnd}% ${magicEnd}%,
-    ${getDamageTypeColor("totalChampionAbilityDamage")} ${magicEnd}% ${abilityEnd}%,
-    ${getDamageTypeColor("totalChampionDamage")} ${abilityEnd}% ${physicalEnd}%
+    ${getDamageTypeColor("totalChampionDamage")} ${trueEnd}% ${physicalEnd}%,
+    ${getDamageTypeColor("totalChampionMagicDamage")} ${physicalEnd}% ${magicEnd}%,
+    ${getDamageTypeColor("totalChampionAbilityDamage")} ${magicEnd}% ${abilityEnd}%
   )`;
 };
 
+export const getHealShieldPercentages = (
+  heal: number,
+  shield: number,
+  total: number
+): { healPercent: number; shieldPercent: number } => {
+  if (total === 0) {
+    return { healPercent: 0, shieldPercent: 0 };
+  }
+
+  return {
+    healPercent: (heal / total) * 100,
+    shieldPercent: (shield / total) * 100,
+  };
+};
+
+export const getHealShieldTypeColor = (type: string): string => {
+  switch (type) {
+    case "getHealTypeColor":
+      return "rgba(34, 197, 94, 0.7)"; // green (70% opacity)
+    case "shield":
+      return "rgba(156, 163, 175, 0.7)"; // gray (70% opacity)
+    default:
+      return "rgba(107, 114, 128, 0.7)"; // fallback gray
+  }
+};
+
+export const buildHealShieldGradient = (
+  healPercent: number,
+  shieldPercent: number
+): string => {
+  const healEnd = healPercent;
+  const shieldEnd = healEnd + shieldPercent;
+
+  return `linear-gradient(to right,
+    ${getHealShieldTypeColor("heal")} 0% ${healEnd}%,
+    ${getHealShieldTypeColor("shield")} ${healEnd}% ${shieldEnd}%
+  )`;
+};

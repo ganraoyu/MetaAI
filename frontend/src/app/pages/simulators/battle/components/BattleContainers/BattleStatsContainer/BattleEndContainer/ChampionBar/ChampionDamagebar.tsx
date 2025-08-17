@@ -2,10 +2,9 @@ import { buildDamageGradient, getDamagePercentages } from "./utils";
 
 interface ChampionProps {
   champion: any;
-  set: string;
 }
 
-export const ChampionDamageBar = ({ champion, set }: ChampionProps) => {
+export const ChampionDamageBar = ({ champion }: ChampionProps) => {
   const {
     totalChampionDamage,
     totalChampionMagicDamage,
@@ -29,9 +28,9 @@ export const ChampionDamageBar = ({ champion, set }: ChampionProps) => {
 
   const gradient = buildDamageGradient(
     truePercent,
+    physicalPercent,
     magicPercent,
     abilityPercent,
-    physicalPercent
   );
 
   return (
