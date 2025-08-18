@@ -5,3 +5,4 @@ export interface BattleStatsContainerType {
   toggleBattleEndStats: boolean;
   setToggleBattleEndStats: React.Dispatch<React.SetStateAction<boolean>>;
 };
+

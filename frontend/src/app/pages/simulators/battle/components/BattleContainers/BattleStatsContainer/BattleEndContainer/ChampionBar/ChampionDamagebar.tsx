@@ -1,8 +1,6 @@
 import { buildDamageGradient, getDamagePercentages } from "./utils";
-
-interface ChampionProps {
-  champion: any;
-}
+import { getDamageTotals, getTotalBarWidth  } from "./calculateChampionTotals";
+import { ChampionProps } from "./types";
 
 export const ChampionDamageBar = ({ champion }: ChampionProps) => {
   const {
@@ -10,7 +8,7 @@ export const ChampionDamageBar = ({ champion }: ChampionProps) => {
     totalChampionMagicDamage,
     totalChampionTrueDamage,
     totalChampionAbilityDamage,
-  } = champion;
+  } = getDamageTotals(champion);
 
   const total =
     totalChampionDamage +
@@ -34,9 +32,9 @@ export const ChampionDamageBar = ({ champion }: ChampionProps) => {
   );
 
   return (
-    <div className="mb-2">
+    <div className="mb-1">
       <div className="ml-2">
-        <p className="text-[0.8rem]">{total}</p>
+        <p className="text-[0.8rem] text-red-400">{total}</p>
 
         {/* Damage Bar Outer */}
         <div className="relative w-32 h-2 border border-[#41384b] bg-[#2a2431]">

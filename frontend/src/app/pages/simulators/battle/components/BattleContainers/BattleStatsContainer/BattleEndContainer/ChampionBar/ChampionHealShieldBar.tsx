@@ -19,8 +19,6 @@ export const ChampionHealShieldBar = ({ champion }: ChampionProps) => {
   return (
     <div className="mb-2">
       <div className="ml-2">
-        <p className="text-[0.8rem]">{total}</p>
-
         {/* Damage Bar Outer */}
         <div className="relative w-32 h-2 border border-[#41384b] bg-[#2a2431]">
           {/* Top-left highlight */}
