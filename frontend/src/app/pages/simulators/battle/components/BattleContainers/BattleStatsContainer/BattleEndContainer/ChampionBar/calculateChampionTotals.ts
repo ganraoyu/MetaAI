@@ -6,6 +6,7 @@ export const getDamageTotals = (champion: Champion) => {
     totalChampionTrueDamage: champion.totalChampionTrueDamage,
     totalChampionMagicDamage: champion.totalChampionMagicDamage,
     totalChampionAbilityDamage: champion.totalChampionAbilityDamage,
+    allChampionDamage: champion.allChampionDamage
   };
 };
 

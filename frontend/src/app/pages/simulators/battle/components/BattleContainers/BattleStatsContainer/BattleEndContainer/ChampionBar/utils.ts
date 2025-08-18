@@ -13,8 +13,10 @@ export const getDamageTypeColor = (type: string): string => {
   }
 };
 
-
-export const getDamagePercentages = (damage: number, totalDamage: number): number => {
+export const getDamagePercentages = (
+  damage: number,
+  totalDamage: number
+): number => {
   return totalDamage === 0 ? 0 : (damage / totalDamage) * 100;
 };
 
@@ -32,8 +34,12 @@ export const buildDamageGradient = (
   return `linear-gradient(to right,
     ${getDamageTypeColor("totalChampionTrueDamage")} 0% ${trueEnd}%,
     ${getDamageTypeColor("totalChampionDamage")} ${trueEnd}% ${physicalEnd}%,
-    ${getDamageTypeColor("totalChampionMagicDamage")} ${physicalEnd}% ${magicEnd}%,
-    ${getDamageTypeColor("totalChampionAbilityDamage")} ${magicEnd}% ${abilityEnd}%
+    ${getDamageTypeColor(
+      "totalChampionMagicDamage"
+    )} ${physicalEnd}% ${magicEnd}%,
+    ${getDamageTypeColor(
+      "totalChampionAbilityDamage"
+    )} ${magicEnd}% ${abilityEnd}%
   )`;
 };
 
@@ -54,9 +60,9 @@ export const getHealShieldPercentages = (
 
 export const getHealShieldTypeColor = (type: string): string => {
   switch (type) {
-    case "getHealTypeColor":
+    case "totalChampionHealing":
       return "rgba(34, 197, 94, 0.7)"; // green (70% opacity)
-    case "shield":
+    case "totalChampionShield":
       return "rgba(156, 163, 175, 0.7)"; // gray (70% opacity)
     default:
       return "rgba(107, 114, 128, 0.7)"; // fallback gray
@@ -71,7 +77,7 @@ export const buildHealShieldGradient = (
   const shieldEnd = healEnd + shieldPercent;
 
   return `linear-gradient(to right,
-    ${getHealShieldTypeColor("heal")} 0% ${healEnd}%,
-    ${getHealShieldTypeColor("shield")} ${healEnd}% ${shieldEnd}%
+    ${getHealShieldTypeColor("totalChampionHealing")} 0% ${healEnd}%,
+    ${getHealShieldTypeColor("totalChampionShield")} ${healEnd}% ${shieldEnd}%
   )`;
 };
