@@ -3,6 +3,7 @@ import { useBattleContext } from "../../../../BattleContext";
 import { useTFTSetContext } from "../../../../../../../utilities/TFTSetContext";
 import { ChampionDamageBar } from "./ChampionBar/ChampionDamagebar";
 import { ChampionHealShieldBar } from "./ChampionBar/ChampionHealShieldBar";
+import { ChampionStatsNumbers } from "./ChampionBar/ChampionStatsNumbers";
 
 export const BattleEndStats = () => {
   const { set } = useTFTSetContext();
@@ -27,7 +28,17 @@ export const BattleEndStats = () => {
             ? battleEndStats.opponentChampionStatistics.map((block, i) => (
                 <div key={i}>
                   {block.opponentStatistics.map((champion, j) => (
-                    <ChampionDamageBar key={j} champion={champion} set={set} />
+                    <div>
+                      <ChampionStatsNumbers champion={champion}/>
+                      <ChampionDamageBar
+                        key={j}
+                        champion={champion}
+                      />
+                      <ChampionHealShieldBar 
+                        key={j}
+                        champion={champion}
+                      />
+                    </div>
                   ))}
                 </div>
               ))
@@ -39,6 +50,7 @@ export const BattleEndStats = () => {
                 <div key={i}>
                   {block.playerStatistics.map((champion, j) => (
                     <div>
+                      <ChampionStatsNumbers champion={champion}/>
                       <ChampionDamageBar
                         key={j}
                         champion={champion}

@@ -1,22 +1,35 @@
-import { getTotalBarWidth } from "./calculateChampionTotals";
+import { getHealTotals, getTotalBarWidth } from "./calculateChampionTotals";
 import { ChampionProps } from "./types";
 import { buildHealShieldGradient, getHealShieldPercentages } from "./utils";
 
-export const ChampionHealShieldBar = ({ champion }: ChampionProps) => {
-  const healing = champion.totalChampionHealing || 0;
-  const shield = champion.totalChampionShield || 0;
-  const total = healing + shield;
+/**
+ * ChampionHealShieldBar
+ * 
+ * Displays a champion's total healing and shield as a proportional bar.
+ * The bar visually represents the breakdown between healing and shield values.
+ *
+ * @param {ChampionProps} champion - The champion object containing stats.
+ * @param {number} champion.totalChampionShield - (Optional) The total shield amount the champion has.
+ * @param {...any} champion.* - Other properties used by getHealTotals or getTotalBarWidth.
+ * 
+ * @returns {JSX.Element} A React component showing the healing and shield bar.
+*/
 
-  const { healPercent, shieldPercent } = getHealShieldPercentages(healing, shield, total);
+export const ChampionHealShieldBar = ({ champion }: ChampionProps) => {
+  const totalChampionHealing = getHealTotals(champion);
+  const shield = champion.totalChampionShield || 0;
+  const total = totalChampionHealing + shield;
+
+  const { healPercent, shieldPercent } = getHealShieldPercentages(totalChampionHealing, shield, total);
 
   const gradient = buildHealShieldGradient(healPercent, shieldPercent);
 
   const barWidth = getTotalBarWidth(champion)
-  const widthPercentage = barWidth ? ((healing + shield) / barWidth) * 100 : 0;
+  const widthPercentage = barWidth ? ((totalChampionHealing + shield) / barWidth) * 100 : 0;
   return (
     <div className="mb-2">
       <div className="ml-2">
-        <div className="relative w-32 h-2 border border-[#41384b] bg-[#2a2431]">
+        <div className="relative w-44 h-2 border border-[#41384b] bg-[#2a2431]">
           <div className="absolute top-0 left-0 w-full h-full border-t-[1px] border-l-[1px] border-white opacity-20 pointer-events-none"></div>
           <div
             style={{
