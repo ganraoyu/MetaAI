@@ -37,16 +37,17 @@ const BattleContent = () => {
         {/* Main content section */}
         <div className="flex flex-row items-start justify-between h-[35rem] w-[70rem] mx-auto p-4 bg-hexCellBackground rounded-t-2xl">
           {/* Left side - Traits */}
-          <BattleStatsContainer />
+          <div className="w-56 flex-shrink-0">
+            <BattleStatsContainer />
+          </div>
 
           {/* Center - Hex Board */}
-          <div>
+          <div className="flex-1 flex justify-center">
             <HexBoard />
-            
           </div>
 
           {/* Right side - Battle Logs */}
-          <div className="w-[18rem]">
+          <div className="w-[18rem] flex-shrink-0">
             <Filter
               toggleMovement={toggleMovement}
               toggleAttack={toggleAttack}

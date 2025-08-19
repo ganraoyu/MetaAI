@@ -24,12 +24,15 @@ export const ChampionHealShieldBar = ({ champion }: ChampionProps) => {
 
   const gradient = buildHealShieldGradient(healPercent, shieldPercent);
 
+  // Get the maximum bar width (for proportional sizing)
   const barWidth = getTotalBarWidth(champion)
+
+  // Calculate the CSS width as a percentage of the maximum bar width
   const widthPercentage = barWidth ? ((totalChampionHealing + shield) / barWidth) * 100 : 0;
   return (
     <div className="mb-2">
       <div className="ml-2">
-        <div className="relative w-44 h-2 border border-[#41384b] bg-[#2a2431]">
+        <div className="relative w-[9rem] h-2 border border-[#41384b] bg-[#2a2431]">
           <div className="absolute top-0 left-0 w-full h-full border-t-[1px] border-l-[1px] border-white opacity-20 pointer-events-none"></div>
           <div
             style={{

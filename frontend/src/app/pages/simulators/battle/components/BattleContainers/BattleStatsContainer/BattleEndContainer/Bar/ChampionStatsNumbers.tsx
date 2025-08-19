@@ -17,10 +17,10 @@ export const ChampionStatsNumbers = ({ champion }: ChampionProps) => {
   const totalChampionHealing = getHealTotals(champion) ?? 0;    
 
   return (
-    <div className="ml-2">
+    <div className="pl-2">
       <div className="flex flex-row gap-1 text-[0.8rem]">
         <p className="text-red-400">{allChampionDamage}</p>
-        <span className="text-[0.8rem] text-gray-400">/</span>
+        <span className="text-gray-400">/</span>
         <p className="text-green-400">{totalChampionHealing}</p>
       </div>
     </div>

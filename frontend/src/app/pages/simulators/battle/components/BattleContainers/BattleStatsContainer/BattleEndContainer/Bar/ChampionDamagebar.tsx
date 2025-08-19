@@ -49,7 +49,7 @@ export const ChampionDamageBar = ({ champion }: ChampionProps): JSX.Element => {
     <div className="mb-1 ml-2">
 
       {/* Damage Bar Outer */}
-      <div className="relative w-44 h-2 border border-[#41384b] bg-[#2a2431]">
+      <div className="relative w-[9rem] h-2 border border-[#41384b] bg-[#2a2431]">
         {/* Top-left highlight */}
         <div className="absolute top-0 left-0 w-full h-full border-t-[1px] border-l-[1px] border-white opacity-20 pointer-events-none"></div>
         {/* Inner Gradient Bar */}

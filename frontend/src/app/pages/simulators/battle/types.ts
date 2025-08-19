@@ -13,6 +13,7 @@ export interface BattleData {
 
 interface ChampionStats {
   name: string;
+  starLevel: number;
   items: string[];
   hp: number;
   isAlive: boolean;
