@@ -2,6 +2,15 @@ import { useTFTSetContext } from "../../../../../../../../utilities/TFTSetContex
 import { ChampionProps } from "./types";
 import { Star } from "../../../../../utils/Star";
 
+/**
+ * ChampionImage
+ *
+ * Displays a champion's image with stars in it.
+ *
+ * @param {ChampionProps} champion - The champion object containing stats and name.
+ * @returns {JSX.Element} A React component showing the champion's image and stars.
+*/
+
 export const ChampionImage = ({ champion }: ChampionProps): JSX.Element => {
   const { set } = useTFTSetContext();
 

@@ -1,47 +1,11 @@
-import { useEffect, useState, RefObject } from 'react';
-import { useTFTSetContext } from '../../../../../utilities/TFTSetContext';
+import { useEffect, useState, RefObject } from "react";
+import { useTFTSetContext } from "../../../../../utilities/TFTSetContext";
 
-import { combinedItems } from '../../data/items/item-data.tsx';
-import { ItemHover } from './SlotHover/ItemSlotHover';
-import { abilityData } from '../../data/SET13/ability-data.ts';
-import { AbilitySlotHover } from './SlotHover/AbilitySlotHover';
-
-// interface ItemData {
-//   name: string;
-//   description: string;
-//   image: string;
-//   additionalAttackSpeed?: number;
-//   additionalAbilityPower?: number;
-//   additionalAttackDamage?: number;
-//   additionalHealth?: number;
-//   additionalPercentageHealth?: number;
-//   additionalArmor?: number;
-//   additionalMagicResist?: number;
-//   additionalStartingMana?: number;
-//   additionalManaPerAttack?: number;
-//   additionalCritChance?: number;
-//   additionalDamageAmp?: number;
-//   attackSpeedStacking?: boolean;
-//   additionalAttackSpeedPerStack?: number;
-//   abilityPowerStacking?: boolean;
-//   abilityPowerStackInterval?: number;
-//   additionalAbilityPowerPerStack?: number;
-//   abilityCritStrike?: boolean;
-//   shield?: boolean;
-//   shieldAmount?: number;
-//   shieldDuration?: number;
-//   omnivamp?: number;
-//   heal?: boolean;
-//   healAmount?: number;
-//   reduction?: boolean;
-//   reductionAmount?: number;
-//   externalMagicDamage?: number;
-//   sunder?: boolean;
-//   sunderRadius?: number;
-//   shred?: boolean;
-//   burn?: boolean;
-//   wound?: boolean;
-// }
+import { combinedItems } from "../../data/items/item-data.tsx";
+import { ItemHover } from "./SlotHover/ItemSlotHover";
+import { abilityData } from "../../data/SET13/ability-data.ts";
+import { AbilitySlotHover } from "./SlotHover/AbilitySlotHover";
+import { Star } from "../../utils/Star.tsx";
 
 interface ChampionCardHoverProps {
   champion: string;
@@ -98,12 +62,12 @@ const ChampionCardHover = ({
   reduction,
   range,
   starLevel,
-  parentRef
+  parentRef,
 }: ChampionCardHoverProps) => {
-  console.log('🔍 TRAIT DEBUG:');
-  console.log('trait1:', trait1, 'type:', typeof trait1);
-  console.log('trait2:', trait2, 'type:', typeof trait2);
-  console.log('trait3:', trait3, 'type:', typeof trait3);
+  console.log("🔍 TRAIT DEBUG:");
+  console.log("trait1:", trait1, "type:", typeof trait1);
+  console.log("trait2:", trait2, "type:", typeof trait2);
+  console.log("trait3:", trait3, "type:", typeof trait3);
   const { set } = useTFTSetContext();
 
   const [toggleChampionItemHover, setToggleChampionItemHover] = useState(true);
@@ -114,80 +78,84 @@ const ChampionCardHover = ({
 
   const [position, setPosition] = useState({ top: 0, left: 0 });
 
-  const item1Data = combinedItems.find(item => item.name === item1);
-  const item2Data = combinedItems.find(item => item.name === item2);
-  const item3Data = combinedItems.find(item => item.name === item3); 
+  const item1Data = combinedItems.find((item) => item.name === item1);
+  const item2Data = combinedItems.find((item) => item.name === item2);
+  const item3Data = combinedItems.find((item) => item.name === item3);
 
   useEffect(() => {
     if (parentRef.current) {
       const updatePosition = () => {
         const rect = parentRef.current?.getBoundingClientRect();
         if (!rect) return;
-        
+
         const viewportWidth = window.innerWidth;
 
         let left = rect.right + 10;
-        
+
         if (left + 180 > viewportWidth) {
           left = rect.left - 180;
         }
-        
+
         setPosition({
           top: rect.top,
-          left: Math.max(10, left)
+          left: Math.max(10, left),
         });
       };
-      
+
       // Initial position
       updatePosition();
-      
+
       // Update position on scroll
-      window.addEventListener('scroll', updatePosition);
-      window.addEventListener('resize', updatePosition);
-      
+      window.addEventListener("scroll", updatePosition);
+      window.addEventListener("resize", updatePosition);
+
       return () => {
-        window.removeEventListener('scroll', updatePosition);
-        window.removeEventListener('resize', updatePosition);
+        window.removeEventListener("scroll", updatePosition);
+        window.removeEventListener("resize", updatePosition);
       };
     }
   }, [parentRef]);
 
   return (
-    <div 
-      className='fixed bg-[#1e1924] text-white rounded-md w-44 h-78 z-50 origin-top-left animate-grow-in shadow-2xl shadow-gray-900'
-      style={{ 
-        top: `${position.top}px`, 
-        left: `${position.left}px` 
+    <div
+      className="fixed bg-[#1e1924] text-white rounded-md w-44 h-78 z-50 origin-top-left animate-grow-in shadow-2xl shadow-gray-900"
+      style={{
+        top: `${position.top}px`,
+        left: `${position.left}px`,
       }}
     >
-      <div className={`relative border rounded-t-md ${
-        cost === 1 ? 'border-gray-400' : 
-        cost === 2 ? 'border-green-500' : 
-        cost === 3 ? 'border-blue-500' : 
-        cost === 4 ? 'border-purple-700' : 
-        cost === 5 ? 'border-yellow-500' : 
-        cost === 6 ? 'border-orange-500' :
-        'border-red-500'
-      }`}>
-        <img 
-          src={`../assets/${set}/champions/splash/${champion}.png`} 
+      <div
+        className={`relative border rounded-t-md ${
+          cost === 1
+            ? "border-gray-400"
+            : cost === 2
+            ? "border-green-500"
+            : cost === 3
+            ? "border-blue-500"
+            : cost === 4
+            ? "border-purple-700"
+            : cost === 5
+            ? "border-yellow-500"
+            : cost === 6
+            ? "border-orange-500"
+            : "border-red-500"
+        }`}
+      >
+        <img
+          src={`../assets/${set}/champions/splash/${champion}.png`}
           alt={champion}
           className="rounded-t-md w-full h-24 object-cover"
         />
         <div className="absolute top-0 left-0 w-full h-24 rounded-t-md bg-gradient-to-r from-black/60 to-transparent pointer-events-none" />
         {/* Star level */}
         <div className="absolute top-2 left-2 flex space-x-1">
-          {[1, 2, 3].map((star) => (
-            <svg 
-              key={star}
-              className={`w-3.5 h-3.5 ${star <= (starLevel || 0) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-600 fill-gray-600'}`}
-              xmlns="http://www.w3.org/2000/svg" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="1.5">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-            </svg>
+          {Array.from({ length: starLevel || 0 }).map((_, index) => (
+            <Star
+              key={index}
+              textColor={starLevel && starLevel >= 3 ? "#FFFF00" : "#B0B0B0"}
+              fillColor={starLevel && starLevel >= 3 ? "#FFFF00" : "#B0B0B0"}
+              className="w-3.5 h-3.5 drop-shadow-[0_0_2px_gray]"
+            />
           ))}
         </div>
 
@@ -195,19 +163,31 @@ const ChampionCardHover = ({
         <div className="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-black/80 to-transparent">
           {trait1 && (
             <div className="flex items-center gap-1 mb-1">
-              <img src={`../assets/${set}/traits/${trait1}.png`} className="h-4 w-4" alt={trait1} />
+              <img
+                src={`../assets/${set}/traits/${trait1}.png`}
+                className="h-4 w-4"
+                alt={trait1}
+              />
               <p className="text-white text-[0.7rem] text-outline">{trait1}</p>
             </div>
           )}
           {trait2 && (
             <div className="flex items-center gap-1 mb-1">
-              <img src={`../assets/${set}/traits/${trait2}.png`} className="h-4 w-4" alt={trait2} />
+              <img
+                src={`../assets/${set}/traits/${trait2}.png`}
+                className="h-4 w-4"
+                alt={trait2}
+              />
               <p className="text-white text-[0.7rem] text-outline">{trait2}</p>
             </div>
           )}
           {trait3 && (
             <div className="flex items-center gap-1">
-              <img src={`../assets/${set}/traits/${trait3}.png`} className="h-4 w-4" alt={trait3} />
+              <img
+                src={`../assets/${set}/traits/${trait3}.png`}
+                className="h-4 w-4"
+                alt={trait3}
+              />
               <p className="text-white text-[0.7rem] text-outline">{trait3}</p>
             </div>
           )}
@@ -215,23 +195,30 @@ const ChampionCardHover = ({
       </div>
 
       {/* Cost */}
-      <div className={`absolute top-[5.2rem] right-0 rounded-tl-md px-1.5 text-white font-bold flex items-center gap-1 bg-gradient-to-r ${
-        cost === 1 ? 'from-gray-600 to-gray-400' :
-        cost === 2 ? 'from-green-700 to-green-500' :
-        cost === 3 ? 'from-blue-700 to-blue-500' :
-        cost === 4 ? 'from-purple-900 to-purple-400' :
-        cost === 5 ? 'from-yellow-600 to-yellow-400' :
-        'from-red-700 to-red-500'
-      }`}>
-        <img src="../assets/icons/coin.png" className="h-2 w-2"/>
+      <div
+        className={`absolute top-[5.2rem] right-0 rounded-tl-md px-1.5 text-white font-bold flex items-center gap-1 bg-gradient-to-r ${
+          cost === 1
+            ? "from-gray-600 to-gray-400"
+            : cost === 2
+            ? "from-green-700 to-green-500"
+            : cost === 3
+            ? "from-blue-700 to-blue-500"
+            : cost === 4
+            ? "from-purple-900 to-purple-400"
+            : cost === 5
+            ? "from-yellow-600 to-yellow-400"
+            : "from-red-700 to-red-500"
+        }`}
+      >
+        <img src="../assets/icons/coin.png" className="h-2 w-2" />
         <p className="text-xs text-outline">{cost || 1}</p>
       </div>
 
       {/* Champion Health and Mana */}
       <div className="px-2 pt-2">
         <div className="relative h-3 mt-1 bg-gray-700 rounded">
-          <div 
-            className="absolute top-0 left-0 h-3 bg-green-600 rounded" 
+          <div
+            className="absolute top-0 left-0 h-3 bg-green-600 rounded"
             style={{ width: `${(currentHp / maxHp) * 100}%` }}
           ></div>
           <div className="absolute inset-0 flex items-center justify-center text-xs text-white font-medium text-outline">
@@ -246,8 +233,8 @@ const ChampionCardHover = ({
           </div>
         )}
         <div className="relative h-3 bg-gray-700 mt-1 rounded">
-          <div 
-            className="absolute top-0 left-0 h-3 bg-blue-600 rounded" 
+          <div
+            className="absolute top-0 left-0 h-3 bg-blue-600 rounded"
             style={{ width: `${(mana / maxMana) * 100}%` }}
           ></div>
           <div className="absolute inset-0 flex items-center justify-center text-xs text-white font-medium text-outline">
@@ -258,67 +245,89 @@ const ChampionCardHover = ({
 
       {/* Champion Ability/Items Slots */}
       <div className="flex justify-center gap-2 mt-3">
-        <div onMouseEnter={() => setAbilityHover(true)} onMouseLeave={() => setAbilityHover(false)}>
-        {champion ? (
-          <img 
-          // Use the abilityData to find the champion's ability image
-            src={abilityData.find(ability => ability.name === champion)?.image} 
-            alt={`${champion} ability`} 
-            className="h-8 w-8 border-2 border-gray-700" 
-          />
+        <div
+          onMouseEnter={() => setAbilityHover(true)}
+          onMouseLeave={() => setAbilityHover(false)}
+        >
+          {champion ? (
+            <img
+              // Use the abilityData to find the champion's ability image
+              src={
+                abilityData.find((ability) => ability.name === champion)?.image
+              }
+              alt={`${champion} ability`}
+              className="h-8 w-8 border-2 border-gray-700"
+            />
           ) : (
-            <div className='border-2 h-8 w-8 border-gray-700'></div>
-        )}
+            <div className="border-2 h-8 w-8 border-gray-700"></div>
+          )}
         </div>
-        <div onMouseEnter={() => setItem1Hover(true)} onMouseLeave={() => setItem1Hover(false)}>
+        <div
+          onMouseEnter={() => setItem1Hover(true)}
+          onMouseLeave={() => setItem1Hover(false)}
+        >
           {item1 ? (
             <img
-              src={combinedItems.find(item => item.name === item1)?.image}
+              src={combinedItems.find((item) => item.name === item1)?.image}
               alt={item1}
               className="h-8 w-8 border-2 border-gray-700"
             />
-          ) : <div className='border-2 h-8 w-8 border-gray-700'></div>}
+          ) : (
+            <div className="border-2 h-8 w-8 border-gray-700"></div>
+          )}
         </div>
-        <div onMouseEnter={() => setItem2Hover(true)} onMouseLeave={() => setItem2Hover(false)}>
+        <div
+          onMouseEnter={() => setItem2Hover(true)}
+          onMouseLeave={() => setItem2Hover(false)}
+        >
           {item2 ? (
             <img
-              src={combinedItems.find(item => item.name === item2)?.image}
+              src={combinedItems.find((item) => item.name === item2)?.image}
               alt={item2}
               className="h-8 w-8 border-2 border-gray-700"
             />
-          ) : <div className='border-2 h-8 w-8 border-gray-700'></div>}
+          ) : (
+            <div className="border-2 h-8 w-8 border-gray-700"></div>
+          )}
         </div>
-        <div onMouseEnter={() => setItem3Hover(true)} onMouseLeave={() => setItem3Hover(false)}>
+        <div
+          onMouseEnter={() => setItem3Hover(true)}
+          onMouseLeave={() => setItem3Hover(false)}
+        >
           {item3 ? (
             <img
-              src={combinedItems.find(item => item.name === item3)?.image}
+              src={combinedItems.find((item) => item.name === item3)?.image}
               alt={item3}
               className="h-8 w-8 border-2 border-gray-700"
             />
-          ) : <div className='border-2 h-8 w-8 border-gray-700'></div>}
+          ) : (
+            <div className="border-2 h-8 w-8 border-gray-700"></div>
+          )}
         </div>
       </div>
 
       {/* Item Hovers */}
       {abilityHover && champion && (
-        <AbilitySlotHover 
+        <AbilitySlotHover
           name={champion}
           ability={abilityData[champion]?.ability}
           description={abilityData[champion]?.description}
         />
       )}
       {item1Hover && item1 && (
-        <ItemHover 
-          name={item1 || ''}
-          description={item1Data?.description || ''}
+        <ItemHover
+          name={item1 || ""}
+          description={item1Data?.description || ""}
           components={item1Data?.components || []}
           componentsImages={item1Data?.componentsImages || []}
-          image={item1Data?.image || ''}
+          image={item1Data?.image || ""}
           additionalAttackSpeed={item1Data?.additionalAttackSpeed || 0}
           additionalAbilityPower={item1Data?.additionalAbilityPower || 0}
           additionalAttackDamage={item1Data?.additionalAttackDamage || 0}
           additionalHealth={item1Data?.additionalHealth || 0}
-          additionalPercentageHealth={item1Data?.additionalPercentageHealth || 0}
+          additionalPercentageHealth={
+            item1Data?.additionalPercentageHealth || 0
+          }
           additionalArmor={item1Data?.additionalArmor || 0}
           additionalMagicResist={item1Data?.additionalMagicResist || 0}
           additionalStartingMana={item1Data?.additionalStartingMana || 0}
@@ -326,10 +335,14 @@ const ChampionCardHover = ({
           additionalCritChance={item1Data?.additionalCritChance || 0}
           additionalDamageAmp={item1Data?.additionalDamageAmp || 0}
           attackSpeedStacking={item1Data?.attackSpeedStacking || false}
-          additionalAttackSpeedPerStack={item1Data?.additionalAttackSpeedPerStack || 0}
+          additionalAttackSpeedPerStack={
+            item1Data?.additionalAttackSpeedPerStack || 0
+          }
           abilityPowerStacking={item1Data?.abilityPowerStacking || false}
           abilityPowerStackInterval={item1Data?.abilityPowerStackInterval || 0}
-          additionalAbilityPowerPerStack={item1Data?.additionalAbilityPowerPerStack || 0}
+          additionalAbilityPowerPerStack={
+            item1Data?.additionalAbilityPowerPerStack || 0
+          }
           abilityCritStrike={item1Data?.abilityCritStrike || false}
           shield={item1Data?.shield || false}
           shieldAmount={item1Data?.shieldAmount || 0}
@@ -348,17 +361,19 @@ const ChampionCardHover = ({
         />
       )}
       {item2Hover && item2 && (
-        <ItemHover 
-          name={item2 || ''}
-          description={item2Data?.description || ''}
+        <ItemHover
+          name={item2 || ""}
+          description={item2Data?.description || ""}
           components={item2Data?.components || []}
           componentsImages={item2Data?.componentsImages || []}
-          image={item2Data?.image || ''}
+          image={item2Data?.image || ""}
           additionalAttackSpeed={item2Data?.additionalAttackSpeed || 0}
           additionalAbilityPower={item2Data?.additionalAbilityPower || 0}
           additionalAttackDamage={item2Data?.additionalAttackDamage || 0}
           additionalHealth={item2Data?.additionalHealth || 0}
-          additionalPercentageHealth={item2Data?.additionalPercentageHealth || 0}
+          additionalPercentageHealth={
+            item2Data?.additionalPercentageHealth || 0
+          }
           additionalArmor={item2Data?.additionalArmor || 0}
           additionalMagicResist={item2Data?.additionalMagicResist || 0}
           additionalStartingMana={item2Data?.additionalStartingMana || 0}
@@ -366,10 +381,14 @@ const ChampionCardHover = ({
           additionalCritChance={item2Data?.additionalCritChance || 0}
           additionalDamageAmp={item2Data?.additionalDamageAmp || 0}
           attackSpeedStacking={item2Data?.attackSpeedStacking || false}
-          additionalAttackSpeedPerStack={item2Data?.additionalAttackSpeedPerStack || 0}
+          additionalAttackSpeedPerStack={
+            item2Data?.additionalAttackSpeedPerStack || 0
+          }
           abilityPowerStacking={item2Data?.abilityPowerStacking || false}
           abilityPowerStackInterval={item2Data?.abilityPowerStackInterval || 0}
-          additionalAbilityPowerPerStack={item2Data?.additionalAbilityPowerPerStack || 0}
+          additionalAbilityPowerPerStack={
+            item2Data?.additionalAbilityPowerPerStack || 0
+          }
           abilityCritStrike={item2Data?.abilityCritStrike || false}
           shield={item2Data?.shield || false}
           shieldAmount={item2Data?.shieldAmount || 0}
@@ -388,17 +407,19 @@ const ChampionCardHover = ({
         />
       )}
       {item3Hover && item3 && (
-        <ItemHover 
-          name={item3 || ''}
-          description={item3Data?.description || ''}
+        <ItemHover
+          name={item3 || ""}
+          description={item3Data?.description || ""}
           components={item3Data?.components || []}
           componentsImages={item3Data?.componentsImages || []}
-          image={item3Data?.image || ''}
+          image={item3Data?.image || ""}
           additionalAttackSpeed={item3Data?.additionalAttackSpeed || 0}
           additionalAbilityPower={item3Data?.additionalAbilityPower || 0}
           additionalAttackDamage={item3Data?.additionalAttackDamage || 0}
           additionalHealth={item3Data?.additionalHealth || 0}
-          additionalPercentageHealth={item3Data?.additionalPercentageHealth || 0}
+          additionalPercentageHealth={
+            item3Data?.additionalPercentageHealth || 0
+          }
           additionalArmor={item3Data?.additionalArmor || 0}
           additionalMagicResist={item3Data?.additionalMagicResist || 0}
           additionalStartingMana={item3Data?.additionalStartingMana || 0}
@@ -406,10 +427,14 @@ const ChampionCardHover = ({
           additionalCritChance={item3Data?.additionalCritChance || 0}
           additionalDamageAmp={item3Data?.additionalDamageAmp || 0}
           attackSpeedStacking={item3Data?.attackSpeedStacking || false}
-          additionalAttackSpeedPerStack={item3Data?.additionalAttackSpeedPerStack || 0}
+          additionalAttackSpeedPerStack={
+            item3Data?.additionalAttackSpeedPerStack || 0
+          }
           abilityPowerStacking={item3Data?.abilityPowerStacking || false}
           abilityPowerStackInterval={item3Data?.abilityPowerStackInterval || 0}
-          additionalAbilityPowerPerStack={item3Data?.additionalAbilityPowerPerStack || 0}
+          additionalAbilityPowerPerStack={
+            item3Data?.additionalAbilityPowerPerStack || 0
+          }
           abilityCritStrike={item3Data?.abilityCritStrike || false}
           shield={item3Data?.shield || false}
           shieldAmount={item3Data?.shieldAmount || 0}
@@ -433,47 +458,103 @@ const ChampionCardHover = ({
         <div className="grid grid-cols-5 gap-0.5 text-gray-300">
           {/* First row of stats */}
           <div className="flex flex-col items-center">
-        <img src="../assets/icons/attack.png" className="h-4 w-4 mb-0.5" alt="attack" />
-        <p className="text-center w-full truncate">{Math.round(attackDamage) || 0}</p>
+            <img
+              src="../assets/icons/attack.png"
+              className="h-4 w-4 mb-0.5"
+              alt="attack"
+            />
+            <p className="text-center w-full truncate">
+              {Math.round(attackDamage) || 0}
+            </p>
           </div>
           <div className="flex flex-col items-center">
-        <img src="../assets/icons/abilitypower.png" className="h-4 w-4 mb-0.5" alt="abilityPower" />
-        <p className="text-center w-full truncate">{Math.round(abilityPower) || 0}</p>
+            <img
+              src="../assets/icons/abilitypower.png"
+              className="h-4 w-4 mb-0.5"
+              alt="abilityPower"
+            />
+            <p className="text-center w-full truncate">
+              {Math.round(abilityPower) || 0}
+            </p>
           </div>
           <div className="flex flex-col items-center">
-        <img src="../assets/icons/armor.png" className="h-4 w-4 mb-0.5" alt="armor" />
-        <p className="text-center w-full truncate">{Math.round(armor) || 0}</p>
+            <img
+              src="../assets/icons/armor.png"
+              className="h-4 w-4 mb-0.5"
+              alt="armor"
+            />
+            <p className="text-center w-full truncate">
+              {Math.round(armor) || 0}
+            </p>
           </div>
           <div className="flex flex-col items-center">
-        <img src="../assets/icons/magicresist.png" className="h-4 w-4 mb-0.5" alt="magicResist" />
-        <p className="text-center w-full truncate">{Math.round(magicResist) || 0}</p>
+            <img
+              src="../assets/icons/magicresist.png"
+              className="h-4 w-4 mb-0.5"
+              alt="magicResist"
+            />
+            <p className="text-center w-full truncate">
+              {Math.round(magicResist) || 0}
+            </p>
           </div>
           <div className="flex flex-col items-center">
-        <img src="../assets/icons/attackspeed.png" className="h-4 w-4 mb-0.5" alt="attackSpeed" />
-        <p className="text-center w-full truncate">{attackSpeed.toFixed(2) || 0}</p>
+            <img
+              src="../assets/icons/attackspeed.png"
+              className="h-4 w-4 mb-0.5"
+              alt="attackSpeed"
+            />
+            <p className="text-center w-full truncate">
+              {attackSpeed.toFixed(2) || 0}
+            </p>
           </div>
         </div>
         <div className="grid grid-cols-5 gap-0.5 text-gray-300 mt-1">
           {/* Second row of stats */}
           <div className="flex flex-col items-center">
-        <img src="../assets/icons/criticalstrikechance.png" className="h-4 w-4 mb-0.5" alt="criticalstrikechance" />
-        <p className="text-center w-full truncate">{critChance || 0}%</p>
+            <img
+              src="../assets/icons/criticalstrikechance.png"
+              className="h-4 w-4 mb-0.5"
+              alt="criticalstrikechance"
+            />
+            <p className="text-center w-full truncate">{critChance || 0}%</p>
           </div>
           <div className="flex flex-col items-center">
-        <img src="../assets/icons/criticaldamage.svg" className="h-4 w-4 mb-0.5" alt="critDamage" />
-        <p className="text-center w-full truncate">{critDamage || 0}0%</p>
+            <img
+              src="../assets/icons/criticaldamage.svg"
+              className="h-4 w-4 mb-0.5"
+              alt="critDamage"
+            />
+            <p className="text-center w-full truncate">{critDamage || 0}0%</p>
           </div>
           <div className="flex flex-col items-center">
-        <img src="../assets/icons/omnivamp.png" className="h-4 w-4 mb-0.5" alt="omnivamp" />
-        <p className="text-center w-full truncate">{Math.round(omnivamp) || 0}%</p>
+            <img
+              src="../assets/icons/omnivamp.png"
+              className="h-4 w-4 mb-0.5"
+              alt="omnivamp"
+            />
+            <p className="text-center w-full truncate">
+              {Math.round(omnivamp) || 0}%
+            </p>
           </div>
           <div className="flex flex-col items-center">
-        <img src="../assets/icons/damageamp.png" className="h-4 w-4 mb-0.5" alt="damageAmp" />
-        <p className="text-center w-full truncate">{Math.round(damageAmp) || 0}%</p>
+            <img
+              src="../assets/icons/damageamp.png"
+              className="h-4 w-4 mb-0.5"
+              alt="damageAmp"
+            />
+            <p className="text-center w-full truncate">
+              {Math.round(damageAmp) || 0}%
+            </p>
           </div>
           <div className="flex flex-col items-center">
-        <img src="../assets/icons/range.png" className="h-4 w-4 mb-0.5" alt="range" />
-        <p className="text-center w-full truncate">{Math.round(range) || 0}</p>
+            <img
+              src="../assets/icons/range.png"
+              className="h-4 w-4 mb-0.5"
+              alt="range"
+            />
+            <p className="text-center w-full truncate">
+              {Math.round(range) || 0}
+            </p>
           </div>
         </div>
       </div>
