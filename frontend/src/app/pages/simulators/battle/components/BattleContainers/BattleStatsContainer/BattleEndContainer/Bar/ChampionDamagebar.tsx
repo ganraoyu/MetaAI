@@ -29,6 +29,7 @@ export const ChampionDamageBar = ({ champion }: ChampionProps): JSX.Element => {
   const abilityPercent = getDamagePercentages(totalChampionAbilityDamage, allChampionDamage);
   const truePercent = getDamagePercentages(totalChampionTrueDamage, allChampionDamage);
 
+
   // Build gradient string
   const gradient = buildDamageGradient(truePercent, physicalPercent, magicPercent, abilityPercent);
 

@@ -5,21 +5,41 @@ import { ChampionProps } from "./types";
  * ChampionStatsNumbers
  * 
  * Displays a champion's total damage and total healing as numbers.
- * Damage is shown in red, healing is shown in green, separated by a slash.
- * 
+ * Damage is color-coded by type, healing is green, separated by a slash.
+ *
  * @param {ChampionProps} champion - The champion object containing stats.
- * @param {number} champion.totalChampionShield - (Optional) Total shield value, if used elsewhere.
- * @returns {JSX.Element} A React component displaying Champion's damage, healing, and shield numbers.
-*/
-
+ * @returns {JSX.Element} A React component displaying Champion's damage and healing.
+ */
 export const ChampionStatsNumbers = ({ champion }: ChampionProps) => {
-  const { allChampionDamage = 0 } = getDamageTotals(champion);
-  const totalChampionHealing = getHealTotals(champion) ?? 0;    
+  const {
+    totalChampionDamage,
+    totalChampionMagicDamage,
+    totalChampionTrueDamage,
+    totalChampionAbilityDamage,
+    allChampionDamage
+  } = getDamageTotals(champion);
+
+  const totalChampionHealing = getHealTotals(champion) ?? 0;
+
+  // Determine which damage type is the largest
+  const maxDamageValue = Math.max(
+    totalChampionDamage,
+    totalChampionMagicDamage,
+    totalChampionAbilityDamage,
+    totalChampionTrueDamage
+  );
+
+  const getDamageTextColor = (): string => {
+    if (maxDamageValue === totalChampionTrueDamage) return "text-white";
+    if (maxDamageValue === totalChampionMagicDamage) return "text-blue-500";
+    if (maxDamageValue === totalChampionAbilityDamage) return "text-purple-500";
+    return "text-red-500"; // Default to physical damage color
+  };
 
   return (
     <div className="pl-2">
       <div className="flex flex-row gap-1 text-[0.8rem]">
-        <p className="text-red-400">{allChampionDamage}</p>
+        <p className={getDamageTextColor()}>{allChampionDamage}</p>
         <span className="text-gray-400">/</span>
         <p className="text-green-400">{totalChampionHealing}</p>
       </div>
