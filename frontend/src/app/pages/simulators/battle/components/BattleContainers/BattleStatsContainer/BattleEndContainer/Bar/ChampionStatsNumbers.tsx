@@ -32,9 +32,9 @@ export const ChampionStatsNumbers = ({ champion }: ChampionProps): JSX.Element =
 
   const getDamageTextColor = (): string => {
     if (maxDamageValue === totalChampionTrueDamage) return "text-white";
-    if (maxDamageValue === totalChampionMagicDamage) return "text-blue-500";
+    if (maxDamageValue === totalChampionMagicDamage) return "text-blue-400";
     if (maxDamageValue === totalChampionAbilityDamage) return "text-purple-500";
-    return "text-red-500"; // Default to physical damage color
+    return "text-red-400"; // Default to physical damage color
   };
 
   return (

@@ -2,32 +2,49 @@ import { ChampionProps } from "./types";
 
 /**
  * ChampionBarHover
- *
- * @returns {JSX.Element} A React component showing a detailed break down of damage, healing, and shielding
- */
-export const ChampionBarHover = ({ champion }: ChampionProps): JSX.Element => {
-  const getDamageTextColor = (damageType: string) => {
-    if (damageType === "allChampionDamage") return "text-gray-400"
-    if (damageType === "totalChampionTrueDamage") return "text-white";
-    if (damageType === "totalChampionMagicDamage") return "text-blue-500";
-    if (damageType === "totalChampionAbilityDamage") return "text-purple-500";
-    return "text-red-500";
-  };
+ * 
+ * Displays a detailed breakdown of a champion's damage in TFT including
+ * - Physical
+ * - Magic
+ * - True
+ * 
+ * Each damage type is colored according to its type
+ * - Physical: red
+ * - Magic: purple/blue
+ * - True: white
+ * 
+ * @param {number} champion.allChampionDamage - Total damage done by the champion
+ * @param {number} champion.totalChampionDamage - Physical damage done
+ * @param {number} champion.totalChampionAbilityDamage - Ability/magic damage done
+ * @param {number} champion.totalChampionMagicDamage - Magic damage done
+ * @param {number} champion.totalChampionTrueDamage - True damage done
+ * @returns {JSX.Element} A React component showing a damage breakdown for a champion
+*/
 
+const getDamageTextColor = (damageType: string): string => {
+  if (damageType === "allChampionDamage") return "text-gray-400";
+  if (damageType === "totalChampionTrueDamage") return "text-white";
+  if (damageType === "totalChampionMagicDamage") return "text-blue-400";
+  if (damageType === "totalChampionAbilityDamage") return "text-purple-500";
+  return "text-red-400";
+};
+
+export const ChampionBarHover = ({ champion }: ChampionProps): JSX.Element => {
   return (
     <div
-      className="absolute bg-[#1e1e1e] w-44 h-[9.75rem] z-50 pointer-events-none px-3 
-                    border border-[#464646] shadow-md shadow-gray-700/50 rounded-md"
+      className="absolute bg-[#1e1e1e] w-40 h-[9.75rem] z-50 pointer-events-none px-3 
+                border border-[#464646] shadow-md shadow-gray-700/50 rounded-md"
     >
-      {/* Champion name on the left */}
-      <div className="font-semibold mt-3 mb-1">{champion.name}</div>
+      {/* Champion name */}
+      <div className="font-semibold mt-3 mb-1 text-left text-[#ffffff]">{champion.name}</div>
 
-      <div className="flex flex-col items-center gap-2 mb-2">
-        {/* Horizontal line filling the rest of the space */}
+      {/* Top horizontal line */}
+      <div className="flex flex-col items-center mb-2">
         <div className="w-[9.25rem] border-t border-gray-600" />
       </div>
 
-      <div className="text-[0.75rem] text-[#bebcbc] flex flex-col gap-1">
+      {/* Damage breakdown */}
+      <div className="text-[0.75rem] text-white flex flex-col gap-1">
         {[
           { label: "Physical", value: champion.totalChampionDamage ?? 0, type: "totalChampionDamage" },
           { label: "Magic", value: (champion.totalChampionAbilityDamage ?? 0) + (champion.totalChampionMagicDamage ?? 0), type: "totalChampionAbilityDamage" },
@@ -40,17 +57,17 @@ export const ChampionBarHover = ({ champion }: ChampionProps): JSX.Element => {
         ))}
       </div>
 
-      <div className="flex flex-col items-center gap-2 mt-2 mb-2">
-        {/* Horizontal line filling the rest of the space */}
+      {/* Bottom horizontal line */}
+      <div className="flex flex-col items-center mt-2 mb-2">
         <div className="w-[9.25rem] border-t border-gray-600" />
       </div>
-      
-      <div className="text-[0.75rem] text-[#bebcbc] flex justify-between mb-2">
-        <p>Total: </p>
-        <p className={getDamageTextColor('allChampionDamage')}>{champion.allChampionDamage}</p>
+
+      {/* Total damage */}
+      <div className="text-[0.75rem] text-white flex justify-between mb-2">
+        <div>Total:</div>
+        <div className={getDamageTextColor('allChampionDamage')}>{champion.allChampionDamage}</div>
       </div>
 
-      {/* Other content can go below */}
     </div>
   );
 };

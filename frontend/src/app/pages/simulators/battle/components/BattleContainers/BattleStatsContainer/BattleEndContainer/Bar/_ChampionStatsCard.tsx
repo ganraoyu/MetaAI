@@ -24,7 +24,7 @@ export const ChampionStatsCard = ({ champion }: ChampionProps): JSX.Element => {
   const [hover, setHover] = useState<boolean>(false)
 
   return (
-    <div className="mb-2 flex flex-row justify-center items-center">
+    <div className="mb-2 flex flex-row justify-center items-center select-none">
 
       {/* Champion image */}
       <div>

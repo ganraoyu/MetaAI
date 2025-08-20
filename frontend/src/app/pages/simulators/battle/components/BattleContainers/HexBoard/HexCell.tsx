@@ -1,11 +1,7 @@
 import { useHexBoardContext } from "./HexBoardContext";
 import { Star } from "../../../utils/Star";
 import { itemMap } from "../../../utils/ItemMapping";
-
-interface HexCellProps {
-  cellId: string;
-  team: "player" | "opponent" | "";
-}
+import { HexCellProps } from "./types";
 
 const getBorderColor = (cost: number): string => {
   switch (cost) {
@@ -98,7 +94,7 @@ export const HexCell: React.FC<HexCellProps> = ({ cellId }) => {
 
   return (
     <div
-      className="relative w-[4.1rem] h-[4.1rem] m-[0.2rem]"
+      className="relative w-[4.1rem] h-[4.1rem] m-[0.2rem] select-none"
       onDragOver={handleDragOver}
       onDrop={handleDrop}
       onDoubleClick={handleDoubleClick}

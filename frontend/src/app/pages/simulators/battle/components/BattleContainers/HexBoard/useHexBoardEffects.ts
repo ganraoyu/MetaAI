@@ -1,6 +1,42 @@
 import { useEffect } from "react";
-import { ChampionPosition, TraitCountMap, TraitCountEntry } from "./types";
+import { ChampionPosition, TraitCountMap, TraitCountEntry, ChampionMap } from "./types";
 import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
+
+export function useChampionMapEffect(
+  boardArray: ChampionPosition[],
+  setPlayerChampionsCostCount: React.Dispatch<React.SetStateAction<number>>,
+  setOpponentChampionsCostCount: React.Dispatch<React.SetStateAction<number>>,
+  setPlayerChampionArray: React.Dispatch<React.SetStateAction<ChampionMap[]>>,
+  setOpponentChampionArray: React.Dispatch<React.SetStateAction<ChampionMap[]>>
+) {
+
+  useEffect(() => { 
+    let playerChampionsCostCount: number = 0;
+    const playerChampions: ChampionMap[] = [];
+
+    let opponentChampionsCostCount: number = 0;
+    const opponentChampions: ChampionMap[] = [];
+
+    for (const champion of boardArray) {
+      const row = parseInt(champion.cellId[1]);
+      if (row >= 4) {
+        playerChampions.push(champion);
+        playerChampionsCostCount += champion.cost;
+        
+      } else {
+        opponentChampions.push(champion);
+        opponentChampionsCostCount += champion.cost;
+      }
+    }
+
+    setPlayerChampionArray(playerChampions);
+    setPlayerChampionsCostCount(playerChampionsCostCount);
+    setOpponentChampionArray(opponentChampions);
+    setOpponentChampionsCostCount(opponentChampionsCostCount);
+  }, [boardArray, setPlayerChampionArray, setOpponentChampionArray]);
+};
+
+
 
 export function useTraitCountingEffect(
   boardArray: ChampionPosition[],

@@ -1,13 +1,27 @@
-import { BattleEndStats } from "../BattleStatsContainer/BattleEndContainer/BattleEndStats";
+import { useHexBoardContext } from "./HexBoardContext";
 import { HexCell } from "./HexCell";
 
-const NUM_ROWS = 8;
-const NUM_COLS = 7;
+/**
+ * HexBoard
+ *
+ * Renders a hexagonal board layout for a battle simulation.
+ * The board consists of two halves:
+ *  - Opponent board (top 4 rows)
+ *  - Player board (bottom 4 rows)
+ *
+ * Each row alternates horizontal offset to create a hexagonal staggered layout.
+ * Each cell is represented by a `HexCell` component with a unique `cellId` and a `team` prop.
+ * 
+ * Board stats display the number of champions on each team and the total cost of champions for each side
+ *
+ * @component
+ * @returns {JSX.Element} A React component displaying the hexagonal grid for both players.
+ */
 
-export const HexBoard = () => {
+export const HexBoard = (): JSX.Element => {
+  const { playerChampionArray, opponentChampionArray, playerChampionCostCount, opponentChampionCostCount } = useHexBoardContext();
   return (
     <div className="flex flex-col items-center justify-center space-y-8">
-      
       {/* Opponent Board */}
       <div className="flex flex-col items-center">
         {[...Array(4)].map((_, row) => {
@@ -21,13 +35,63 @@ export const HexBoard = () => {
                 isEvenRow ? "mr-8" : "ml-10"
               }`}
             >
-              {[...Array(NUM_COLS)].map((_, col) => {
+              {[...Array(7)].map((_, col) => {
                 const cellId = `r${row}c${col}`;
                 return <HexCell key={cellId} cellId={cellId} team={team} />;
               })}
             </div>
           );
         })}
+      </div>
+
+      {/* Board Stats */}
+      <div className="flex justify-between w-full pointer-events-none select-none">
+
+        {/* Left side */}
+        <div className="flex flex-col">
+
+          {/* Top row: abilities */}
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-1">
+              <img src="../assets/icons/sunder.png" className="w-4 h-4" />
+              <p className="text-[0.8rem]">Sunder</p>
+            </div>
+            <div className="flex items-center gap-1">
+              <img src="../assets/icons/shred.png" className="w-4 h-4" />
+              <p className="text-[0.8rem]">Shred</p>
+            </div>
+          </div>
+
+          {/* Bottom row: champions and coin */}
+          <div className="flex items-center gap-1">
+            <img src="../assets/icons/champion.png" className="w-4 h-4" />
+            <p className="text-[0.8rem]">{playerChampionArray.length}</p>
+            <img src="../assets/icons/coin.png" className="w-4 h-4" />
+            <p className="text-[0.8rem]">{playerChampionCostCount}</p>
+          </div>
+        </div>
+
+        {/* Right side (example, mirror left side) */}
+        <div className="flex flex-col">
+          <div className="flex items-center gap-1">
+            <img src="../assets/icons/champion.png" className="w-4 h-4" />
+            <p className="text-[0.8rem]">{opponentChampionArray.length}</p>
+            <img src="../assets/icons/coin.png" className="w-4 h-4" />
+            <p className="text-[0.8rem]">{opponentChampionCostCount}</p>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-1">
+              <img src="../assets/icons/shred.png" className="w-4 h-4" />
+              <p className="text-[0.8rem]">Shred</p>
+            </div>
+            <div className="flex items-center gap-1">
+              <img src="../assets/icons/sunder.png" className="w-4 h-4" />
+              <p className="text-[0.8rem]">Sunder</p>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       {/* Player Board */}
@@ -42,9 +106,9 @@ export const HexBoard = () => {
               key={row}
               className={`flex justify-center items-center gap-0 mb-[-1.1rem] ${
                 isEvenRow ? "mr-8" : "ml-10"
-              } ${row === 4 ? "mt-[0.5rem]" : ""}`}
+              } ${row === 4 ? "mt-[-1.1rem]" : ""}`}
             >
-              {[...Array(NUM_COLS)].map((_, col) => {
+              {[...Array(7)].map((_, col) => {
                 const cellId = `r${row}c${col}`;
                 return <HexCell key={cellId} cellId={cellId} team={team} />;
               })}

@@ -18,25 +18,50 @@ export interface BoardState {
 export interface ChampionPosition {
   championName: string;
   cellId: string;
+  cost: number;
   traitsList: string[];
   starLevel: number | 1;
 }
-
 export interface TraitCountMap {
   [trait: string]: number;
+}
+
+export interface ChampionMap {
+  championName: string;
+  cellId: string;
+  cost: number;
+  traitsList: string[];
+  starLevel: number | 1;
 }
 
 export interface HexBoardContextType {
   boardState: BoardState;
   boardArray: ChampionPosition[];
+
   playerTraitsObj: TraitCountMap;
   opponentTraitsObj: TraitCountMap;
+
+  playerChampionArray: ChampionMap[];
+  setPlayerChampionArray: React.Dispatch<React.SetStateAction<ChampionMap[]>>;
+
+  opponentChampionArray: ChampionMap[];
+  setOpponentChampionArray: React.Dispatch<React.SetStateAction<ChampionMap[]>>;
+
+  playerChampionCostCount: number;
+  setPlayerChampionCostCount: React.Dispatch<React.SetStateAction<number>>;
+
+  opponentChampionCostCount: number;
+  setOpponentChampionCostCount: React.Dispatch<React.SetStateAction<number>>;
+  
   orderedPlayerTraits: [string, number][];
   orderedOpponentTraits: [string, number][];
+
   setOrderedPlayerTraits: React.Dispatch<React.SetStateAction<[string, number][]>>;
   setOrderedOpponentTraits: React.Dispatch<React.SetStateAction<[string, number][]>>;
+
   setBoardState: React.Dispatch<React.SetStateAction<BoardState>>;
   setBoardArray: React.Dispatch<React.SetStateAction<ChampionPosition[]>>;
+
   placeChampion: (cellId: string, championData: ChampionData) => void;
   removeChampion: (cellId: string) => void;
   moveChampion: (fromCellId: string, toCellId: string) => void;
@@ -47,3 +72,9 @@ export interface HexBoardContextType {
 }
 
 export type TraitCountEntry = [string, number];
+
+export interface HexCellProps {
+  cellId: string;
+  team: "player" | "opponent" | "";
+}
+
