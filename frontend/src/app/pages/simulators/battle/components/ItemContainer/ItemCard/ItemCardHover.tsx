@@ -12,7 +12,7 @@ export const ItemCardHover = ({
   return (
     <div
       className={`absolute bottom-full left-[-7.5rem] -translate-x-1/2 mb-1 z-50
-              w-[17rem] bg-[#1e1924] border border-gray-700 rounded-md shadow-2xl shadow-gray-900
+              w-[17rem] bg-[#1e1e1e] border border-[#464646] shadow-md shadow-gray-700/50 rounded-md
               origin-bottom animate-grow-in
               ${className}`}
     >

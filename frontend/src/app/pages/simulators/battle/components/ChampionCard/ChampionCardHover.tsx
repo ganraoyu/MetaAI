@@ -118,7 +118,7 @@ const ChampionCardHover = ({
 
   return (
     <div
-      className="fixed bg-[#1e1924] text-white rounded-md w-44 h-78 z-50 origin-top-left animate-grow-in shadow-2xl shadow-gray-900"
+      className="fixed bg-[#1e1e1e] text-white rounded-md w-44 h-78 z-50 origin-top-left animate-grow-in border border-[#464646] shadow-md shadow-gray-700/50"
       style={{
         top: `${position.top}px`,
         left: `${position.left}px`,
