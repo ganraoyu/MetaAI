@@ -11,7 +11,7 @@ import { ChampionProps } from "./types";
  * @param {ChampionProps} props - The component props
  * @param {ChampionProps.champion} props.champion - The champion object containing all relevant stats
  * 
- * @returns {JSX.Element} A React component showing the damage bar.
+ * @returns {JSX.Element} A React component showing the damage bar
 */
 
 export const ChampionDamageBar = ({ champion }: ChampionProps): JSX.Element => {
@@ -28,7 +28,6 @@ export const ChampionDamageBar = ({ champion }: ChampionProps): JSX.Element => {
   const magicPercent = getDamagePercentages(totalChampionMagicDamage, allChampionDamage);
   const abilityPercent = getDamagePercentages(totalChampionAbilityDamage, allChampionDamage);
   const truePercent = getDamagePercentages(totalChampionTrueDamage, allChampionDamage);
-
 
   // Build gradient string
   const gradient = buildDamageGradient(truePercent, physicalPercent, magicPercent, abilityPercent);

@@ -3,7 +3,7 @@ import { Champion } from "./types";
 export const getDamageTotals = (champion: Champion) => {
   return {
     totalChampionDamage: champion.totalChampionDamage || 0,
-    totalChampionTrueDamage: champion.totalChampionTrueDamage || 0,
+    totalChampionTrueDamage: champion.totalChampionTrueDamage || 0, 
     totalChampionMagicDamage: champion.totalChampionMagicDamage || 0,
     totalChampionAbilityDamage: champion.totalChampionAbilityDamage || 0,
     allChampionDamage: champion.allChampionDamage || 0

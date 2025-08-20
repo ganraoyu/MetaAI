@@ -4,13 +4,14 @@ import { ChampionProps } from "./types";
 /**
  * ChampionStatsNumbers
  * 
- * Displays a champion's total damage and total healing as numbers.
- * Damage is color-coded by type, healing is green, separated by a slash.
+ * Displays a champion's total damage and total healing as numbers
+ * Damage is color-coded by type, healing is green, separated by a slash
  *
- * @param {ChampionProps} champion - The champion object containing stats.
- * @returns {JSX.Element} A React component displaying Champion's damage and healing.
- */
-export const ChampionStatsNumbers = ({ champion }: ChampionProps) => {
+ * @param {ChampionProps} champion - The champion object containing stats
+ * @returns {JSX.Element} A React component displaying Champion's damage and healing
+*/
+
+export const ChampionStatsNumbers = ({ champion }: ChampionProps): JSX.Element => {
   const {
     totalChampionDamage,
     totalChampionMagicDamage,

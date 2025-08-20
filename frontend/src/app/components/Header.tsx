@@ -5,7 +5,7 @@ import { faGithub, faPaypal } from '@fortawesome/free-brands-svg-icons';
 
 const Header = () => {
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 font-mono bg-gray-500 h-[65px] z-[9999999]">
+    <div className="fixed top-0 left-0 right-0 z-50 font-mono bg-gray-500 h-[65px] ">
       <div className="flex justify-between items-center h-full bg-mainBackground px-6 border-b border-gray-700">
         
         {/* Logo + Title */}
@@ -18,7 +18,7 @@ const Header = () => {
             alt="Logo" 
             className="w-8 h-8 invert brightness-0 drop-shadow-md"
           />
-          <div className="text-white text-xl tracking-widest font-bold hover:text-cyan-300 transition-colors">
+          <div className="text-white text-xl tracking-widest font-semibold hover:text-purple-300 transition-colors">
             TFTStratify
           </div>
         </div>
