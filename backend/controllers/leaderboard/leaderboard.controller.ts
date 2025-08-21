@@ -1,19 +1,21 @@
-const { shortRegionClient } = require("../../utils/generalUtils");
-const { queues, queueMapping } = require("../../utils/queueData.js");
+import { Request, Response } from "express";
+import { shortRegionClient } from "../../utils/generalUtils";
+import { queues, queueMapping } from "../../utils/queueData";
 
 const getAboveMasterLeaderboards = async (
-  endpoint,
-  res,
-  rank,
-  region,
-  mode
+  endpoint: string,
+  res: Response,
+  rank: string,
+  region: string,
+  mode: string
 ) => {
   try {
-    const queue = queueMapping[mode];
+    const queue = queueMapping[mode as keyof typeof queueMapping];
     const client = shortRegionClient(region);
     const response = await client.get(
       `/tft/league/v1/${endpoint}?queue=${queue}`
     );
+
     if (!region) {
       return res
         .status(400)
@@ -21,7 +23,7 @@ const getAboveMasterLeaderboards = async (
     }
 
     const playerData = Object.entries(response.data.entries).map(
-      ([index, entry]) => {
+      ([index, entry]: [string, any]) => {
         return {
           rank: parseInt(index) + 1,
           summonerId: entry.summonerId,
@@ -35,7 +37,7 @@ const getAboveMasterLeaderboards = async (
     );
 
     res.json({ playerData });
-  } catch (error) {
+  } catch (error: any) {
     console.error(
       `Error fetching ${rank} data:`,
       error.response ? error.response.data : error.message
@@ -45,60 +47,64 @@ const getAboveMasterLeaderboards = async (
 };
 
 const getBelowMasterLeaderboards = async (
-  res,
-  region,
-  rank,
-  division,
-  mode
+  res: Response,
+  region: string,
+  rank: string,
+  division: string,
+  mode: string
 ) => {
   try {
-    const queue = queueMapping[mode];
+    const queue = queueMapping[mode as keyof typeof queueMapping];
     const client = shortRegionClient(region);
     const response = await client.get(
       `/tft/league/v1/entries/${rank.toUpperCase()}/${division.toUpperCase()}?queue=${queue}`
     );
 
-    const playerData = response.data.map((entry, index) => {
-      const { summonerId, wins, losses, leaguePoints } = entry;
+    const playerData = response.data.map(
+      (entry: any, index: number) => {
+        const { summonerId, wins, losses, leaguePoints } = entry;
+        return {
+          rank: index + 1,
+          leaguePoints,
+          summonerId,
+          winrate: ((wins / (wins + losses)) * 100).toFixed(2) + "%",
+          wins,
+          losses,
+        };
+      }
+    );
 
-      return {
-        rank: index + 1,
-        leaguePoints: leaguePoints,
-        summonerId: summonerId,
-        winrate: ((wins / (wins + losses)) * 100).toFixed(2) + "%",
-        wins: wins,
-        losses: losses,
-      };
-    });
     res.json({ playerData });
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
   }
 };
 
-const getChallengerLeaderboard = (req, res) => {
+const getChallengerLeaderboard = (req: Request, res: Response) => {
   const region = req.params.region;
   const mode = req.params.mode;
   getAboveMasterLeaderboards("challenger", res, "Challenger", region, mode);
 };
-const getGrandmasterLeaderboard = (req, res) => {
+
+const getGrandmasterLeaderboard = (req: Request, res: Response) => {
   const region = req.params.region;
   const mode = req.params.mode;
   getAboveMasterLeaderboards("grandmaster", res, "Grandmaster", region, mode);
 };
-const getMasterLeaderboard = (req, res) => {
+
+const getMasterLeaderboard = (req: Request, res: Response) => {
   const region = req.params.region;
   const mode = req.params.mode;
   getAboveMasterLeaderboards("master", res, "Master", region, mode);
 };
 
-const getBelowMasterLeaderboard = (req, res) => {
+const getBelowMasterLeaderboard = (req: Request, res: Response) => {
   const { region, rank, division, mode } = req.params;
   console.log(region, rank, division);
   getBelowMasterLeaderboards(res, region, rank, division, mode);
 };
 
-module.exports = {
+export {
   getChallengerLeaderboard,
   getGrandmasterLeaderboard,
   getMasterLeaderboard,

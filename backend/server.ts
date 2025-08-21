@@ -4,11 +4,12 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-const userRoutes = require('./routes/player/player.routes.js');
-const leaderboardRoutes = require('./routes/leaderboard/leaderboard.routes.js');
 const playerStatsRoutes = require('./routes/player/playerStatistics.routes.js');
 const statisticsRoutes = require('./routes/statistics/statistics.routes.js');
 const battleSimulatorRoutes = require('./routes/battle-simulator/statistics/battleSimulator.routes.js');
+
+import userRoutes from './routes/player/player.routes';
+import leaderboardRoutes from './routes/leaderboard/leaderboard.routes';
 import aiCoachRoutes from './routes/aiCoach/aiCoach.routes';
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
