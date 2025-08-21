@@ -1,10 +1,10 @@
 import { useEffect, useState, RefObject } from "react";
-import { useTFTSetContext } from "../../../../../utilities/TFTSetContext";
+import { useTFTSetContext } from "../../../../../utilities/TFTSetContext.tsx";
 
 import { combinedItems } from "../../data/items/item-data.tsx";
-import { ItemHover } from "./SlotHover/ItemSlotHover";
+import { ItemHover } from "./SlotHover/ItemSlotHover.tsx";
 import { abilityData } from "../../data/SET13/ability-data.ts";
-import { AbilitySlotHover } from "./SlotHover/AbilitySlotHover";
+import { AbilitySlotHover } from "./SlotHover/AbilitySlotHover.tsx";
 import { Star } from "../../utils/Star.tsx";
 
 interface ChampionCardHoverProps {

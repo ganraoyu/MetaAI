@@ -17,11 +17,13 @@ import ItemsStatistics from './pages/statistics/ItemsStatistics.tsx';
 
 import RollingOdds from './pages/simulators/RollingOdds.tsx';
 import Battle from './pages/simulators/battle/Battle.tsx';
+import { CoachPage } from './pages/aiCoach/CoachPage.tsx';
 
 function Router() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} /> 
+      <Route path="/coach" element={<CoachPage />} />
       <Route path="/guide" element={<GuidePage />} />
       <Route path="/info" element={<InfoPage />} />
       <Route path="/about" element={<AboutPage />} />

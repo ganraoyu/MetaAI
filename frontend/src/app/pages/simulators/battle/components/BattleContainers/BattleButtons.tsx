@@ -8,8 +8,8 @@ import {
   MdSettings,
 } from "react-icons/md";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { useBattleContext } from "../../BattleContext";
-import { useHexBoardContext } from "./HexBoard/HexBoardContext";
+import { useBattleContext } from "../../BattleContext.tsx";
+import { useHexBoardContext } from "./HexBoard/HexBoardContext.tsx";
 import { useBattleStatsContext } from "./BattleStatsContainer/BattleStatsContext.tsx";
 import { useRunBattle } from "../../hooks/useRunBattle.ts";
 

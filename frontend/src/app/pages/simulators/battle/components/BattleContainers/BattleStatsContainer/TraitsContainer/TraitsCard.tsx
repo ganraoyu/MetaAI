@@ -1,6 +1,6 @@
 import { getTraitByName } from "../../../../data/dataUtils";
 import { useTFTSetContext } from "../../../../../../../utilities/TFTSetContext";
-import { mapTraitTierBorderColor, mapTraitTierColor } from "./../utils";
+import { mapTraitTierBorderColor, mapTraitTierColor } from "../utils";
 
 export const TraitsCard = ({
   trait,

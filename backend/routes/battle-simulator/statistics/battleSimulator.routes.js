@@ -12,7 +12,7 @@ const {
     getAllBattleStatistics,
     getChampionStatistics,
     getBattleHistory,
-    startBattleWithBoard // Make sure this is imported
+    startBattleWithBoard 
 } = require('../../../controllers/battle-simulator/battle-simulator.controller.js');
 
 // GET routes for statistics
@@ -28,6 +28,6 @@ router.get('/championStatistics', getChampionStatistics);
 router.get('/battle-history', getBattleHistory);
 
 // POST route for starting battle with board data
-router.post('/start-battle', startBattleWithBoard); // Make sure this line exists
+router.post('/start-battle', startBattleWithBoard); 
 
 module.exports = router;

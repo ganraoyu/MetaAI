@@ -12,7 +12,7 @@ import {
   HexBoardContextType,
   TraitCountEntry,
   ChampionMap,
-} from "./types"
+} from "./types.ts"
 
 /**
  * Context for the HexBoard providing board state and operations

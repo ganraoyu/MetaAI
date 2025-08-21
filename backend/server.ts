@@ -9,6 +9,7 @@ const leaderboardRoutes = require('./routes/leaderboard/leaderboard.routes.js');
 const playerStatsRoutes = require('./routes/player/playerStatistics.routes.js');
 const statisticsRoutes = require('./routes/statistics/statistics.routes.js');
 const battleSimulatorRoutes = require('./routes/battle-simulator/statistics/battleSimulator.routes.js');
+import aiCoachRoutes from './routes/aiCoach/aiCoach.routes';
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
@@ -21,15 +22,16 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/player', userRoutes);
-app.use('/leaderboard', leaderboardRoutes);      
-app.use('/player/statistics', playerStatsRoutes);   
-app.use('/statistics', statisticsRoutes);                                             
+app.use('/leaderboard', leaderboardRoutes);
+app.use('/player/statistics', playerStatsRoutes);
+app.use('/statistics', statisticsRoutes);
 app.use('/battle-simulator', battleSimulatorRoutes);
+app.use('/ai-coach', aiCoachRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });     
 
 console.log('RIOT-API-KEY', process.env.RIOT_API_KEY)
-
+console.log('OPENAI-API-KEY', process.env.OPENAI_API_KEY)
 
