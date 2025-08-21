@@ -1,21 +1,34 @@
-import logo from '../../assets/logo.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
-import { faGithub, faPaypal } from '@fortawesome/free-brands-svg-icons';
+import logo from "../../assets/logo.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faGithub, faPaypal } from "@fortawesome/free-brands-svg-icons";
+import { useState } from "react";
+import { NavProps } from "./types";
+
+const navigationItems: NavProps[] = [
+  { label: "Guide" },
+  { label: "Builder" },
+  { label: "AI Coach" },
+  { label: "Tierlist", icon: faCaretDown },
+  { label: "Simulators", icon: faCaretDown },
+  { label: "About", icon: faCaretDown },
+  { label: "Info" },
+];
 
 const Header = () => {
+  const [open, setOpen] = useState<string | null>(null);
+
   return (
     <div className="fixed top-0 left-0 right-0 z-50 font-mono bg-gray-500 h-[65px] ">
       <div className="flex justify-between items-center h-full bg-mainBackground px-6 border-b border-gray-700">
-        
         {/* Logo + Title */}
-        <div 
+        <div
           className="flex items-center gap-2 cursor-pointer select-none"
-          onClick={() => (window.location.href = '/Stratify/')}
+          onClick={() => (window.location.href = "/Stratify/")}
         >
-          <img 
-            src={logo} 
-            alt="Logo" 
+          <img
+            src={logo}
+            alt="Logo"
             className="w-8 h-8 invert brightness-0 drop-shadow-md"
           />
           <div className="text-white text-xl tracking-widest font-semibold hover:text-purple-300 transition-colors">
@@ -25,38 +38,90 @@ const Header = () => {
 
         {/* Navigation */}
         <div className="flex items-center gap-4">
-          {[
-            { label: 'Guide' },
-            { label: 'Builder' },
-            { label: 'Tierlist', icon: faCaretDown },
-            { label: 'Simulators', icon: faCaretDown },
-            { label: 'About', icon: faCaretDown },
-            { label: 'Info' }
-          ].map((item, idx) => (
-            <div 
-              key={idx} 
-              className="flex items-center gap-1 px-3 py-1 rounded-full cursor-pointer transition-all duration-200
-                         hover:bg-cyan-500/20 hover:text-cyan-300 hover:shadow-[0_0_8px_#22d3ee]"
+          {navigationItems.map((item, idx) => (
+            <div
+              key={idx}
+              className="relative flex items-center gap-1"
+              onClick={() => setOpen(item.label)}
+              onMouseLeave={() => setTimeout(() => setOpen(null), 50)}
             >
-              <div className="text-white text-sm tracking-widest">{item.label}</div>
+              <div
+                className="flex items-center gap-1 px-3 py-1 rounded-md cursor-pointer transition-all
+                "
+              >
+                <div className="text-white text-sm tracking-widest">
+                  {item.label}
+                </div>
+                {item.icon && (
+                  <FontAwesomeIcon
+                    icon={item.icon}
+                    className="text-gray-500 text-xs"
+                  />
+                )}
+              </div>
+
+              {/* Dropdown */}
               {item.icon && (
-                <FontAwesomeIcon 
-                  icon={item.icon} 
-                  className="text-gray-500 text-xs"
-                />
+                <div
+                  className={`absolute top-full left-0 gap-10 w-full bg-[#1e1e1e] *:shadow-lg z-20
+                    
+                    ${
+                      open === item.label
+                        ? "scale-y-100 opacity-100"
+                        : "scale-y-0 opacity-0"
+                    }`}
+                  style={{ transformOrigin: "top" }}
+                >
+                  {item.label === "AI Coach" && (
+                    <>
+                      <div className="p-2 flex text-white text-sm hover:bg-gray-800 cursor-pointer justify-center items-center border-t border-b border-[#313131]">
+                        Analyze Team
+                      </div>
+                    </>
+                  )}
+                  {item.label === "Tierlist" && (
+                    <>
+                      <div className="p-2 flex text-white text-sm hover:bg-gray-800 cursor-pointer justify-center items-center border-t border-[#313131]">
+                        Composition
+                      </div>
+                      <div className="p-2 flex text-white text-sm hover:bg-gray-800 cursor-pointer justify-center items-center border-t  border-[#313131]">
+                        Champion
+                      </div>
+                      <div className="p-2 flex text-white text-sm hover:bg-gray-800 cursor-pointer justify-center items-center border-t border-[#313131]">
+                        Trait
+                      </div>
+                      <div className="p-2 flex text-white text-sm hover:bg-gray-800 cursor-pointer justify-center items-center border-t border-b border-[#313131]">
+                        Item
+                      </div>
+                    </>
+                  )}
+                  {item.label === "Simulators" && (
+                    <>
+                      <div 
+                        className="p-2 flex text-white text-sm hover:bg-gray-800 cursor-pointer justify-center items-center border-t border-[#313131]"
+                        onClick={() => window.open("http://localhost:5173/Stratify/simulator/battle", "_blank")}
+                      >
+                        Battle
+                      </div>
+                      <div className="p-2 flex text-white text-sm hover:bg-gray-800 cursor-pointer justify-center items-center border-t border-b border-[#313131]">
+                        Roll
+                      </div>
+                    </>
+                  )}
+                </div>
               )}
             </div>
           ))}
 
           {/* External Links */}
-          <div 
-            onClick={() => window.open('https://paypal.com', '_blank')} 
+          <div
+            onClick={() => window.open("https://paypal.com", "_blank")}
             className="p-2 rounded-full cursor-pointer transition-all duration-200 hover:bg-cyan-500/20 hover:shadow-[0_0_8px_#22d3ee]"
           >
             <FontAwesomeIcon icon={faPaypal} className="text-white text-lg" />
           </div>
-          <div 
-            onClick={() => window.open('https://github.com', '_blank')} 
+          <div
+            onClick={() => window.open("https://github.com", "_blank")}
             className="p-2 rounded-full cursor-pointer transition-all duration-200 hover:bg-cyan-500/20 hover:shadow-[0_0_8px_#22d3ee]"
           >
             <FontAwesomeIcon icon={faGithub} className="text-white text-lg" />

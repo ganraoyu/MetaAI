@@ -94,7 +94,7 @@ export const LogsDisplay = ({
                 </ul>
               </div>
             ) : (
-              <div className="flex items-center justify-center h-full w-full mt-[13rem]">
+              <div className="flex items-center justify-center h-full w-full mt-[11rem]">
                 <p className="text-hexCellComponentsFont text-center text-[0.8rem]">
                   No battle logs available. Start a battle to see logs here.
                 </p>
