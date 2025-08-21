@@ -1,4 +1,4 @@
-const { shortRegionClient } = require('../generalUtils.js');
+const { shortRegionClient } = require('../generalUtils');
 const { regions, regionMapping } = require('../regionData.js');
 
 const fetchSummonerIds = async (rank, division) => {
