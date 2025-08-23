@@ -16,10 +16,8 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const PORT = process.env.PORT || 3000;
 
-// Enable CORS for all routes
 app.use(cors());
 
-// Parse JSON request bodies
 app.use(express.json());
 
 app.use('/player', userRoutes);
