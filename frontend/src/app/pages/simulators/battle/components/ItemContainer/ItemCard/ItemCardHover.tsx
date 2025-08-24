@@ -12,7 +12,7 @@ export const ItemCardHover = ({
   return (
     <div
       className={`absolute bottom-full left-[-7.5rem] -translate-x-1/2 mb-1 z-50
-              w-[17rem] bg-[#1e1e1e] border border-[#464646] shadow-md shadow-gray-700/50 rounded-md
+              w-[17rem] bg-[#161616] border border-[#464646] shadow-md shadow-gray-700/50 rounded-md
               origin-bottom animate-grow-in
               ${className}`}
     >
@@ -124,11 +124,11 @@ export const ItemCardHover = ({
             {(stats?.additionalPercentageHealth || 0) > 0 && (
               <div className="flex items-center gap-1">
                 <img
-                  src="../assets/icons/percentagehealth.png"
+                  src="../assets/icons/health.png"
                   className="h-4 w-4"
                   alt="percentage health"
                 />
-                <p>+{stats.additionalPercentageHealth}</p>
+                <p>+{stats.additionalPercentageHealth}%</p>
               </div>
             )}
           </div>

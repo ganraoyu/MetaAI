@@ -1,14 +1,11 @@
-import { useEffect, useState, RefObject, useLayoutEffect } from "react";
-import { useTFTSetContext } from "../../../../../utilities/TFTSetContext.tsx";
-
-import { combinedItems } from "../../data/items/item-data.tsx";
-import { ItemHover } from "./SlotHover/ItemSlotHover.tsx";
-import { abilityData } from "../../data/SET13/ability-data.ts";
-import { AbilitySlotHover } from "./SlotHover/AbilitySlotHover.tsx";
-import { Star } from "../../utils/Star.tsx";
+import { useState, useLayoutEffect } from "react";
 import { ChampionImage } from "./ChampionCardHover/ChampionImage.tsx";
 import { ChampionStatBars } from "./ChampionCardHover/ChampionStatBars.tsx";
-
+import { ChampionCardHoverProvider } from "./ChampionCardHover/ChampionCardHoverContext.tsx";
+import { ChampionCardHoverProps } from "./types.ts";
+import { ChampionAbilitySlot } from "./ChampionCardHover/ChampionAbilitySlot.tsx";
+import { ChampionItemsSlot } from "./ChampionCardHover/ChampionItemsSlot.tsx";
+import ChampionStatsGrid from "./ChampionCardHover/ChampionStatsGrid.tsx";
 
 const ChampionCardHover = ({
   champion,
@@ -38,26 +35,8 @@ const ChampionCardHover = ({
   starLevel,
   parentRef,
 }: ChampionCardHoverProps) => {
-  console.log("🔍 TRAIT DEBUG:");
-  console.log("trait1:", trait1, "type:", typeof trait1);
-  console.log("trait2:", trait2, "type:", typeof trait2);
-  console.log("trait3:", trait3, "type:", typeof trait3);
-  const { set } = useTFTSetContext();
-
-  const [toggleChampionItemHover, setToggleChampionItemHover] = useState(true);
-  const [abilityHover, setAbilityHover] = useState(false);
-  const [item1Hover, setItem1Hover] = useState(false);
-  const [item2Hover, setItem2Hover] = useState(false);
-  const [item3Hover, setItem3Hover] = useState(false);
-
-  const [position, setPosition] = useState<{
-    top: number;
-    left: number;
-  } | null>(null);
-
-  const item1Data = combinedItems.find((item) => item.name === item1);
-  const item2Data = combinedItems.find((item) => item.name === item2);
-  const item3Data = combinedItems.find((item) => item.name === item3);
+  const [position, setPosition] = useState<{top: number; left: number;} | null>(null);
+  
   useLayoutEffect(() => {
     if (!parentRef.current) return;
 
@@ -83,331 +62,55 @@ const ChampionCardHover = ({
   }, [parentRef]);
 
   return (
-    <div
-      className="fixed bg-[#1e1e1e] text-white rounded-md w-44 h-78 z-50 origin-top-left animate-grow-in border border-[#464646] shadow-md shadow-gray-700/50"
-      style={{
-        top: position?.top ?? 0, // use 0 if position is null
-        left: position?.left ?? 0, // use 0 if position is null
-      }}
-    >
-      {/* Champion Image and Traits */}
-      <ChampionImage
-        champion={champion}
-        cost={cost}
-        starLevel={starLevel}
-        trait1={trait1}
-        trait2={trait2}
-        trait3={trait3}
-      />
-
-      {/* Champion Stats */}
-      <ChampionStatBars
-        currentHp={currentHp}
-        maxHp={maxHp}
-        shield={shield}
-        mana={mana}
-        maxMana={maxMana}
-      />
-
-      {/* Champion Ability/Items Slots */}
-      <div className="flex justify-center gap-2 mt-3">
-        <div
-          onMouseEnter={() => setItem1Hover(true)}
-          onMouseLeave={() => setItem1Hover(false)}
-        >
-          {item1 ? (
-            <img
-              src={combinedItems.find((item) => item.name === item1)?.image}
-              alt={item1}
-              className="h-8 w-8 border-2 border-gray-700"
-            />
-          ) : (
-            <div className="border-2 h-8 w-8 border-gray-700"></div>
-          )}
-        </div>
-        <div
-          onMouseEnter={() => setItem2Hover(true)}
-          onMouseLeave={() => setItem2Hover(false)}
-        >
-          {item2 ? (
-            <img
-              src={combinedItems.find((item) => item.name === item2)?.image}
-              alt={item2}
-              className="h-8 w-8 border-2 border-gray-700"
-            />
-          ) : (
-            <div className="border-2 h-8 w-8 border-gray-700"></div>
-          )}
-        </div>
-        <div
-          onMouseEnter={() => setItem3Hover(true)}
-          onMouseLeave={() => setItem3Hover(false)}
-        >
-          {item3 ? (
-            <img
-              src={combinedItems.find((item) => item.name === item3)?.image}
-              alt={item3}
-              className="h-8 w-8 border-2 border-gray-700"
-            />
-          ) : (
-            <div className="border-2 h-8 w-8 border-gray-700"></div>
-          )}
-        </div>
-      </div>
-
-      {/* Item Hovers */}
-      {abilityHover && champion && (
-        <AbilitySlotHover
-          name={champion}
-          ability={abilityData[champion]?.ability}
-          description={abilityData[champion]?.description}
+    <ChampionCardHoverProvider>
+      <div
+        className="fixed bg-[#1e1e1e] text-white rounded-md w-44 h-78 z-50 origin-top-left animate-grow-in border border-[#464646] shadow-md shadow-gray-700/50"
+        style={{
+          top: position?.top ?? 0, // use 0 if position is null
+          left: position?.left ?? 0, // use 0 if position is null
+        }}
+      >
+        {/* Champion Image and Traits */}
+        <ChampionImage
+          champion={champion}
+          cost={cost || 0}
+          starLevel={starLevel || 1}
+          trait1={trait1}
+          trait2={trait2}
+          trait3={trait3}
         />
-      )}
-      {item1Hover && item1 && (
-        <ItemHover
-          name={item1 || ""}
-          description={item1Data?.description || ""}
-          components={item1Data?.components || []}
-          componentsImages={item1Data?.componentsImages || []}
-          image={item1Data?.image || ""}
-          additionalAttackSpeed={item1Data?.additionalAttackSpeed || 0}
-          additionalAbilityPower={item1Data?.additionalAbilityPower || 0}
-          additionalAttackDamage={item1Data?.additionalAttackDamage || 0}
-          additionalHealth={item1Data?.additionalHealth || 0}
-          additionalPercentageHealth={
-            item1Data?.additionalPercentageHealth || 0
-          }
-          additionalArmor={item1Data?.additionalArmor || 0}
-          additionalMagicResist={item1Data?.additionalMagicResist || 0}
-          additionalStartingMana={item1Data?.additionalStartingMana || 0}
-          additionalManaPerAttack={item1Data?.additionalManaPerAttack || 0}
-          additionalCritChance={item1Data?.additionalCritChance || 0}
-          additionalDamageAmp={item1Data?.additionalDamageAmp || 0}
-          attackSpeedStacking={item1Data?.attackSpeedStacking || false}
-          additionalAttackSpeedPerStack={
-            item1Data?.additionalAttackSpeedPerStack || 0
-          }
-          abilityPowerStacking={item1Data?.abilityPowerStacking || false}
-          abilityPowerStackInterval={item1Data?.abilityPowerStackInterval || 0}
-          additionalAbilityPowerPerStack={
-            item1Data?.additionalAbilityPowerPerStack || 0
-          }
-          abilityCritStrike={item1Data?.abilityCritStrike || false}
-          shield={item1Data?.shield || false}
-          shieldAmount={item1Data?.shieldAmount || 0}
-          shieldDuration={item1Data?.shieldDuration || 0}
-          omnivamp={item1Data?.omnivamp || 0}
-          heal={item1Data?.heal || false}
-          healAmount={item1Data?.healAmount || 0}
-          reduction={item1Data?.reduction || false}
-          reductionAmount={item1Data?.reductionAmount || 0}
-          externalMagicDamage={item1Data?.externalMagicDamage || 0}
-          sunder={item1Data?.sunder || false}
-          sunderRadius={item1Data?.sunderRadius || 0}
-          shred={item1Data?.shred || false}
-          burn={item1Data?.burn || false}
-          wound={item1Data?.wound || false}
-        />
-      )}
-      {item2Hover && item2 && (
-        <ItemHover
-          name={item2 || ""}
-          description={item2Data?.description || ""}
-          components={item2Data?.components || []}
-          componentsImages={item2Data?.componentsImages || []}
-          image={item2Data?.image || ""}
-          additionalAttackSpeed={item2Data?.additionalAttackSpeed || 0}
-          additionalAbilityPower={item2Data?.additionalAbilityPower || 0}
-          additionalAttackDamage={item2Data?.additionalAttackDamage || 0}
-          additionalHealth={item2Data?.additionalHealth || 0}
-          additionalPercentageHealth={
-            item2Data?.additionalPercentageHealth || 0
-          }
-          additionalArmor={item2Data?.additionalArmor || 0}
-          additionalMagicResist={item2Data?.additionalMagicResist || 0}
-          additionalStartingMana={item2Data?.additionalStartingMana || 0}
-          additionalManaPerAttack={item2Data?.additionalManaPerAttack || 0}
-          additionalCritChance={item2Data?.additionalCritChance || 0}
-          additionalDamageAmp={item2Data?.additionalDamageAmp || 0}
-          attackSpeedStacking={item2Data?.attackSpeedStacking || false}
-          additionalAttackSpeedPerStack={
-            item2Data?.additionalAttackSpeedPerStack || 0
-          }
-          abilityPowerStacking={item2Data?.abilityPowerStacking || false}
-          abilityPowerStackInterval={item2Data?.abilityPowerStackInterval || 0}
-          additionalAbilityPowerPerStack={
-            item2Data?.additionalAbilityPowerPerStack || 0
-          }
-          abilityCritStrike={item2Data?.abilityCritStrike || false}
-          shield={item2Data?.shield || false}
-          shieldAmount={item2Data?.shieldAmount || 0}
-          shieldDuration={item2Data?.shieldDuration || 0}
-          omnivamp={item2Data?.omnivamp || 0}
-          heal={item2Data?.heal || false}
-          healAmount={item2Data?.healAmount || 0}
-          reduction={item2Data?.reduction || false}
-          reductionAmount={item2Data?.reductionAmount || 0}
-          externalMagicDamage={item2Data?.externalMagicDamage || 0}
-          sunder={item2Data?.sunder || false}
-          sunderRadius={item2Data?.sunderRadius || 0}
-          shred={item2Data?.shred || false}
-          burn={item2Data?.burn || false}
-          wound={item2Data?.wound || false}
-        />
-      )}
-      {item3Hover && item3 && (
-        <ItemHover
-          name={item3 || ""}
-          description={item3Data?.description || ""}
-          components={item3Data?.components || []}
-          componentsImages={item3Data?.componentsImages || []}
-          image={item3Data?.image || ""}
-          additionalAttackSpeed={item3Data?.additionalAttackSpeed || 0}
-          additionalAbilityPower={item3Data?.additionalAbilityPower || 0}
-          additionalAttackDamage={item3Data?.additionalAttackDamage || 0}
-          additionalHealth={item3Data?.additionalHealth || 0}
-          additionalPercentageHealth={
-            item3Data?.additionalPercentageHealth || 0
-          }
-          additionalArmor={item3Data?.additionalArmor || 0}
-          additionalMagicResist={item3Data?.additionalMagicResist || 0}
-          additionalStartingMana={item3Data?.additionalStartingMana || 0}
-          additionalManaPerAttack={item3Data?.additionalManaPerAttack || 0}
-          additionalCritChance={item3Data?.additionalCritChance || 0}
-          additionalDamageAmp={item3Data?.additionalDamageAmp || 0}
-          attackSpeedStacking={item3Data?.attackSpeedStacking || false}
-          additionalAttackSpeedPerStack={
-            item3Data?.additionalAttackSpeedPerStack || 0
-          }
-          abilityPowerStacking={item3Data?.abilityPowerStacking || false}
-          abilityPowerStackInterval={item3Data?.abilityPowerStackInterval || 0}
-          additionalAbilityPowerPerStack={
-            item3Data?.additionalAbilityPowerPerStack || 0
-          }
-          abilityCritStrike={item3Data?.abilityCritStrike || false}
-          shield={item3Data?.shield || false}
-          shieldAmount={item3Data?.shieldAmount || 0}
-          shieldDuration={item3Data?.shieldDuration || 0}
-          omnivamp={item3Data?.omnivamp || 0}
-          heal={item3Data?.heal || false}
-          healAmount={item3Data?.healAmount || 0}
-          reduction={item3Data?.reduction || false}
-          reductionAmount={item3Data?.reductionAmount || 0}
-          externalMagicDamage={item3Data?.externalMagicDamage || 0}
-          sunder={item3Data?.sunder || false}
-          sunderRadius={item3Data?.sunderRadius || 0}
-          shred={item3Data?.shred || false}
-          burn={item3Data?.burn || false}
-          wound={item3Data?.wound || false}
-        />
-      )}
 
-      {/* Stats */}
-      <div className="px-2 py-3 text-[0.7rem]">
-        <div className="grid grid-cols-5 gap-0.5 text-gray-300">
-          {/* First row of stats */}
-          <div className="flex flex-col items-center">
-            <img
-              src="../assets/icons/attack.png"
-              className="h-4 w-4 mb-0.5"
-              alt="attack"
-            />
-            <p className="text-center w-full truncate">
-              {Math.round(attackDamage) || 0}
-            </p>
-          </div>
-          <div className="flex flex-col items-center">
-            <img
-              src="../assets/icons/abilitypower.png"
-              className="h-4 w-4 mb-0.5"
-              alt="abilityPower"
-            />
-            <p className="text-center w-full truncate">
-              {Math.round(abilityPower) || 0}
-            </p>
-          </div>
-          <div className="flex flex-col items-center">
-            <img
-              src="../assets/icons/armor.png"
-              className="h-4 w-4 mb-0.5"
-              alt="armor"
-            />
-            <p className="text-center w-full truncate">
-              {Math.round(armor) || 0}
-            </p>
-          </div>
-          <div className="flex flex-col items-center">
-            <img
-              src="../assets/icons/magicresist.png"
-              className="h-4 w-4 mb-0.5"
-              alt="magicResist"
-            />
-            <p className="text-center w-full truncate">
-              {Math.round(magicResist) || 0}
-            </p>
-          </div>
-          <div className="flex flex-col items-center">
-            <img
-              src="../assets/icons/attackspeed.png"
-              className="h-4 w-4 mb-0.5"
-              alt="attackSpeed"
-            />
-            <p className="text-center w-full truncate">
-              {attackSpeed.toFixed(2) || 0}
-            </p>
-          </div>
+        {/* Champion Stats */}
+        <ChampionStatBars
+          currentHp={currentHp || 0}
+          maxHp={maxHp || 0}
+          shield={shield || 0}
+          mana={mana || 0}
+          maxMana={maxMana || 0}
+        />
+
+        {/* Champion Ability/Items Slots */}
+        <div className="flex justify-center gap-2 mt-3">
+          <ChampionAbilitySlot champion={champion} />
+          <ChampionItemsSlot item1={item1} item2={item2} item3={item3} />
         </div>
-        <div className="grid grid-cols-5 gap-0.5 text-gray-300 mt-1">
-          {/* Second row of stats */}
-          <div className="flex flex-col items-center">
-            <img
-              src="../assets/icons/criticalstrikechance.png"
-              className="h-4 w-4 mb-0.5"
-              alt="criticalstrikechance"
-            />
-            <p className="text-center w-full truncate">{critChance || 0}%</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <img
-              src="../assets/icons/criticaldamage.svg"
-              className="h-4 w-4 mb-0.5"
-              alt="critDamage"
-            />
-            <p className="text-center w-full truncate">{critDamage || 0}0%</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <img
-              src="../assets/icons/omnivamp.png"
-              className="h-4 w-4 mb-0.5"
-              alt="omnivamp"
-            />
-            <p className="text-center w-full truncate">
-              {Math.round(omnivamp) || 0}%
-            </p>
-          </div>
-          <div className="flex flex-col items-center">
-            <img
-              src="../assets/icons/damageamp.png"
-              className="h-4 w-4 mb-0.5"
-              alt="damageAmp"
-            />
-            <p className="text-center w-full truncate">
-              {Math.round(damageAmp) || 0}%
-            </p>
-          </div>
-          <div className="flex flex-col items-center">
-            <img
-              src="../assets/icons/range.png"
-              className="h-4 w-4 mb-0.5"
-              alt="range"
-            />
-            <p className="text-center w-full truncate">
-              {Math.round(range) || 0}
-            </p>
-          </div>
-        </div>
-      </div>
-      <style>{`
+
+        {/* Stats */}
+        <ChampionStatsGrid 
+          armor={armor || 0}
+          magicResist={magicResist || 0}
+          attackDamage={attackDamage || 0}
+          attackSpeed={attackSpeed || 0}
+          critChance={critChance || 0}
+          critDamage={critDamage || 0}
+          abilityPower={abilityPower || 0}
+          damageAmp={damageAmp || 0}
+          omnivamp={omnivamp || 0}
+          reduction={reduction || 0}
+          range={range || 0}
+        />
+        
+        <style>{`
         .text-outline {
           text-shadow: 
             -1px -1px 0 #000,
@@ -445,7 +148,8 @@ const ChampionCardHover = ({
           animation: growOut 0.2s ease-out forwards;
         }
       `}</style>
-    </div>
+      </div>
+    </ChampionCardHoverProvider>
   );
 };
 

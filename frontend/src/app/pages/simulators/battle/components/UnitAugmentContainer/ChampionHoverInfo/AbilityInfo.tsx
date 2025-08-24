@@ -11,7 +11,7 @@ export const AbilityInfo = ({set, imageAbilityName, abilityName, abilityDescript
   return (
     <div>
       {/* Ability Info */}
-      <div className="flex items-center justify-between p-[0.5rem] bg-[#1e1924] rounded-b-md">
+      <div className="flex items-center justify-between p-[0.5rem] bg-[#161616] rounded-b-md">
         <div className="flex items-center gap-[0.5rem]">
           <img
             src={`../assets/${set}/abilities/${imageAbilityName}.png`}

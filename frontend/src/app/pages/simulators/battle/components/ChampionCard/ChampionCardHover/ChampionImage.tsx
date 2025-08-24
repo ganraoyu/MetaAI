@@ -1,7 +1,20 @@
 import { Star } from "../../../utils/Star";
 import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
 import { ChampionImageProps } from "./types";
+import { getBorderColor, getCostGradient } from "./utils";
 
+/**
+ * ChampionImage component renders a champion card with its splash image, star level, traits, and cost.
+ *
+ * @param {string} champion - The name of the champion.
+ * @param {number} cost - The cost of the champion (1-6). Used for border and gradient styling.
+ * @param {number} starLevel - The star level of the champion (1-3).
+ * @param {string} trait1 - The first trait of the champion.
+ * @param {string} trait2 - The second trait of the champion.
+ * @param {string} trait3 - The third trait of the champion.
+ *
+ * @returns {JSX.Element} The rendered champion card.
+*/
 export const ChampionImage = ({
   champion,
   cost,
@@ -11,26 +24,11 @@ export const ChampionImage = ({
   trait3,
 }: ChampionImageProps) => {
   const { set } = useTFTSetContext();
+
   return (
     <div className="relative w-44">
       {/* Champion Image */}
-      <div
-        className={`relative border rounded-t-md ${
-          cost === 1
-            ? "border-gray-400"
-            : cost === 2
-            ? "border-green-500"
-            : cost === 3
-            ? "border-blue-500"
-            : cost === 4
-            ? "border-purple-700"
-            : cost === 5
-            ? "border-yellow-500"
-            : cost === 6
-            ? "border-orange-500"
-            : "border-red-500"
-        }`}
-      >
+      <div className={`relative border rounded-t-md ${getBorderColor(cost)}`}>
         <img
           src={`../assets/${set}/champions/splash/${champion}.png`}
           alt={champion}
@@ -61,7 +59,9 @@ export const ChampionImage = ({
                     className="h-4 w-4"
                     alt={trait}
                   />
-                  <p className="text-white text-[0.7rem] text-outline">{trait}</p>
+                  <p className="text-white text-[0.7rem] text-outline">
+                    {trait}
+                  </p>
                 </div>
               )
           )}
@@ -70,19 +70,9 @@ export const ChampionImage = ({
 
       {/* Cost */}
       <div
-        className={`absolute top-[5.2rem] right-0 rounded-tl-md px-1.5 text-white font-bold flex items-center gap-1 bg-gradient-to-r ${
-          cost === 1
-            ? "from-gray-600 to-gray-400"
-            : cost === 2
-            ? "from-green-700 to-green-500"
-            : cost === 3
-            ? "from-blue-700 to-blue-500"
-            : cost === 4
-            ? "from-purple-900 to-purple-400"
-            : cost === 5
-            ? "from-yellow-600 to-yellow-400"
-            : "from-red-700 to-red-500"
-        }`}
+        className={`absolute top-[5.2rem] right-0 rounded-tl-md px-1.5 text-white font-bold flex items-center gap-1 bg-gradient-to-r ${getCostGradient(
+          cost
+        )} border-b border-r`}
       >
         <img src="../assets/icons/coin.png" className="h-2 w-2" />
         <p className="text-xs text-outline">{cost || 1}</p>

@@ -1,6 +1,6 @@
 import { RefObject } from "react";
 
-export interface ChampionCardProps {
+export interface ChampionCardHoverProps {
   champion: string;
   cost?: number;
   currentHp?: number;

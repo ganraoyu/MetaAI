@@ -1,44 +1,6 @@
 import { combinedItems } from "../../data/item-data"
 import { useState } from "react"
-
-interface ItemData {
-  name: string;
-  description: string;
-  components: string[];
-  componentsImages: string[];
-  image: string;
-  additionalAttackSpeed?: number;
-  additionalAbilityPower?: number;
-  additionalAttackDamage?: number;
-  additionalHealth?: number;
-  additionalPercentageHealth?: number;
-  additionalArmor?: number;
-  additionalMagicResist?: number;
-  additionalStartingMana?: number;
-  additionalManaPerAttack?: number;
-  additionalCritChance?: number;
-  additionalDamageAmp?: number;
-  attackSpeedStacking?: boolean;
-  additionalAttackSpeedPerStack?: number;
-  abilityPowerStacking?: boolean;
-  abilityPowerStackInterval?: number;
-  additionalAbilityPowerPerStack?: number;
-  abilityCritStrike?: boolean;
-  shield?: boolean;
-  shieldAmount?: number;
-  shieldDuration?: number;
-  omnivamp?: number;
-  heal?: boolean;
-  healAmount?: number;
-  reduction?: boolean;
-  reductionAmount?: number;
-  externalMagicDamage?: number;
-  sunder?: boolean;
-  sunderRadius?: number;
-  shred?: boolean;
-  burn?: boolean;
-  wound?: boolean;
-}
+import { ItemSlotHoverProps } from "./types";
 
 export const ItemHover = ({
   name,
@@ -77,9 +39,9 @@ export const ItemHover = ({
   shred,
   burn,
   wound
-}: ItemData) => {
+}: ItemSlotHoverProps) => {
   return (
-    <div className="bg-gray-800 absolute mt-3 z-4 border border-gray-700 rounded-md shadow-sm shadow-gray-700 w-60">
+    <div className="bg-[#161616] z-4 border border-gray-700 rounded-md shadow-sm shadow-gray-700 w-60">
       {/* Stats */}
       <div className="text-xs p-2 flex flex-row items-center justify-between">
         <div className="flex flex-col "> 
@@ -148,8 +110,8 @@ export const ItemHover = ({
             )}
             {(additionalPercentageHealth || 0) > 0 && (
               <div className="flex items-center gap-1">
-                <img src='../assets/icons/percentagehealth.png' className="h-4 w-4" alt="percentage health" />
-                <p>+{additionalPercentageHealth}</p>
+                <img src='../assets/icons/health.png' className="h-4 w-4" alt="percentage health" />
+                <p>+{additionalPercentageHealth}%</p>
               </div>
             )}
           </div>

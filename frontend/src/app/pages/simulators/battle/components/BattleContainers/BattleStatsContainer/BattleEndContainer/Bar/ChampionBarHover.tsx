@@ -32,10 +32,10 @@ const getDamageTextColor = (damageType: string): string => {
 export const ChampionBarHover = ({ champion }: ChampionProps): JSX.Element => {
   return (
     <div
-      className="absolute bg-[#1e1e1e] w-40 h-[9.75rem] z-50 pointer-events-none px-3 
+      className="absolute bg-[#161616] w-40 h-[9.75rem] z-50 pointer-events-none px-3 
                 border border-[#464646] shadow-md shadow-gray-700/50 rounded-md"
     >
-      {/* Champion name */}
+       {/* Champion name */}
       <div className="font-semibold mt-3 mb-1 text-left text-[#ffffff]">{champion.name}</div>
 
       {/* Top horizontal line */}
