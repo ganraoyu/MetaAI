@@ -1,34 +1,7 @@
 import { useState, useRef } from 'react';
 import { useTFTSetContext } from '../../../../../utilities/TFTSetContext';
 import ChampionCardHover from './ChampionCardHover';
-
-interface ChampionCardProps {
-  champion: string;
-  cost?: number;
-  currentHp?: number;
-  maxHp?: number;
-  mana?: number;
-  maxMana?: number;
-  shield?: number;
-  trait1?: string;
-  trait2?: string;
-  trait3?: string;
-  item1?: string;
-  item2?: string;
-  item3?: string;
-  armor?: number;
-  magicResist?: number;
-  attackDamage?: number;
-  attackSpeed?: number;
-  critChance?: number;
-  critDamage?: number;
-  abilityPower?: number;
-  damageAmp?: number;
-  omnivamp?: number;
-  reduction?: number;
-  range?: number;
-  starLevel?: number;
-}
+import { ChampionCardProps } from './types';
 
 export const ChampionCard = ({
   champion = '',
@@ -61,6 +34,7 @@ export const ChampionCard = ({
   const [toggleChampionCardHover, setToggleChampionCardHover] = useState(false);
   const [clickChampionCardHover, setClickChampionCardHover] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const leaveTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const hpPercentage = (currentHp / maxHp) * 100;
   const hpColor =
@@ -74,14 +48,16 @@ export const ChampionCard = ({
     <div
       ref={cardRef}
       className="flex flex-col items-center justify-center rounded-md relative cursor-pointer w-14 h-20"
-      onMouseEnter={() => setToggleChampionCardHover(true)}
+      onMouseEnter={() => {
+        if (leaveTimeout.current) clearTimeout(leaveTimeout.current);
+        setToggleChampionCardHover(true);
+      }}
       onMouseLeave={() => {
-        setTimeout(() => setToggleChampionCardHover(false), 100);
+        leaveTimeout.current = setTimeout(() => setToggleChampionCardHover(false), 50);
       }}
       onClick={() => setClickChampionCardHover(!clickChampionCardHover)}
     >
       <div className="flex flex-col items-center">
-         
         {/* Champion Image */}
         <div className="relative w-10 h-10">
           <img
@@ -105,7 +81,7 @@ export const ChampionCard = ({
         </div>
       </div>
 
-      {(toggleChampionCardHover || clickChampionCardHover) && (
+      {(toggleChampionCardHover || clickChampionCardHover) && cardRef.current && (
         <ChampionCardHover
           champion={champion}
           trait1={trait1}
@@ -147,7 +123,6 @@ export const ChampionCard = ({
             opacity: 0;
           }
         }
-
         .animate-grow-out {
           animation: growOut 0.2s ease-out forwards;
         }

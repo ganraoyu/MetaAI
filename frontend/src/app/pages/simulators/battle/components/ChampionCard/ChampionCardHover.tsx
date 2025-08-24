@@ -1,4 +1,4 @@
-import { useEffect, useState, RefObject } from "react";
+import { useEffect, useState, RefObject, useLayoutEffect } from "react";
 import { useTFTSetContext } from "../../../../../utilities/TFTSetContext.tsx";
 
 import { combinedItems } from "../../data/items/item-data.tsx";
@@ -7,34 +7,6 @@ import { abilityData } from "../../data/SET13/ability-data.ts";
 import { AbilitySlotHover } from "./SlotHover/AbilitySlotHover.tsx";
 import { Star } from "../../utils/Star.tsx";
 
-interface ChampionCardHoverProps {
-  champion: string;
-  cost: number;
-  currentHp: number;
-  maxHp: number;
-  mana: number;
-  maxMana: number;
-  shield: number;
-  trait1: string;
-  trait2: string;
-  trait3: string;
-  item1?: string;
-  item2?: string;
-  item3?: string;
-  armor: number;
-  magicResist: number;
-  attackDamage: number;
-  attackSpeed: number;
-  critChance: number;
-  critDamage: number;
-  abilityPower: number;
-  damageAmp: number;
-  omnivamp: number;
-  reduction: number;
-  range: number;
-  starLevel?: number;
-  parentRef: RefObject<HTMLDivElement>;
-}
 
 const ChampionCardHover = ({
   champion,
@@ -76,52 +48,44 @@ const ChampionCardHover = ({
   const [item2Hover, setItem2Hover] = useState(false);
   const [item3Hover, setItem3Hover] = useState(false);
 
-  const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [position, setPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
 
   const item1Data = combinedItems.find((item) => item.name === item1);
   const item2Data = combinedItems.find((item) => item.name === item2);
   const item3Data = combinedItems.find((item) => item.name === item3);
+  useLayoutEffect(() => {
+    if (!parentRef.current) return;
 
-  useEffect(() => {
-    if (parentRef.current) {
-      const updatePosition = () => {
-        const rect = parentRef.current?.getBoundingClientRect();
-        if (!rect) return;
+    const viewportWidth = window.innerWidth;
 
-        const viewportWidth = window.innerWidth;
+    const calculatePosition = () => {
+      const rect = parentRef.current?.getBoundingClientRect();
+      if (!rect) return; // extra guard
+      let left = rect.right + 10;
+      if (left + 180 > viewportWidth) left = rect.left - 180;
+      setPosition({ top: rect.top, left: Math.max(10, left) });
+    };
 
-        let left = rect.right + 10;
+    calculatePosition(); // initial position
 
-        if (left + 180 > viewportWidth) {
-          left = rect.left - 180;
-        }
+    window.addEventListener("scroll", calculatePosition);
+    window.addEventListener("resize", calculatePosition);
 
-        setPosition({
-          top: rect.top,
-          left: Math.max(10, left),
-        });
-      };
-
-      // Initial position
-      updatePosition();
-
-      // Update position on scroll
-      window.addEventListener("scroll", updatePosition);
-      window.addEventListener("resize", updatePosition);
-
-      return () => {
-        window.removeEventListener("scroll", updatePosition);
-        window.removeEventListener("resize", updatePosition);
-      };
-    }
+    return () => {
+      window.removeEventListener("scroll", calculatePosition);
+      window.removeEventListener("resize", calculatePosition);
+    };
   }, [parentRef]);
 
   return (
     <div
       className="fixed bg-[#1e1e1e] text-white rounded-md w-44 h-78 z-50 origin-top-left animate-grow-in border border-[#464646] shadow-md shadow-gray-700/50"
       style={{
-        top: `${position.top}px`,
-        left: `${position.left}px`,
+        top: position?.top ?? 0, // use 0 if position is null
+        left: position?.left ?? 0, // use 0 if position is null
       }}
     >
       <div
