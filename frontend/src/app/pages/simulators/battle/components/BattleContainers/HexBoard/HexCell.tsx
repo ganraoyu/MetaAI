@@ -45,7 +45,6 @@ export const HexCell: React.FC<HexCellProps> = ({ cellId }) => {
     placeChampion,
     removeChampion,
     getChampion,
-    moveChampion,
     setChampionStarLevel,
     addItemToChampion,
     removeItemFromChampion

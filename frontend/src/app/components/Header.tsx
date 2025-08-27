@@ -10,7 +10,7 @@ const navigationItems: NavProps[] = [
   { label: "Guide" }, 
   { label: "Builder" },
   { label: "AI Coach", endPoint: "/coach" },
-  { label: "Tierlist", icon: faCaretDown },
+  { label: "Stats", icon: faCaretDown },
   { label: "Simulators", icon: faCaretDown },
   { label: "About", icon: faCaretDown },
   { label: "Info" },
@@ -74,7 +74,7 @@ const Header = () => {
                     }`}
                   style={{ transformOrigin: "top" }}
                 >
-                  {item.label === "Tierlist" && (
+                  {item.label === "Stats" && (
                     <>
                       <div className="p-2 flex text-white text-sm hover:bg-gray-800 cursor-pointer justify-center items-center border-t border-[#313131]">
                         Composition

@@ -19,7 +19,16 @@ import { HexCell } from "./HexCell";
  */
 
 export const HexBoard = (): JSX.Element => {
-  const { playerChampionArray, opponentChampionArray, playerChampionCostCount, opponentChampionCostCount } = useHexBoardContext();
+  const { 
+    playerSunder,
+    playerShred,
+    opponentSunder,
+    opponentShred,
+    playerChampionArray, 
+    opponentChampionArray, 
+    playerChampionCostCount, 
+    opponentChampionCostCount 
+  } = useHexBoardContext();
   return (
     <div className="flex flex-col items-center justify-center space-y-8">
       {/* Opponent Board */}
@@ -52,11 +61,11 @@ export const HexBoard = (): JSX.Element => {
 
           {/* Top row: abilities */}
           <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-1">
-              <img src="../assets/icons/sunder.png" className="w-4 h-4" />
+            <div className={`flex items-center gap-1 mb-[-0.4rem] ${playerSunder ? "" : "opacity-30"}`}>
+              <img src="../assets/icons/sunder.png" className="w-4 h-4"/>
               <p className="text-[0.8rem]">Sunder</p>
             </div>
-            <div className="flex items-center gap-1">
+            <div className={`flex items-center gap-1 ${playerShred ? "" : "opacity-30"}`}>
               <img src="../assets/icons/shred.png" className="w-4 h-4" />
               <p className="text-[0.8rem]">Shred</p>
             </div>
@@ -81,11 +90,11 @@ export const HexBoard = (): JSX.Element => {
           </div>
 
           <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-1">
+            <div className={`flex items-center gap-1 ${opponentSunder ? "" : "opacity-30"}`}>
               <img src="../assets/icons/shred.png" className="w-4 h-4" />
               <p className="text-[0.8rem]">Shred</p>
             </div>
-            <div className="flex items-center gap-1">
+            <div className={`flex items-center gap-1 mt-[-0.4rem] ${opponentShred ? "" : "opacity-30"}`}>
               <img src="../assets/icons/sunder.png" className="w-4 h-4" />
               <p className="text-[0.8rem]">Sunder</p>
             </div>

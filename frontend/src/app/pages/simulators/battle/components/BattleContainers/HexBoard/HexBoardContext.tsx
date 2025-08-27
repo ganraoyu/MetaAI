@@ -81,6 +81,11 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
   const [orderedPlayerTraits, setOrderedPlayerTraits] = useState<TraitCountEntry[]>([])
   const [orderedOpponentTraits, setOrderedOpponentTraits] = useState<TraitCountEntry[]>([])
 
+  const [playerSunder, setPlayerSunder] = useState<boolean>(false);
+  const [playerShred, setPlayerShred] = useState<boolean>(false); 
+  
+  const [opponentSunder, setOpponentSunder] = useState<boolean>(false);
+  const [opponentShred, setOpponentShred] = useState<boolean>(false); 
 
   useTraitCountingEffect(
     boardArray,
@@ -268,6 +273,14 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
         setChampionStarLevel,
         addItemToChampion,
         removeItemFromChampion,
+        playerSunder,
+        setPlayerSunder,
+        playerShred,
+        setPlayerShred,
+        opponentSunder,
+        setOpponentSunder,
+        opponentShred,
+        setOpponentShred
       }}
     >
       {children}

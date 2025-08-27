@@ -38,7 +38,19 @@ export interface HexBoardContextType {
   boardState: BoardState;
   boardArray: ChampionPosition[];
 
-  playerTraitsObj: TraitCountMap;
+  playerSunder: boolean;
+  setPlayerSunder: React.Dispatch<React.SetStateAction<boolean>>;
+  
+  playerShred: boolean;
+  setPlayerShred: React.Dispatch<React.SetStateAction<boolean>>;
+
+  opponentSunder: boolean;
+  setOpponentSunder: React.Dispatch<React.SetStateAction<boolean>>;
+  
+  opponentShred: boolean;
+  wsetOpponentShred: React.Dispatch<React.SetStateAction<boolean>>;
+
+  playerTraitsObj: TraitCountMap; 
   opponentTraitsObj: TraitCountMap;
 
   playerChampionArray: ChampionMap[];

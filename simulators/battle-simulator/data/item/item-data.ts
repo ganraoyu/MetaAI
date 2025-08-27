@@ -133,7 +133,7 @@ export const combinedItems = [
         name: 'Bramble Vest',
         description: 'Gain 7% max health. Take 8% reduced damage from attacks. When struck by any attack, deal 100 magic damage to all adjacent enemies. (Cooldown: 2 seconds)',
         additionalArmor: 60, // 60 more armor
-        additonalPercentageHealth: 1.07, // 7% more health
+        additionalPercentageHealth: 1.07, // 7% more health
         reduction: true,
         reductionAmount: 8, // 8% reduced damage
         externalMagicDamage: 100

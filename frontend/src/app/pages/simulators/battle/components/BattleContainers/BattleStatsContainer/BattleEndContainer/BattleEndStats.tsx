@@ -6,7 +6,6 @@ export const BattleEndStats = () => {
   const {
     fetchBattleStats,
     battleEndStats,
-    fetchBattleHistory,
     battleHistory,
   } = useBattleContext();
 
