@@ -1,6 +1,7 @@
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw"; // allows HTML + formatting in Markdown
 import { useChatContext } from "./ChatContext";
+import { InitialChatWindow } from "./InitialChatWindow";
 
 export const ChatWindow = () => {
   const { messages } = useChatContext();
@@ -10,6 +11,7 @@ export const ChatWindow = () => {
       className="overflow-y-auto p-4 screenbar-hide"
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
+      <InitialChatWindow />
       {messages.map((message, index) => {
         const isUser = message.role === "user";
         return (

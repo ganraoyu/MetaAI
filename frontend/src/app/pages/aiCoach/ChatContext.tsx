@@ -17,7 +17,7 @@ const ChatContext = createContext<ChatContextType | null>(null);
 
 interface ChatProviderProps {
   children: ReactNode;
-}
+};
 
 export const ChatProvider = ({ children }: ChatProviderProps): JSX.Element => {
   const [messages, setMessages] = useState<MessageType[]>([]);
@@ -36,7 +36,7 @@ export const ChatProvider = ({ children }: ChatProviderProps): JSX.Element => {
     } catch (err) {
       console.error(err);
       addMessage("ai", "Error: Could not get response from backend.");
-    }
+    };
   };
 
   return (
