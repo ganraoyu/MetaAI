@@ -28,9 +28,8 @@ app.use('/battle-simulator', battleSimulatorRoutes);
 app.use('/ai-coach', aiCoachRoutes);
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});     
+  console.log(`Server running on port ${PORT}`);
+});
 
-console.log('RIOT-API-KEY', process.env.RIOT_API_KEY)
-console.log('OPENAI-API-KEY', process.env.OPENAI_API_KEY)
-
+console.log('RIOT-API-KEY', process.env.RIOT_API_KEY);
+console.log('OPENAI-API-KEY', process.env.OPENAI_API_KEY);

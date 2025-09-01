@@ -14,7 +14,7 @@ const getPlayerPuuid = async (req: Request, res: Response): Promise<void> => {
   } catch (error: any) {
     console.error(
       'Error fetching player PUUID:',
-      error.response ? error.response.data : error.message
+      error.response ? error.response.data : error.message,
     );
     res.status(500).send('Error fetching player PUUID');
   }
@@ -34,7 +34,7 @@ const getPlayerMatches = async (req: Request, res: Response): Promise<void> => {
   } catch (error: any) {
     console.error(
       'Error fetching player matches:',
-      error.response ? error.response.data : error.message
+      error.response ? error.response.data : error.message,
     );
     res.status(500).send('Error fetching player matches');
   }

@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from "react";
-import { ChampionCard } from "../ChampionCard/ChampionCard.tsx";
-import { DamageHover } from "./CardHovers/DamageAbilityHover.tsx";
+import { useState, useRef, useEffect } from 'react';
+import { ChampionCard } from '../ChampionCard/ChampionCard.tsx';
+import { DamageHover } from './CardHovers/DamageAbilityHover.tsx';
 
 export const Ability = ({ log, index }: { log: any; index: number }) => {
   const [hoveredDamageId, setHoveredDamageId] = useState<number | null>(null);
@@ -22,11 +22,11 @@ export const Ability = ({ log, index }: { log: any; index: number }) => {
   useEffect(() => {
     if (hoveredDamageId === index || clickedDamageId === index) {
       updatePosition();
-      window.addEventListener("scroll", updatePosition);
-      window.addEventListener("resize", updatePosition);
+      window.addEventListener('scroll', updatePosition);
+      window.addEventListener('resize', updatePosition);
       return () => {
-        window.removeEventListener("scroll", updatePosition);
-        window.removeEventListener("resize", updatePosition);
+        window.removeEventListener('scroll', updatePosition);
+        window.removeEventListener('resize', updatePosition);
       };
     }
   }, [hoveredDamageId, clickedDamageId, index]);
@@ -36,9 +36,7 @@ export const Ability = ({ log, index }: { log: any; index: number }) => {
       <div className="bg-gradient-to-r from-blue-950/50 to-blue-800/30 border-l-4 border-blue-700 rounded-lg p-3 shadow-lg shadow-blue-900/40">
         {/* Timestamp and damage row */}
         <div className="flex justify-between items-center cursor-pointer select-none">
-          <span className="text-xs text-gray-400 tracking-wide">
-            [{log.formattedTime}]
-          </span>
+          <span className="text-xs text-gray-400 tracking-wide">[{log.formattedTime}]</span>
 
           {/* Damage value */}
           <span
@@ -55,9 +53,7 @@ export const Ability = ({ log, index }: { log: any; index: number }) => {
                 style={{ top: `${position.top}px`, left: `${position.left}px` }}
               >
                 <DamageHover
-                  rawDamage={
-                    -Math.round(log.details.attacker.abilityPower) || 0
-                  }
+                  rawDamage={-Math.round(log.details.attacker.abilityPower) || 0}
                   finalDamage={-Math.round(log.details.damage) || 0}
                   armorReduction={{
                     percentage: Math.round(log.details.target.armor || 0),
@@ -68,7 +64,7 @@ export const Ability = ({ log, index }: { log: any; index: number }) => {
                     value: log.details.target.magicResist || 0,
                   }}
                   otherModifiers={log.details.modifiers || []}
-                  damageType={log.details.damageType || "magic"}
+                  damageType={log.details.damageType || 'magic'}
                 />
               </div>
             )}
@@ -88,12 +84,12 @@ export const Ability = ({ log, index }: { log: any; index: number }) => {
               mana={log.details.attacker.mana || 0}
               maxMana={log.details.attacker.abilityManaCost || 100}
               shield={log.details.attacker.shield || 0}
-              trait1={log.details.attacker.traits?.[0] || ""}
-              trait2={log.details.attacker.traits?.[1] || ""}
-              trait3={log.details.attacker.traits?.[2] || ""}
-              item1={log.details.attacker.items?.[0]?.name || ""}
-              item2={log.details.attacker.items?.[1]?.name || ""}
-              item3={log.details.attacker.items?.[2]?.name || ""}
+              trait1={log.details.attacker.traits?.[0] || ''}
+              trait2={log.details.attacker.traits?.[1] || ''}
+              trait3={log.details.attacker.traits?.[2] || ''}
+              item1={log.details.attacker.items?.[0]?.name || ''}
+              item2={log.details.attacker.items?.[1]?.name || ''}
+              item3={log.details.attacker.items?.[2]?.name || ''}
               armor={log.details.attacker.armor || 0}
               magicResist={log.details.attacker.magicResist || 0}
               attackDamage={log.details.attacker.attackDamage || 0}
@@ -111,14 +107,10 @@ export const Ability = ({ log, index }: { log: any; index: number }) => {
           {/* Ability icon + name */}
           <div className="flex flex-col justify-center items-center">
             <div className="w-8 h-8 rounded-full bg-blue-600/40 flex items-center justify-center shadow-lg">
-              <img
-                src="../assets/icons/abilitypower.png"
-                className="w-5 h-5"
-                alt="Ability icon"
-              />
+              <img src="../assets/icons/abilitypower.png" className="w-5 h-5" alt="Ability icon" />
             </div>
             <p className="text-[0.8rem] font-bold text-blue-600 min-h-[1.25rem] mt-1 text-center break-words max-w-[6rem]">
-              {log.details.ability || "Ability"}
+              {log.details.ability || 'Ability'}
             </p>
           </div>
 
@@ -133,12 +125,12 @@ export const Ability = ({ log, index }: { log: any; index: number }) => {
               mana={log.details.target.mana || 0}
               maxMana={log.details.target.abilityManaCost || 100}
               shield={log.details.target.shield || 0}
-              trait1={log.details.target.traits?.[0] || ""}
-              trait2={log.details.target.traits?.[1] || ""}
-              trait3={log.details.target.traits?.[2] || ""}
-              item1={log.details.target.items?.[0]?.name || ""}
-              item2={log.details.target.items?.[1]?.name || ""}
-              item3={log.details.target.items?.[2]?.name || ""}
+              trait1={log.details.target.traits?.[0] || ''}
+              trait2={log.details.target.traits?.[1] || ''}
+              trait3={log.details.target.traits?.[2] || ''}
+              item1={log.details.target.items?.[0]?.name || ''}
+              item2={log.details.target.items?.[1]?.name || ''}
+              item3={log.details.target.items?.[2]?.name || ''}
               armor={log.details.target.armor || 0}
               magicResist={log.details.target.magicResist || 0}
               attackDamage={log.details.target.attackDamage || 0}

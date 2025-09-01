@@ -3,7 +3,7 @@ const GuidePage = () => {
     <div>
       <p className="">HIII</p>
     </div>
-  )
-}
+  );
+};
 
-export default GuidePage
+export default GuidePage;

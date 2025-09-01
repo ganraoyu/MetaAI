@@ -36,12 +36,12 @@ const fetchSummonerIds = async (rank: string, division: string): Promise<Summone
         return players.map((player: any) => ({ summonerId: player.summonerId, region }));
       } else {
         response = await client.get(
-          `/tft/league/v1/entries/${rank.toUpperCase()}/${division.toUpperCase()}?queue=RANKED_TFT&page=1`
+          `/tft/league/v1/entries/${rank.toUpperCase()}/${division.toUpperCase()}?queue=RANKED_TFT&page=1`,
         );
         const players = response.data.slice(0, 1);
         return players.map((player: any) => ({ summonerId: player.summonerId, region }));
       }
-    })
+    }),
   );
 
   return allSummonerIds.flat();
@@ -53,7 +53,7 @@ const fetchSummonerPuuids = async (summonerData: SummonerData[]): Promise<PuuidD
       const client = shortRegionClient(region);
       const response: any = await client.get(`/tft/summoner/v1/summoners/${summonerId}`);
       return { puuid: response.data.puuid, region };
-    })
+    }),
   );
   return summonerPuuids.flat();
 };
@@ -65,7 +65,7 @@ const fetchMatchHistory = async (puuids: PuuidData[]): Promise<MatchIdData[]> =>
       const client = shortRegionClient(matchRegion);
       const response: any = await client.get(`/tft/match/v1/matches/by-puuid/${puuid}/ids`);
       return response.data.slice(0, 1).map((matchId: string) => ({ matchId, region: matchRegion }));
-    })
+    }),
   );
   return puuidMatchHistory.flat();
 };
@@ -85,17 +85,20 @@ const processPlayerData = (matchDetails: any[]): PlayerData[] => {
       traits: participant.traits.map((trait: any) => ({
         traitName: trait.name,
       })),
-    }))
+    })),
   );
 };
 
 const calculateTraitData = (playerData: PlayerData[]) => {
-  const traitData: Record<string, number> = playerData.reduce((acc, player) => {
-    player.traits.forEach((trait) => {
-      acc[trait.traitName] = (acc[trait.traitName] || 0) + 1;
-    });
-    return acc;
-  }, {} as Record<string, number>);
+  const traitData: Record<string, number> = playerData.reduce(
+    (acc, player) => {
+      player.traits.forEach((trait) => {
+        acc[trait.traitName] = (acc[trait.traitName] || 0) + 1;
+      });
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
   return Object.entries(traitData)
     .map(([name, count]) => ({ name, count }))

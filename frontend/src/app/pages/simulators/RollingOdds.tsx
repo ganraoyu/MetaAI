@@ -1,9 +1,5 @@
 const Roll = () => {
-  return (
-    <div>
-      Roll
-    </div>
-  )
-}
+  return <div>Roll</div>;
+};
 
-export default Roll
+export default Roll;

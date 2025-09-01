@@ -72,7 +72,7 @@ export const ItemContainerProvider = ({ children }: ItemContainerProviderProps) 
 export const useItemContainerContext = () => {
   const context = useContext(ItemContainerContext);
   if (!context) {
-    throw new Error("useItemContainerContext must be used within an ItemContainerProvider");
+    throw new Error('useItemContainerContext must be used within an ItemContainerProvider');
   }
   return context;
 };

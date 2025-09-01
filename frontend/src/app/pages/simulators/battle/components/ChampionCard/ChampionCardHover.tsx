@@ -1,11 +1,11 @@
-import { useState, useLayoutEffect } from "react";
-import { ChampionImage } from "./ChampionCardHover/ChampionImage.tsx";
-import { ChampionStatBars } from "./ChampionCardHover/ChampionStatBars.tsx";
-import { ChampionCardHoverProvider } from "./ChampionCardHover/ChampionCardHoverContext.tsx";
-import { ChampionCardHoverProps } from "./types.ts";
-import { ChampionAbilitySlot } from "./ChampionCardHover/ChampionAbilitySlot.tsx";
-import { ChampionItemsSlot } from "./ChampionCardHover/ChampionItemsSlot.tsx";
-import ChampionStatsGrid from "./ChampionCardHover/ChampionStatsGrid.tsx";
+import { useState, useLayoutEffect } from 'react';
+import { ChampionImage } from './ChampionCardHover/ChampionImage.tsx';
+import { ChampionStatBars } from './ChampionCardHover/ChampionStatBars.tsx';
+import { ChampionCardHoverProvider } from './ChampionCardHover/ChampionCardHoverContext.tsx';
+import { ChampionCardHoverProps } from './types.ts';
+import { ChampionAbilitySlot } from './ChampionCardHover/ChampionAbilitySlot.tsx';
+import { ChampionItemsSlot } from './ChampionCardHover/ChampionItemsSlot.tsx';
+import ChampionStatsGrid from './ChampionCardHover/ChampionStatsGrid.tsx';
 
 const ChampionCardHover = ({
   champion,
@@ -35,8 +35,8 @@ const ChampionCardHover = ({
   starLevel,
   parentRef,
 }: ChampionCardHoverProps) => {
-  const [position, setPosition] = useState<{top: number; left: number;} | null>(null);
-  
+  const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
+
   useLayoutEffect(() => {
     if (!parentRef.current) return;
 
@@ -52,12 +52,12 @@ const ChampionCardHover = ({
 
     calculatePosition(); // initial position
 
-    window.addEventListener("scroll", calculatePosition);
-    window.addEventListener("resize", calculatePosition);
+    window.addEventListener('scroll', calculatePosition);
+    window.addEventListener('resize', calculatePosition);
 
     return () => {
-      window.removeEventListener("scroll", calculatePosition);
-      window.removeEventListener("resize", calculatePosition);
+      window.removeEventListener('scroll', calculatePosition);
+      window.removeEventListener('resize', calculatePosition);
     };
   }, [parentRef]);
 
@@ -96,7 +96,7 @@ const ChampionCardHover = ({
         </div>
 
         {/* Stats */}
-        <ChampionStatsGrid 
+        <ChampionStatsGrid
           armor={armor || 0}
           magicResist={magicResist || 0}
           attackDamage={attackDamage || 0}
@@ -109,7 +109,7 @@ const ChampionCardHover = ({
           reduction={reduction || 0}
           range={range || 0}
         />
-        
+
         <style>{`
         .text-outline {
           text-shadow: 

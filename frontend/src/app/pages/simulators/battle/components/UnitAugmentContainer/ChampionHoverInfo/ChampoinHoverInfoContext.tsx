@@ -15,7 +15,9 @@ export const ChampionHoverInfoProvider = ({ children }: ChampionHoverInfoProvide
   const [toggleAbilityStatsSwitch, setToggleAbilityStatsSwitch] = useState<boolean>(false);
 
   return (
-    <ChampionHoverInfoContext.Provider value={{ toggleAbilityStatsSwitch, setToggleAbilityStatsSwitch }}>
+    <ChampionHoverInfoContext.Provider
+      value={{ toggleAbilityStatsSwitch, setToggleAbilityStatsSwitch }}
+    >
       {children}
     </ChampionHoverInfoContext.Provider>
   );
@@ -24,7 +26,7 @@ export const ChampionHoverInfoProvider = ({ children }: ChampionHoverInfoProvide
 export const useChampionHoverInfoContext = () => {
   const context = useContext(ChampionHoverInfoContext);
   if (!context) {
-    throw new Error("useChampionHoverInfoContext must be used within a ChampionHoverInfoProvider");
+    throw new Error('useChampionHoverInfoContext must be used within a ChampionHoverInfoProvider');
   }
   return context;
 };

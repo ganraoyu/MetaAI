@@ -1,8 +1,8 @@
-import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
-import { getChampionBySet } from "../../../data/loaders/championDataLoader";
-import { useChampionCardHoverContext } from "./ChampionCardHoverContext";
-import { AbilitySlotHover } from "./SlotHover/AbilitySlotHover";
-import { ChampionAbilityProps } from "./types";
+import { useTFTSetContext } from '../../../../../../utilities/TFTSetContext';
+import { getChampionBySet } from '../../../data/loaders/championDataLoader';
+import { useChampionCardHoverContext } from './ChampionCardHoverContext';
+import { AbilitySlotHover } from './SlotHover/AbilitySlotHover';
+import { ChampionAbilityProps } from './types';
 
 /**
  * ChampionAbilitySlot component
@@ -19,9 +19,7 @@ import { ChampionAbilityProps } from "./types";
  *                        or a placeholder box if no champion is provided.
  */
 
-export const ChampionAbilitySlot = ({
-  champion,
-}: ChampionAbilityProps): JSX.Element => {
+export const ChampionAbilitySlot = ({ champion }: ChampionAbilityProps): JSX.Element => {
   const { set } = useTFTSetContext();
   const { setAbilityHover, abilityHover } = useChampionCardHoverContext();
 
@@ -29,10 +27,7 @@ export const ChampionAbilitySlot = ({
   const championData = champions?.find((champ) => champ.name === champion);
 
   return (
-    <div
-      onMouseEnter={() => setAbilityHover(true)}
-      onMouseLeave={() => setAbilityHover(false)}
-    >
+    <div onMouseEnter={() => setAbilityHover(true)} onMouseLeave={() => setAbilityHover(false)}>
       <img
         src={championData?.abilityImage}
         alt={`${champion} ability`}
@@ -42,11 +37,10 @@ export const ChampionAbilitySlot = ({
       {/* Ability Slot Hover */}
       {abilityHover && champion && championData && (
         <AbilitySlotHover
-          ability={championData?.abilityName || ""}
-          description={championData?.abilityDescription || ""}
+          ability={championData?.abilityName || ''}
+          description={championData?.abilityDescription || ''}
         />
       )}
-      
     </div>
   );
 };

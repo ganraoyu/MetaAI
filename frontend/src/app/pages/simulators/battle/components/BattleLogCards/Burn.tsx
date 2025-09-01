@@ -1,42 +1,42 @@
-import { useState, useRef, useEffect } from 'react'
-import { ChampionCard } from '../ChampionCard/ChampionCard'
-import { BurnHover } from './CardHovers/BurnHover'
+import { useState, useRef, useEffect } from 'react';
+import { ChampionCard } from '../ChampionCard/ChampionCard';
+import { BurnHover } from './CardHovers/BurnHover';
 import { FaFire } from 'react-icons/fa';
 
-export const Burn = ({ log, index }: { log: any, index: number }) => {
-  const [hoveredBurnId, setHoveredBurnId] = useState<number | null>(null)
-  const [clickedHoverId, setClickedHoverId] = useState<number | null>(null)
-  const burnRef = useRef<HTMLSpanElement>(null)
-  const [position, setPosition] = useState({ top: 0, left: 0 })
+export const Burn = ({ log, index }: { log: any; index: number }) => {
+  const [hoveredBurnId, setHoveredBurnId] = useState<number | null>(null);
+  const [clickedHoverId, setClickedHoverId] = useState<number | null>(null);
+  const burnRef = useRef<HTMLSpanElement>(null);
+  const [position, setPosition] = useState({ top: 0, left: 0 });
 
   const handleBurnClicked = (id: number) => {
     if (clickedHoverId === id) {
-      setClickedHoverId(null)
+      setClickedHoverId(null);
     } else {
-      setClickedHoverId(id)
-      updatePosition()
+      setClickedHoverId(id);
+      updatePosition();
     }
-  }
+  };
 
   const updatePosition = () => {
-    if (!burnRef.current) return
-    const rect = burnRef.current.getBoundingClientRect()
-    const left = rect.right - 40
-    const top = rect.top + 25
-    setPosition({ top, left })
-  }
+    if (!burnRef.current) return;
+    const rect = burnRef.current.getBoundingClientRect();
+    const left = rect.right - 40;
+    const top = rect.top + 25;
+    setPosition({ top, left });
+  };
 
   useEffect(() => {
     if (hoveredBurnId === index || clickedHoverId === index) {
-      updatePosition()
-      window.addEventListener('scroll', updatePosition)
-      window.addEventListener('resize', updatePosition)
+      updatePosition();
+      window.addEventListener('scroll', updatePosition);
+      window.addEventListener('resize', updatePosition);
       return () => {
-        window.removeEventListener('scroll', updatePosition)
-        window.removeEventListener('resize', updatePosition)
-      }
+        window.removeEventListener('scroll', updatePosition);
+        window.removeEventListener('resize', updatePosition);
+      };
     }
-  }, [hoveredBurnId, clickedHoverId, index])
+  }, [hoveredBurnId, clickedHoverId, index]);
 
   return (
     <div>
@@ -46,7 +46,10 @@ export const Burn = ({ log, index }: { log: any, index: number }) => {
           <span
             ref={burnRef}
             className="text-xs font-bold text-red-400 bg-red-400/20 px-2 py-0.5 rounded cursor-pointer"
-            onMouseEnter={() => { setHoveredBurnId(index); updatePosition() }}
+            onMouseEnter={() => {
+              setHoveredBurnId(index);
+              updatePosition();
+            }}
             onMouseLeave={() => setHoveredBurnId(null)}
             onClick={() => handleBurnClicked(index)}
           >
@@ -56,22 +59,19 @@ export const Burn = ({ log, index }: { log: any, index: number }) => {
                 className="fixed animate-grow-in origin-top-left z-50 cursor-auto"
                 style={{
                   top: `${position.top}px`,
-                  left: `${position.left}px`
+                  left: `${position.left}px`,
                 }}
-              >
-              </div>
+              ></div>
             )}
           </span>
         </div>
         <div className="grid grid-cols-3 gap-2 mb-2">
           <div className="flex justify-end">
-            <ChampionCard
-              champion={log.details.champion}
-            />
+            <ChampionCard champion={log.details.champion} />
           </div>
           <div className="flex flex-col items-center justify-center">
             <div className="w-8 h-8 rounded-full bg-red-500/30 flex items-center justify-center">
-              <FaFire className="w-6 h-6"/>
+              <FaFire className="w-6 h-6" />
             </div>
           </div>
           <div className="flex justify-start">
@@ -97,5 +97,5 @@ export const Burn = ({ log, index }: { log: any, index: number }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

@@ -1,10 +1,10 @@
-import { useRef } from "react";
-import { AutoAttack } from "../BattleLogCards/AutoAttack";
-import { useBattleContext } from "../../BattleContext";
-import { Ability } from "../BattleLogCards/Ability";
-import { Heal } from "../BattleLogCards/Heal";
-import { Burn } from "../BattleLogCards/Burn";
-import { Movement } from "../BattleLogCards/Movement";
+import { useRef } from 'react';
+import { AutoAttack } from '../BattleLogCards/AutoAttack';
+import { useBattleContext } from '../../BattleContext';
+import { Ability } from '../BattleLogCards/Ability';
+import { Heal } from '../BattleLogCards/Heal';
+import { Burn } from '../BattleLogCards/Burn';
+import { Movement } from '../BattleLogCards/Movement';
 
 export interface LogsDisplayProps {
   toggleMovement: boolean;
@@ -27,13 +27,12 @@ export const LogsDisplay = ({
   toggleItem,
 }: LogsDisplayProps) => {
   const parentRef = useRef<HTMLDivElement>(null);
-  const { battleHistory, loading, error, fetchBattleHistory } =
-    useBattleContext();
+  const { battleHistory, loading, error, fetchBattleHistory } = useBattleContext();
 
   return (
     <div
       className="w-[18rem] h-[27.5rem] max-h-[calc(100%-3rem)] overflow-y-auto scrollbar-hide text-white bg-hexCellComponents rounded-2xl py-2 px-6"
-      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
     >
       <LogStyles />
 
@@ -51,39 +50,33 @@ export const LogsDisplay = ({
           </div>
         ) : (
           <div className="select-none">
-            {battleHistory &&
-            battleHistory.battleLogs &&
-            battleHistory.battleLogs.length > 0 ? (
+            {battleHistory && battleHistory.battleLogs && battleHistory.battleLogs.length > 0 ? (
               <div>
                 <ul className="battle-log text-[0.8rem]">
                   {battleHistory.battleLogs.map((log: any, index: number) => (
                     <li key={index} className="mb-3 animate-fadeIn">
                       {/* Render log items based on type */}
-                      {log.type === "movement" && toggleMovement && (
+                      {log.type === 'movement' && toggleMovement && (
                         <div className="mb-2">
                           <Movement log={log} index={index} />
                         </div>
                       )}
-                      {log.type === "attack" && toggleAttack && (
+                      {log.type === 'attack' && toggleAttack && (
                         <div className="mb-2">
-                          <AutoAttack
-                            log={log}
-                            index={index}
-                            parentRef={parentRef}
-                          />
+                          <AutoAttack log={log} index={index} parentRef={parentRef} />
                         </div>
                       )}
-                      {log.type === "ability" && toggleAbility && (
+                      {log.type === 'ability' && toggleAbility && (
                         <div className="mb-2">
                           <Ability log={log} index={index} />
                         </div>
                       )}
-                      {log.type === "heal" && toggleHeal && (
+                      {log.type === 'heal' && toggleHeal && (
                         <div className="mb-2">
                           <Heal log={log} index={index} />
                         </div>
                       )}
-                      {log.type === "burn" && toggleItem && (
+                      {log.type === 'burn' && toggleItem && (
                         <div className="mb-2">
                           <Burn log={log} index={index} />
                         </div>

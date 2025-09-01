@@ -1,10 +1,10 @@
-import { useItemContainerContext } from '../ItemContainerContext'
+import { useItemContainerContext } from '../ItemContainerContext';
 
-type ItemType = 'basic' | 'combined' | 'radiant' | 'artifact' | 'support' | 'emblem'
+type ItemType = 'basic' | 'combined' | 'radiant' | 'artifact' | 'support' | 'emblem';
 
 export const ItemTypeToggle = () => {
   const baseButtonClass =
-    'outline outline-lightGray outline-1 px-1 py-1 text-[0.54rem] rounded-[0.1rem] hover:bg-[#3d3d3d] hover:text-white'
+    'outline outline-lightGray outline-1 px-1 py-1 text-[0.54rem] rounded-[0.1rem] hover:bg-[#3d3d3d] hover:text-white';
 
   const {
     showBasicItems,
@@ -19,19 +19,19 @@ export const ItemTypeToggle = () => {
     setShowSupportItems,
     showEmblemItems,
     setShowEmblemItems,
-  } = useItemContainerContext()
+  } = useItemContainerContext();
 
   const handleItemType = (type: ItemType) => {
-    setShowBasicItems(type === 'basic')
-    setShowCombinedItems(type === 'combined')
-    setShowRadiantItems(type === 'radiant')
-    setShowArtifactItems(type === 'artifact')
-    setShowSupportItems(type === 'support')
-    setShowEmblemItems(type === 'emblem')
-  }
+    setShowBasicItems(type === 'basic');
+    setShowCombinedItems(type === 'combined');
+    setShowRadiantItems(type === 'radiant');
+    setShowArtifactItems(type === 'artifact');
+    setShowSupportItems(type === 'support');
+    setShowEmblemItems(type === 'emblem');
+  };
 
   return (
-    <div className='flex gap-2 mt-3 justify-center items-center'>
+    <div className="flex gap-2 mt-3 justify-center items-center">
       <button
         onClick={() => handleItemType('basic')}
         className={`${baseButtonClass} ${
@@ -86,5 +86,5 @@ export const ItemTypeToggle = () => {
         Emblems
       </button>
     </div>
-  )
-}
+  );
+};

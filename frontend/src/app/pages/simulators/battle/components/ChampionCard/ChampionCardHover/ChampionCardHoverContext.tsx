@@ -1,4 +1,4 @@
-import { useState, useContext, createContext, ReactNode } from "react";
+import { useState, useContext, createContext, ReactNode } from 'react';
 
 interface ChampionCardHoverContextType {
   abilityHover: boolean;
@@ -12,7 +12,6 @@ interface ChampionCardHoverContextType {
 
   item3Hover: boolean;
   setItem3Hover: (hover: boolean) => void;
-
 }
 
 const ChampionCardHoverContext = createContext<ChampionCardHoverContextType | null>(null);
@@ -28,16 +27,18 @@ const ChampionCardHoverProvider = ({ children }: ChampionCardHoverProviderProps)
   const [item3Hover, setItem3Hover] = useState(false);
 
   return (
-    <ChampionCardHoverContext.Provider value={{ 
-      abilityHover, 
-      setAbilityHover,
-      item1Hover,
-      setItem1Hover,
-      item2Hover,
-      setItem2Hover,
-      item3Hover,
-      setItem3Hover
-    }}>
+    <ChampionCardHoverContext.Provider
+      value={{
+        abilityHover,
+        setAbilityHover,
+        item1Hover,
+        setItem1Hover,
+        item2Hover,
+        setItem2Hover,
+        item3Hover,
+        setItem3Hover,
+      }}
+    >
       {children}
     </ChampionCardHoverContext.Provider>
   );
@@ -46,7 +47,7 @@ const ChampionCardHoverProvider = ({ children }: ChampionCardHoverProviderProps)
 const useChampionCardHoverContext = () => {
   const context = useContext(ChampionCardHoverContext);
   if (!context) {
-    throw new Error("useChampionCardHoverContext must be used inside ChampionCardHoverProvider");
+    throw new Error('useChampionCardHoverContext must be used inside ChampionCardHoverProvider');
   }
   return context;
 };

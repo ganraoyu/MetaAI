@@ -44,12 +44,12 @@ const fetchSummonerIds = async (rank: string, division: string): Promise<Summone
       } else {
         console.log(`Making request for rank: ${rank}, division: ${division}`);
         response = await client.get(
-          `/tft/league/v1/entries/${rank.toUpperCase()}/${division.toUpperCase()}?queue=RANKED_TFT&page=1`
+          `/tft/league/v1/entries/${rank.toUpperCase()}/${division.toUpperCase()}?queue=RANKED_TFT&page=1`,
         );
         const players = response.data.slice(0, 1);
         return players.map((player: any) => ({ summonerId: player.summonerId, region }));
       }
-    })
+    }),
   );
 
   return allSummonerIds.flat();
@@ -61,7 +61,7 @@ const fetchSummonerPuuids = async (summonerData: SummonerData[]): Promise<PuuidD
       const client = shortRegionClient(region);
       const response = await client.get(`/tft/summoner/v1/summoners/${summonerId}`);
       return { puuid: response.data.puuid, region };
-    })
+    }),
   );
   return summonerPuuids.flat();
 };
@@ -73,7 +73,7 @@ const fetchMatchHistory = async (puuids: PuuidData[]): Promise<MatchIdData[]> =>
       const client = shortRegionClient(matchRegion);
       const response = await client.get(`/tft/match/v1/matches/by-puuid/${puuid}/ids`);
       return response.data.slice(0, 1).map((matchId: string) => ({ matchId, region: matchRegion }));
-    })
+    }),
   );
   return puuidMatchHistory.flat();
 };
@@ -83,7 +83,7 @@ const fetchMatchDetails = async (matchIds: MatchIdData[]) => {
     matchIds.map(({ matchId, region }) => {
       const client = shortRegionClient(region);
       return client.get(`/tft/match/v1/matches/${matchId}`);
-    })
+    }),
   );
   return matchDetailsPromises.map((response) => response.data);
 };
@@ -95,7 +95,7 @@ const processPlayerData = (matchDetails: any[]): PlayerData[] => {
       items: participant.units
         .filter((unit: any) => unit.itemNames && unit.itemNames.length > 0)
         .map((unit: any) => ({ items: unit.itemNames })),
-    }))
+    })),
   );
 };
 
@@ -121,12 +121,14 @@ const calculateItemData = (playerData: PlayerData[]): Record<string, ItemStats> 
 };
 
 const calculateItemRanking = (itemData: Record<string, ItemStats>) => {
-  const itemRanking = Object.entries(itemData).map(([itemId, { totalGames, wins, placements }]) => ({
-    itemId,
-    winrate: ((wins / totalGames) * 100).toFixed(2),
-    placement: (placements.reduce((sum, p) => sum + p, 0) / totalGames).toFixed(2),
-    totalGames,
-  }));
+  const itemRanking = Object.entries(itemData).map(
+    ([itemId, { totalGames, wins, placements }]) => ({
+      itemId,
+      winrate: ((wins / totalGames) * 100).toFixed(2),
+      placement: (placements.reduce((sum, p) => sum + p, 0) / totalGames).toFixed(2),
+      totalGames,
+    }),
+  );
   return itemRanking.sort((a, b) => parseFloat(a.placement) - parseFloat(b.placement));
 };
 

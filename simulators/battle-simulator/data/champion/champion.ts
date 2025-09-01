@@ -1,9 +1,9 @@
-const { getChampionByName } = require("../champion/champion-data");
-const { getItemByName } = require("../item/item-data");
-const { ItemProps } = require("../item/item");
-const { externalMagicDamageEffect } = require("../item/logic/combinedItems.ts");
+const { getChampionByName } = require('../champion/champion-data');
+const { getItemByName } = require('../item/item-data');
+const { ItemProps } = require('../item/item');
+const { externalMagicDamageEffect } = require('../item/logic/combinedItems.ts');
 
-const battleLogger = require("../../core/battleLogger.ts");
+const battleLogger = require('../../core/battleLogger.ts');
 const { logBattleEvent } = battleLogger;
 
 type ItemProps = typeof ItemProps;
@@ -12,7 +12,7 @@ type ItemProps = typeof ItemProps;
 cd simulators/battle-simulator/data/champion
 nodemon champion.ts
 */
-const { v4: uuidv4 } = require("uuid");
+const { v4: uuidv4 } = require('uuid');
 
 interface AbilityStats {
   reduction: number;
@@ -38,9 +38,7 @@ function getFormattedTime(champion: Champion) {
   const mins = Math.floor(champion.battleTime / 6000);
   const secs = Math.floor((champion.battleTime % 6000) / 100);
   const cents = champion.battleTime % 100;
-  return `${mins}:${secs.toString().padStart(2, "0")}:${cents
-    .toString()
-    .padStart(2, "0")}`;
+  return `${mins}:${secs.toString().padStart(2, '0')}:${cents.toString().padStart(2, '0')}`;
 }
 
 export class Champion {
@@ -138,7 +136,7 @@ export class Champion {
     omnivamp: number,
     durability: number,
     items: (typeof ItemProps)[] = [],
-    starLevel: number = 1
+    starLevel: number = 1,
   ) {
     this.name = name;
     this.cost = cost;
@@ -243,8 +241,8 @@ export class Champion {
             `[${formattedTime}] ${
               this.name
             }'s attack speed increased from ${prevAttackSpeed.toFixed(
-              2
-            )} to ${this.attackSpeed.toFixed(2)}`
+              2,
+            )} to ${this.attackSpeed.toFixed(2)}`,
           );
         }
       });
@@ -271,10 +269,7 @@ export class Champion {
     }
 
     if (damageReduction !== 0 || durability !== 0) {
-      finalDamage = Math.max(
-        0,
-        finalDamage * (1 - (damageReduction + durability) / 100)
-      );
+      finalDamage = Math.max(0, finalDamage * (1 - (damageReduction + durability) / 100));
     }
 
     finalDamage = Math.round(finalDamage);
@@ -303,30 +298,25 @@ export class Champion {
       target.currentChampionsAttacking.push(this);
       console.log(`${this.name} has started attacking ${target.name}`);
       console.log(
-        `${target.currentChampionsAttacking
-          .map((champion) => champion.name)
-          .join(", ")} ${
-          target.currentChampionsAttacking.length > 1 ? "are" : "is"
-        } now attacking ${target.name}`
+        `${target.currentChampionsAttacking.map((champion) => champion.name).join(', ')} ${
+          target.currentChampionsAttacking.length > 1 ? 'are' : 'is'
+        } now attacking ${target.name}`,
       );
     }
 
     // remove dead champions
     let newCurrentChampionsAttacking = this.currentChampionsAttacking.filter(
-      (champion) => champion.currentHp > 0
+      (champion) => champion.currentHp > 0,
     );
 
-    if (
-      newCurrentChampionsAttacking.length <
-      this.currentChampionsAttacking.length
-    ) {
+    if (newCurrentChampionsAttacking.length < this.currentChampionsAttacking.length) {
       const deadChampions = this.currentChampionsAttacking.filter(
-        (champion) => !newCurrentChampionsAttacking.includes(champion)
+        (champion) => !newCurrentChampionsAttacking.includes(champion),
       );
       console.log(
-        `${deadChampions.map((champion) => champion.name).join(", ")} ${
-          deadChampions.length > 1 ? "have" : "has"
-        } died and stopped attacking ${this.name}`
+        `${deadChampions.map((champion) => champion.name).join(', ')} ${
+          deadChampions.length > 1 ? 'have' : 'has'
+        } died and stopped attacking ${this.name}`,
       );
     }
 
@@ -334,11 +324,11 @@ export class Champion {
 
     const attackTypeMsg = critChance ? `*Crit* ${finalDamage}` : finalDamage;
     logBattleEvent(
-      "attack",
+      'attack',
       {
         // Attack details
         time: this.battleTime,
-        source: "attack",
+        source: 'attack',
         damage: finalDamage,
         isCrit: critChance,
         message: `${this.name} attacks ${target.name} for ${attackTypeMsg} damage`,
@@ -413,17 +403,12 @@ export class Champion {
           abilityManaCost: target.abilityManaCost,
         },
       },
-      this.battleTime
+      this.battleTime,
     );
 
-    console.log(
-      `[${formattedTime}] ${this.name} attacks ${target.name} for ${attackTypeMsg}`
-    );
+    console.log(`[${formattedTime}] ${this.name} attacks ${target.name} for ${attackTypeMsg}`);
 
-    if (
-      this.currentHp < this.statsByStarLevel[this.starLevel].hp &&
-      this.omnivamp > 0
-    ) {
+    if (this.currentHp < this.statsByStarLevel[this.starLevel].hp && this.omnivamp > 0) {
       let omnivampHealAmount = Math.round(finalDamage * (omnivamp / 100));
 
       if (wound) {
@@ -431,7 +416,7 @@ export class Champion {
       }
 
       logBattleEvent(
-        "heal",
+        'heal',
         {
           healer: {
             champion: this.name,
@@ -444,18 +429,16 @@ export class Champion {
             maxHp: this.statsByStarLevel[this.starLevel].hp,
           },
           healAmount: omnivampHealAmount,
-          source: "omnivamp",
+          source: 'omnivamp',
           time: this.battleTime,
 
           message: `[${this.name} healed ${omnivampHealAmount} hp`,
         },
-        this.battleTime
+        this.battleTime,
       );
 
       this.currentHp += omnivampHealAmount;
-      console.log(
-        `[${formattedTime}] ${this.name} healed ${omnivampHealAmount} hp`
-      );
+      console.log(`[${formattedTime}] ${this.name} healed ${omnivampHealAmount} hp`);
       this.healArray.push(omnivampHealAmount);
     }
 
@@ -542,7 +525,7 @@ export class Champion {
       if (damageReduction !== 0 || durability !== 0) {
         totalDamage = Math.max(
           0,
-          Math.round(totalDamage * (1 - (damageReduction + durability) / 100))
+          Math.round(totalDamage * (1 - (damageReduction + durability) / 100)),
         );
       }
 
@@ -558,11 +541,11 @@ export class Champion {
 
       const attackTypeMsg = critChance ? `*Crit* ${totalDamage}` : totalDamage;
       console.log(
-        `${this.name} uses <${this.abilityName}> on ${target.name} for ${attackTypeMsg} damage`
+        `${this.name} uses <${this.abilityName}> on ${target.name} for ${attackTypeMsg} damage`,
       );
 
       logBattleEvent(
-        "ability",
+        'ability',
         {
           attacker: {
             champion: this.name,
@@ -588,20 +571,17 @@ export class Champion {
           damage: totalDamage,
           isCrit: critChance,
           time: this.battleTime,
-          source: "ability",
+          source: 'ability',
           message: `[${formattedTime}] ${this.name} uses <${this.abilityName}> on ${target.name} for ${attackTypeMsg} damage`,
         },
-        this.battleTime
+        this.battleTime,
       );
 
       target.takeDamage(totalDamage);
 
       this.abilityArray.push(totalDamage);
 
-      if (
-        this.currentHp < this.statsByStarLevel[this.starLevel].hp &&
-        omnivamp > 0
-      ) {
+      if (this.currentHp < this.statsByStarLevel[this.starLevel].hp && omnivamp > 0) {
         let omnivampHealAmount = Math.round(totalDamage * (omnivamp / 100));
 
         if (!wound) {
@@ -628,7 +608,7 @@ export class Champion {
         }
 
         logBattleEvent(
-          "heal",
+          'heal',
           {
             healer: {
               champion: this.name,
@@ -642,19 +622,17 @@ export class Champion {
             },
             healAmount: actualHeal,
             source: {
-              type: "ability",
+              type: 'ability',
               abilityName: this.abilityName,
             },
             time: this.battleTime,
             message: `[${formattedTime}] ${this.name}'s ability heals for ${actualHeal} health`,
           },
-          this.battleTime
+          this.battleTime,
         );
 
         this.healArray.push(actualHeal);
-        console.log(
-          `[${formattedTime}] ${this.name}'s ability heals for ${actualHeal} health`
-        );
+        console.log(`[${formattedTime}] ${this.name}'s ability heals for ${actualHeal} health`);
       }
     }
   }

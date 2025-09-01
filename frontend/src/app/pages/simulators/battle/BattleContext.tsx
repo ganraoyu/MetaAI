@@ -1,6 +1,6 @@
-import { useContext, useState, createContext, ReactNode, useCallback } from "react";
-import axios from "axios";
-import { BattleContextType, BattleData, BattleEndStats } from "./types";
+import { useContext, useState, createContext, ReactNode, useCallback } from 'react';
+import axios from 'axios';
+import { BattleContextType, BattleData, BattleEndStats } from './types';
 
 const BattleContext = createContext<BattleContextType>({} as BattleContextType);
 
@@ -22,41 +22,35 @@ export const BattleProvider = ({ children }: BattleProviderProps) => {
     setError(null);
 
     try {
-      const response = await axios.get(
-        "http://localhost:3000/battle-simulator/battle-history"
-      );
+      const response = await axios.get('http://localhost:3000/battle-simulator/battle-history');
       setBattleHistory(response.data);
     } catch (error: any) {
       setError(
-        "Failed to fetch battle history: " +
-          (error.response?.data?.message || error.message)
+        'Failed to fetch battle history: ' + (error.response?.data?.message || error.message),
       );
-      console.error("Error fetching battle history:", error);
+      console.error('Error fetching battle history:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const fetchBattleStats = useCallback(async () => {
-  if (!battleHistory) return; // optional guard
-  setLoading(true);
-  setError(null);
+    if (!battleHistory) return; // optional guard
+    setLoading(true);
+    setError(null);
 
-  try {
-    const response = await axios.get(
-      "http://localhost:3000/battle-simulator/allBattleStatistics"
-    );
-    setBattleEndStats(response.data);
-  } catch (error: any) {
-    setError(
-      "Failed to fetch battle data: " +
-        (error.response?.data?.message || error.message)
-    );
-    console.error("Error fetching battle data:", error);
-  } finally {
-    setLoading(false);
-  }
-}, [battleHistory]);
+    try {
+      const response = await axios.get(
+        'http://localhost:3000/battle-simulator/allBattleStatistics',
+      );
+      setBattleEndStats(response.data);
+    } catch (error: any) {
+      setError('Failed to fetch battle data: ' + (error.response?.data?.message || error.message));
+      console.error('Error fetching battle data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [battleHistory]);
 
   const value: BattleContextType = {
     startBattle,

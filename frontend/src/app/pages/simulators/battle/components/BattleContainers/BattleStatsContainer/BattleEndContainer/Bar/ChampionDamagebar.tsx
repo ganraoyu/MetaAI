@@ -1,18 +1,18 @@
-import { buildDamageGradient, getDamagePercentages } from "./utils";
-import { getDamageTotals, getTotalBarWidth } from "./calculateChampionTotals";
-import { ChampionProps } from "./types";
+import { buildDamageGradient, getDamagePercentages } from './utils';
+import { getDamageTotals, getTotalBarWidth } from './calculateChampionTotals';
+import { ChampionProps } from './types';
 
 /**
  * ChampionDamageBar
- * 
+ *
  * Displays a champion's total damage and a proportional damage bar
  * showing the breakdown of physical, magic, ability, and true damage.
  *
  * @param {ChampionProps} props - The component props
  * @param {ChampionProps.champion} props.champion - The champion object containing all relevant stats
- * 
+ *
  * @returns {JSX.Element} A React component showing the damage bar
-*/
+ */
 
 export const ChampionDamageBar = ({ champion }: ChampionProps): JSX.Element => {
   const {
@@ -47,7 +47,6 @@ export const ChampionDamageBar = ({ champion }: ChampionProps): JSX.Element => {
 
   return (
     <div className="mb-1 ml-2">
-
       {/* Damage Bar Outer */}
       <div className="relative w-[9rem] h-2 border border-[#41384b] bg-[#2a2431]">
         {/* Top-left highlight */}
@@ -56,13 +55,12 @@ export const ChampionDamageBar = ({ champion }: ChampionProps): JSX.Element => {
         <div
           style={{
             width: `${widthPercentage}%`,
-            height: "100%",
+            height: '100%',
             background: gradient,
-            borderRadius: "1px",
+            borderRadius: '1px',
           }}
         ></div>
       </div>
-      
     </div>
   );
 };

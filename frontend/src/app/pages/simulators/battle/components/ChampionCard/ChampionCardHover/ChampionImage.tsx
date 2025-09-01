@@ -1,7 +1,7 @@
-import { Star } from "../../../utils/Star";
-import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
-import { ChampionImageProps } from "./types";
-import { getBorderColor, getCostGradient } from "./utils";
+import { Star } from '../../../utils/Star';
+import { useTFTSetContext } from '../../../../../../utilities/TFTSetContext';
+import { ChampionImageProps } from './types';
+import { getBorderColor, getCostGradient } from './utils';
 
 /**
  * ChampionImage component renders a champion card with its splash image, star level, traits, and cost.
@@ -14,7 +14,7 @@ import { getBorderColor, getCostGradient } from "./utils";
  * @param {string} trait3 - The third trait of the champion.
  *
  * @returns {JSX.Element} The rendered champion card.
-*/
+ */
 export const ChampionImage = ({
   champion,
   cost,
@@ -41,8 +41,8 @@ export const ChampionImage = ({
           {Array.from({ length: starLevel || 0 }).map((_, index) => (
             <Star
               key={index}
-              textColor={starLevel && starLevel >= 3 ? "#FFFF00" : "#B0B0B0"}
-              fillColor={starLevel && starLevel >= 3 ? "#FFFF00" : "#B0B0B0"}
+              textColor={starLevel && starLevel >= 3 ? '#FFFF00' : '#B0B0B0'}
+              fillColor={starLevel && starLevel >= 3 ? '#FFFF00' : '#B0B0B0'}
               className="w-3.5 h-3.5 drop-shadow-[0_0_2px_gray]"
             />
           ))}
@@ -59,11 +59,9 @@ export const ChampionImage = ({
                     className="h-4 w-4"
                     alt={trait}
                   />
-                  <p className="text-white text-[0.7rem] text-outline">
-                    {trait}
-                  </p>
+                  <p className="text-white text-[0.7rem] text-outline">{trait}</p>
                 </div>
-              )
+              ),
           )}
         </div>
       </div>
@@ -71,7 +69,7 @@ export const ChampionImage = ({
       {/* Cost */}
       <div
         className={`absolute top-[5.2rem] right-0 rounded-tl-md px-1.5 text-white font-bold flex items-center gap-1 bg-gradient-to-r ${getCostGradient(
-          cost
+          cost,
         )} border-b border-r`}
       >
         <img src="../assets/icons/coin.png" className="h-2 w-2" />

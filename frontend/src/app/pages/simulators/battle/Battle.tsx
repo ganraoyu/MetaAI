@@ -1,18 +1,18 @@
-import { useState } from "react";
-import { useTitle } from "../../../utilities/useTitle";
-import { UnitAugmentContainer } from "./components/UnitAugmentContainer/UnitAugmentContainer";
-import { BattleButtons } from "./components/BattleContainers/BattleButtons";
-import { BattleProvider } from "./BattleContext";
-import { BattleStatsContainer } from "./components/BattleContainers/BattleStatsContainer/BattleEndContainer/BattleStatsContainer";
-import { HexBoard } from "./components/BattleContainers/HexBoard/HexBoard";
-import { LogsDisplay } from "./components/BattleContainers/LogDisplay";
-import { Filter } from "./components/BattleLogCards/_Filter";
-import { HexBoardProvider } from "./components/BattleContainers/HexBoard/HexBoardContext";
-import { ItemContainer } from "./components/ItemContainer/ItemContainer";
-import { BattleStatsProvider } from "./components/BattleContainers/BattleStatsContainer/BattleStatsContext";
+import { useState } from 'react';
+import { useTitle } from '../../../utilities/useTitle';
+import { UnitAugmentContainer } from './components/UnitAugmentContainer/UnitAugmentContainer';
+import { BattleButtons } from './components/BattleContainers/BattleButtons';
+import { BattleProvider } from './BattleContext';
+import { BattleStatsContainer } from './components/BattleContainers/BattleStatsContainer/BattleEndContainer/BattleStatsContainer';
+import { HexBoard } from './components/BattleContainers/HexBoard/HexBoard';
+import { LogsDisplay } from './components/BattleContainers/LogDisplay';
+import { Filter } from './components/BattleLogCards/_Filter';
+import { HexBoardProvider } from './components/BattleContainers/HexBoard/HexBoardContext';
+import { ItemContainer } from './components/ItemContainer/ItemContainer';
+import { BattleStatsProvider } from './components/BattleContainers/BattleStatsContainer/BattleStatsContext';
 
 const BattleContent = () => {
-  useTitle("TFT Battle Simulator - Builder");
+  useTitle('TFT Battle Simulator - Builder');
 
   const [toggleMovement, setToggleMovement] = useState(true);
   const [toggleAttack, setToggleAttack] = useState(true);
@@ -24,9 +24,7 @@ const BattleContent = () => {
     <div className="bg-mainBackground min-h-screen pt-[4.5rem] font-mono">
       <div className="flex-col items-center w-[70rem] mx-auto">
         <div className="flex-col items-center justify-center mr-[2rem] ">
-          <h1 className="text-[1.2rem] w-full text-white font-semibold">
-            TFT Battle Simulator
-          </h1>
+          <h1 className="text-[1.2rem] w-full text-white font-semibold">TFT Battle Simulator</h1>
           <p className="text-white text-[0.8rem]">
             Get real-time replays of battles with our TFT Battle Simulator
           </p>
@@ -82,7 +80,6 @@ const BattleContent = () => {
             <ItemContainer />
           </div>
         </div>
-    
       </div>
     </div>
   );
@@ -94,7 +91,7 @@ const Battle = () => {
       <BattleStatsProvider>
         <HexBoardProvider>
           <BattleContent />
-        </HexBoardProvider>  
+        </HexBoardProvider>
       </BattleStatsProvider>
     </BattleProvider>
   );

@@ -1,9 +1,5 @@
 const AugmentsTierlist = () => {
-  return (
-    <div>
-      Augemnts
-    </div>
-  )
-}
+  return <div>Augemnts</div>;
+};
 
-export default AugmentsTierlist
+export default AugmentsTierlist;

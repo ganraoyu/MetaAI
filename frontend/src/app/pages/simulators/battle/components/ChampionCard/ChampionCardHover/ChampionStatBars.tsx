@@ -1,4 +1,4 @@
-import { ChampionStatBarsProps } from "./types";
+import { ChampionStatBarsProps } from './types';
 
 /**
  * ChampionStatBars component displays the champion's current health, shield, and mana as progress bars.
@@ -10,18 +10,17 @@ import { ChampionStatBarsProps } from "./types";
  * @param {number} maxMana - The champion's maximum mana points.
  *
  * @returns {JSX.Element} The rendered health, shield, and mana bars.
-*/
+ */
 
 export const ChampionStatBars = ({
   currentHp,
   maxHp,
   shield,
   mana,
-  maxMana
+  maxMana,
 }: ChampionStatBarsProps): JSX.Element => {
   return (
     <div>
-
       {/* Health Bar */}
       <div className="relative h-3 mt-1 bg-gray-700 rounded">
         <div
@@ -52,7 +51,6 @@ export const ChampionStatBars = ({
           {mana}/{maxMana}
         </div>
       </div>
-      
     </div>
   );
 };

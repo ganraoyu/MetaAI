@@ -1,48 +1,48 @@
-export interface Stats {  
-    abilityName: string;
-    abilityDescription: string;
-    
-    range: number;
-    mana: number;
-    manaPerAttack: number;
-    abilityManaCost: number;
-    attackSpeed: number;
-    attackCritChance: number;
-    attackCritDamage: number;
-    abilityCritChance: number;
-    abilityCritDamage: number;
-    damageAmp: number;
-    abilityPower: number;
-    durability: number;
-    omnivamp: number;
+export interface Stats {
+  abilityName: string;
+  abilityDescription: string;
 
-    sunder: boolean;
-    shred: boolean;
-    wound: boolean;
-    burn: boolean;
-    immunity: boolean;
+  range: number;
+  mana: number;
+  manaPerAttack: number;
+  abilityManaCost: number;
+  attackSpeed: number;
+  attackCritChance: number;
+  attackCritDamage: number;
+  abilityCritChance: number;
+  abilityCritDamage: number;
+  damageAmp: number;
+  abilityPower: number;
+  durability: number;
+  omnivamp: number;
+
+  sunder: boolean;
+  shred: boolean;
+  wound: boolean;
+  burn: boolean;
+  immunity: boolean;
 }
 
 export interface StarLevelStats {
-    health: number;
-    armor: number;
-    magicResist: number;
-    attackDamage: number;
+  health: number;
+  armor: number;
+  magicResist: number;
+  attackDamage: number;
 }
 
 export interface ChampionHoverInfoProps {
-    champion?: string;
-    cost: number;
-    type: string;
-    traits: [string, string, string];
-    items?: [string?, string?, string?];
-    stats?: Stats;
-    starLevelStats?: {
+  champion?: string;
+  cost: number;
+  type: string;
+  traits: [string, string, string];
+  items?: [string?, string?, string?];
+  stats?: Stats;
+  starLevelStats?: {
     oneStar: StarLevelStats;
     twoStar: StarLevelStats;
     threeStar: StarLevelStats;
-    };
-    starLevel?: 1 | 2 | 3;
-    showBelow?: boolean;
-    overExtend?: boolean;
+  };
+  starLevel?: 1 | 2 | 3;
+  showBelow?: boolean;
+  overExtend?: boolean;
 }

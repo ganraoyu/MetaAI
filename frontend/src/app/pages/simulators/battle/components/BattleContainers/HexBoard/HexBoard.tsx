@@ -1,5 +1,5 @@
-import { useHexBoardContext } from "./HexBoardContext";
-import { HexCell } from "./HexCell";
+import { useHexBoardContext } from './HexBoardContext';
+import { HexCell } from './HexCell';
 
 /**
  * HexBoard
@@ -11,7 +11,7 @@ import { HexCell } from "./HexCell";
  *
  * Each row alternates horizontal offset to create a hexagonal staggered layout.
  * Each cell is represented by a `HexCell` component with a unique `cellId` and a `team` prop.
- * 
+ *
  * Board stats display the number of champions on each team and the total cost of champions for each side
  *
  * @component
@@ -19,15 +19,15 @@ import { HexCell } from "./HexCell";
  */
 
 export const HexBoard = (): JSX.Element => {
-  const { 
+  const {
     playerSunder,
     playerShred,
     opponentSunder,
     opponentShred,
-    playerChampionArray, 
-    opponentChampionArray, 
-    playerChampionCostCount, 
-    opponentChampionCostCount 
+    playerChampionArray,
+    opponentChampionArray,
+    playerChampionCostCount,
+    opponentChampionCostCount,
   } = useHexBoardContext();
   return (
     <div className="flex flex-col items-center justify-center space-y-8">
@@ -35,13 +35,13 @@ export const HexBoard = (): JSX.Element => {
       <div className="flex flex-col items-center">
         {[...Array(4)].map((_, row) => {
           const isEvenRow = row % 2 === 0;
-          const team = "opponent";
+          const team = 'opponent';
 
           return (
             <div
               key={row}
               className={`flex justify-center items-center gap-0 mb-[-1.1rem] ${
-                isEvenRow ? "mr-8" : "ml-10"
+                isEvenRow ? 'mr-8' : 'ml-10'
               }`}
             >
               {[...Array(7)].map((_, col) => {
@@ -55,17 +55,17 @@ export const HexBoard = (): JSX.Element => {
 
       {/* Board Stats */}
       <div className="flex justify-between w-full pointer-events-none select-none">
-
         {/* Left side */}
         <div className="flex flex-col">
-
           {/* Top row: abilities */}
           <div className="flex flex-col gap-1">
-            <div className={`flex items-center gap-1 mb-[-0.4rem] ${playerSunder ? "" : "opacity-30"}`}>
-              <img src="../assets/icons/sunder.png" className="w-4 h-4"/>
+            <div
+              className={`flex items-center gap-1 mb-[-0.4rem] ${playerSunder ? '' : 'opacity-30'}`}
+            >
+              <img src="../assets/icons/sunder.png" className="w-4 h-4" />
               <p className="text-[0.8rem]">Sunder</p>
             </div>
-            <div className={`flex items-center gap-1 ${playerShred ? "" : "opacity-30"}`}>
+            <div className={`flex items-center gap-1 ${playerShred ? '' : 'opacity-30'}`}>
               <img src="../assets/icons/shred.png" className="w-4 h-4" />
               <p className="text-[0.8rem]">Shred</p>
             </div>
@@ -90,17 +90,18 @@ export const HexBoard = (): JSX.Element => {
           </div>
 
           <div className="flex flex-col gap-1">
-            <div className={`flex items-center gap-1 ${opponentSunder ? "" : "opacity-30"}`}>
+            <div className={`flex items-center gap-1 ${opponentSunder ? '' : 'opacity-30'}`}>
               <img src="../assets/icons/shred.png" className="w-4 h-4" />
               <p className="text-[0.8rem]">Shred</p>
             </div>
-            <div className={`flex items-center gap-1 mt-[-0.4rem] ${opponentShred ? "" : "opacity-30"}`}>
+            <div
+              className={`flex items-center gap-1 mt-[-0.4rem] ${opponentShred ? '' : 'opacity-30'}`}
+            >
               <img src="../assets/icons/sunder.png" className="w-4 h-4" />
               <p className="text-[0.8rem]">Sunder</p>
             </div>
           </div>
         </div>
-
       </div>
 
       {/* Player Board */}
@@ -108,14 +109,14 @@ export const HexBoard = (): JSX.Element => {
         {[...Array(4)].map((_, i) => {
           const row = i + 4;
           const isEvenRow = row % 2 === 0;
-          const team = "player";
+          const team = 'player';
 
           return (
             <div
               key={row}
               className={`flex justify-center items-center gap-0 mb-[-1.1rem] ${
-                isEvenRow ? "mr-8" : "ml-10"
-              } ${row === 4 ? "mt-[-1.1rem]" : ""}`}
+                isEvenRow ? 'mr-8' : 'ml-10'
+              } ${row === 4 ? 'mt-[-1.1rem]' : ''}`}
             >
               {[...Array(7)].map((_, col) => {
                 const cellId = `r${row}c${col}`;

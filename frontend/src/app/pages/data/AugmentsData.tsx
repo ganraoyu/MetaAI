@@ -1,9 +1,5 @@
 const AugmentsData = () => {
-  return (
-    <div>
-      Augments
-    </div>
-  )
-}
+  return <div>Augments</div>;
+};
 
-export default AugmentsData
+export default AugmentsData;

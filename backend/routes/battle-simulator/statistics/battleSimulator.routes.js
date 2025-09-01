@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router();
 
-const { 
-    getWinRate,  
-    getChampionItems,  
-    getAttackDamageDelt, 
-    getAbilityDamageDelt, 
-    getAllDamageDelt,
-    getHealing,
-    getAliveOrDead,
-    getAllBattleStatistics,
-    getChampionStatistics,
-    getBattleHistory,
-    startBattleWithBoard 
+const {
+  getWinRate,
+  getChampionItems,
+  getAttackDamageDelt,
+  getAbilityDamageDelt,
+  getAllDamageDelt,
+  getHealing,
+  getAliveOrDead,
+  getAllBattleStatistics,
+  getChampionStatistics,
+  getBattleHistory,
+  startBattleWithBoard,
 } = require('../../../controllers/battle-simulator/battle-simulator.controller.js');
 
 // GET routes for statistics
@@ -28,6 +28,6 @@ router.get('/championStatistics', getChampionStatistics);
 router.get('/battle-history', getBattleHistory);
 
 // POST route for starting battle with board data
-router.post('/start-battle', startBattleWithBoard); 
+router.post('/start-battle', startBattleWithBoard);
 
 module.exports = router;

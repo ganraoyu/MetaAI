@@ -1,6 +1,6 @@
 export interface Champion {
   name: string;
-  starLevel: number;  
+  starLevel: number;
   totalChampionDamage: number;
   totalChampionTrueDamage: number;
   totalChampionMagicDamage: number;

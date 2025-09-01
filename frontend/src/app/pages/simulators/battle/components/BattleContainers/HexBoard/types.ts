@@ -40,17 +40,17 @@ export interface HexBoardContextType {
 
   playerSunder: boolean;
   setPlayerSunder: React.Dispatch<React.SetStateAction<boolean>>;
-  
+
   playerShred: boolean;
   setPlayerShred: React.Dispatch<React.SetStateAction<boolean>>;
 
   opponentSunder: boolean;
   setOpponentSunder: React.Dispatch<React.SetStateAction<boolean>>;
-  
+
   opponentShred: boolean;
   wsetOpponentShred: React.Dispatch<React.SetStateAction<boolean>>;
 
-  playerTraitsObj: TraitCountMap; 
+  playerTraitsObj: TraitCountMap;
   opponentTraitsObj: TraitCountMap;
 
   playerChampionArray: ChampionMap[];
@@ -64,7 +64,7 @@ export interface HexBoardContextType {
 
   opponentChampionCostCount: number;
   setOpponentChampionCostCount: React.Dispatch<React.SetStateAction<number>>;
-  
+
   orderedPlayerTraits: [string, number][];
   orderedOpponentTraits: [string, number][];
 
@@ -87,6 +87,5 @@ export type TraitCountEntry = [string, number];
 
 export interface HexCellProps {
   cellId: string;
-  team: "player" | "opponent" | "";
+  team: 'player' | 'opponent' | '';
 }
-

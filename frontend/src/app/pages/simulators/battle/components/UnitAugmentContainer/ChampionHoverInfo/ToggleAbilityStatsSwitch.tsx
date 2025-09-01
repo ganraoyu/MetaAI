@@ -10,8 +10,7 @@ export const ToggleAbilityStatsSwitch = ({
   return (
     <div className="flex flex-col items-center mb-2 bg-hexCel">
       <div className="relative flex w-full">
-        
-        {/* Ability Button */}        
+        {/* Ability Button */}
         <button
           onClick={() => setToggleAbilityStatsSwitch(false)}
           className={`py-2 flex-1 text-center transition-colors duration-200

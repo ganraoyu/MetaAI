@@ -1,15 +1,15 @@
-import { getDamageTotals, getHealTotals } from "./calculateChampionTotals";
-import { ChampionProps } from "./types";
+import { getDamageTotals, getHealTotals } from './calculateChampionTotals';
+import { ChampionProps } from './types';
 
 /**
  * ChampionStatsNumbers
- * 
+ *
  * Displays a champion's total damage and total healing as numbers
  * Damage is color-coded by type, healing is green, separated by a slash
  *
  * @param {ChampionProps} champion - The champion object containing stats
  * @returns {JSX.Element} A React component displaying Champion's damage and healing
-*/
+ */
 
 export const ChampionStatsNumbers = ({ champion }: ChampionProps): JSX.Element => {
   const {
@@ -17,7 +17,7 @@ export const ChampionStatsNumbers = ({ champion }: ChampionProps): JSX.Element =
     totalChampionMagicDamage,
     totalChampionTrueDamage,
     totalChampionAbilityDamage,
-    allChampionDamage
+    allChampionDamage,
   } = getDamageTotals(champion);
 
   const totalChampionHealing = getHealTotals(champion) ?? 0;
@@ -27,14 +27,14 @@ export const ChampionStatsNumbers = ({ champion }: ChampionProps): JSX.Element =
     totalChampionDamage,
     totalChampionMagicDamage,
     totalChampionAbilityDamage,
-    totalChampionTrueDamage
+    totalChampionTrueDamage,
   );
 
   const getDamageTextColor = (): string => {
-    if (maxDamageValue === totalChampionTrueDamage) return "text-white";
-    if (maxDamageValue === totalChampionMagicDamage) return "text-blue-400";
-    if (maxDamageValue === totalChampionAbilityDamage) return "text-purple-500";
-    return "text-red-400"; // Default to physical damage color
+    if (maxDamageValue === totalChampionTrueDamage) return 'text-white';
+    if (maxDamageValue === totalChampionMagicDamage) return 'text-blue-400';
+    if (maxDamageValue === totalChampionAbilityDamage) return 'text-purple-500';
+    return 'text-red-400'; // Default to physical damage color
   };
 
   return (

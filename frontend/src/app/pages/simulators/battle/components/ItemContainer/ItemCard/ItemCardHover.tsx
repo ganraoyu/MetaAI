@@ -1,10 +1,7 @@
-import { getItemByName } from "../../../data/dataUtils";
-import { ItemCardHoverProps   } from "./types";
+import { getItemByName } from '../../../data/dataUtils';
+import { ItemCardHoverProps } from './types';
 
-export const ItemCardHover = ({
-  itemName,
-  className = "",
-}: ItemCardHoverProps) => {
+export const ItemCardHover = ({ itemName, className = '' }: ItemCardHoverProps) => {
   const stats: any = getItemByName(itemName);
 
   if (!stats) return null;
@@ -43,61 +40,37 @@ export const ItemCardHover = ({
             )}
             {(stats?.additionalAttackSpeed || 0) > 0 && (
               <div className="flex items-center gap-1">
-                <img
-                  src="../assets/icons/attackspeed.png"
-                  className="h-4 w-4"
-                  alt="attack speed"
-                />
+                <img src="../assets/icons/attackspeed.png" className="h-4 w-4" alt="attack speed" />
                 <p>+{stats.additionalAttackSpeed}</p>
               </div>
             )}
             {(stats?.additionalArmor || 0) > 0 && (
               <div className="flex items-center gap-1">
-                <img
-                  src="../assets/icons/armor.png"
-                  className="h-4 w-4"
-                  alt="armor"
-                />
+                <img src="../assets/icons/armor.png" className="h-4 w-4" alt="armor" />
                 <p>+{stats.additionalArmor}</p>
               </div>
             )}
             {(stats?.additionalMagicResist || 0) > 0 && (
               <div className="flex items-center gap-1">
-                <img
-                  src="../assets/icons/magicresist.png"
-                  className="h-5 w-5"
-                  alt="magic resist"
-                />
+                <img src="../assets/icons/magicresist.png" className="h-5 w-5" alt="magic resist" />
                 <p>+{stats.additionalMagicResist}</p>
               </div>
             )}
             {(stats?.additionalHealth || 0) > 0 && (
               <div className="flex items-center gap-1">
-                <img
-                  src="../assets/icons/health.png"
-                  className="h-4 w-4"
-                  alt="health"
-                />
+                <img src="../assets/icons/health.png" className="h-4 w-4" alt="health" />
                 <p>+{stats.additionalHealth}</p>
               </div>
             )}
             {(stats?.additionalStartingMana || 0) > 0 && (
               <div className="flex items-center gap-1">
-                <img
-                  src="../assets/icons/addmana.png"
-                  className="h-4 w-4"
-                  alt="starting mana"
-                />
+                <img src="../assets/icons/addmana.png" className="h-4 w-4" alt="starting mana" />
                 <p>+{stats.additionalStartingMana}</p>
               </div>
             )}
             {(stats?.additionalManaPerAttack || 0) > 0 && (
               <div className="flex items-center gap-1">
-                <img
-                  src="../assets/icons/addmana.png"
-                  className="h-4 w-4"
-                  alt="mana per attack"
-                />
+                <img src="../assets/icons/addmana.png" className="h-4 w-4" alt="mana per attack" />
                 <p>+{stats.additionalManaPerAttack}</p>
               </div>
             )}
@@ -113,21 +86,13 @@ export const ItemCardHover = ({
             )}
             {(stats?.additionalDamageAmp || 0) > 0 && (
               <div className="flex items-center gap-1">
-                <img
-                  src="../assets/icons/damageamp.png"
-                  className="h-4 w-4"
-                  alt="damage amp"
-                />
+                <img src="../assets/icons/damageamp.png" className="h-4 w-4" alt="damage amp" />
                 <p>+{stats.additionalDamageAmp}</p>
               </div>
             )}
             {(stats?.additionalPercentageHealth || 0) > 0 && (
               <div className="flex items-center gap-1">
-                <img
-                  src="../assets/icons/health.png"
-                  className="h-4 w-4"
-                  alt="percentage health"
-                />
+                <img src="../assets/icons/health.png" className="h-4 w-4" alt="percentage health" />
                 <p>+{stats.additionalPercentageHealth}%</p>
               </div>
             )}

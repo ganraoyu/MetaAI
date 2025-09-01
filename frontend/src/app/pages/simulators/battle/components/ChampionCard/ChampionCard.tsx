@@ -11,12 +11,12 @@ export const ChampionCard = ({
   mana = 0,
   maxMana = 0,
   shield = 0,
-  trait1 = "",
-  trait2 = "",
-  trait3 = "",
-  item1 = "",
-  item2 = "",
-  item3 = "",
+  trait1 = '',
+  trait2 = '',
+  trait3 = '',
+  item1 = '',
+  item2 = '',
+  item3 = '',
   armor = 0,
   magicResist = 0,
   attackDamage = 0,
@@ -38,11 +38,7 @@ export const ChampionCard = ({
 
   const hpPercentage = (currentHp / maxHp) * 100;
   const hpColor =
-    hpPercentage > 60
-      ? 'bg-green-500'
-      : hpPercentage > 30
-      ? 'bg-yellow-500'
-      : 'bg-red-500';
+    hpPercentage > 60 ? 'bg-green-500' : hpPercentage > 30 ? 'bg-yellow-500' : 'bg-red-500';
 
   return (
     <div

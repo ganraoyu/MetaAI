@@ -1,4 +1,4 @@
-import { useContext, useState, createContext, ReactNode } from "react"
+import { useContext, useState, createContext, ReactNode } from 'react';
 
 interface UnitAugmentContextType {
   showBelow: boolean;
@@ -20,40 +20,40 @@ interface UnitAugmentContextType {
   setClickedTraitDropDown: (trait: string) => void;
   handleSortByCost: () => void;
   handleSortByAlphabet: () => void;
-};
+}
 
 const UnitAugmentContext = createContext<UnitAugmentContextType | undefined>(undefined);
 
 interface UnitAugmentProviderProps {
   children: ReactNode;
-};
+}
 
 export const UnitAugmentProvider = ({ children }: UnitAugmentProviderProps) => {
   const [showBelow, setShowBelow] = useState<boolean>(false);
 
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const [sortByCost, setSortByCost] = useState<boolean>(true);
   const [sortByAlphabet, setSortByAlphabet] = useState<boolean>(false);
-  const [filterByTrait, setFilterByTrait] = useState<string>("");
+  const [filterByTrait, setFilterByTrait] = useState<string>('');
   const [toggleUnitsOrAugments, setToggleUnitsOrAugments] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
-  const [clickedTraitDropDown, setClickedTraitDropDown] = useState<string>("");
+  const [clickedTraitDropDown, setClickedTraitDropDown] = useState<string>('');
 
   const handleSortByCost = () => {
-    if(sortByCost){
-        return; 
-    } else{
-        setSortByCost(prev => !prev);
-        setSortByAlphabet(false);
+    if (sortByCost) {
+      return;
+    } else {
+      setSortByCost((prev) => !prev);
+      setSortByAlphabet(false);
     }
   };
 
   const handleSortByAlphabet = () => {
-    if(sortByAlphabet){
-        return; 
-    } else{
-        setSortByAlphabet(prev => !prev);
-        setSortByCost(false);
+    if (sortByAlphabet) {
+      return;
+    } else {
+      setSortByAlphabet((prev) => !prev);
+      setSortByCost(false);
     }
   };
 
@@ -77,13 +77,13 @@ export const UnitAugmentProvider = ({ children }: UnitAugmentProviderProps) => {
         clickedTraitDropDown,
         setClickedTraitDropDown,
         handleSortByCost,
-        handleSortByAlphabet
+        handleSortByAlphabet,
       }}
     >
       {children}
     </UnitAugmentContext.Provider>
-  )
-}
+  );
+};
 
 export const useUnitAugmentContext = () => {
   const context = useContext(UnitAugmentContext);

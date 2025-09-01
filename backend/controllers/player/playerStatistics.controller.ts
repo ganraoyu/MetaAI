@@ -1,10 +1,21 @@
-import { Request, Response, RequestHandler } from "express";
-import { fetchPlayerMatches, fetchPlayerPuuid } from "../../utils/playerUtils";
+import { Request, Response, RequestHandler } from 'express';
+import { fetchPlayerMatches, fetchPlayerPuuid } from '../../utils/playerUtils';
 
-interface Trait { name: string; num_units: number }
-interface Participant { puuid: string; traits: Trait[]; placement?: number }
-interface MatchInfo { participants: Participant[] }
-interface Match { info: MatchInfo }
+interface Trait {
+  name: string;
+  num_units: number;
+}
+interface Participant {
+  puuid: string;
+  traits: Trait[];
+  placement?: number;
+}
+interface MatchInfo {
+  participants: Participant[];
+}
+interface Match {
+  info: MatchInfo;
+}
 
 // Use RequestHandler type
 const getPlayerWinRate: RequestHandler = async (req, res) => {
@@ -14,7 +25,7 @@ const getPlayerWinRate: RequestHandler = async (req, res) => {
     const playerMatchDetails = await fetchPlayerMatches(gameName, tagLine, region);
 
     if (!playerMatchDetails.length) {
-      res.status(404).send("No matches found for this player.");
+      res.status(404).send('No matches found for this player.');
       return;
     }
 
@@ -42,8 +53,8 @@ const getPlayerWinRate: RequestHandler = async (req, res) => {
 
     res.json({ totalGames, wins, winRate, placementRate, placements });
   } catch (error: any) {
-    console.error("Error fetching player winrate:", error.response?.data || error.message);
-    res.status(500).send("Error connecting to Riot API");
+    console.error('Error fetching player winrate:', error.response?.data || error.message);
+    res.status(500).send('Error connecting to Riot API');
   }
 };
 
@@ -72,8 +83,8 @@ const getPlayerMostPlayedTraits: RequestHandler = async (req, res) => {
     const sortedTraits = traits.sort((a, b) => b.num_units - a.num_units);
     res.json({ sortedTraits });
   } catch (error: any) {
-    console.error("Error fetching data:", error.response?.data || error.message);
-    res.status(500).send("Error connecting to Riot API");
+    console.error('Error fetching data:', error.response?.data || error.message);
+    res.status(500).send('Error connecting to Riot API');
   }
 };
 
@@ -81,8 +92,8 @@ const getPlayerMostPlayedAugments: RequestHandler = async (req, res) => {
   try {
     // TODO: implement
   } catch (error: any) {
-    console.error("Error fetching data:", error.response?.data || error.message);
-    res.status(500).send("Error connecting to Riot API");
+    console.error('Error fetching data:', error.response?.data || error.message);
+    res.status(500).send('Error connecting to Riot API');
   }
 };
 

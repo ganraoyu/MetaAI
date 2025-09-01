@@ -1,9 +1,3 @@
-
 export const BurnHover = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
-
+  return <div></div>;
+};

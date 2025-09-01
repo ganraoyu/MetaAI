@@ -1,9 +1,5 @@
 const ChampionsTierlist = () => {
-  return (
-    <div>
-      Champions
-    </div>
-  )
-}
+  return <div>Champions</div>;
+};
 
-export default ChampionsTierlist
+export default ChampionsTierlist;

@@ -1,10 +1,7 @@
 import React from 'react';
 import { useTFTSetContext } from '../../../../../../utilities/TFTSetContext';
 
-type HealSource = 
-  | { type: 'ability'; abilityName?: string }
-  | 'omnivamp'
-  | 'item'
+type HealSource = { type: 'ability'; abilityName?: string } | 'omnivamp' | 'item';
 
 interface HealBreakDownProps {
   healAmount: number;
@@ -12,7 +9,7 @@ interface HealBreakDownProps {
 }
 
 export const HealHover: React.FC<HealBreakDownProps> = ({ healAmount, source }) => {
-  const { set } = useTFTSetContext()
+  const { set } = useTFTSetContext();
 
   const abilityName = () => {
     if (typeof source === 'object' && source.type === 'ability' && source.abilityName) {
@@ -26,11 +23,7 @@ export const HealHover: React.FC<HealBreakDownProps> = ({ healAmount, source }) 
       {/* Header with heal icon and heal amount */}
       <div className="flex justify-between items-center border-b border-gray-600 pb-1 mb-2">
         <div className="flex items-center gap-1.5">
-          <img 
-            src="../assets/icons/health.png" 
-            alt="heal icon" 
-            className="h-6 w-6" 
-          />
+          <img src="../assets/icons/health.png" alt="heal icon" className="h-6 w-6" />
           <span className="font-medium">Heal</span>
         </div>
         <span className="font-bold text-green-400">+{healAmount}</span>

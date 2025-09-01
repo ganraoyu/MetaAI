@@ -1,9 +1,5 @@
 const ChampionsStatistics = () => {
-  return (
-    <div>
-      Champions
-    </div>
-  )
-}
+  return <div>Champions</div>;
+};
 
-export default ChampionsStatistics
+export default ChampionsStatistics;

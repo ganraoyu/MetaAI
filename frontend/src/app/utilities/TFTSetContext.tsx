@@ -1,4 +1,4 @@
-import { useContext, useState, createContext, ReactNode } from "react";
+import { useContext, useState, createContext, ReactNode } from 'react';
 
 type TFTSetContextType = {
   set: string;
@@ -6,18 +6,14 @@ type TFTSetContextType = {
 };
 
 const TFTSetContext = createContext<TFTSetContextType>({
-  set: "SET13",
+  set: 'SET13',
   setSet: () => {},
 });
 
 export const TFTSetProvider = ({ children }: { children: ReactNode }) => {
-  const [set, setSet] = useState("SET13");
+  const [set, setSet] = useState('SET13');
 
-  return (
-    <TFTSetContext.Provider value={{ set, setSet }}>
-      {children}
-    </TFTSetContext.Provider>
-  );
+  return <TFTSetContext.Provider value={{ set, setSet }}>{children}</TFTSetContext.Provider>;
 };
 
 export const useTFTSetContext = () => useContext(TFTSetContext);

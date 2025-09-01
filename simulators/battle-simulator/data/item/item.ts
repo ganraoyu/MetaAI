@@ -51,11 +51,7 @@ interface SpecialEffects {
   additionalAttackRange?: number;
 }
 
-export interface ItemProps
-  extends CombatStats,
-    DefensiveStats,
-    AbilityStats,
-    SpecialEffects {
+export interface ItemProps extends CombatStats, DefensiveStats, AbilityStats, SpecialEffects {
   name: string;
   description: string;
 }

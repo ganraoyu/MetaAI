@@ -1,4 +1,4 @@
-import { Champion } from "../../champion/champion";
+import { Champion } from '../../champion/champion';
 import {
   dragonsClawEffect,
   brambleVestEffect,
@@ -28,7 +28,7 @@ import {
   statikkShivEffect,
   lastWhisperEffect,
   blueBuffEffect,
-} from "./combinedItems";
+} from './combinedItems';
 import {
   dragonsWillEffect,
   blessedBloodthirsterEffect,
@@ -49,7 +49,7 @@ import {
   sunlightCapeEffect,
   jakshoTheProteanEffect,
   covalentSparkEffect,
-} from "./radiantItems";
+} from './radiantItems';
 
 export function applyStaticEffects(champion: Champion) {
   runaansHurricaneEffect(champion);
@@ -85,11 +85,7 @@ export function applySimpleEffects(champion: Champion, battleTime: number) {
   dvarapalaStoneplateEffect(champion, battleTime);
 }
 
-export function applyTargetEffects(
-  champion: Champion,
-  target: Champion,
-  battleTime: number
-) {
+export function applyTargetEffects(champion: Champion, target: Champion, battleTime: number) {
   // combined items
   giantSlayerEffect(champion, target, battleTime);
   guardBreakerEffect(champion, target, battleTime);
@@ -105,11 +101,7 @@ export function applyTargetEffects(
   moreMorellonomiconEffect(champion, target, battleTime);
 }
 
-export function applyAllyEffects(
-  champion: Champion,
-  ally: Champion,
-  battleTime: number
-) {
+export function applyAllyEffects(champion: Champion, ally: Champion, battleTime: number) {
   hextechGunbladeEffect(champion, ally, battleTime);
 
   radiantHextechGunbladeEffect(champion, ally, battleTime);
@@ -118,7 +110,7 @@ export function applyAllyEffects(
 export function applySurroundingOpponentsEffects(
   champion: Champion,
   surroundingOpponents: Champion[],
-  battleTime: number
+  battleTime: number,
 ) {
   // combined items
   evenshroudEffect(champion, surroundingOpponents, battleTime);
@@ -131,7 +123,7 @@ export function applySurroundingOpponentsEffects(
 export function applySurroundingAlliesEffects(
   champion: Champion,
   surroundingAllies: Champion[],
-  battleTime: number
+  battleTime: number,
 ) {
   redemptionEffect(champion, surroundingAllies, battleTime);
 }
@@ -140,7 +132,7 @@ export function applyTargetAreaEffects(
   champion: Champion,
   target: Champion,
   surroundingOpponents: Champion[],
-  battleTime: number
+  battleTime: number,
 ) {
   ionicSparkEffect(champion, target, surroundingOpponents, battleTime);
   sunfireCapeEffect(champion, target, surroundingOpponents, battleTime);
@@ -152,7 +144,7 @@ export function applyTargetAreaEffects(
 export function applyPositionalEffects(
   champion: Champion,
   isChampionFrontOrBack: boolean,
-  battleTime: number
+  battleTime: number,
 ) {
   adaptiveHelmEffect(champion, isChampionFrontOrBack, battleTime);
   jakshoTheProteanEffect(champion, isChampionFrontOrBack, battleTime);
@@ -167,7 +159,7 @@ export function applyAllItemEffects(
   surroundingAllies: Champion[],
   surroundOpponents: Champion[],
   championsInRadius: Champion[],
-  championsInRadiusByTarget: Champion[]
+  championsInRadiusByTarget: Champion[],
 ) {
   applyStaticEffects(champion);
   applySimpleEffects(champion, battleTime);

@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useState } from 'react';
 import {
   useChampionMapEffect,
   useTraitCountingEffect,
   useTraitOrderingEffect,
-} from "./useHexBoardEffects.ts"
+} from './useHexBoardEffects.ts';
 import {
   ChampionData,
   BoardState,
@@ -12,7 +12,7 @@ import {
   HexBoardContextType,
   TraitCountEntry,
   ChampionMap,
-} from "./types.ts"
+} from './types.ts';
 
 /**
  * Context for the HexBoard providing board state and operations
@@ -34,25 +34,23 @@ import {
  * @property {Function} setChampionStarLevel Update a champion's star level
  * @property {Function} addItemToChampion Add an item to a champion
  * @property {Function} removeItemFromChampion Remove an item from a champion
-*/
+ */
 
-const HexBoardContext = createContext<HexBoardContextType | undefined>(undefined)
+const HexBoardContext = createContext<HexBoardContextType | undefined>(undefined);
 
 /**
  * Custom hook to access HexBoard context
  * Must be used within a HexBoardProvider
  * @throws Will throw an error if used outside HexBoardProvider
  * @returns {HexBoardContextType} HexBoard context values and operations
-*/
+ */
 export const useHexBoardContext = (): HexBoardContextType => {
-  const context = useContext(HexBoardContext)
+  const context = useContext(HexBoardContext);
   if (!context) {
-    throw new Error(
-      "useHexBoardContext must be used within a HexBoardProvider"
-    )
+    throw new Error('useHexBoardContext must be used within a HexBoardProvider');
   }
-  return context
-}
+  return context;
+};
 
 /**
  * HexBoardProvider
@@ -61,51 +59,45 @@ export const useHexBoardContext = (): HexBoardContextType => {
  * @param {Object} props
  * @param {React.ReactNode} props.children Child components wrapped by this provider
  * @returns {JSX.Element} Provider component exposing HexBoard context
-*/
+ */
 
-export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [boardState, setBoardState] = useState<BoardState>({})
-  const [boardArray, setBoardArray] = useState<ChampionPosition[]>([])
+export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [boardState, setBoardState] = useState<BoardState>({});
+  const [boardArray, setBoardArray] = useState<ChampionPosition[]>([]);
 
-  const [playerChampionArray, setPlayerChampionArray] = useState<ChampionMap[]>([])
-  const [opponentChampionArray, setOpponentChampionArray] = useState<ChampionMap[]>([])
+  const [playerChampionArray, setPlayerChampionArray] = useState<ChampionMap[]>([]);
+  const [opponentChampionArray, setOpponentChampionArray] = useState<ChampionMap[]>([]);
 
   const [playerChampionCostCount, setPlayerChampionCostCount] = useState<number>(0);
   const [opponentChampionCostCount, setOpponentChampionCostCount] = useState<number>(0);
-  
-  const [playerTraitsObj, setPlayerTraitsArray] = useState<TraitCountMap>({})
-  const [opponentTraitsObj, setOpponentTraitsArray] = useState<TraitCountMap>({})
 
-  const [orderedPlayerTraits, setOrderedPlayerTraits] = useState<TraitCountEntry[]>([])
-  const [orderedOpponentTraits, setOrderedOpponentTraits] = useState<TraitCountEntry[]>([])
+  const [playerTraitsObj, setPlayerTraitsArray] = useState<TraitCountMap>({});
+  const [opponentTraitsObj, setOpponentTraitsArray] = useState<TraitCountMap>({});
+
+  const [orderedPlayerTraits, setOrderedPlayerTraits] = useState<TraitCountEntry[]>([]);
+  const [orderedOpponentTraits, setOrderedOpponentTraits] = useState<TraitCountEntry[]>([]);
 
   const [playerSunder, setPlayerSunder] = useState<boolean>(false);
-  const [playerShred, setPlayerShred] = useState<boolean>(false); 
-  
-  const [opponentSunder, setOpponentSunder] = useState<boolean>(false);
-  const [opponentShred, setOpponentShred] = useState<boolean>(false); 
+  const [playerShred, setPlayerShred] = useState<boolean>(false);
 
-  useTraitCountingEffect(
-    boardArray,
-    setPlayerTraitsArray,
-    setOpponentTraitsArray
-  );
+  const [opponentSunder, setOpponentSunder] = useState<boolean>(false);
+  const [opponentShred, setOpponentShred] = useState<boolean>(false);
+
+  useTraitCountingEffect(boardArray, setPlayerTraitsArray, setOpponentTraitsArray);
 
   useTraitOrderingEffect(
     boardArray,
     playerTraitsObj,
     opponentTraitsObj,
     setOrderedPlayerTraits,
-    setOrderedOpponentTraits
+    setOrderedOpponentTraits,
   );
 
   useChampionMapEffect(
     boardArray,
     setPlayerChampionCostCount,
     setOpponentChampionCostCount,
-    setPlayerChampionArray,    
+    setPlayerChampionArray,
     setOpponentChampionArray,
   );
 
@@ -116,10 +108,10 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
         champion: championData,
         starLevel: championData.starLevel || 1,
       },
-    }))
+    }));
 
     setBoardArray((prev) => {
-      const filtered = prev.filter((entry) => entry.cellId !== cellId)
+      const filtered = prev.filter((entry) => entry.cellId !== cellId);
       return [
         ...filtered,
         {
@@ -129,36 +121,36 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
           traitsList: championData.traitsList,
           starLevel: championData.starLevel || 1,
         },
-      ]
-    })
+      ];
+    });
   };
 
   const removeChampion = (cellId: string) => {
     setBoardState((prev) => {
-      const newState = { ...prev }
-      delete newState[cellId]
-      return newState
-    })
-    setBoardArray((prev) => prev.filter((entry) => entry.cellId !== cellId))
+      const newState = { ...prev };
+      delete newState[cellId];
+      return newState;
+    });
+    setBoardArray((prev) => prev.filter((entry) => entry.cellId !== cellId));
   };
 
   const moveChampion = (fromCellId: string, toCellId: string) => {
     setBoardState((prev) => {
-      const championData = prev[fromCellId]
-      if (!championData) return prev
+      const championData = prev[fromCellId];
+      if (!championData) return prev;
 
-      const newState = { ...prev }
-      newState[toCellId] = championData
-      delete newState[fromCellId]
+      const newState = { ...prev };
+      newState[toCellId] = championData;
+      delete newState[fromCellId];
 
-      return newState
+      return newState;
     });
 
     setBoardArray((prev) => {
-      const championEntry = prev.find((entry) => entry.cellId === fromCellId)
-      if (!championEntry) return prev
+      const championEntry = prev.find((entry) => entry.cellId === fromCellId);
+      if (!championEntry) return prev;
 
-      const filtered = prev.filter((entry) => entry.cellId !== fromCellId)
+      const filtered = prev.filter((entry) => entry.cellId !== fromCellId);
       return [
         ...filtered,
         {
@@ -168,20 +160,20 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
           traitsList: championEntry.traitsList,
           starLevel: championEntry.starLevel,
         },
-      ]
+      ];
     });
   };
 
   const getChampion = (cellId: string): ChampionData | null => {
-    return boardState[cellId]?.champion || null
+    return boardState[cellId]?.champion || null;
   };
 
   const setChampionStarLevel = (cellId: string, starLevel: number) => {
     setBoardState((prev) => {
-      const cell = prev[cellId]
-      if (!cell) return prev
+      const cell = prev[cellId];
+      if (!cell) return prev;
 
-      const currentChampion = cell.champion
+      const currentChampion = cell.champion;
       return {
         ...prev,
         [cellId]: {
@@ -196,19 +188,17 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
     });
 
     setBoardArray((prev) =>
-      prev.map((entry) =>
-        entry.cellId === cellId ? { ...entry, starLevel } : entry
-      )
+      prev.map((entry) => (entry.cellId === cellId ? { ...entry, starLevel } : entry)),
     );
   };
 
   const addItemToChampion = (cellId: string, itemName: string) => {
     setBoardState((prev) => {
-      const cell = prev[cellId]
-      if (!cell) return prev
+      const cell = prev[cellId];
+      if (!cell) return prev;
 
-      const champion = cell.champion
-      const existingItems = champion?.items || []
+      const champion = cell.champion;
+      const existingItems = champion?.items || [];
 
       return {
         ...prev,
@@ -219,18 +209,18 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
             items: [...existingItems, itemName],
           } as ChampionData,
         },
-      }
+      };
     });
   };
 
   const removeItemFromChampion = (cellId: string, itemName: string) => {
     setBoardState((prev) => {
-      const cell = prev[cellId]
-      if (!cell) return prev
+      const cell = prev[cellId];
+      if (!cell) return prev;
 
-      const champion = cell?.champion
-      const itemList = champion?.items
-      const newItemList = itemList?.filter((item: any) => item !== itemName)
+      const champion = cell?.champion;
+      const itemList = champion?.items;
+      const newItemList = itemList?.filter((item: any) => item !== itemName);
 
       return {
         ...prev,
@@ -241,7 +231,7 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
             items: newItemList,
           } as ChampionData,
         },
-      }
+      };
     });
   };
 
@@ -250,13 +240,13 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         boardState,
         boardArray,
-        playerChampionArray, 
+        playerChampionArray,
         setPlayerChampionArray,
-        playerChampionCostCount, 
+        playerChampionCostCount,
         setPlayerChampionCostCount,
-        opponentChampionCostCount, 
+        opponentChampionCostCount,
         setOpponentChampionCostCount,
-        opponentChampionArray, 
+        opponentChampionArray,
         setOpponentChampionArray,
         playerTraitsObj,
         opponentTraitsObj,
@@ -280,7 +270,7 @@ export const HexBoardProvider: React.FC<{ children: React.ReactNode }> = ({
         opponentSunder,
         setOpponentSunder,
         opponentShred,
-        setOpponentShred
+        setOpponentShred,
       }}
     >
       {children}

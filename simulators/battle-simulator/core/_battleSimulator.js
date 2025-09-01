@@ -1,22 +1,20 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-const Board = require("./board.js");
-const HexCell = require("../utils/HexCell.js");
-const { Champion } = require("../data/champion/champion.ts");
-const { Item } = require("../data/item/item.ts");
-const { Trait } = require("../data/trait/trait.ts");
-const { displayStats } = require("../data/champion/champion.ts");
+const Board = require('./board.js');
+const HexCell = require('../utils/HexCell.js');
+const { Champion } = require('../data/champion/champion.ts');
+const { Item } = require('../data/item/item.ts');
+const { Trait } = require('../data/trait/trait.ts');
+const { displayStats } = require('../data/champion/champion.ts');
 
-const { getChampionByName } = require("../data/champion/champion-data.ts");
-const { getItemByName } = require("../data/item/item-data.ts");
-const { getTraitByName } = require("../data/trait/trait-data.ts");
+const { getChampionByName } = require('../data/champion/champion-data.ts');
+const { getItemByName } = require('../data/item/item-data.ts');
+const { getTraitByName } = require('../data/trait/trait-data.ts');
 
-const {
-  addAdditionalItemStatistics,
-} = require("../data/item/logic/basicItems.ts");
+const { addAdditionalItemStatistics } = require('../data/item/logic/basicItems.ts');
 
-const battleLogger = require("./battleLogger.ts");
+const battleLogger = require('./battleLogger.ts');
 const { logBattleEvent } = battleLogger;
 
 const {
@@ -28,13 +26,13 @@ const {
   applySurroundingOpponentsEffects,
   applyPositionalEffects,
   applyAllItemEffects,
-} = require("../data/item/logic/_itemEffects.ts");
+} = require('../data/item/logic/_itemEffects.ts');
 
 const {
   getDistanceBetweenCells,
   findClosestEnemy,
   moveChampionTowardsTarget,
-} = require("./movementLogic.js");
+} = require('./movementLogic.js');
 
 /*
 cd simulators/battle-simulator/core
@@ -45,15 +43,15 @@ const board = new Board(8, 7);
 
 function getFormattedTime(time) {
   const minutes = Math.floor(time / 6000);
-  const seconds = ((time % 6000) / 100).toFixed(2).padStart(5, "0");
+  const seconds = ((time % 6000) / 100).toFixed(2).padStart(5, '0');
   return `${minutes}:${seconds}`;
 }
 
 function deepClone(obj) {
-  if (obj === null || typeof obj !== "object") return obj;
+  if (obj === null || typeof obj !== 'object') return obj;
   if (obj instanceof Date) return new Date(obj.getTime());
-  if (obj instanceof Array) return obj.map(item => deepClone(item));
-  if (typeof obj === "object") {
+  if (obj instanceof Array) return obj.map((item) => deepClone(item));
+  if (typeof obj === 'object') {
     const clonedObj = {};
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
@@ -66,7 +64,7 @@ function deepClone(obj) {
 
 function deepCloneItem(item) {
   if (!item) return item;
-  
+
   // Create a clean item object with only the necessary properties
   return {
     name: item.name,
@@ -108,13 +106,13 @@ function deepCloneItem(item) {
     abilityPowerStacking: item.abilityPowerStacking || false,
     additionalAttackSpeedPerStack: item.additionalAttackSpeedPerStack || 0,
     additionalAbilityPowerPerStack: item.additionalAbilityPowerPerStack || 0,
-    additionalAttackRange: item.additionalAttackRange || 0
+    additionalAttackRange: item.additionalAttackRange || 0,
   };
 }
 
 function placeChampionByName(championName, row, column, starLevel, team) {
   const champion = getChampionByName(championName);
-  if (typeof champion === "string") {
+  if (typeof champion === 'string') {
     console.log(champion);
   } else {
     // Deep clone all the champion data to ensure each instance is independent
@@ -148,14 +146,13 @@ function placeChampionByName(championName, row, column, starLevel, team) {
       deepClone(champion.attackArray),
       deepClone(champion.abilityArray),
       deepClone(champion.healArray),
-      []
+      [],
     );
     newChampion.setStarLevel(starLevel);
-    newChampion.team = team; 
+    newChampion.team = team;
     board.placeChampion(newChampion, row, column);
-
   }
-};
+}
 
 function initializeTeams() {
   let player = [];
@@ -182,12 +179,12 @@ function initializeTeams() {
   }
 
   console.log(
-    "Player team:",
-    player.map((champion) => champion.name)
+    'Player team:',
+    player.map((champion) => champion.name),
   );
   console.log(
-    "Opponent team:",
-    opponent.map((champion) => champion.name)
+    'Opponent team:',
+    opponent.map((champion) => champion.name),
   );
 
   return { player, opponent };
@@ -196,7 +193,7 @@ function initializeTeams() {
 function addItemByName(champion, itemName) {
   const item = getItemByName(itemName);
 
-  if (typeof item === "string") {
+  if (typeof item === 'string') {
     throw new Error(item);
   } else {
     const clonedItem = deepCloneItem(item);
@@ -221,7 +218,7 @@ function checkChampionTraits(champion) {
         numberOfTrait: 1,
       });
     } else {
-      console.log("Trait not found");
+      console.log('Trait not found');
     }
   }
 
@@ -232,9 +229,7 @@ function addAdditionalTraitStatistics(champion) {
   let traitCounts = {};
 
   const combinedTraitsObject = checkChampionTraits(champion); // Get combined traits object
-  const traitStats = combinedTraitsObject.traits.map((trait) =>
-    getTraitByName(trait.trait)
-  ); // Extract trait names and their corresponding stats
+  const traitStats = combinedTraitsObject.traits.map((trait) => getTraitByName(trait.trait)); // Extract trait names and their corresponding stats
 
   combinedTraitsObject.traits.forEach((trait) => {
     if (traitCounts[trait.trait]) {
@@ -247,10 +242,7 @@ function addAdditionalTraitStatistics(champion) {
   combinedTraitsObject.traits.forEach((trait) => {
     const traitStatsForTrait = traitStats.find((t) => t.name === trait.trait);
 
-    if (
-      trait.trait === traitStatsForTrait.name &&
-      traitCounts[traitStatsForTrait.name] >= 1
-    ) {
+    if (trait.trait === traitStatsForTrait.name && traitCounts[traitStatsForTrait.name] >= 1) {
       const stats = champion.statsByStarLevel[champion.starLevel];
       const traitStats = traitStatsForTrait?.stats || {};
 
@@ -262,19 +254,16 @@ function addAdditionalTraitStatistics(champion) {
       stats.attackSpeed += parseFloat(traitStats.additionalAttackSpeed) || 0;
       stats.magicResist += parseFloat(traitStats.additionalMagicResist) || 0;
       stats.mana += parseFloat(traitStats.additionalMana) || 0;
-      stats.manaPerAttack +=
-        parseFloat(traitStats.additionalManaPerAttack) || 0;
+      stats.manaPerAttack += parseFloat(traitStats.additionalManaPerAttack) || 0;
       stats.abilityPower += parseFloat(traitStats.additionalAbilityPower) || 0;
       stats.abilityManaCost -= parseFloat(traitStats.reducedMaxMana) || 0;
-      stats.attackCritChance +=
-        parseFloat(traitStats.additionalCritChance) || 0;
-      stats.attackCritDamage +=
-        parseFloat(traitStats.additionalCritDamage) || 0;
+      stats.attackCritChance += parseFloat(traitStats.additionalCritChance) || 0;
+      stats.attackCritDamage += parseFloat(traitStats.additionalCritDamage) || 0;
       stats.omnivamp += parseFloat(traitStats.additionalOmnivamp) || 0;
       stats.durability += parseFloat(traitStats.additionalDurability) || 0;
       stats.range += parseFloat(traitStats.additionalAttackRange) || 0;
     } else {
-      console.log("Error: Trait not processed correctly");
+      console.log('Error: Trait not processed correctly');
     }
   });
 }
@@ -292,11 +281,7 @@ function simulateRound(battlePlayer, battleOpponent, battleTime) {
   for (const { champion, opponents } of allChampions) {
     if (champion.currentHp <= 0) continue;
 
-    const { closestEnemy, distance } = findClosestEnemy(
-      champion,
-      opponents,
-      board
-    );
+    const { closestEnemy, distance } = findClosestEnemy(champion, opponents, board);
 
     if (closestEnemy) {
       if (distance <= champion.range) {
@@ -314,7 +299,7 @@ function simulateRound(battlePlayer, battleOpponent, battleTime) {
           champion,
           closestEnemy,
           board,
-          updatedBattleTime
+          updatedBattleTime,
         );
 
         if (moveTime) {
@@ -322,7 +307,7 @@ function simulateRound(battlePlayer, battleOpponent, battleTime) {
           movementOccurred = true;
 
           logBattleEvent(
-            "movement",
+            'movement',
             {
               mover: {
                 champion: champion.name,
@@ -365,7 +350,7 @@ function simulateRound(battlePlayer, battleOpponent, battleTime) {
                 position: board.getChampionPosition(closestEnemy),
               },
             },
-            updatedBattleTime
+            updatedBattleTime,
           );
         }
       }
@@ -394,15 +379,15 @@ function simulateRound(battlePlayer, battleOpponent, battleTime) {
 }
 
 function calculateWinRates(playerWins, opponentWins) {
-  const playerWinRate = (playerWins.length / 100) * 100 + "%";
-  const opponentWinRate = (opponentWins.length / 100) * 100 + "%";
+  const playerWinRate = (playerWins.length / 100) * 100 + '%';
+  const opponentWinRate = (opponentWins.length / 100) * 100 + '%';
   return { playerWinRate, opponentWinRate };
 }
 
 let currentBattleTime = 0;
 
 function startBattle() {
-  console.log("Battle started!");
+  console.log('Battle started!');
 
   let { player, opponent } = initializeTeams();
   let playerWins = [];
@@ -411,7 +396,7 @@ function startBattle() {
   let battlePlayer = [...player];
   let battleOpponent = [...opponent];
 
-  console.log("Starting battle with champions:");
+  console.log('Starting battle with champions:');
 
   const BATTLE_STEP = 1;
   const MAX_BATTLE_TIME = 30000;
@@ -436,9 +421,7 @@ function startBattle() {
     const formattedTime = getFormattedTime(battleTime);
 
     if (battleTime % 100 === 0) {
-      console.log(
-        `Battle time: ${formattedTime} (${battleTime / 100} seconds)`
-      );
+      console.log(`Battle time: ${formattedTime} (${battleTime / 100} seconds)`);
 
       const playerTeamStats = battlePlayer.map((champion) => {
         return [
@@ -446,7 +429,7 @@ function startBattle() {
           `(${champion.currentHp.toFixed(2)} HP,`,
           `${champion.shield} shield,`,
           `${champion.mana}/${champion.abilityManaCost} mana),`,
-        ].join(" ");
+        ].join(' ');
       });
 
       const opponentTeamStats = battleOpponent.map((champion) => {
@@ -455,18 +438,18 @@ function startBattle() {
           `(${champion.currentHp.toFixed(2)} HP,`,
           `${champion.shield} shield,`,
           `${champion.mana}/${champion.abilityManaCost} mana),`,
-        ].join(" ");
+        ].join(' ');
       });
 
-      console.log("Player team:", playerTeamStats);
-      console.log("Opponent team:", opponentTeamStats);
+      console.log('Player team:', playerTeamStats);
+      console.log('Opponent team:', opponentTeamStats);
     }
 
     battlePlayer.forEach((champion) => {
       const target = battleOpponent.find((c) => c.currentHp > 0);
       const ally = battlePlayer.reduce(
         (max, c) => (c.currentHp > max.currentHp ? c : max),
-        battlePlayer[0]
+        battlePlayer[0],
       );
       const { championsInRadius, surroundingOpponents, surroundingAllies } =
         board.getSurroundingChampionsByRadius(champion, 2);
@@ -475,9 +458,7 @@ function startBattle() {
       const [row, column] = board.getChampionPosition(champion);
 
       let isChampionFrontOrBack; // True = front, False = back
-      row >= 4
-        ? (isChampionFrontOrBack = true)
-        : (isChampionFrontOrBack = false);
+      row >= 4 ? (isChampionFrontOrBack = true) : (isChampionFrontOrBack = false);
 
       applyAllItemEffects(
         champion,
@@ -489,7 +470,7 @@ function startBattle() {
         championsInRadius,
         surroundingChampionsAroundTarget,
         championsInRadiusByTarget,
-        isChampionFrontOrBack
+        isChampionFrontOrBack,
       );
     });
 
@@ -497,7 +478,7 @@ function startBattle() {
       const target = battleOpponent.find((c) => c.currentHp > 0);
       const ally = battleOpponent.reduce(
         (max, c) => (c.currentHp > max.currentHp ? c : max),
-        battleOpponent[0]
+        battleOpponent[0],
       );
       const { championsInRadius, surroundingOpponents, surroundingAllies } =
         board.getSurroundingChampionsByRadius(champion, 2);
@@ -506,9 +487,7 @@ function startBattle() {
       const [row, column] = board.getChampionPosition(champion);
 
       let isChampionFrontOrBack; // True = front, False = back
-      row >= 4
-        ? (isChampionFrontOrBack = true)
-        : (isChampionFrontOrBack = false);
+      row >= 4 ? (isChampionFrontOrBack = true) : (isChampionFrontOrBack = false);
 
       applyAllItemEffects(
         champion,
@@ -520,32 +499,25 @@ function startBattle() {
         championsInRadius,
         surroundingChampionsAroundTarget,
         championsInRadiusByTarget,
-        isChampionFrontOrBack
+        isChampionFrontOrBack,
       );
     });
   }
 
   if (battlePlayer.some((champion) => champion.currentHp > 0)) {
     playerWins.push(1);
-    console.log("Player team wins!");
+    console.log('Player team wins!');
   } else if (battleOpponent.some((champion) => champion.currentHp > 0)) {
     opponentWins.push(1);
-    console.log("Opponent team wins!");
+    console.log('Opponent team wins!');
   } else {
-    console.log("No champions left standing - Draw!");
+    console.log('No champions left standing - Draw!');
   }
 
   board.displayBoard();
-  console.log(
-    "Battle ended after",
-    (battleTime / 100).toFixed(2),
-    "seconds of simulated time."
-  );
+  console.log('Battle ended after', (battleTime / 100).toFixed(2), 'seconds of simulated time.');
 
-  const { playerWinRate, opponentWinRate } = calculateWinRates(
-    playerWins,
-    opponentWins
-  );
+  const { playerWinRate, opponentWinRate } = calculateWinRates(playerWins, opponentWins);
 
   currentBattleTime = battleTime;
   return {
@@ -576,26 +548,26 @@ function clearBoard() {
   try {
     if (battleLogger && battleLogger.clearHistory) {
       battleLogger.clearHistory();
-      console.log("✅ Battle history cleared via clearHistory()");
+      console.log('✅ Battle history cleared via clearHistory()');
     } else if (battleLogger && battleLogger.battleHistory) {
       battleLogger.battleHistory = [];
     }
   } catch (error) {
-    console.log("❌ Error clearing battle history:", error);
+    console.log('❌ Error clearing battle history:', error);
     try {
-      delete require.cache[require.resolve("./battleLogger.ts")];
+      delete require.cache[require.resolve('./battleLogger.ts')];
     } catch (cacheError) {
-      console.log("❌ Could not clear battle logger cache:", cacheError);
+      console.log('❌ Could not clear battle logger cache:', cacheError);
     }
   }
   board.displayBoard();
 }
 
-placeChampionByName("Akali", 4, 4, 3, "player");
-placeChampionByName("Akali", 3, 2, 3, "opponent");
+placeChampionByName('Akali', 4, 4, 3, 'player');
+placeChampionByName('Akali', 3, 2, 3, 'opponent');
 addItemByName(board.getChampion(3, 2), "Warmog's Armor");
 board.displayBoard();
-startBattle()
+startBattle();
 
 module.exports = {
   router,

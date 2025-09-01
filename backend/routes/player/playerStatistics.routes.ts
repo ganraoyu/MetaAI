@@ -1,8 +1,8 @@
 import express, { Router, Request, Response } from 'express';
-import { 
-  getPlayerWinRate, 
-  getPlayerMostPlayedTraits, 
-  getPlayerMostPlayedAugments 
+import {
+  getPlayerWinRate,
+  getPlayerMostPlayedTraits,
+  getPlayerMostPlayedAugments,
 } from '../../controllers/player/playerStatistics.controller';
 
 const router: Router = express.Router();

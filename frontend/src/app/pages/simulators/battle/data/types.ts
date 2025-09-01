@@ -1,7 +1,7 @@
 export interface TraitTier {
   count: number;
   effect: string;
-  tierLabel: "Bronze" | "Silver" | "Gold" | "Prismatic";
+  tierLabel: 'Bronze' | 'Silver' | 'Gold' | 'Prismatic';
   stats: {
     [key: string]: number;
   };

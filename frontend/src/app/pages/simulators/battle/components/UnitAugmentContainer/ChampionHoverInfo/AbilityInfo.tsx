@@ -1,13 +1,20 @@
-interface AbilityInfoProps{
-    set: string;
-    imageAbilityName: string;
-    abilityName: string;
-    abilityDescription: string;
-    mana: number;
-    maxMana: number;
+interface AbilityInfoProps {
+  set: string;
+  imageAbilityName: string;
+  abilityName: string;
+  abilityDescription: string;
+  mana: number;
+  maxMana: number;
 }
 
-export const AbilityInfo = ({set, imageAbilityName, abilityName, abilityDescription, mana, maxMana}: AbilityInfoProps) => {
+export const AbilityInfo = ({
+  set,
+  imageAbilityName,
+  abilityName,
+  abilityDescription,
+  mana,
+  maxMana,
+}: AbilityInfoProps) => {
   return (
     <div>
       {/* Ability Info */}
@@ -22,7 +29,9 @@ export const AbilityInfo = ({set, imageAbilityName, abilityName, abilityDescript
         </div>
         <div className="flex items-center justify-center">
           <img src="../assets/icons/mana.png" className="h-[0.75rem] w-[0.75rem] mr-[0.25rem]" />
-          <p className="text-[0.75rem]">{mana}/{maxMana}</p>
+          <p className="text-[0.75rem]">
+            {mana}/{maxMana}
+          </p>
         </div>
       </div>
 
@@ -31,5 +40,5 @@ export const AbilityInfo = ({set, imageAbilityName, abilityName, abilityDescript
         <p className="text-[0.75rem] p-[0.5rem] text-gray-300">{abilityDescription}</p>
       </div>
     </div>
-  )
-}
+  );
+};

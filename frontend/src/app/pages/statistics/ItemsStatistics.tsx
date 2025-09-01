@@ -1,9 +1,5 @@
 const ItemsStatistics = () => {
-  return (
-    <div>
-      Items
-    </div>
-  )
-}
+  return <div>Items</div>;
+};
 
-export default ItemsStatistics
+export default ItemsStatistics;

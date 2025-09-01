@@ -39,17 +39,19 @@ const fetchSummonerIds = async (rank: string, division: string): Promise<Summone
       const client = shortRegionClient(region);
       let response;
 
-      if (rank === "master" || rank === "grandmaster" || rank === "challenger") {
+      if (rank === 'master' || rank === 'grandmaster' || rank === 'challenger') {
         response = await client.get(`/tft/league/v1/${rank}`);
         const players = response.data.entries.slice(0, 1);
         return players.map((player: any) => ({ summonerId: player.summonerId, region }));
       } else {
         console.log(`Making request for rank: ${rank}, division: ${division}`);
-        response = await client.get(`/tft/league/v1/entries/${rank.toUpperCase()}/${division.toUpperCase()}?queue=RANKED_TFT&page=1`);
+        response = await client.get(
+          `/tft/league/v1/entries/${rank.toUpperCase()}/${division.toUpperCase()}?queue=RANKED_TFT&page=1`,
+        );
         const players = response.data.slice(0, 1);
         return players.map((player: any) => ({ summonerId: player.summonerId, region }));
       }
-    })
+    }),
   );
 
   return allSummonerIds.flat();
@@ -61,7 +63,7 @@ const fetchSummonerPuuids = async (summonerData: SummonerData[]): Promise<PuuidD
       const client = shortRegionClient(region);
       const response = await client.get(`/tft/summoner/v1/summoners/${summonerId}`);
       return { puuid: response.data.puuid, region };
-    })
+    }),
   );
   return summonerPuuids.flat();
 };
@@ -73,7 +75,7 @@ const fetchMatchHistory = async (puuids: PuuidData[]): Promise<MatchIdData[]> =>
       const client = shortRegionClient(matchRegion);
       const response = await client.get(`/tft/match/v1/matches/by-puuid/${puuid}/ids`);
       return response.data.slice(0, 1).map((matchId: string) => ({ matchId, region: matchRegion }));
-    })
+    }),
   );
   return puuidMatchHistory.flat();
 };
@@ -83,28 +85,28 @@ const fetchMatchDetails = async (matchIds: MatchIdData[]): Promise<any[]> => {
     matchIds.map(({ matchId, region }) => {
       const client = shortRegionClient(region);
       return client.get(`/tft/match/v1/matches/${matchId}`);
-    })
+    }),
   );
 
-  return matchDetailsPromises.map(response => response.data);
+  return matchDetailsPromises.map((response) => response.data);
 };
 
 const processPlayerData = (matchDetails: any[]): PlayerData[] => {
-  return matchDetails.flatMap(response =>
+  return matchDetails.flatMap((response) =>
     response.info.participants.map((participant: any) => ({
       placement: participant.placement,
       units: participant.units.map((unit: any) => ({
         character_id: unit.character_id,
         items: unit.itemNames,
-        tier: unit.tier
-      }))
-    }))
+        tier: unit.tier,
+      })),
+    })),
   );
 };
 
 const calculateChampionData = (playerData: PlayerData[]): Record<string, ChampionStats> => {
   return playerData.reduce((acc: Record<string, ChampionStats>, player) => {
-    player.units.forEach(unit => {
+    player.units.forEach((unit) => {
       if (acc[unit.character_id]) {
         acc[unit.character_id].totalGames += 1;
         acc[unit.character_id].placements.push(player.placement);
@@ -113,7 +115,7 @@ const calculateChampionData = (playerData: PlayerData[]): Record<string, Champio
         acc[unit.character_id] = {
           totalGames: 1,
           placements: [player.placement],
-          wins: player.placement <= 4 ? 1 : 0
+          wins: player.placement <= 4 ? 1 : 0,
         };
       }
     });
@@ -122,12 +124,14 @@ const calculateChampionData = (playerData: PlayerData[]): Record<string, Champio
 };
 
 const calculateChampionRanking = (championData: Record<string, ChampionStats>) => {
-  return Object.entries(championData).map(([championId, { totalGames, wins, placements }]) => ({
-    championId,
-    winrate: ((wins / totalGames) * 100).toFixed(2),
-    placement: (placements.reduce((sum, p) => sum + p, 0) / totalGames).toFixed(2),
-    totalGames
-  })).sort((a, b) => Number(a.placement) - Number(b.placement));
+  return Object.entries(championData)
+    .map(([championId, { totalGames, wins, placements }]) => ({
+      championId,
+      winrate: ((wins / totalGames) * 100).toFixed(2),
+      placement: (placements.reduce((sum, p) => sum + p, 0) / totalGames).toFixed(2),
+      totalGames,
+    }))
+    .sort((a, b) => Number(a.placement) - Number(b.placement));
 };
 
 const getChampionData = async (rank: string, division: string = '') => {

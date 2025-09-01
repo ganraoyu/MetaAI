@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { ChampionBarHover } from "./ChampionBarHover";
-import { ChampionDamageBar } from "./ChampionDamagebar";
-import { ChampionHealShieldBar } from "./ChampionHealShieldBar";
-import { ChampionImage } from "./ChampionImage";
-import { ChampionStatsNumbers } from "./ChampionStatsNumbers";
-import { ChampionProps } from "./types";
+import { useState } from 'react';
+import { ChampionBarHover } from './ChampionBarHover';
+import { ChampionDamageBar } from './ChampionDamagebar';
+import { ChampionHealShieldBar } from './ChampionHealShieldBar';
+import { ChampionImage } from './ChampionImage';
+import { ChampionStatsNumbers } from './ChampionStatsNumbers';
+import { ChampionProps } from './types';
 
 /**
  * ChampionStatsCard
@@ -18,14 +18,13 @@ import { ChampionProps } from "./types";
  *
  * @param {ChampionProps} champion - Data object representing a single champion
  * @returns {JSX.Element} The rendered champion stats card
-*/
+ */
 
 export const ChampionStatsCard = ({ champion }: ChampionProps): JSX.Element => {
-  const [hover, setHover] = useState<boolean>(false)
+  const [hover, setHover] = useState<boolean>(false);
 
   return (
     <div className="mb-2 flex flex-row justify-center items-center select-none">
-
       {/* Champion image */}
       <div>
         <ChampionImage champion={champion} />
@@ -38,9 +37,8 @@ export const ChampionStatsCard = ({ champion }: ChampionProps): JSX.Element => {
         <ChampionHealShieldBar champion={champion} />
 
         {/* Hover card showing detailed breakdown of damage, healing, and shielding */}
-        {hover && <ChampionBarHover champion={champion}/>}
+        {hover && <ChampionBarHover champion={champion} />}
       </div>
-
     </div>
   );
 };
