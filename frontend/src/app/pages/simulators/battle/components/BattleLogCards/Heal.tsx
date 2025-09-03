@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
-import { ChampionCard } from '../ChampionCard/ChampionCard';
-import { HealHover } from './CardHovers/HealHover';
+import { useState, useRef, useEffect } from "react";
+import { ChampionCard } from "../ChampionCard/ChampionCard";
+import { HealHover } from "./CardHovers/HealHover";
 
 export const Heal = ({ log, index }: { log: any; index: number }) => {
   const [hoveredHealId, setHoveredHealId] = useState<number | null>(null);
@@ -26,11 +26,11 @@ export const Heal = ({ log, index }: { log: any; index: number }) => {
   useEffect(() => {
     if (hoveredHealId === index || clickedHoverId === index) {
       updatePosition();
-      window.addEventListener('scroll', updatePosition);
-      window.addEventListener('resize', updatePosition);
+      window.addEventListener("scroll", updatePosition);
+      window.addEventListener("resize", updatePosition);
       return () => {
-        window.removeEventListener('scroll', updatePosition);
-        window.removeEventListener('resize', updatePosition);
+        window.removeEventListener("scroll", updatePosition);
+        window.removeEventListener("resize", updatePosition);
       };
     }
   }, [hoveredHealId, clickedHoverId, index]);
@@ -77,12 +77,12 @@ export const Heal = ({ log, index }: { log: any; index: number }) => {
               mana={log.details.healer.mana || 0}
               maxMana={log.details.healer.maxMana || 100}
               shield={log.details.healer.shield || 0}
-              trait1={log.details.healer.traits?.[0] || ''}
-              trait2={log.details.healer.traits?.[1] || ''}
-              trait3={log.details.healer.traits?.[2] || ''}
-              item1={log.details.healer.items?.[0]?.name || ''}
-              item2={log.details.healer.items?.[1]?.name || ''}
-              item3={log.details.healer.items?.[2]?.name || ''}
+              trait1={log.details.healer.traits?.[0] || ""}
+              trait2={log.details.healer.traits?.[1] || ""}
+              trait3={log.details.healer.traits?.[2] || ""}
+              item1={log.details.healer.items?.[0]?.name || ""}
+              item2={log.details.healer.items?.[1]?.name || ""}
+              item3={log.details.healer.items?.[2]?.name || ""}
               armor={log.details.healer.armor || 0}
               magicResist={log.details.healer.magicResist || 0}
               attackDamage={log.details.healer.attackDamage || 0}
@@ -118,12 +118,12 @@ export const Heal = ({ log, index }: { log: any; index: number }) => {
               mana={log.details.target.mana || 0}
               maxMana={log.details.target.maxMana || 100}
               shield={log.details.target.shield || 0}
-              trait1={log.details.target.traits?.[0] || ''}
-              trait2={log.details.target.traits?.[1] || ''}
-              trait3={log.details.target.traits?.[2] || ''}
-              item1={log.details.target.items?.[0]?.name || ''}
-              item2={log.details.target.items?.[1]?.name || ''}
-              item3={log.details.target.items?.[2]?.name || ''}
+              trait1={log.details.target.traits?.[0] || ""}
+              trait2={log.details.target.traits?.[1] || ""}
+              trait3={log.details.target.traits?.[2] || ""}
+              item1={log.details.target.items?.[0]?.name || ""}
+              item2={log.details.target.items?.[1]?.name || ""}
+              item3={log.details.target.items?.[2]?.name || ""}
               armor={log.details.target.armor || 0}
               magicResist={log.details.target.magicResist || 0}
               attackDamage={log.details.target.attackDamage || 0}

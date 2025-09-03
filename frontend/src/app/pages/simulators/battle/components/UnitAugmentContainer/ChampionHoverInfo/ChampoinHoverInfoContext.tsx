@@ -1,4 +1,4 @@
-import { useState, ReactNode, useContext, createContext } from 'react';
+import { useState, ReactNode, useContext, createContext } from "react";
 
 interface ChampionHoverInfoContextType {
   toggleAbilityStatsSwitch: boolean;
@@ -26,7 +26,7 @@ export const ChampionHoverInfoProvider = ({ children }: ChampionHoverInfoProvide
 export const useChampionHoverInfoContext = () => {
   const context = useContext(ChampionHoverInfoContext);
   if (!context) {
-    throw new Error('useChampionHoverInfoContext must be used within a ChampionHoverInfoProvider');
+    throw new Error("useChampionHoverInfoContext must be used within a ChampionHoverInfoProvider");
   }
   return context;
 };

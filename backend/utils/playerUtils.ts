@@ -1,5 +1,5 @@
-import { fullRegionClient } from './generalUtils';
-import { AxiosResponse } from 'axios';
+import { fullRegionClient } from "./generalUtils";
+import { AxiosResponse } from "axios";
 
 interface AccountResponse {
   puuid: string;

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { FaChevronDown } from 'react-icons/fa';
+import { useState } from "react";
+import { FaChevronDown } from "react-icons/fa";
 
 interface Trait {
   name: string;
@@ -24,7 +24,7 @@ export const TraitFilterDropdown = ({
   return (
     <div className="relative w-32">
       <div
-        className={`flex items-center justify-center bg-darkerHexCellComponents h-7 ${open ? 'rounded-t-md' : 'rounded-md'} hover:bg-lightGray cursor-pointer`}
+        className={`flex items-center justify-center bg-darkerHexCellComponents h-7 ${open ? "rounded-t-md" : "rounded-md"} hover:bg-lightGray cursor-pointer`}
         onClick={() => setOpen(!open)}
       >
         <div className="flex items-center justify-center gap-1">
@@ -34,12 +34,12 @@ export const TraitFilterDropdown = ({
             alt="Default"
           />
           <p className="text-[0.75rem]">
-            {toggleUnitsOrAugments && (filterByTrait.length > 0 ? filterByTrait : 'All Synergies')}
-            {!toggleUnitsOrAugments && 'All Augments'}
+            {toggleUnitsOrAugments && (filterByTrait.length > 0 ? filterByTrait : "All Synergies")}
+            {!toggleUnitsOrAugments && "All Augments"}
           </p>
           <FaChevronDown
             className={`h-2.5 w-2.5 transition-transform duration-200 ${
-              open ? 'rotate-180' : 'rotate-0'
+              open ? "rotate-180" : "rotate-0"
             }`}
           />
         </div>
@@ -47,7 +47,7 @@ export const TraitFilterDropdown = ({
 
       <div
         className={`absolute top-full left-0 w-full overflow-auto bg-darkerHexCellComponents rounded-b-md shadow-md z-10 transition-all duration-300 ease-in-out ${
-          open ? 'max-h-48 py-1' : 'max-h-0 py-0'
+          open ? "max-h-48 py-1" : "max-h-0 py-0"
         }`}
       >
         {toggleUnitsOrAugments &&

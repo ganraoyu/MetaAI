@@ -1,6 +1,6 @@
-import { useTFTSetContext } from '../../../../../../../../utilities/TFTSetContext';
-import { ChampionProps } from './types';
-import { Star } from '../../../../../utils/Star';
+import { useTFTSetContext } from "../../../../../../../../utilities/TFTSetContext";
+import { ChampionProps } from "./types";
+import { Star } from "../../../../../utils/Star";
 
 /**
  * ChampionImage
@@ -28,8 +28,8 @@ export const ChampionImage = ({ champion }: ChampionProps): JSX.Element => {
         {Array.from({ length: champion.starLevel }).map((_, index) => (
           <Star
             key={index}
-            textColor={champion.starLevel >= 3 ? '#FFFF00' : '#B0B0B0'}
-            fillColor={champion.starLevel >= 3 ? '#FFFF00' : '#B0B0B0'}
+            textColor={champion.starLevel >= 3 ? "#FFFF00" : "#B0B0B0"}
+            fillColor={champion.starLevel >= 3 ? "#FFFF00" : "#B0B0B0"}
             className="w-[0.8rem] h-[0.8rem] drop-shadow-[0_0_2px_gray]"
           />
         ))}

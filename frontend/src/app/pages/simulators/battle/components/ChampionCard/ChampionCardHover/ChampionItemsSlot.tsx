@@ -1,7 +1,7 @@
-import { combinedItems } from '../../../data/items/item-data';
-import { useChampionCardHoverContext } from './ChampionCardHoverContext';
-import { ItemHover } from './SlotHover/ItemSlotHover';
-import { ChampionItemSlotProps } from './types';
+import { combinedItems } from "../../../data/items/item-data";
+import { useChampionCardHoverContext } from "./ChampionCardHoverContext";
+import { ItemHover } from "./SlotHover/ItemSlotHover";
+import { ChampionItemSlotProps } from "./types";
 
 type ItemSlotProps = {
   item: string | null;
@@ -39,9 +39,9 @@ export const ChampionItemsSlot = ({ item1, item2, item3 }: ChampionItemSlotProps
 
   return (
     <div className="flex flex-row gap-2">
-      <ItemSlot item={item1 || ''} isHover={item1Hover} setHover={setItem1Hover} />
-      <ItemSlot item={item2 || ''} isHover={item2Hover} setHover={setItem2Hover} />
-      <ItemSlot item={item3 || ''} isHover={item3Hover} setHover={setItem3Hover} />
+      <ItemSlot item={item1 || ""} isHover={item1Hover} setHover={setItem1Hover} />
+      <ItemSlot item={item2 || ""} isHover={item2Hover} setHover={setItem2Hover} />
+      <ItemSlot item={item3 || ""} isHover={item3Hover} setHover={setItem3Hover} />
     </div>
   );
 };

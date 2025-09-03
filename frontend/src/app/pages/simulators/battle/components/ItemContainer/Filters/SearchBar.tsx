@@ -1,13 +1,13 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { useItemContainerContext } from '../ItemContainerContext';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { useItemContainerContext } from "../ItemContainerContext";
 
 export const SearchBar = () => {
   const { searchTerm, setSearchTerm } = useItemContainerContext();
 
   return (
     <div className="flex justify-center">
-      {' '}
+      {" "}
       {/* new wrapper div */}
       <div className="flex items-center w-[19.5rem] h-7 bg-darkerHexCellComponents rounded-md outline outline-1 outline-lightGray hover:outline-yellow-300 hover:bg-lightGray">
         <input

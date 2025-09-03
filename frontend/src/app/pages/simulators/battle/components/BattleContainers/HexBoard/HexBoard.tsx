@@ -79,7 +79,11 @@ export const HexBoard = (): JSX.Element => {
             <p className="text-[0.8rem]">{playerChampionCostCount}</p>
           </div>
         </div>
-
+        {/* Win rates */}
+        <div>
+          <p className={`${51 > 50 ? "text-green-600" : "text-red-600"}`}>{0}%</p>
+          <p className={`${49 > 50 ? "text-green-600" : "text-red-600"}`}>{0}%</p>
+        </div>
         {/* Right side (example, mirror left side) */}
         <div className="flex flex-col">
           <div className="flex items-center gap-1">

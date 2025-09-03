@@ -1,6 +1,6 @@
-import { Champion } from '../data/champion/champion.js';
-import { Request, Response } from 'express';
-import { Item } from '../data/item/item.js';
+import { Champion } from "../data/champion/champion.js";
+import { Request, Response } from "express";
+import { Item } from "../data/item/item.js";
 
 // Battle data caching system
 let cachedBattleData: any = null;
@@ -11,7 +11,7 @@ function setBattleData(battleData: any) {
 
 function getBattleData() {
   if (!cachedBattleData) {
-    throw new Error('No battle data available. Please run a battle first.');
+    throw new Error("No battle data available. Please run a battle first.");
   }
   return cachedBattleData;
 }
@@ -193,7 +193,7 @@ const calculateAttackDamageInternal = (): {
   const opponentStatistics = getOpponentStatistics();
 
   if (playerStatistics.length === 0 && opponentStatistics.length === 0) {
-    throw new Error('No attack damage data available.');
+    throw new Error("No attack damage data available.");
   }
 
   const totalPlayerDamage = playerStatistics.map((champion: ChampionStatistic) => ({
@@ -217,7 +217,7 @@ const calculateTrueDamageInternal = (): {
   const opponentStatistics = getOpponentStatistics();
 
   if (playerStatistics.length === 0 && opponentStatistics.length === 0) {
-    throw new Error('No true damage data available.');
+    throw new Error("No true damage data available.");
   }
 
   const totalPlayerTrueDamage = playerStatistics.map((champion: ChampionStatistic) => ({
@@ -241,7 +241,7 @@ const calculateAbilityDamageInternal = (): {
   const opponentStatistics = getOpponentStatistics();
 
   if (playerStatistics.length === 0 && opponentStatistics.length === 0) {
-    throw new Error('No ability damage data available.');
+    throw new Error("No ability damage data available.");
   }
 
   const totalPlayerAbilityDamage = playerStatistics.map((champion: ChampionStatistic) => ({
@@ -318,12 +318,12 @@ const calculateWinRate = async (
 ): Promise<{ playerWinRate: string; opponentWinRate: string }> => {
   try {
     const result = calculateWinRateInternal();
-    console.log('Player win rate is ' + result.playerWinRate);
-    console.log('Opponent win rate is ' + result.opponentWinRate);
+    console.log("Player win rate is " + result.playerWinRate);
+    console.log("Opponent win rate is " + result.opponentWinRate);
     return result;
   } catch (error) {
-    console.error('Error: ' + error);
-    res.status(500).json({ error: 'An error occurred while calculating win rate.' });
+    console.error("Error: " + error);
+    res.status(500).json({ error: "An error occurred while calculating win rate." });
     throw error;
   }
 };
@@ -351,8 +351,8 @@ const calculateChampionItems = async (
 
     return { playerChampionItems, opponentChampionItems };
   } catch (error) {
-    console.error('Error: ' + error);
-    res.status(500).json({ error: 'An error occurred while fetching champion items.' });
+    console.error("Error: " + error);
+    res.status(500).json({ error: "An error occurred while fetching champion items." });
     throw error;
   }
 };
@@ -367,9 +367,9 @@ const calculateAttackDamageDelt = async (
   try {
     return calculateAttackDamageInternal();
   } catch (error) {
-    console.error('Error: ' + error);
+    console.error("Error: " + error);
     res.status(500).json({
-      error: 'An error occurred while calculating total attack damage.',
+      error: "An error occurred while calculating total attack damage.",
     });
     throw error;
   }
@@ -385,9 +385,9 @@ const calculateTrueDamageDelt = async (
   try {
     return calculateTrueDamageInternal();
   } catch (error) {
-    console.error('Error: ' + error);
+    console.error("Error: " + error);
     res.status(500).json({
-      error: 'An error occurred while calculating total true damage.',
+      error: "An error occurred while calculating total true damage.",
     });
     throw error;
   }
@@ -403,9 +403,9 @@ const calculateAbilityDamageDelt = async (
   try {
     return calculateAbilityDamageInternal();
   } catch (error) {
-    console.error('Error: ' + error);
+    console.error("Error: " + error);
     res.status(500).json({
-      error: 'An error occurred while calculating total ability damage.',
+      error: "An error occurred while calculating total ability damage.",
     });
     throw error;
   }
@@ -423,7 +423,7 @@ const calculateAllDamageDelt = async (
     const opponentStatistics = getOpponentStatistics();
 
     if (playerStatistics.length === 0 && opponentStatistics.length === 0) {
-      throw new Error('No total damage data available');
+      throw new Error("No total damage data available");
     }
 
     // Use internal functions instead of async HTTP functions
@@ -462,8 +462,8 @@ const calculateAllDamageDelt = async (
 
     return { allPlayerDamage, allOpponentDamage };
   } catch (error) {
-    console.error('Error: ' + error);
-    res.status(500).json({ error: 'An error occurred while calculating total damage.' });
+    console.error("Error: " + error);
+    res.status(500).json({ error: "An error occurred while calculating total damage." });
     throw error;
   }
 };
@@ -478,8 +478,8 @@ const calculateHealing = async (
   try {
     return calculateHealingInternal();
   } catch (error) {
-    console.log('Error' + error);
-    res.status(500).json({ error: 'An error occurred while calculating healing.' });
+    console.log("Error" + error);
+    res.status(500).json({ error: "An error occurred while calculating healing." });
     throw error;
   }
 };
@@ -494,9 +494,9 @@ const calculateIsAliveOrDead = async (
   try {
     return calculateIsAliveOrDeadInternal();
   } catch (error) {
-    console.log('Error', error);
+    console.log("Error", error);
     res.status(500).json({
-      error: 'An error occurred while checking if champions are alive or dead.',
+      error: "An error occurred while checking if champions are alive or dead.",
     });
     throw error;
   }
@@ -586,9 +586,9 @@ const calculateAllBattleStatistics = async (
 
     return { playerChampionStatistics, opponentChampionStatistics };
   } catch (error) {
-    console.log('Error', error);
+    console.log("Error", error);
     res.status(500).json({
-      error: 'An error occurred while calculating battle statistics.',
+      error: "An error occurred while calculating battle statistics.",
     });
     throw error;
   }
@@ -641,9 +641,9 @@ const calculateChampionStatistics = async (
       opponentChampions: serializableOpponentChampions,
     };
   } catch (error) {
-    console.log('Error', error);
+    console.log("Error", error);
     res.status(500).json({
-      error: 'An error occurred while calculating champion statistics.',
+      error: "An error occurred while calculating champion statistics.",
     });
     throw error;
   }
@@ -652,13 +652,13 @@ const calculateChampionStatistics = async (
 const calculateBattleHistory = async (req: Request, res: Response) => {
   try {
     const battleData = getBattleData();
-    const { getBattleHistory } = require('./battleSimulator.js');
+    const { getBattleHistory } = require("./battleSimulator.js");
     const battleHistory = getBattleHistory();
     return battleHistory;
   } catch (error) {
-    console.log('Error getting battle history:', error);
+    console.log("Error getting battle history:", error);
     res.status(500).json({
-      error: 'An error occurred while fetching battle history.',
+      error: "An error occurred while fetching battle history.",
     });
     throw error;
   }

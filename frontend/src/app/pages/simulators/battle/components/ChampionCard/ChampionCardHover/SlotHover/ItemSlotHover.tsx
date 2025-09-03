@@ -1,6 +1,6 @@
-import { combinedItems } from '../../data/item-data';
-import { useState } from 'react';
-import { ItemSlotHoverProps } from './types';
+import { combinedItems } from "../../data/item-data";
+import { useState } from "react";
+import { ItemSlotHoverProps } from "./types";
 
 export const ItemHover = ({
   name,

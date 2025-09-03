@@ -1,6 +1,6 @@
-import { ChatProvider } from './ChatContext';
-import { ChatInput } from './ChatInput';
-import { ChatWindow } from './ChatWindow';
+import { ChatProvider } from "./ChatContext";
+import { ChatInput } from "./ChatInput";
+import { ChatWindow } from "./ChatWindow";
 
 export const CoachPage = () => {
   return (

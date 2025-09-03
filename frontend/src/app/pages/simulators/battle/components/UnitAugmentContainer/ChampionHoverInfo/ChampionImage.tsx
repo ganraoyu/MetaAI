@@ -9,45 +9,45 @@ interface ChampionImageProps {
 
 function getTypeTextColor(type: string): string {
   switch (type.toLowerCase()) {
-    case 'attack tank':
-      return 'text-red-700';
-    case 'attack fighter':
-      return 'text-orange-700';
-    case 'attack caster':
-      return 'text-amber-700';
-    case 'attack carry':
-      return 'text-yellow-600';
-    case 'attack reaper':
-      return 'text-rose-700';
+    case "attack tank":
+      return "text-red-700";
+    case "attack fighter":
+      return "text-orange-700";
+    case "attack caster":
+      return "text-amber-700";
+    case "attack carry":
+      return "text-yellow-600";
+    case "attack reaper":
+      return "text-rose-700";
 
-    case 'magic tank':
-      return 'text-blue-700';
-    case 'magic reaper':
-      return 'text-purple-700';
-    case 'magic carry':
-      return 'text-pink-700';
-    case 'magic caster':
-      return 'text-indigo-700';
+    case "magic tank":
+      return "text-blue-700";
+    case "magic reaper":
+      return "text-purple-700";
+    case "magic carry":
+      return "text-pink-700";
+    case "magic caster":
+      return "text-indigo-700";
 
     default:
-      return 'text-gray-300';
+      return "text-gray-300";
   }
 }
 
 function getCostGradientBg(cost: number): string {
   switch (cost) {
     case 1:
-      return 'from-gray-600 to-gray-400';
+      return "from-gray-600 to-gray-400";
     case 2:
-      return 'from-green-700 to-green-500';
+      return "from-green-700 to-green-500";
     case 3:
-      return 'from-blue-700 to-blue-500';
+      return "from-blue-700 to-blue-500";
     case 4:
-      return 'from-purple-900 to-purple-400';
+      return "from-purple-900 to-purple-400";
     case 5:
-      return 'from-yellow-600 to-yellow-400';
+      return "from-yellow-600 to-yellow-400";
     default:
-      return 'from-red-700 to-red-500';
+      return "from-red-700 to-red-500";
   }
 }
 

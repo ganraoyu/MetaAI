@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { ChampionBarHover } from './ChampionBarHover';
-import { ChampionDamageBar } from './ChampionDamagebar';
-import { ChampionHealShieldBar } from './ChampionHealShieldBar';
-import { ChampionImage } from './ChampionImage';
-import { ChampionStatsNumbers } from './ChampionStatsNumbers';
-import { ChampionProps } from './types';
+import { useState } from "react";
+import { ChampionBarHover } from "./ChampionBarHover";
+import { ChampionDamageBar } from "./ChampionDamagebar";
+import { ChampionHealShieldBar } from "./ChampionHealShieldBar";
+import { ChampionImage } from "./ChampionImage";
+import { ChampionStatsNumbers } from "./ChampionStatsNumbers";
+import { ChampionProps } from "./types";
 
 /**
  * ChampionStatsCard

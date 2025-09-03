@@ -1,4 +1,4 @@
-import { AbilitySlotHoverProps } from './types';
+import { AbilitySlotHoverProps } from "./types";
 
 export const AbilitySlotHover = ({ ability, description }: AbilitySlotHoverProps) => {
   return (

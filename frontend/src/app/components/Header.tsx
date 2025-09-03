@@ -1,19 +1,19 @@
-import logo from '../../assets/logo.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
-import { faGithub, faPaypal } from '@fortawesome/free-brands-svg-icons';
-import { useState } from 'react';
-import { NavProps } from './types';
-import { Link } from 'react-router-dom';
+import logo from "../../assets/logo.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faGithub, faPaypal } from "@fortawesome/free-brands-svg-icons";
+import { useState } from "react";
+import { NavProps } from "./types";
+import { Link } from "react-router-dom";
 
 const navigationItems: NavProps[] = [
-  { label: 'Guide' },
-  { label: 'Builder' },
-  { label: 'AI Coach', endPoint: '/coach' },
-  { label: 'Stats', icon: faCaretDown },
-  { label: 'Simulators', icon: faCaretDown },
-  { label: 'About', icon: faCaretDown },
-  { label: 'Info' },
+  { label: "Guide" },
+  { label: "Builder" },
+  { label: "AI Coach", endPoint: "/coach" },
+  { label: "Stats", icon: faCaretDown },
+  { label: "Simulators", icon: faCaretDown },
+  { label: "About", icon: faCaretDown },
+  { label: "Info" },
 ];
 
 const Header = () => {
@@ -56,10 +56,10 @@ const Header = () => {
                 <div
                   className={`absolute top-full left-0 w-full bg-mainBackground *:shadow-lg z-20
                     
-                    ${open === item.label ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'}`}
-                  style={{ transformOrigin: 'top' }}
+                    ${open === item.label ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"}`}
+                  style={{ transformOrigin: "top" }}
                 >
-                  {item.label === 'Stats' && (
+                  {item.label === "Stats" && (
                     <>
                       <div className="p-2 flex text-white text-sm hover:bg-gray-800 cursor-pointer justify-center items-center border-t border-[#313131]">
                         Composition
@@ -75,7 +75,7 @@ const Header = () => {
                       </div>
                     </>
                   )}
-                  {item.label === 'Simulators' && (
+                  {item.label === "Simulators" && (
                     <>
                       <div className="p-2 flex text-white text-sm hover:bg-gray-800 cursor-pointer justify-center items-center border-t border-[#313131]">
                         <Link to="/simulator/battle">Battle</Link>
@@ -92,13 +92,13 @@ const Header = () => {
 
           {/* External Links */}
           <div
-            onClick={() => window.open('https://paypal.com', '_blank')}
+            onClick={() => window.open("https://paypal.com", "_blank")}
             className="p-2 rounded-full cursor-pointer transition-all duration-200 hover:bg-cyan-500/20 hover:shadow-[0_0_8px_#22d3ee]"
           >
             <FontAwesomeIcon icon={faPaypal} className="text-white text-lg" />
           </div>
           <div
-            onClick={() => window.open('https://github.com', '_blank')}
+            onClick={() => window.open("https://github.com", "_blank")}
             className="p-2 rounded-full cursor-pointer transition-all duration-200 hover:bg-cyan-500/20 hover:shadow-[0_0_8px_#22d3ee]"
           >
             <FontAwesomeIcon icon={faGithub} className="text-white text-lg" />

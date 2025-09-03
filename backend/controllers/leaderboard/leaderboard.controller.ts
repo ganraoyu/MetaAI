@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
-import { shortRegionClient } from '../../utils/generalUtils';
-import { queues, queueMapping } from '../../utils/queueData';
+import { Request, Response } from "express";
+import { shortRegionClient } from "../../utils/generalUtils";
+import { queues, queueMapping } from "../../utils/queueData";
 
 const getAboveMasterLeaderboards = async (
   endpoint: string,
@@ -15,7 +15,7 @@ const getAboveMasterLeaderboards = async (
     const response = await client.get(`/tft/league/v1/${endpoint}?queue=${queue}`);
 
     if (!region) {
-      return res.status(400).send('Please provide a region as a path parameter');
+      return res.status(400).send("Please provide a region as a path parameter");
     }
 
     const playerData = Object.entries(response.data.entries).map(
@@ -24,7 +24,7 @@ const getAboveMasterLeaderboards = async (
           rank: parseInt(index) + 1,
           summonerId: entry.summonerId,
           leaguePoints: entry.leaguePoints,
-          winrate: ((entry.wins / (entry.wins + entry.losses)) * 100).toFixed(2) + '%',
+          winrate: ((entry.wins / (entry.wins + entry.losses)) * 100).toFixed(2) + "%",
           wins: entry.wins,
           losses: entry.losses,
         };
@@ -61,7 +61,7 @@ const getBelowMasterLeaderboards = async (
         rank: index + 1,
         leaguePoints,
         summonerId,
-        winrate: ((wins / (wins + losses)) * 100).toFixed(2) + '%',
+        winrate: ((wins / (wins + losses)) * 100).toFixed(2) + "%",
         wins,
         losses,
       };
@@ -76,19 +76,19 @@ const getBelowMasterLeaderboards = async (
 const getChallengerLeaderboard = (req: Request, res: Response) => {
   const region = req.params.region;
   const mode = req.params.mode;
-  getAboveMasterLeaderboards('challenger', res, 'Challenger', region, mode);
+  getAboveMasterLeaderboards("challenger", res, "Challenger", region, mode);
 };
 
 const getGrandmasterLeaderboard = (req: Request, res: Response) => {
   const region = req.params.region;
   const mode = req.params.mode;
-  getAboveMasterLeaderboards('grandmaster', res, 'Grandmaster', region, mode);
+  getAboveMasterLeaderboards("grandmaster", res, "Grandmaster", region, mode);
 };
 
 const getMasterLeaderboard = (req: Request, res: Response) => {
   const region = req.params.region;
   const mode = req.params.mode;
-  getAboveMasterLeaderboards('master', res, 'Master', region, mode);
+  getAboveMasterLeaderboards("master", res, "Master", region, mode);
 };
 
 const getBelowMasterLeaderboard = (req: Request, res: Response) => {

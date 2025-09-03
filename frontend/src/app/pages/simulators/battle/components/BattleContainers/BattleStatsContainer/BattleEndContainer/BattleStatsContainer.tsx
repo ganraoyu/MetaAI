@@ -1,6 +1,6 @@
-import { BattleEndStats } from './BattleEndStats';
-import { useBattleStatsContext, BattleStatsProvider } from '../BattleStatsContext';
-import { BattleTraits } from '../TraitsContainer/BattleTraits';
+import { BattleEndStats } from "./BattleEndStats";
+import { useBattleStatsContext, BattleStatsProvider } from "../BattleStatsContext";
+import { BattleTraits } from "../TraitsContainer/BattleTraits";
 
 export const BattleStatsContainer = () => {
   const { toggleTraits, toggleBattleEndStats } = useBattleStatsContext();

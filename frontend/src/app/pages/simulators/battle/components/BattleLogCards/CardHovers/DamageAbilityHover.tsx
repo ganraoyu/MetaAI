@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface DamageBreakdownProps {
   rawDamage: number;
@@ -15,7 +15,7 @@ interface DamageBreakdownProps {
     name: string;
     percentage: number;
   }[];
-  damageType: 'physical' | 'magic' | 'true';
+  damageType: "physical" | "magic" | "true";
 }
 
 export const DamageHover: React.FC<DamageBreakdownProps> = ({
@@ -32,7 +32,7 @@ export const DamageHover: React.FC<DamageBreakdownProps> = ({
       <div className="flex justify-between items-center border-b border-gray-600 pb-1 mb-2">
         <div className="flex items-center gap-1.5">
           <img
-            src={`../assets/icons/${damageType === 'physical' ? 'attack' : damageType === 'magic' ? 'abilitypower' : 'true-damage'}.png`}
+            src={`../assets/icons/${damageType === "physical" ? "attack" : damageType === "magic" ? "abilitypower" : "true-damage"}.png`}
             className="h-4 w-4"
             alt={`${damageType} damage`}
           />
@@ -42,11 +42,11 @@ export const DamageHover: React.FC<DamageBreakdownProps> = ({
         </div>
         <span
           className={`font-bold ${
-            damageType === 'physical'
-              ? 'text-orange-400'
-              : damageType === 'magic'
-                ? 'text-blue-400'
-                : 'text-white'
+            damageType === "physical"
+              ? "text-orange-400"
+              : damageType === "magic"
+                ? "text-blue-400"
+                : "text-white"
           }`}
         >
           {finalDamage}
@@ -88,8 +88,8 @@ export const DamageHover: React.FC<DamageBreakdownProps> = ({
           otherModifiers.map((modifier, index) => (
             <div key={index} className="flex justify-between">
               <span>{modifier.name}:</span>
-              <span className={modifier.percentage > 0 ? 'text-green-400' : 'text-red-400'}>
-                {modifier.percentage > 0 ? '+' : ''}
+              <span className={modifier.percentage > 0 ? "text-green-400" : "text-red-400"}>
+                {modifier.percentage > 0 ? "+" : ""}
                 {modifier.percentage}%
               </span>
             </div>

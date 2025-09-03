@@ -1,4 +1,4 @@
-import { ChampionStatBarsProps } from './types';
+import { ChampionStatBarsProps } from "./types";
 
 /**
  * ChampionStatBars component displays the champion's current health, shield, and mana as progress bars.

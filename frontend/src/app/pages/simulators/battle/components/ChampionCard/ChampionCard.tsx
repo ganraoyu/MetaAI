@@ -1,22 +1,22 @@
-import { useState, useRef } from 'react';
-import { useTFTSetContext } from '../../../../../utilities/TFTSetContext';
-import ChampionCardHover from './ChampionCardHover';
-import { ChampionCardProps } from './types';
+import { useState, useRef } from "react";
+import { useTFTSetContext } from "../../../../../utilities/TFTSetContext";
+import ChampionCardHover from "./ChampionCardHover";
+import { ChampionCardProps } from "./types";
 
 export const ChampionCard = ({
-  champion = '',
+  champion = "",
   cost = 6,
   currentHp = 0,
   maxHp = 0,
   mana = 0,
   maxMana = 0,
   shield = 0,
-  trait1 = '',
-  trait2 = '',
-  trait3 = '',
-  item1 = '',
-  item2 = '',
-  item3 = '',
+  trait1 = "",
+  trait2 = "",
+  trait3 = "",
+  item1 = "",
+  item2 = "",
+  item3 = "",
   armor = 0,
   magicResist = 0,
   attackDamage = 0,
@@ -38,7 +38,7 @@ export const ChampionCard = ({
 
   const hpPercentage = (currentHp / maxHp) * 100;
   const hpColor =
-    hpPercentage > 60 ? 'bg-green-500' : hpPercentage > 30 ? 'bg-yellow-500' : 'bg-red-500';
+    hpPercentage > 60 ? "bg-green-500" : hpPercentage > 30 ? "bg-yellow-500" : "bg-red-500";
 
   return (
     <div

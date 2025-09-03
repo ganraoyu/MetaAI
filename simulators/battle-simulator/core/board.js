@@ -1,4 +1,4 @@
-const HexCell = require('../utils/HexCell.js');
+const HexCell = require("../utils/HexCell.js");
 
 class Board {
   constructor(rows, columns) {
@@ -25,29 +25,29 @@ class Board {
 
   placeChampion(champion, row, column) {
     if (!this.isValidPosition(row, column)) {
-      throw new Error('Invalid position');
+      throw new Error("Invalid position");
     }
 
     const cell = this.grid[row][column];
 
     if (cell.champion) {
-      throw new Error('Cell already occupied');
+      throw new Error("Cell already occupied");
     }
 
     cell.champion = champion;
 
-    return 'Champion placed';
+    return "Champion placed";
   }
 
   removeChampion(row, column) {
     if (!this.isValidPosition(row, column)) {
-      throw new Error('Invalid position');
+      throw new Error("Invalid position");
     }
 
     const cell = this.grid[row][column];
 
     if (cell.champion === null) {
-      throw new Error('No champion to remove');
+      throw new Error("No champion to remove");
     }
 
     cell.champion = null;
@@ -55,14 +55,14 @@ class Board {
 
   getChampion(row, column) {
     if (!this.isValidPosition(row, column)) {
-      return 'Invalid position';
+      return "Invalid position";
     }
     return this.grid[row][column].champion;
   }
 
   placeChampions(champions, side) {
-    const startRow = side === 'left' ? 0 : Math.floor(this.rows / 2);
-    const endRow = side === 'left' ? Math.floor(this.rows / 2) : this.rows;
+    const startRow = side === "left" ? 0 : Math.floor(this.rows / 2);
+    const endRow = side === "left" ? Math.floor(this.rows / 2) : this.rows;
 
     let championIndex = 0;
     for (let row = startRow; row < endRow; row++) {
@@ -83,7 +83,7 @@ class Board {
         }
       }
     }
-    return 'Champion not found';
+    return "Champion not found";
   }
 
   isValidPosition(row, column) {
@@ -132,13 +132,13 @@ class Board {
     const championsInRadius = cellsAroundChampion
       .filter((cell) => this.isThereAChampion(cell[0], cell[1]))
       .map((cell) => this.getChampion(cell[0], cell[1]))
-      .filter((champ) => champ !== 'Invalid position' && champ !== null);
+      .filter((champ) => champ !== "Invalid position" && champ !== null);
 
     surroundingChampions = [...championsInRadius];
 
     surroundingChampions.forEach((champ) => {
-      if (champ && typeof champ === 'object') {
-        if (champ.team === 'player') {
+      if (champ && typeof champ === "object") {
+        if (champ.team === "player") {
           surroundingAllies.push(champ);
         } else {
           surroundingOpponents.push(champ);
@@ -150,16 +150,16 @@ class Board {
   }
 
   displayBoard() {
-    console.log('Board:');
+    console.log("Board:");
     for (let row = 0; row < this.rows; row++) {
-      let rowStr = '';
+      let rowStr = "";
       for (let column = 0; column < this.columns; column++) {
         const cell = this.grid[row][column];
         if (cell.champion) {
-          const teamIndicator = cell.champion.team === 'player' ? 'P' : 'O';
+          const teamIndicator = cell.champion.team === "player" ? "P" : "O";
           rowStr += `[${cell.champion.name.charAt(0)}${teamIndicator}]`;
         } else {
-          rowStr += '[  ]';
+          rowStr += "[  ]";
         }
       }
       console.log(rowStr);

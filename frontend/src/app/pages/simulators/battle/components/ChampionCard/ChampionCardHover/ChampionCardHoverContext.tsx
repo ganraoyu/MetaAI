@@ -1,4 +1,4 @@
-import { useState, useContext, createContext, ReactNode } from 'react';
+import { useState, useContext, createContext, ReactNode } from "react";
 
 interface ChampionCardHoverContextType {
   abilityHover: boolean;
@@ -47,7 +47,7 @@ const ChampionCardHoverProvider = ({ children }: ChampionCardHoverProviderProps)
 const useChampionCardHoverContext = () => {
   const context = useContext(ChampionCardHoverContext);
   if (!context) {
-    throw new Error('useChampionCardHoverContext must be used inside ChampionCardHoverProvider');
+    throw new Error("useChampionCardHoverContext must be used inside ChampionCardHoverProvider");
   }
   return context;
 };

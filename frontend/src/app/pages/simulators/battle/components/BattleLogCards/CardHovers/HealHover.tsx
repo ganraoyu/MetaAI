@@ -1,7 +1,7 @@
-import React from 'react';
-import { useTFTSetContext } from '../../../../../../utilities/TFTSetContext';
+import React from "react";
+import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
 
-type HealSource = { type: 'ability'; abilityName?: string } | 'omnivamp' | 'item';
+type HealSource = { type: "ability"; abilityName?: string } | "omnivamp" | "item";
 
 interface HealBreakDownProps {
   healAmount: number;
@@ -12,9 +12,9 @@ export const HealHover: React.FC<HealBreakDownProps> = ({ healAmount, source }) 
   const { set } = useTFTSetContext();
 
   const abilityName = () => {
-    if (typeof source === 'object' && source.type === 'ability' && source.abilityName) {
+    if (typeof source === "object" && source.type === "ability" && source.abilityName) {
       const name = source.abilityName.trim(); // remove any leading/trailing spaces
-      return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase().replace(/\s/g, '');
+      return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase().replace(/\s/g, "");
     }
   };
 
@@ -33,10 +33,10 @@ export const HealHover: React.FC<HealBreakDownProps> = ({ healAmount, source }) 
       <div className="text-xs text-gray-300">
         <div className="flex justify-between">
           <span>Source:</span>
-          {source === 'omnivamp' && (
+          {source === "omnivamp" && (
             <img src={`../assets/icons/${source}.png`} className="w-4 h-4" />
           )}
-          {typeof source === 'object' && source.type === 'ability' && (
+          {typeof source === "object" && source.type === "ability" && (
             <img src={`../assets/${set}/abilities/${abilityName()}.png`} className="w-5 h-5" />
           )}
         </div>

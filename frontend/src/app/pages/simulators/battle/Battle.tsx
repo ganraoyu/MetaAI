@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { useTitle } from '../../../utilities/useTitle';
-import { UnitAugmentContainer } from './components/UnitAugmentContainer/UnitAugmentContainer';
-import { BattleButtons } from './components/BattleContainers/BattleButtons';
-import { BattleProvider } from './BattleContext';
-import { BattleStatsContainer } from './components/BattleContainers/BattleStatsContainer/BattleEndContainer/BattleStatsContainer';
-import { HexBoard } from './components/BattleContainers/HexBoard/HexBoard';
-import { LogsDisplay } from './components/BattleContainers/LogDisplay';
-import { Filter } from './components/BattleLogCards/_Filter';
-import { HexBoardProvider } from './components/BattleContainers/HexBoard/HexBoardContext';
-import { ItemContainer } from './components/ItemContainer/ItemContainer';
-import { BattleStatsProvider } from './components/BattleContainers/BattleStatsContainer/BattleStatsContext';
+import { useState } from "react";
+import { useTitle } from "../../../utilities/useTitle";
+import { UnitAugmentContainer } from "./components/UnitAugmentContainer/UnitAugmentContainer";
+import { BattleButtons } from "./components/BattleContainers/BattleButtons";
+import { BattleProvider } from "./BattleContext";
+import { BattleStatsContainer } from "./components/BattleContainers/BattleStatsContainer/BattleEndContainer/BattleStatsContainer";
+import { HexBoard } from "./components/BattleContainers/HexBoard/HexBoard";
+import { LogsDisplay } from "./components/BattleContainers/LogDisplay";
+import { Filter } from "./components/BattleLogCards/_Filter";
+import { HexBoardProvider } from "./components/BattleContainers/HexBoard/HexBoardContext";
+import { ItemContainer } from "./components/ItemContainer/ItemContainer";
+import { BattleStatsProvider } from "./components/BattleContainers/BattleStatsContainer/BattleStatsContext";
 
 const BattleContent = () => {
-  useTitle('TFT Battle Simulator - Builder');
+  useTitle("TFT Battle Simulator - Builder");
 
   const [toggleMovement, setToggleMovement] = useState(true);
   const [toggleAttack, setToggleAttack] = useState(true);

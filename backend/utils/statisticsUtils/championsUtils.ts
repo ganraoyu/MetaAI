@@ -1,5 +1,5 @@
-import { shortRegionClient } from '../generalUtils';
-import { regions, regionMapping } from '../regionData';
+import { shortRegionClient } from "../generalUtils";
+import { regions, regionMapping } from "../regionData";
 
 interface SummonerData {
   summonerId: string;
@@ -39,7 +39,7 @@ const fetchSummonerIds = async (rank: string, division: string): Promise<Summone
       const client = shortRegionClient(region);
       let response;
 
-      if (rank === 'master' || rank === 'grandmaster' || rank === 'challenger') {
+      if (rank === "master" || rank === "grandmaster" || rank === "challenger") {
         response = await client.get(`/tft/league/v1/${rank}`);
         const players = response.data.entries.slice(0, 1);
         return players.map((player: any) => ({ summonerId: player.summonerId, region }));
@@ -134,7 +134,7 @@ const calculateChampionRanking = (championData: Record<string, ChampionStats>) =
     .sort((a, b) => Number(a.placement) - Number(b.placement));
 };
 
-const getChampionData = async (rank: string, division: string = '') => {
+const getChampionData = async (rank: string, division: string = "") => {
   try {
     const summonerIds = await fetchSummonerIds(rank, division);
     if (summonerIds.length === 0) throw new Error(`No ${rank} players found`);
@@ -156,8 +156,8 @@ const getChampionData = async (rank: string, division: string = '') => {
 
     return championRanking;
   } catch (error: any) {
-    console.error('Error in getChampionData:', error.message);
-    throw new Error('Failed to fetch champion data');
+    console.error("Error in getChampionData:", error.message);
+    throw new Error("Failed to fetch champion data");
   }
 };
 

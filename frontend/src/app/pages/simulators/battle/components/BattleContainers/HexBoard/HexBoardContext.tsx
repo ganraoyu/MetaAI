@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from "react";
 import {
   useChampionMapEffect,
   useTraitCountingEffect,
   useTraitOrderingEffect,
-} from './useHexBoardEffects.ts';
+} from "./useHexBoardEffects.ts";
 import {
   ChampionData,
   BoardState,
@@ -12,7 +12,7 @@ import {
   HexBoardContextType,
   TraitCountEntry,
   ChampionMap,
-} from './types.ts';
+} from "./types.ts";
 
 /**
  * Context for the HexBoard providing board state and operations
@@ -47,7 +47,7 @@ const HexBoardContext = createContext<HexBoardContextType | undefined>(undefined
 export const useHexBoardContext = (): HexBoardContextType => {
   const context = useContext(HexBoardContext);
   if (!context) {
-    throw new Error('useHexBoardContext must be used within a HexBoardProvider');
+    throw new Error("useHexBoardContext must be used within a HexBoardProvider");
   }
   return context;
 };

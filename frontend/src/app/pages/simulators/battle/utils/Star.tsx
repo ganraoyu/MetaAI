@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface StarProps {
   textColor?: string; // stroke color
@@ -6,12 +6,12 @@ interface StarProps {
   className?: string;
 }
 
-export const Star: React.FC<StarProps> = ({ textColor, fillColor, className = 'w-4 h-4' }) => {
+export const Star: React.FC<StarProps> = ({ textColor, fillColor, className = "w-4 h-4" }) => {
   return (
     <svg
       className={className}
       viewBox="0 0 24 24"
-      fill={fillColor ?? 'none'}
+      fill={fillColor ?? "none"}
       stroke={textColor}
       strokeWidth={1}
       strokeLinecap="round"

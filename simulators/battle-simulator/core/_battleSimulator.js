@@ -1,20 +1,20 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const Board = require('./board.js');
-const HexCell = require('../utils/HexCell.js');
-const { Champion } = require('../data/champion/champion.ts');
-const { Item } = require('../data/item/item.ts');
-const { Trait } = require('../data/trait/trait.ts');
-const { displayStats } = require('../data/champion/champion.ts');
+const Board = require("./board.js");
+const HexCell = require("../utils/HexCell.js");
+const { Champion } = require("../data/champion/champion.ts");
+const { Item } = require("../data/item/item.ts");
+const { Trait } = require("../data/trait/trait.ts");
+const { displayStats } = require("../data/champion/champion.ts");
 
-const { getChampionByName } = require('../data/champion/champion-data.ts');
-const { getItemByName } = require('../data/item/item-data.ts');
-const { getTraitByName } = require('../data/trait/trait-data.ts');
+const { getChampionByName } = require("../data/champion/champion-data.ts");
+const { getItemByName } = require("../data/item/item-data.ts");
+const { getTraitByName } = require("../data/trait/trait-data.ts");
 
-const { addAdditionalItemStatistics } = require('../data/item/logic/basicItems.ts');
+const { addAdditionalItemStatistics } = require("../data/item/logic/basicItems.ts");
 
-const battleLogger = require('./battleLogger.ts');
+const battleLogger = require("./battleLogger.ts");
 const { logBattleEvent } = battleLogger;
 
 const {
@@ -26,13 +26,13 @@ const {
   applySurroundingOpponentsEffects,
   applyPositionalEffects,
   applyAllItemEffects,
-} = require('../data/item/logic/_itemEffects.ts');
+} = require("../data/item/logic/_itemEffects.ts");
 
 const {
   getDistanceBetweenCells,
   findClosestEnemy,
   moveChampionTowardsTarget,
-} = require('./movementLogic.js');
+} = require("./movementLogic.js");
 
 /*
 cd simulators/battle-simulator/core
@@ -43,15 +43,15 @@ const board = new Board(8, 7);
 
 function getFormattedTime(time) {
   const minutes = Math.floor(time / 6000);
-  const seconds = ((time % 6000) / 100).toFixed(2).padStart(5, '0');
+  const seconds = ((time % 6000) / 100).toFixed(2).padStart(5, "0");
   return `${minutes}:${seconds}`;
 }
 
 function deepClone(obj) {
-  if (obj === null || typeof obj !== 'object') return obj;
+  if (obj === null || typeof obj !== "object") return obj;
   if (obj instanceof Date) return new Date(obj.getTime());
   if (obj instanceof Array) return obj.map((item) => deepClone(item));
-  if (typeof obj === 'object') {
+  if (typeof obj === "object") {
     const clonedObj = {};
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
@@ -112,7 +112,7 @@ function deepCloneItem(item) {
 
 function placeChampionByName(championName, row, column, starLevel, team) {
   const champion = getChampionByName(championName);
-  if (typeof champion === 'string') {
+  if (typeof champion === "string") {
     console.log(champion);
   } else {
     // Deep clone all the champion data to ensure each instance is independent
@@ -179,11 +179,11 @@ function initializeTeams() {
   }
 
   console.log(
-    'Player team:',
+    "Player team:",
     player.map((champion) => champion.name),
   );
   console.log(
-    'Opponent team:',
+    "Opponent team:",
     opponent.map((champion) => champion.name),
   );
 
@@ -193,7 +193,7 @@ function initializeTeams() {
 function addItemByName(champion, itemName) {
   const item = getItemByName(itemName);
 
-  if (typeof item === 'string') {
+  if (typeof item === "string") {
     throw new Error(item);
   } else {
     const clonedItem = deepCloneItem(item);
@@ -218,7 +218,7 @@ function checkChampionTraits(champion) {
         numberOfTrait: 1,
       });
     } else {
-      console.log('Trait not found');
+      console.log("Trait not found");
     }
   }
 
@@ -263,7 +263,7 @@ function addAdditionalTraitStatistics(champion) {
       stats.durability += parseFloat(traitStats.additionalDurability) || 0;
       stats.range += parseFloat(traitStats.additionalAttackRange) || 0;
     } else {
-      console.log('Error: Trait not processed correctly');
+      console.log("Error: Trait not processed correctly");
     }
   });
 }
@@ -307,7 +307,7 @@ function simulateRound(battlePlayer, battleOpponent, battleTime) {
           movementOccurred = true;
 
           logBattleEvent(
-            'movement',
+            "movement",
             {
               mover: {
                 champion: champion.name,
@@ -379,15 +379,15 @@ function simulateRound(battlePlayer, battleOpponent, battleTime) {
 }
 
 function calculateWinRates(playerWins, opponentWins) {
-  const playerWinRate = (playerWins.length / 100) * 100 + '%';
-  const opponentWinRate = (opponentWins.length / 100) * 100 + '%';
+  const playerWinRate = (playerWins.length / 100) * 100 + "%";
+  const opponentWinRate = (opponentWins.length / 100) * 100 + "%";
   return { playerWinRate, opponentWinRate };
 }
 
 let currentBattleTime = 0;
 
 function startBattle() {
-  console.log('Battle started!');
+  console.log("Battle started!");
 
   let { player, opponent } = initializeTeams();
   let playerWins = [];
@@ -396,7 +396,7 @@ function startBattle() {
   let battlePlayer = [...player];
   let battleOpponent = [...opponent];
 
-  console.log('Starting battle with champions:');
+  console.log("Starting battle with champions:");
 
   const BATTLE_STEP = 1;
   const MAX_BATTLE_TIME = 30000;
@@ -429,7 +429,7 @@ function startBattle() {
           `(${champion.currentHp.toFixed(2)} HP,`,
           `${champion.shield} shield,`,
           `${champion.mana}/${champion.abilityManaCost} mana),`,
-        ].join(' ');
+        ].join(" ");
       });
 
       const opponentTeamStats = battleOpponent.map((champion) => {
@@ -438,11 +438,11 @@ function startBattle() {
           `(${champion.currentHp.toFixed(2)} HP,`,
           `${champion.shield} shield,`,
           `${champion.mana}/${champion.abilityManaCost} mana),`,
-        ].join(' ');
+        ].join(" ");
       });
 
-      console.log('Player team:', playerTeamStats);
-      console.log('Opponent team:', opponentTeamStats);
+      console.log("Player team:", playerTeamStats);
+      console.log("Opponent team:", opponentTeamStats);
     }
 
     battlePlayer.forEach((champion) => {
@@ -506,16 +506,16 @@ function startBattle() {
 
   if (battlePlayer.some((champion) => champion.currentHp > 0)) {
     playerWins.push(1);
-    console.log('Player team wins!');
+    console.log("Player team wins!");
   } else if (battleOpponent.some((champion) => champion.currentHp > 0)) {
     opponentWins.push(1);
-    console.log('Opponent team wins!');
+    console.log("Opponent team wins!");
   } else {
-    console.log('No champions left standing - Draw!');
+    console.log("No champions left standing - Draw!");
   }
 
   board.displayBoard();
-  console.log('Battle ended after', (battleTime / 100).toFixed(2), 'seconds of simulated time.');
+  console.log("Battle ended after", (battleTime / 100).toFixed(2), "seconds of simulated time.");
 
   const { playerWinRate, opponentWinRate } = calculateWinRates(playerWins, opponentWins);
 
@@ -548,23 +548,23 @@ function clearBoard() {
   try {
     if (battleLogger && battleLogger.clearHistory) {
       battleLogger.clearHistory();
-      console.log('✅ Battle history cleared via clearHistory()');
+      console.log("✅ Battle history cleared via clearHistory()");
     } else if (battleLogger && battleLogger.battleHistory) {
       battleLogger.battleHistory = [];
     }
   } catch (error) {
-    console.log('❌ Error clearing battle history:', error);
+    console.log("❌ Error clearing battle history:", error);
     try {
-      delete require.cache[require.resolve('./battleLogger.ts')];
+      delete require.cache[require.resolve("./battleLogger.ts")];
     } catch (cacheError) {
-      console.log('❌ Could not clear battle logger cache:', cacheError);
+      console.log("❌ Could not clear battle logger cache:", cacheError);
     }
   }
   board.displayBoard();
 }
 
-placeChampionByName('Akali', 4, 4, 3, 'player');
-placeChampionByName('Akali', 3, 2, 3, 'opponent');
+placeChampionByName("Akali", 4, 4, 3, "player");
+placeChampionByName("Akali", 3, 2, 3, "opponent");
 addItemByName(board.getChampion(3, 2), "Warmog's Armor");
 board.displayBoard();
 startBattle();

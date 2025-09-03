@@ -6,7 +6,7 @@ function getFormattedTime(battleTime) {
   const secs = Math.floor((battleTime % 6000) / 100);
   const cents = battleTime % 100;
 
-  return `${mins}:${secs.toString().padStart(2, '0')}.${cents.toString().padStart(2, '0')}`;
+  return `${mins}:${secs.toString().padStart(2, "0")}.${cents.toString().padStart(2, "0")}`;
 }
 
 function offsetToAxial(row, col) {

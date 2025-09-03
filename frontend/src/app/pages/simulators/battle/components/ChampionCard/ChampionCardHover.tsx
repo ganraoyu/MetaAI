@@ -1,11 +1,11 @@
-import { useState, useLayoutEffect } from 'react';
-import { ChampionImage } from './ChampionCardHover/ChampionImage.tsx';
-import { ChampionStatBars } from './ChampionCardHover/ChampionStatBars.tsx';
-import { ChampionCardHoverProvider } from './ChampionCardHover/ChampionCardHoverContext.tsx';
-import { ChampionCardHoverProps } from './types.ts';
-import { ChampionAbilitySlot } from './ChampionCardHover/ChampionAbilitySlot.tsx';
-import { ChampionItemsSlot } from './ChampionCardHover/ChampionItemsSlot.tsx';
-import ChampionStatsGrid from './ChampionCardHover/ChampionStatsGrid.tsx';
+import { useState, useLayoutEffect } from "react";
+import { ChampionImage } from "./ChampionCardHover/ChampionImage.tsx";
+import { ChampionStatBars } from "./ChampionCardHover/ChampionStatBars.tsx";
+import { ChampionCardHoverProvider } from "./ChampionCardHover/ChampionCardHoverContext.tsx";
+import { ChampionCardHoverProps } from "./types.ts";
+import { ChampionAbilitySlot } from "./ChampionCardHover/ChampionAbilitySlot.tsx";
+import { ChampionItemsSlot } from "./ChampionCardHover/ChampionItemsSlot.tsx";
+import ChampionStatsGrid from "./ChampionCardHover/ChampionStatsGrid.tsx";
 
 const ChampionCardHover = ({
   champion,
@@ -52,12 +52,12 @@ const ChampionCardHover = ({
 
     calculatePosition(); // initial position
 
-    window.addEventListener('scroll', calculatePosition);
-    window.addEventListener('resize', calculatePosition);
+    window.addEventListener("scroll", calculatePosition);
+    window.addEventListener("resize", calculatePosition);
 
     return () => {
-      window.removeEventListener('scroll', calculatePosition);
-      window.removeEventListener('resize', calculatePosition);
+      window.removeEventListener("scroll", calculatePosition);
+      window.removeEventListener("resize", calculatePosition);
     };
   }, [parentRef]);
 

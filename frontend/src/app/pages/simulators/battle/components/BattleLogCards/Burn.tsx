@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
-import { ChampionCard } from '../ChampionCard/ChampionCard';
-import { BurnHover } from './CardHovers/BurnHover';
-import { FaFire } from 'react-icons/fa';
+import { useState, useRef, useEffect } from "react";
+import { ChampionCard } from "../ChampionCard/ChampionCard";
+import { BurnHover } from "./CardHovers/BurnHover";
+import { FaFire } from "react-icons/fa";
 
 export const Burn = ({ log, index }: { log: any; index: number }) => {
   const [hoveredBurnId, setHoveredBurnId] = useState<number | null>(null);
@@ -29,11 +29,11 @@ export const Burn = ({ log, index }: { log: any; index: number }) => {
   useEffect(() => {
     if (hoveredBurnId === index || clickedHoverId === index) {
       updatePosition();
-      window.addEventListener('scroll', updatePosition);
-      window.addEventListener('resize', updatePosition);
+      window.addEventListener("scroll", updatePosition);
+      window.addEventListener("resize", updatePosition);
       return () => {
-        window.removeEventListener('scroll', updatePosition);
-        window.removeEventListener('resize', updatePosition);
+        window.removeEventListener("scroll", updatePosition);
+        window.removeEventListener("resize", updatePosition);
       };
     }
   }, [hoveredBurnId, clickedHoverId, index]);

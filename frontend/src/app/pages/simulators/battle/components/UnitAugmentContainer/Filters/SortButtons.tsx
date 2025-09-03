@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSortAlphaDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSortAlphaDown } from "@fortawesome/free-solid-svg-icons";
 
 interface SortButtonsProps {
   sortByCost: boolean;
@@ -18,7 +18,7 @@ export const SortButtons = ({
     <button
       onClick={setSortByCost}
       className={`h-7 w-8 bg-lightGray flex items-center justify-center rounded-l-md outline outline-1 ${
-        sortByCost ? 'outline-yellow-300' : 'outline-purple-600'
+        sortByCost ? "outline-yellow-300" : "outline-purple-600"
       }`}
     >
       <img
@@ -31,7 +31,7 @@ export const SortButtons = ({
     <button
       onClick={setSortByAlphabet}
       className={`ml-[0.1rem] h-7 w-8 bg-lightGray flex items-center justify-center rounded-r-md outline outline-1 outline-lightGray hover:outline-yellow-300 ${
-        sortByAlphabet ? 'outline-yellow-300' : 'outline-purple-600'
+        sortByAlphabet ? "outline-yellow-300" : "outline-purple-600"
       }`}
     >
       <FontAwesomeIcon icon={faSortAlphaDown} className="text-white w-4 h-4" />

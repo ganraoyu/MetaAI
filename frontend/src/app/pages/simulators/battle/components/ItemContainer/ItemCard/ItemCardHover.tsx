@@ -1,7 +1,7 @@
-import { getItemByName } from '../../../data/dataUtils';
-import { ItemCardHoverProps } from './types';
+import { getItemByName } from "../../../data/dataUtils";
+import { ItemCardHoverProps } from "./types";
 
-export const ItemCardHover = ({ itemName, className = '' }: ItemCardHoverProps) => {
+export const ItemCardHover = ({ itemName, className = "" }: ItemCardHoverProps) => {
   const stats: any = getItemByName(itemName);
 
   if (!stats) return null;

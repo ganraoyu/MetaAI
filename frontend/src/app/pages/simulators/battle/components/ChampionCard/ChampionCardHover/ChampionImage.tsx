@@ -1,7 +1,7 @@
-import { Star } from '../../../utils/Star';
-import { useTFTSetContext } from '../../../../../../utilities/TFTSetContext';
-import { ChampionImageProps } from './types';
-import { getBorderColor, getCostGradient } from './utils';
+import { Star } from "../../../utils/Star";
+import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
+import { ChampionImageProps } from "./types";
+import { getBorderColor, getCostGradient } from "./utils";
 
 /**
  * ChampionImage component renders a champion card with its splash image, star level, traits, and cost.
@@ -41,8 +41,8 @@ export const ChampionImage = ({
           {Array.from({ length: starLevel || 0 }).map((_, index) => (
             <Star
               key={index}
-              textColor={starLevel && starLevel >= 3 ? '#FFFF00' : '#B0B0B0'}
-              fillColor={starLevel && starLevel >= 3 ? '#FFFF00' : '#B0B0B0'}
+              textColor={starLevel && starLevel >= 3 ? "#FFFF00" : "#B0B0B0"}
+              fillColor={starLevel && starLevel >= 3 ? "#FFFF00" : "#B0B0B0"}
               className="w-3.5 h-3.5 drop-shadow-[0_0_2px_gray]"
             />
           ))}

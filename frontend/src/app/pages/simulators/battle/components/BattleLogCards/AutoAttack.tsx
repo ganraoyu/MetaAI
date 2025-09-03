@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
-import { ChampionCard } from '../ChampionCard/ChampionCard.tsx';
-import { DamageHover } from './CardHovers/DamageAbilityHover.tsx';
+import { useState, useRef, useEffect } from "react";
+import { ChampionCard } from "../ChampionCard/ChampionCard.tsx";
+import { DamageHover } from "./CardHovers/DamageAbilityHover.tsx";
 
 export const AutoAttack = ({ log, index }: { log: any; index: number; parentRef: any }) => {
   const [hoveredDamageId, setHoveredDamageId] = useState<number | null>(null);
@@ -22,11 +22,11 @@ export const AutoAttack = ({ log, index }: { log: any; index: number; parentRef:
   useEffect(() => {
     if (hoveredDamageId === index || clickedDamageId === index) {
       updatePosition();
-      window.addEventListener('scroll', updatePosition);
-      window.addEventListener('resize', updatePosition);
+      window.addEventListener("scroll", updatePosition);
+      window.addEventListener("resize", updatePosition);
       return () => {
-        window.removeEventListener('scroll', updatePosition);
-        window.removeEventListener('resize', updatePosition);
+        window.removeEventListener("scroll", updatePosition);
+        window.removeEventListener("resize", updatePosition);
       };
     }
   }, [hoveredDamageId, clickedDamageId, index]);
@@ -64,7 +64,7 @@ export const AutoAttack = ({ log, index }: { log: any; index: number; parentRef:
                     value: log.details.target.magicResist || 0,
                   }}
                   otherModifiers={log.details.modifiers || []}
-                  damageType={log.details.damageType || 'physical'}
+                  damageType={log.details.damageType || "physical"}
                 />
               </div>
             )}
@@ -84,12 +84,12 @@ export const AutoAttack = ({ log, index }: { log: any; index: number; parentRef:
               mana={log.details.attacker.mana || 0}
               maxMana={log.details.attacker.abilityManaCost || 100}
               shield={log.details.attacker.shield || 0}
-              trait1={log.details.attacker.traits[0] || ''}
-              trait2={log.details.attacker.traits[1] || ''}
-              trait3={log.details.attacker.traits[2] || ''}
-              item1={log.details.attacker.items?.[0]?.name || ''}
-              item2={log.details.attacker.items?.[1]?.name || ''}
-              item3={log.details.attacker.items?.[2]?.name || ''}
+              trait1={log.details.attacker.traits[0] || ""}
+              trait2={log.details.attacker.traits[1] || ""}
+              trait3={log.details.attacker.traits[2] || ""}
+              item1={log.details.attacker.items?.[0]?.name || ""}
+              item2={log.details.attacker.items?.[1]?.name || ""}
+              item3={log.details.attacker.items?.[2]?.name || ""}
               armor={log.details.attacker.armor || 0}
               magicResist={log.details.attacker.magicResist || 0}
               attackDamage={log.details.attacker.attackDamage || 0}
@@ -110,7 +110,7 @@ export const AutoAttack = ({ log, index }: { log: any; index: number; parentRef:
               <img src="../assets/icons/attack.png" className="w-5 h-5" alt="Attack icon" />
             </div>
             <p className="text-sm font-bold text-red-600 animate-pulse min-h-[1.25rem]">
-              {log.details.isCrit ? 'CRIT' : ''}
+              {log.details.isCrit ? "CRIT" : ""}
             </p>
           </div>
 
@@ -125,12 +125,12 @@ export const AutoAttack = ({ log, index }: { log: any; index: number; parentRef:
               mana={log.details.target.mana || 0}
               maxMana={log.details.target.abilityManaCost || 100}
               shield={log.details.target.shield || 0}
-              trait1={log.details.target.traits[0] || ''}
-              trait2={log.details.target.traits[1] || ''}
-              trait3={log.details.target.traits[2] || ''}
-              item1={log.details.target.items?.[0]?.name || ''}
-              item2={log.details.target.items?.[1]?.name || ''}
-              item3={log.details.target.items?.[2]?.name || ''}
+              trait1={log.details.target.traits[0] || ""}
+              trait2={log.details.target.traits[1] || ""}
+              trait3={log.details.target.traits[2] || ""}
+              item1={log.details.target.items?.[0]?.name || ""}
+              item2={log.details.target.items?.[1]?.name || ""}
+              item3={log.details.target.items?.[2]?.name || ""}
               armor={log.details.target.armor || 0}
               magicResist={log.details.target.magicResist || 0}
               attackDamage={log.details.target.attackDamage || 0}

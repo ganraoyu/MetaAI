@@ -1,14 +1,14 @@
-import { useState, useMemo, useRef, useEffect } from 'react';
-import { useUnitAugmentContext } from './UnitAugmentContext';
-import { getChampionBySet } from '../../data/loaders/championDataLoader';
-import { ChampionHoverInfo } from './ChampionHoverInfo/_ChampionHoverInfo';
+import { useState, useMemo, useRef, useEffect } from "react";
+import { useUnitAugmentContext } from "./UnitAugmentContext";
+import { getChampionBySet } from "../../data/loaders/championDataLoader";
+import { ChampionHoverInfo } from "./ChampionHoverInfo/_ChampionHoverInfo";
 
 export const ChampionCardList = ({ set }: { set: string }) => {
   const {
     toggleUnitsOrAugments = true,
     sortByCost = false,
     sortByAlphabet = false,
-    searchTerm = '',
+    searchTerm = "",
   } = useUnitAugmentContext();
 
   const { showBelow, setShowBelow } = useUnitAugmentContext();
@@ -48,12 +48,12 @@ export const ChampionCardList = ({ set }: { set: string }) => {
       abilityDescription: champion.abilityDescription,
     };
 
-    console.log('Dragging champion:', championData.name);
+    console.log("Dragging champion:", championData.name);
     e.dataTransfer.setData(
-      'application/json',
-      JSON.stringify({ championData: championData, type: 'champion' }),
+      "application/json",
+      JSON.stringify({ championData: championData, type: "champion" }),
     );
-    e.dataTransfer.effectAllowed = 'copy';
+    e.dataTransfer.effectAllowed = "copy";
 
     // Hide hover info during drag
     setHoveredChampionId(null);
@@ -67,17 +67,17 @@ export const ChampionCardList = ({ set }: { set: string }) => {
 
     if (searchTerm.length > 0) {
       championList = championList.filter((champion) =>
-        (champion?.name || '').toLowerCase().includes(searchTerm.toLowerCase()),
+        (champion?.name || "").toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
 
     if (sortByAlphabet) {
-      championList.sort((a, b) => (a?.name || '').localeCompare(b?.name || ''));
+      championList.sort((a, b) => (a?.name || "").localeCompare(b?.name || ""));
     }
 
     if (sortByCost) {
       championList
-        .sort((a, b) => (a?.name || '').localeCompare(b?.name || ''))
+        .sort((a, b) => (a?.name || "").localeCompare(b?.name || ""))
         .sort((a, b) => (a?.cost || 0) - (b?.cost || 0));
     }
 
@@ -90,7 +90,7 @@ export const ChampionCardList = ({ set }: { set: string }) => {
       onDragOver={(e) => e.preventDefault()}
     >
       {sortedChampions.map((champion) => {
-        const name = champion?.name || 'Unknown';
+        const name = champion?.name || "Unknown";
         const cost = champion?.cost || 1;
 
         return (
@@ -119,18 +119,18 @@ export const ChampionCardList = ({ set }: { set: string }) => {
               onDragStart={(e) => handleDragStart(e, champion)}
               className={`w-10 h-10 outline outline-2 cursor-grab active:cursor-grabbing ${
                 cost === 1
-                  ? 'outline-gray-400'
+                  ? "outline-gray-400"
                   : cost === 2
-                    ? 'outline-green-500'
+                    ? "outline-green-500"
                     : cost === 3
-                      ? 'outline-blue-500'
+                      ? "outline-blue-500"
                       : cost === 4
-                        ? 'outline-purple-700'
+                        ? "outline-purple-700"
                         : cost === 5
-                          ? 'outline-yellow-500'
+                          ? "outline-yellow-500"
                           : cost === 6
-                            ? 'outline-orange-500'
-                            : 'outline-red-500'
+                            ? "outline-orange-500"
+                            : "outline-red-500"
               }`}
             />
             <p
@@ -143,19 +143,19 @@ export const ChampionCardList = ({ set }: { set: string }) => {
             {(hoveredChampionId === name || clickedChampionId === name) && (
               <ChampionHoverInfo
                 champion={name}
-                type={champion?.type || ''}
+                type={champion?.type || ""}
                 cost={cost}
                 traits={[
-                  champion?.traitsList?.[0] ?? '',
-                  champion?.traitsList?.[1] ?? '',
-                  champion?.traitsList?.[2] ?? '',
+                  champion?.traitsList?.[0] ?? "",
+                  champion?.traitsList?.[1] ?? "",
+                  champion?.traitsList?.[2] ?? "",
                 ]}
                 items={[champion?.items?.[0], champion?.items?.[1], champion?.items?.[2]]}
                 showBelow={showBelow}
                 overExtend={overExtend}
                 stats={{
-                  abilityName: champion?.abilityName || 'Unknown',
-                  abilityDescription: champion?.abilityDescription || 'No description available',
+                  abilityName: champion?.abilityName || "Unknown",
+                  abilityDescription: champion?.abilityDescription || "No description available",
                   range: champion?.range ?? 0,
                   mana: champion?.mana ?? 0,
                   manaPerAttack: champion?.manaPerAttack ?? 0,

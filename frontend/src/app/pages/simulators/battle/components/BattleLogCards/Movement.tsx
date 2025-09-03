@@ -1,4 +1,4 @@
-import { ChampionCard } from '../ChampionCard/ChampionCard.tsx';
+import { ChampionCard } from "../ChampionCard/ChampionCard.tsx";
 
 export const Movement = ({
   log,
@@ -39,12 +39,12 @@ export const Movement = ({
           mana={mover.mana}
           maxMana={mover.maxMana}
           shield={mover.shield}
-          trait1={mover.traits[0] || ''}
-          trait2={mover.traits[1] || ''}
-          trait3={mover.traits[2] || ''}
-          item1={mover.items?.[0]?.name || ''}
-          item2={mover.items?.[1]?.name || ''}
-          item3={mover.items?.[2]?.name || ''}
+          trait1={mover.traits[0] || ""}
+          trait2={mover.traits[1] || ""}
+          trait3={mover.traits[2] || ""}
+          item1={mover.items?.[0]?.name || ""}
+          item2={mover.items?.[1]?.name || ""}
+          item3={mover.items?.[2]?.name || ""}
           armor={mover.armor}
           magicResist={mover.magicResist}
           attackDamage={mover.attackDamage}

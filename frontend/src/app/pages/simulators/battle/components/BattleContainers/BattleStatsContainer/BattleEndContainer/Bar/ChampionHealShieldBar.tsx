@@ -1,6 +1,6 @@
-import { getHealTotals, getTotalBarWidth } from './calculateChampionTotals';
-import { ChampionProps } from './types';
-import { buildHealShieldGradient, getHealShieldPercentages } from './utils';
+import { getHealTotals, getTotalBarWidth } from "./calculateChampionTotals";
+import { ChampionProps } from "./types";
+import { buildHealShieldGradient, getHealShieldPercentages } from "./utils";
 
 /**
  * ChampionHealShieldBar
@@ -41,9 +41,9 @@ export const ChampionHealShieldBar = ({ champion }: ChampionProps) => {
           <div
             style={{
               width: `${widthPercentage}%`,
-              height: '100%',
+              height: "100%",
               background: gradient,
-              borderRadius: '1px',
+              borderRadius: "1px",
             }}
           ></div>
         </div>

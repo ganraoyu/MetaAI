@@ -14,7 +14,7 @@ export const ToggleAbilityStatsSwitch = ({
         <button
           onClick={() => setToggleAbilityStatsSwitch(false)}
           className={`py-2 flex-1 text-center transition-colors duration-200
-            ${!toggleAbilityStatsSwitch ? 'text-yellow-400' : 'text-gray-300'}
+            ${!toggleAbilityStatsSwitch ? "text-yellow-400" : "text-gray-300"}
             bg-[#1e1924] hover:bg-[#3b3738] active:bg-[#4e4a4b]`}
         >
           Stats
@@ -23,7 +23,7 @@ export const ToggleAbilityStatsSwitch = ({
         <button
           onClick={() => setToggleAbilityStatsSwitch(true)}
           className={`py-2 flex-1 text-center transition-colors duration-200
-            ${toggleAbilityStatsSwitch ? 'text-yellow-400' : 'text-gray-300'}
+            ${toggleAbilityStatsSwitch ? "text-yellow-400" : "text-gray-300"}
             bg-[#1e1924] hover:bg-[#3b3738] active:bg-[#4e4a4b]`}
         >
           Ability
@@ -33,7 +33,7 @@ export const ToggleAbilityStatsSwitch = ({
         <div className="absolute bottom-0 h-[0.15rem] w-full flex">
           <div
             className={`h-full bg-yellow-400 transition-all duration-300 rounded-full ${
-              toggleAbilityStatsSwitch ? 'flex-1 ml-[50%]' : 'flex-1 mr-[50%]'
+              toggleAbilityStatsSwitch ? "flex-1 ml-[50%]" : "flex-1 mr-[50%]"
             }`}
           />
         </div>

@@ -1,15 +1,15 @@
-import axios from 'axios';
-import React, { useState, useContext, createContext, ReactNode } from 'react';
+import axios from "axios";
+import React, { useState, useContext, createContext, ReactNode } from "react";
 
 type MessageType = {
-  role: 'user' | 'ai';
+  role: "user" | "ai";
   content: string;
 };
 
 type ChatContextType = {
   messages: MessageType[];
   setMessages: React.Dispatch<React.SetStateAction<MessageType[]>>;
-  addMessage: (role: 'user' | 'ai', content: string) => void;
+  addMessage: (role: "user" | "ai", content: string) => void;
   sendMessage: (content: string) => Promise<void>;
 };
 
@@ -22,22 +22,22 @@ interface ChatProviderProps {
 export const ChatProvider = ({ children }: ChatProviderProps): JSX.Element => {
   const [messages, setMessages] = useState<MessageType[]>([]);
 
-  const addMessage = (role: 'user' | 'ai', content: string) => {
+  const addMessage = (role: "user" | "ai", content: string) => {
     setMessages((prev) => [...prev, { role, content }]);
   };
 
   const sendMessage = async (content: string) => {
-    addMessage('user', content);
+    addMessage("user", content);
 
     try {
-      const { data } = await axios.post('http://localhost:3000/ai-coach/chat', {
+      const { data } = await axios.post("http://localhost:3000/ai-coach/chat", {
         message: content,
       });
-      addMessage('ai', data.reply);
+      addMessage("ai", data.reply);
       console.log(data);
     } catch (err) {
       console.error(err);
-      addMessage('ai', 'Error: Could not get response from backend.');
+      addMessage("ai", "Error: Could not get response from backend.");
     }
   };
 
@@ -50,6 +50,6 @@ export const ChatProvider = ({ children }: ChatProviderProps): JSX.Element => {
 
 export const useChatContext = () => {
   const context = useContext(ChatContext);
-  if (!context) throw new Error('useChat must be used inside ChatProvider');
+  if (!context) throw new Error("useChat must be used inside ChatProvider");
   return context;
 };

@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { ChampionPosition, TraitCountMap, TraitCountEntry, ChampionMap } from './types';
-import { useTFTSetContext } from '../../../../../../utilities/TFTSetContext';
+import { useEffect } from "react";
+import { ChampionPosition, TraitCountMap, TraitCountEntry, ChampionMap } from "./types";
+import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
 
 export function useChampionMapEffect(
   boardArray: ChampionPosition[],

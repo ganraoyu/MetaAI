@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 interface SearchBarProps {
   searchTerm: string;
@@ -12,7 +12,7 @@ export const SearchBar = ({ searchTerm, setSearchTerm, toggleUnitsOrAugments }: 
     <input
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
-      placeholder={toggleUnitsOrAugments ? 'Search for Unit/Trait' : 'Search for Augment'}
+      placeholder={toggleUnitsOrAugments ? "Search for Unit/Trait" : "Search for Augment"}
       className="text-xs appearance-none border-none bg-transparent outline-none w-full text-white p-2"
     />
     <FontAwesomeIcon icon={faMagnifyingGlass} className="pr-2 w-3 h-3 text-lighterGray" />

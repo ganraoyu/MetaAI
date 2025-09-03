@@ -1,15 +1,15 @@
 export const getDamageTypeColor = (type: string): string => {
   switch (type) {
-    case 'totalChampionTrueDamage':
-      return 'rgba(255, 255, 255, 0.7)'; // white with 70% opacity
-    case 'totalChampionMagicDamage':
-      return 'rgba(59, 130, 246, 0.7)'; // blue
-    case 'totalChampionDamage':
-      return 'rgba(239, 68, 68, 0.7)'; // red (physical)
-    case 'totalChampionAbilityDamage':
-      return 'rgba(59, 130, 246, 0.7)'; // blue (ability damage)
+    case "totalChampionTrueDamage":
+      return "rgba(255, 255, 255, 0.7)"; // white with 70% opacity
+    case "totalChampionMagicDamage":
+      return "rgba(59, 130, 246, 0.7)"; // blue
+    case "totalChampionDamage":
+      return "rgba(239, 68, 68, 0.7)"; // red (physical)
+    case "totalChampionAbilityDamage":
+      return "rgba(59, 130, 246, 0.7)"; // blue (ability damage)
     default:
-      return 'rgba(156, 163, 175, 0.7)'; // gray fallback
+      return "rgba(156, 163, 175, 0.7)"; // gray fallback
   }
 };
 
@@ -29,10 +29,10 @@ export const buildDamageGradient = (
   const abilityEnd = magicEnd + abilityPercent;
 
   return `linear-gradient(to right,
-    ${getDamageTypeColor('totalChampionTrueDamage')} 0% ${trueEnd}%,
-    ${getDamageTypeColor('totalChampionDamage')} ${trueEnd}% ${physicalEnd}%,
-    ${getDamageTypeColor('totalChampionMagicDamage')} ${physicalEnd}% ${magicEnd}%,
-    ${getDamageTypeColor('totalChampionAbilityDamage')} ${magicEnd}% ${abilityEnd}%
+    ${getDamageTypeColor("totalChampionTrueDamage")} 0% ${trueEnd}%,
+    ${getDamageTypeColor("totalChampionDamage")} ${trueEnd}% ${physicalEnd}%,
+    ${getDamageTypeColor("totalChampionMagicDamage")} ${physicalEnd}% ${magicEnd}%,
+    ${getDamageTypeColor("totalChampionAbilityDamage")} ${magicEnd}% ${abilityEnd}%
   )`;
 };
 
@@ -53,12 +53,12 @@ export const getHealShieldPercentages = (
 
 export const getHealShieldTypeColor = (type: string): string => {
   switch (type) {
-    case 'totalChampionHealing':
-      return 'rgba(34, 197, 94, 0.7)'; // green (70% opacity)
-    case 'totalChampionShield':
-      return 'rgba(156, 163, 175, 0.7)'; // gray (70% opacity)
+    case "totalChampionHealing":
+      return "rgba(34, 197, 94, 0.7)"; // green (70% opacity)
+    case "totalChampionShield":
+      return "rgba(156, 163, 175, 0.7)"; // gray (70% opacity)
     default:
-      return 'rgba(107, 114, 128, 0.7)'; // fallback gray
+      return "rgba(107, 114, 128, 0.7)"; // fallback gray
   }
 };
 
@@ -67,7 +67,7 @@ export const buildHealShieldGradient = (healPercent: number, shieldPercent: numb
   const shieldEnd = healEnd + shieldPercent;
 
   return `linear-gradient(to right,
-    ${getHealShieldTypeColor('totalChampionHealing')} 0% ${healEnd}%,
-    ${getHealShieldTypeColor('totalChampionShield')} ${healEnd}% ${shieldEnd}%
+    ${getHealShieldTypeColor("totalChampionHealing")} 0% ${healEnd}%,
+    ${getHealShieldTypeColor("totalChampionShield")} ${healEnd}% ${shieldEnd}%
   )`;
 };

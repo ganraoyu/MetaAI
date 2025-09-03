@@ -11,7 +11,7 @@ const {
   calculateBattleHistory,
   setBattleData,
   clearBattleData,
-} = require('../../../simulators/battle-simulator/core/battleStatistics');
+} = require("../../../simulators/battle-simulator/core/battleStatistics");
 
 const {
   placeChampionByName,
@@ -21,7 +21,7 @@ const {
   clearBoard,
   board,
   getBattleHistory: getBattleHistoryFromLogic,
-} = require('../../../simulators/battle-simulator/core/_battleSimulator.js');
+} = require("../../../simulators/battle-simulator/core/_battleSimulator.js");
 
 function parseCellId(cellId) {
   const match = cellId.match(/^([pr])(\d+)c(\d+)$/);
@@ -33,12 +33,12 @@ function parseCellId(cellId) {
 
   let backendRow, team;
 
-  if (teamPrefix === 'p') {
+  if (teamPrefix === "p") {
     backendRow = row + 4;
-    team = 'player';
-  } else if (teamPrefix === 'r') {
+    team = "player";
+  } else if (teamPrefix === "r") {
     backendRow = row;
-    team = 'opponent';
+    team = "opponent";
   }
 
   return { row: backendRow, col, team };
@@ -49,24 +49,24 @@ function createPreciseCircularReplacer() {
   const circularPaths = new Set();
 
   return function (key, value) {
-    if (typeof value === 'function') {
+    if (typeof value === "function") {
       return undefined;
     }
 
-    if (typeof value !== 'object' || value === null) {
+    if (typeof value !== "object" || value === null) {
       return value;
     }
 
-    if (key === 'board' && value.constructor && value.constructor.name === 'Board') {
-      return '[Board Reference Removed]';
+    if (key === "board" && value.constructor && value.constructor.name === "Board") {
+      return "[Board Reference Removed]";
     }
 
-    if (value.constructor && value.constructor.name === 'Champion') {
+    if (value.constructor && value.constructor.name === "Champion") {
       // If we've seen this exact champion object before, create a safe reference
       if (seen.has(value)) {
         return {
-          name: value.name || '[Champion]',
-          id: value.id || 'unknown',
+          name: value.name || "[Champion]",
+          id: value.id || "unknown",
           isCircularRef: true,
         };
       }
@@ -74,33 +74,33 @@ function createPreciseCircularReplacer() {
 
       const cleanChampion = {};
       for (const [championKey, championValue] of Object.entries(value)) {
-        if (championKey === 'currentTarget' && Array.isArray(championValue)) {
+        if (championKey === "currentTarget" && Array.isArray(championValue)) {
           // Convert champion references to safe IDs
           cleanChampion[championKey] = championValue.map((target) =>
-            target && typeof target === 'object' && target.name
+            target && typeof target === "object" && target.name
               ? {
                   name: target.name,
-                  id: target.id || 'unknown',
+                  id: target.id || "unknown",
                   isReference: true,
                 }
               : target,
           );
-        } else if (championKey === 'targetedBy' && Array.isArray(championValue)) {
+        } else if (championKey === "targetedBy" && Array.isArray(championValue)) {
           cleanChampion[championKey] = championValue.map((attacker) =>
-            attacker && typeof attacker === 'object' && attacker.name
+            attacker && typeof attacker === "object" && attacker.name
               ? {
                   name: attacker.name,
-                  id: attacker.id || 'unknown',
+                  id: attacker.id || "unknown",
                   isReference: true,
                 }
               : attacker,
           );
-        } else if (championKey === 'currentChampionsAttacking' && Array.isArray(championValue)) {
+        } else if (championKey === "currentChampionsAttacking" && Array.isArray(championValue)) {
           cleanChampion[championKey] = championValue.map((attacker) =>
-            attacker && typeof attacker === 'object' && attacker.name
+            attacker && typeof attacker === "object" && attacker.name
               ? {
                   name: attacker.name,
-                  id: attacker.id || 'unknown',
+                  id: attacker.id || "unknown",
                   isReference: true,
                 }
               : attacker,
@@ -118,7 +118,7 @@ function createPreciseCircularReplacer() {
     }
 
     if (seen.has(value)) {
-      return '[Circular Reference]';
+      return "[Circular Reference]";
     }
     seen.set(value, true);
 
@@ -132,14 +132,14 @@ function safeBattleDataToJSON(data) {
     const cleanData = JSON.parse(JSON.stringify(data, createPreciseCircularReplacer()));
     return cleanData;
   } catch (error) {
-    console.error('Error converting battle data to JSON:', error);
+    console.error("Error converting battle data to JSON:", error);
 
     // Fallback: try to extract the most important data manually
     try {
-      if (data && typeof data === 'object') {
+      if (data && typeof data === "object") {
         const fallbackData = {
           success: true,
-          message: 'Partial data due to serialization issues',
+          message: "Partial data due to serialization issues",
           extractedData: {},
         };
 
@@ -156,13 +156,13 @@ function safeBattleDataToJSON(data) {
         return fallbackData;
       }
     } catch (fallbackError) {
-      console.error('Fallback serialization also failed:', fallbackError);
+      console.error("Fallback serialization also failed:", fallbackError);
     }
 
     // Last resort
     return {
       success: false,
-      error: 'Failed to serialize battle data',
+      error: "Failed to serialize battle data",
       message: error.message,
       timestamp: new Date().toISOString(),
     };
@@ -189,21 +189,21 @@ function getBattleHistoryClean() {
 
     return safeBattleDataToJSON(rawHistory);
   } catch (error) {
-    console.error('Error getting clean battle history:', error);
+    console.error("Error getting clean battle history:", error);
     return null;
   }
 }
 
 const startBattleWithBoard = async (req, res) => {
   try {
-    console.log('Received request body:', req.body);
+    console.log("Received request body:", req.body);
 
     const { boardState } = req.body;
     if (!boardState) {
-      return res.status(400).json({ error: 'Board state is required' });
+      return res.status(400).json({ error: "Board state is required" });
     }
 
-    console.log('Board state:', boardState);
+    console.log("Board state:", boardState);
 
     // Clear the board and battle data before starting new battle
     clearBoard();
@@ -216,12 +216,12 @@ const startBattleWithBoard = async (req, res) => {
       ([cellId, cellData]) => cellData && cellData.champion,
     );
 
-    console.log('Champions to place:', championsToPlace.length);
+    console.log("Champions to place:", championsToPlace.length);
 
     if (championsToPlace.length === 0) {
       return res.status(400).json({
         error:
-          'No champions found on the board. Please place at least one champion before starting a battle.',
+          "No champions found on the board. Please place at least one champion before starting a battle.",
         championCount: 0,
       });
     }
@@ -269,28 +269,28 @@ const startBattleWithBoard = async (req, res) => {
     if (successfulPlacements === 0) {
       return res.status(400).json({
         error:
-          'Failed to place any champions on the board. Please check champion data and try again.',
+          "Failed to place any champions on the board. Please check champion data and try again.",
         championCount: 0,
         attemptedPlacements: championsToPlace.length,
       });
     }
 
-    console.log('Starting battle...');
+    console.log("Starting battle...");
 
     // Run the battle simulation
     const battleResult = startBattle();
 
-    console.log('Battle completed, setting battle data...');
+    console.log("Battle completed, setting battle data...");
 
     // Cache the battle result for statistics endpoints
     setBattleData(battleResult);
 
     // Get clean battle history
-    console.log('Getting battle history...');
+    console.log("Getting battle history...");
     const battleHistory = getBattleHistoryClean();
-    console.log('Battle history retrieved and cleaned successfully');
+    console.log("Battle history retrieved and cleaned successfully");
 
-    console.log('Sending response...');
+    console.log("Sending response...");
 
     // Send a minimal response to avoid circular reference issues
     // You can expand this based on what specific data you need
@@ -298,7 +298,7 @@ const startBattleWithBoard = async (req, res) => {
       success: true,
       battleCompleted: true,
       battleHistory: battleHistory,
-      winner: battleResult?.winner || 'unknown',
+      winner: battleResult?.winner || "unknown",
       duration: battleHistory?.duration || 0,
       debug: {
         receivedCells: Object.keys(boardState),
@@ -310,12 +310,12 @@ const startBattleWithBoard = async (req, res) => {
 
     res.json(responseData);
   } catch (error) {
-    console.error('Error starting battle:', error);
-    console.error('Error stack:', error.stack);
+    console.error("Error starting battle:", error);
+    console.error("Error stack:", error.stack);
     res.status(500).json({
-      error: 'Failed to start battle',
+      error: "Failed to start battle",
       details: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+      stack: process.env.NODE_ENV === "development" ? error.stack : undefined,
     });
   }
 };
@@ -325,8 +325,8 @@ const getWinRate = async (req, res) => {
     const winRate = await calculateWinRate(req, res);
     res.json(winRate);
   } catch (error) {
-    console.error('Error: ' + error);
-    res.status(500).json({ error: 'An error occurred while calculating win rate.' });
+    console.error("Error: " + error);
+    res.status(500).json({ error: "An error occurred while calculating win rate." });
   }
 };
 
@@ -335,8 +335,8 @@ const getChampionItems = async (req, res) => {
     const championItems = await calculateChampionItems(req, res);
     res.json(championItems);
   } catch (error) {
-    console.error('Error: ' + error);
-    res.status(500).json({ error: 'An error occurred while fetching champion items.' });
+    console.error("Error: " + error);
+    res.status(500).json({ error: "An error occurred while fetching champion items." });
   }
 };
 
@@ -345,8 +345,8 @@ const getAttackDamageDelt = async (req, res) => {
     const attackDamage = await calculateAttackDamageDelt(req, res);
     res.json(attackDamage);
   } catch (error) {
-    console.error('Error: ' + error);
-    res.status(500).json({ error: 'An error occurred while calculating attack damage.' });
+    console.error("Error: " + error);
+    res.status(500).json({ error: "An error occurred while calculating attack damage." });
   }
 };
 
@@ -355,8 +355,8 @@ const getAbilityDamageDelt = async (req, res) => {
     const abilityDamage = await calculateAbilityDamageDelt(req, res);
     res.json(abilityDamage);
   } catch (error) {
-    console.error('Error: ' + error);
-    res.status(500).json({ error: 'An error occurred while calculating ability damage.' });
+    console.error("Error: " + error);
+    res.status(500).json({ error: "An error occurred while calculating ability damage." });
   }
 };
 
@@ -365,8 +365,8 @@ const getAllDamageDelt = async (req, res) => {
     const allDamage = await calculateAllDamageDelt(req, res);
     res.json(allDamage);
   } catch (error) {
-    console.error('Error: ' + error);
-    res.status(500).json({ error: 'An error occurred while calculating all damage.' });
+    console.error("Error: " + error);
+    res.status(500).json({ error: "An error occurred while calculating all damage." });
   }
 };
 
@@ -375,8 +375,8 @@ const getHealing = async (req, res) => {
     const healing = await calculateHealing(req, res);
     res.json(healing);
   } catch (error) {
-    console.log('Error', error);
-    res.status(500).json({ error: 'An error occurred while calculating healing.' });
+    console.log("Error", error);
+    res.status(500).json({ error: "An error occurred while calculating healing." });
   }
 };
 
@@ -385,8 +385,8 @@ const getAliveOrDead = async (req, res) => {
     const aliveOrDead = await calculateIsAliveOrDead(req, res);
     res.json(aliveOrDead);
   } catch (error) {
-    console.log('Error', error);
-    res.status(500).json({ error: 'An error occurred while calculating alive or dead.' });
+    console.log("Error", error);
+    res.status(500).json({ error: "An error occurred while calculating alive or dead." });
   }
 };
 
@@ -395,8 +395,8 @@ const getAllBattleStatistics = async (req, res) => {
     const battleStatistics = await calculateAllBattleStatistics(req, res);
     res.json(battleStatistics);
   } catch (error) {
-    console.log('Error', error);
-    res.status(500).json({ error: 'An error occured while calculating battle statistics ' });
+    console.log("Error", error);
+    res.status(500).json({ error: "An error occured while calculating battle statistics " });
   }
 };
 
@@ -405,8 +405,8 @@ const getChampionStatistics = async (req, res) => {
     const { playerChampions, opponentChampions } = await calculateChampionStatistics(req, res);
     res.json({ playerChampions, opponentChampions });
   } catch (error) {
-    console.log('Error', error);
-    res.status(500).json({ error: 'An error occured while fetching champion statistics ' });
+    console.log("Error", error);
+    res.status(500).json({ error: "An error occured while fetching champion statistics " });
   }
 };
 
@@ -415,8 +415,8 @@ const getBattleHistory = async (req, res) => {
     const battleHistory = getBattleHistoryClean();
     res.json(battleHistory);
   } catch (error) {
-    console.log('Error', error);
-    res.status(500).json({ error: 'An error occured while fetching battle history' });
+    console.log("Error", error);
+    res.status(500).json({ error: "An error occured while fetching battle history" });
   }
 };
 

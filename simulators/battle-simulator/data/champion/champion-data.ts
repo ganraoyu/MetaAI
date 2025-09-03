@@ -7,11 +7,11 @@ nodemon champion-data.ts
 
 const champions = [
   {
-    name: 'Amumu',
+    name: "Amumu",
     cost: 1,
     shield: 0,
     movementSpeed: 550,
-    traitsList: ['Automata', 'Watcher'],
+    traitsList: ["Automata", "Watcher"],
     statsByStarLevel: {
       1: {
         hp: 600,
@@ -36,9 +36,9 @@ const champions = [
       },
     },
     attackSpeed: 0.6,
-    abilityName: 'Obsolete Technology',
+    abilityName: "Obsolete Technology",
     abilityDescription:
-      'Obsolete Technology: Passive: Amumu reduces all incoming damage. Every second, emit sparks that deal magic damage to adjacent enemies.',
+      "Obsolete Technology: Passive: Amumu reduces all incoming damage. Every second, emit sparks that deal magic damage to adjacent enemies.",
     range: 1,
     mana: 1,
     manaPerAttack: 1,
@@ -59,11 +59,11 @@ const champions = [
     items: [],
   },
   {
-    name: 'Darius',
+    name: "Darius",
     cost: 1,
     shield: 0,
     movementSpeed: 550,
-    traitsList: ['Conqueror', 'Watcher'],
+    traitsList: ["Conqueror", "Watcher"],
     statsByStarLevel: {
       1: {
         hp: 600,
@@ -88,9 +88,9 @@ const champions = [
       },
     },
     attackSpeed: 0.7,
-    abilityName: 'Decimate',
+    abilityName: "Decimate",
     abilityDescription:
-      'Darius swings his axe in a powerful strike, dealing damage and healing based on missing health.',
+      "Darius swings his axe in a powerful strike, dealing damage and healing based on missing health.",
     range: 1,
     mana: 30,
     manaPerAttack: 10,
@@ -111,11 +111,11 @@ const champions = [
     items: [],
   },
   {
-    name: 'Akali',
+    name: "Akali",
     cost: 2,
     shield: 0,
     movementSpeed: 550,
-    traitsList: ['Rebel', 'Quickstriker'],
+    traitsList: ["Rebel", "Quickstriker"],
     statsByStarLevel: {
       1: {
         hp: 700,
@@ -140,8 +140,8 @@ const champions = [
       },
     },
     attackSpeed: 0.75,
-    abilityName: 'Shuriken Flip',
-    abilityDescription: 'Akali dashes through enemies, dealing damage to each target she passes.',
+    abilityName: "Shuriken Flip",
+    abilityDescription: "Akali dashes through enemies, dealing damage to each target she passes.",
     range: 1,
     mana: 0,
     manaPerAttack: 10,
@@ -165,7 +165,7 @@ const champions = [
 
 export function getChampionByName(name: string) {
   if (!name) {
-    return 'Champion name cannot be empty';
+    return "Champion name cannot be empty";
   }
 
   const champion = champions.find((champion) => champion.name === name);

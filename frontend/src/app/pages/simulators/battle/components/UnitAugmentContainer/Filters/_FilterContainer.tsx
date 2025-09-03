@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useUnitAugmentContext } from '../UnitAugmentContext';
-import { useTFTSetContext } from '../../../../../../utilities/TFTSetContext';
-import { getTraitBySet } from '../../../data/loaders/traitDataLoader';
+import { useEffect, useState } from "react";
+import { useUnitAugmentContext } from "../UnitAugmentContext";
+import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
+import { getTraitBySet } from "../../../data/loaders/traitDataLoader";
 
-import { SearchBar } from './SearchBar';
-import { SortButtons } from './SortButtons';
-import { TraitFilterDropdown } from './TraitFilterDropdown';
-import { ClearFiltersButton } from './ClearFiltersButton';
-import { ToggleUnitsAugmentsSwitch } from './ToggleUnitsAugmentsSwitch';
+import { SearchBar } from "./SearchBar";
+import { SortButtons } from "./SortButtons";
+import { TraitFilterDropdown } from "./TraitFilterDropdown";
+import { ClearFiltersButton } from "./ClearFiltersButton";
+import { ToggleUnitsAugmentsSwitch } from "./ToggleUnitsAugmentsSwitch";
 
 export const FilterContainer = () => {
   const { set } = useTFTSetContext();
@@ -33,10 +33,10 @@ export const FilterContainer = () => {
   }, [set]);
 
   const clearAllFilters = () => {
-    setSearchTerm('');
+    setSearchTerm("");
     setSortByCost(true);
     setSortByAlphabet(false);
-    setFilterByTrait('');
+    setFilterByTrait("");
     setToggleUnitsOrAugments(true);
   };
 

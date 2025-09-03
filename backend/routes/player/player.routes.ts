@@ -1,10 +1,10 @@
-import express, { Request, Response, NextFunction } from 'express';
-import { getPlayerPuuid, getPlayerMatches } from '../../controllers/player/player.controller';
+import express, { Request, Response, NextFunction } from "express";
+import { getPlayerPuuid, getPlayerMatches } from "../../controllers/player/player.controller";
 
 const router = express.Router();
 
 router.get(
-  '/:region/:gameName/:tagLine',
+  "/:region/:gameName/:tagLine",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await getPlayerPuuid(req, res);
@@ -15,7 +15,7 @@ router.get(
 );
 
 router.get(
-  '/:region/matches/:gameName/:tagLine',
+  "/:region/matches/:gameName/:tagLine",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await getPlayerMatches(req, res);

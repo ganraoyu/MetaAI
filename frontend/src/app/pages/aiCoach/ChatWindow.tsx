@@ -1,7 +1,7 @@
-import ReactMarkdown from 'react-markdown';
-import rehypeRaw from 'rehype-raw'; // allows HTML + formatting in Markdown
-import { useChatContext } from './ChatContext';
-import { InitialChatWindow } from './InitialChatWindow';
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw"; // allows HTML + formatting in Markdown
+import { useChatContext } from "./ChatContext";
+import { InitialChatWindow } from "./InitialChatWindow";
 
 export const ChatWindow = () => {
   const { messages } = useChatContext();
@@ -9,19 +9,19 @@ export const ChatWindow = () => {
   return (
     <div
       className="overflow-y-auto p-4 screenbar-hide"
-      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       <InitialChatWindow />
       {messages.map((message, index) => {
-        const isUser = message.role === 'user';
+        const isUser = message.role === "user";
         return (
           <div key={index}>
-            <div className={`flex mt-3 ${isUser ? 'justify-end' : 'justify-start'}`}>
+            <div className={`flex mt-3 ${isUser ? "justify-end" : "justify-start"}`}>
               <div
                 className={`rounded-2xl break-words whitespace-pre-line leading-snug ${
                   isUser
-                    ? 'bg-[#1e1e1e] py-2 px-4 text-[0.85rem] max-w-[30rem]'
-                    : 'py-3 px-5 max-w-full text-base'
+                    ? "bg-[#1e1e1e] py-2 px-4 text-[0.85rem] max-w-[30rem]"
+                    : "py-3 px-5 max-w-full text-base"
                 }`}
               >
                 {isUser ? (

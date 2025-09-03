@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
   MdClose,
   MdPlayArrow,
@@ -6,12 +6,12 @@ import {
   MdSave,
   MdFolderOpen,
   MdSettings,
-} from 'react-icons/md';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import { useBattleContext } from '../../BattleContext.tsx';
-import { useHexBoardContext } from './HexBoard/HexBoardContext.tsx';
-import { useBattleStatsContext } from './BattleStatsContainer/BattleStatsContext.tsx';
-import { useRunBattle } from '../../hooks/useRunBattle.ts';
+} from "react-icons/md";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { useBattleContext } from "../../BattleContext.tsx";
+import { useHexBoardContext } from "./HexBoard/HexBoardContext.tsx";
+import { useBattleStatsContext } from "./BattleStatsContainer/BattleStatsContext.tsx";
+import { useRunBattle } from "../../hooks/useRunBattle.ts";
 
 export const BattleButtons = () => {
   const { setStartBattle, setBattleHistory, battleHistory, loading } = useBattleContext();
@@ -38,22 +38,22 @@ export const BattleButtons = () => {
 
       if (championsOnBoard === 0) {
         setError(
-          'No champions on board! Please place at least one champion before starting a battle.',
+          "No champions on board! Please place at least one champion before starting a battle.",
         );
         return;
       }
 
-      console.log('Starting battle with board state:', boardState);
+      console.log("Starting battle with board state:", boardState);
       const battleResult = await runBattle();
-      console.log('Battle result received:', battleResult);
+      console.log("Battle result received:", battleResult);
 
       if (battleResult && battleResult.success) {
         setStartBattle(true);
         setError(null);
       }
     } catch (err) {
-      setError('Battle simulation failed. Please try again.');
-      console.error('Battle error:', err);
+      setError("Battle simulation failed. Please try again.");
+      console.error("Battle error:", err);
     }
   };
 
@@ -87,21 +87,21 @@ export const BattleButtons = () => {
   };
 
   const handleSave = () => {
-    console.log('Saving battle configuration...');
+    console.log("Saving battle configuration...");
   };
 
   const handleLoad = () => {
-    console.log('Loading battle configuration...');
+    console.log("Loading battle configuration...");
   };
 
   const handleSettings = () => {
-    console.log('Opening settings...');
+    console.log("Opening settings...");
   };
 
   const baseButtonClass =
-    'h-8 px-3 rounded-md bg-hexCellComponents text-xs font-medium flex items-center gap-1 hover:bg-hexCellComponents/90 transition-all';
+    "h-8 px-3 rounded-md bg-hexCellComponents text-xs font-medium flex items-center gap-1 hover:bg-hexCellComponents/90 transition-all";
   const iconButtonClass =
-    'h-8 w-8 rounded-md bg-hexCellComponents text-gray-300 border border-gray-600/60 text-xs font-medium flex items-center justify-center hover:bg-hexCellComponents/90 transition-all';
+    "h-8 w-8 rounded-md bg-hexCellComponents text-gray-300 border border-gray-600/60 text-xs font-medium flex items-center justify-center hover:bg-hexCellComponents/90 transition-all";
   const championsOnBoard = Object.values(boardState).filter((cell) => cell && cell.champion).length;
 
   return (
@@ -110,7 +110,7 @@ export const BattleButtons = () => {
         {/* Main battle control buttons */}
         <button
           className={`${baseButtonClass} text-green-400 border border-green-600/60 ${
-            loading || championsOnBoard === 0 ? 'opacity-50 cursor-not-allowed' : ''
+            loading || championsOnBoard === 0 ? "opacity-50 cursor-not-allowed" : ""
           }`}
           onClick={() => {
             handleStartBattle();
@@ -120,13 +120,13 @@ export const BattleButtons = () => {
           disabled={loading || championsOnBoard === 0}
         >
           <MdPlayArrow className="h-4 w-4" />
-          {loading ? 'Simulating...' : 'Start Battle'}
+          {loading ? "Simulating..." : "Start Battle"}
         </button>
 
         <button
           className={`
             ${baseButtonClass} text-red-400 border border-red-600/60
-            ${boardArray.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}
+            ${boardArray.length === 0 ? "opacity-50 cursor-not-allowed" : ""}
             `}
           onClick={() => {
             handleClearBoard();
@@ -142,7 +142,7 @@ export const BattleButtons = () => {
           <>
             <button
               className={`${iconButtonClass} ${
-                currentBattleIndex <= 0 ? 'opacity-50 cursor-not-allowed' : ''
+                currentBattleIndex <= 0 ? "opacity-50 cursor-not-allowed" : ""
               }`}
               onClick={handlePrevious}
               disabled={currentBattleIndex <= 0}
@@ -155,8 +155,8 @@ export const BattleButtons = () => {
             <button
               className={`${iconButtonClass} ${
                 currentBattleIndex >= battleHistory.battleLogs.length - 1
-                  ? 'opacity-50 cursor-not-allowed'
-                  : ''
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
               }`}
               onClick={handleNext}
               disabled={currentBattleIndex >= battleHistory.battleLogs.length - 1}
@@ -169,7 +169,7 @@ export const BattleButtons = () => {
         {/* Analytics button */}
         <button
           className={`${iconButtonClass} ${
-            showAnalytics ? 'border-blue-500/60 text-blue-400' : ''
+            showAnalytics ? "border-blue-500/60 text-blue-400" : ""
           }`}
           onClick={toggleAnalytics}
         >

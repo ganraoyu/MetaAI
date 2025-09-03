@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { useBattleContext } from '../../../../BattleContext';
-import { ChampionStatsCard } from './Bar/_ChampionStatsCard';
+import { useEffect } from "react";
+import { useBattleContext } from "../../../../BattleContext";
+import { ChampionStatsCard } from "./Bar/_ChampionStatsCard";
 
 export const BattleEndStats = () => {
   const { fetchBattleStats, battleEndStats, battleHistory } = useBattleContext();
@@ -43,7 +43,7 @@ export const BattleEndStats = () => {
                 ))}
               </div>
             ))
-          : 'Loading...'}
+          : "Loading..."}
       </div>
 
       {/* Player champions */}
@@ -56,7 +56,7 @@ export const BattleEndStats = () => {
                 ))}
               </div>
             ))
-          : 'Loading...'}
+          : "Loading..."}
       </div>
     </div>
   );

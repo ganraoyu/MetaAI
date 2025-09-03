@@ -1,6 +1,6 @@
-import { getTraitByName } from '../../../../data/dataUtils';
-import { useTFTSetContext } from '../../../../../../../utilities/TFTSetContext';
-import { mapTraitTierBorderColor, mapTraitTierColor } from '../utils';
+import { getTraitByName } from "../../../../data/dataUtils";
+import { useTFTSetContext } from "../../../../../../../utilities/TFTSetContext";
+import { mapTraitTierBorderColor, mapTraitTierColor } from "../utils";
 
 export const TraitsCard = ({ trait, count }: { trait: string; count: number }) => {
   const { set } = useTFTSetContext();
@@ -17,34 +17,34 @@ export const TraitsCard = ({ trait, count }: { trait: string; count: number }) =
 
   const isActive = count >= activeTier.count;
 
-  const gradientBg = mapTraitTierColor(activeTier.tierLabel || '');
-  const borderColor = mapTraitTierBorderColor(activeTier.tierLabel || '');
-  const fillBackground = isActive ? gradientBg : '#2f2828';
-  const outerBorderColor = isActive ? borderColor : '#555555';
+  const gradientBg = mapTraitTierColor(activeTier.tierLabel || "");
+  const borderColor = mapTraitTierBorderColor(activeTier.tierLabel || "");
+  const fillBackground = isActive ? gradientBg : "#2f2828";
+  const outerBorderColor = isActive ? borderColor : "#555555";
 
   return (
     <div className="flex items-center gap-2 pt-3 pl-4 pr-4">
       {/* Outer border wrapper */}
       <div
         style={{
-          clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-          padding: '2px',
+          clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+          padding: "2px",
           backgroundColor: outerBorderColor,
-          display: 'inline-flex',
-          borderRadius: '4px',
+          display: "inline-flex",
+          borderRadius: "4px",
         }}
       >
         <div
           style={{
             background: fillBackground,
-            backgroundSize: 'cover', // add this so gradient renders fully
-            clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-            boxShadow: `0 0 8px 2px ${isActive ? borderColor : '#000000'}`,
-            width: '31px',
-            height: '31px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            backgroundSize: "cover", // add this so gradient renders fully
+            clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+            boxShadow: `0 0 8px 2px ${isActive ? borderColor : "#000000"}`,
+            width: "31px",
+            height: "31px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <img
@@ -66,9 +66,9 @@ export const TraitsCard = ({ trait, count }: { trait: string; count: number }) =
         <div className="flex flex-row items-center gap-1">
           {traitObj.tiers.map((tier: any, index: number) => (
             <p key={index} className="m-0 text-[0.65rem]">
-              <span className={`${tier.count > count ? 'text-[#7d7777]' : 'text-white'}`}>
+              <span className={`${tier.count > count ? "text-[#7d7777]" : "text-white"}`}>
                 {tier.count}
-                {index < traitObj.tiers.length - 1 ? ' / ' : ''}
+                {index < traitObj.tiers.length - 1 ? " / " : ""}
               </span>
             </p>
           ))}

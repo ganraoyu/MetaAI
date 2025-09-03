@@ -1,6 +1,6 @@
-import { buildDamageGradient, getDamagePercentages } from './utils';
-import { getDamageTotals, getTotalBarWidth } from './calculateChampionTotals';
-import { ChampionProps } from './types';
+import { buildDamageGradient, getDamagePercentages } from "./utils";
+import { getDamageTotals, getTotalBarWidth } from "./calculateChampionTotals";
+import { ChampionProps } from "./types";
 
 /**
  * ChampionDamageBar
@@ -55,9 +55,9 @@ export const ChampionDamageBar = ({ champion }: ChampionProps): JSX.Element => {
         <div
           style={{
             width: `${widthPercentage}%`,
-            height: '100%',
+            height: "100%",
             background: gradient,
-            borderRadius: '1px',
+            borderRadius: "1px",
           }}
         ></div>
       </div>

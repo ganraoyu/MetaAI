@@ -1,4 +1,4 @@
-const { Trait } = require('.././trait/trait.ts');
+const { Trait } = require(".././trait/trait.ts");
 
 /*
 cd simulators/battle-simulator/data/trait
@@ -7,40 +7,40 @@ nodemon trait-data.ts
 
 export const traits = [
   new Trait({
-    name: 'Watcher',
+    name: "Watcher",
     level: 2,
     statsByLevel: {
       2: {
-        description: 'nothing',
+        description: "nothing",
         additionalArmor: 0, // percentage
       },
       4: {
-        description: 'nothing',
+        description: "nothing",
         additionalArmor: 25, // percentage
       },
       6: {
-        decription: 'nothing',
+        decription: "nothing",
         additionalArmor: 35, // percentage
       },
     },
   }),
   new Trait({
-    name: 'Automata',
+    name: "Automata",
     level: 2,
     statsByLevel: {
       2: {
-        description: 'nothing',
+        description: "nothing",
         additionalArmor: 0,
         additionalMagicResist: 25,
         additionalAttackDamage: 10,
       },
       4: {
-        description: 'nothing',
+        description: "nothing",
         additionalArmor: 55,
         additionalMagicResist: 55,
       },
       6: {
-        description: 'nothing',
+        description: "nothing",
         additionalArmor: 100,
         additionalMagicResist: 100,
       },

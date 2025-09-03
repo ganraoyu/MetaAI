@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, ReactNode } from 'react';
+import { useState, createContext, useContext, ReactNode } from "react";
 
 interface ItemContainerContextType {
   searchTerm: string;
@@ -30,7 +30,7 @@ interface ItemContainerProviderProps {
 }
 
 export const ItemContainerProvider = ({ children }: ItemContainerProviderProps) => {
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const [showBasicItems, setShowBasicItems] = useState<boolean>(false);
   const [showCombinedItems, setShowCombinedItems] = useState<boolean>(true);
@@ -72,7 +72,7 @@ export const ItemContainerProvider = ({ children }: ItemContainerProviderProps) 
 export const useItemContainerContext = () => {
   const context = useContext(ItemContainerContext);
   if (!context) {
-    throw new Error('useItemContainerContext must be used within an ItemContainerProvider');
+    throw new Error("useItemContainerContext must be used within an ItemContainerProvider");
   }
   return context;
 };

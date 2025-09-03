@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { useBattleContext } from '../BattleContext';
-import { useHexBoardContext } from '../components/BattleContainers/HexBoard/HexBoardContext';
+import axios from "axios";
+import { useBattleContext } from "../BattleContext";
+import { useHexBoardContext } from "../components/BattleContainers/HexBoard/HexBoardContext";
 
 export const useRunBattle = () => {
   const { setBattleHistory, setLoading } = useBattleContext();
@@ -10,7 +10,7 @@ export const useRunBattle = () => {
     try {
       setLoading(true);
 
-      const response = await axios.post('http://localhost:3000/battle-simulator/start-battle', {
+      const response = await axios.post("http://localhost:3000/battle-simulator/start-battle", {
         boardState,
       });
 
@@ -21,7 +21,7 @@ export const useRunBattle = () => {
 
       return response.data;
     } catch (error) {
-      console.error('Battle failed:', error);
+      console.error("Battle failed:", error);
       throw error;
     } finally {
       setLoading(false);

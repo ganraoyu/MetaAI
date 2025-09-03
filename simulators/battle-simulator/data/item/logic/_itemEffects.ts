@@ -1,4 +1,4 @@
-import { Champion } from '../../champion/champion';
+import { Champion } from "../../champion/champion";
 import {
   dragonsClawEffect,
   brambleVestEffect,
@@ -28,7 +28,7 @@ import {
   statikkShivEffect,
   lastWhisperEffect,
   blueBuffEffect,
-} from './combinedItems';
+} from "./combinedItems";
 import {
   dragonsWillEffect,
   blessedBloodthirsterEffect,
@@ -49,7 +49,7 @@ import {
   sunlightCapeEffect,
   jakshoTheProteanEffect,
   covalentSparkEffect,
-} from './radiantItems';
+} from "./radiantItems";
 
 export function applyStaticEffects(champion: Champion) {
   runaansHurricaneEffect(champion);

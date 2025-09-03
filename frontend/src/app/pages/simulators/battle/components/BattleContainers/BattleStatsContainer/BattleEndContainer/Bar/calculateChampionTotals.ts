@@ -1,4 +1,4 @@
-import { Champion } from './types';
+import { Champion } from "./types";
 
 export const getDamageTotals = (champion: Champion) => {
   return {

@@ -87,5 +87,5 @@ export type TraitCountEntry = [string, number];
 
 export interface HexCellProps {
   cellId: string;
-  team: 'player' | 'opponent' | '';
+  team: "player" | "opponent" | "";
 }

@@ -1,8 +1,8 @@
-import { useTFTSetContext } from '../../../../../../utilities/TFTSetContext';
-import { getChampionBySet } from '../../../data/loaders/championDataLoader';
-import { useChampionCardHoverContext } from './ChampionCardHoverContext';
-import { AbilitySlotHover } from './SlotHover/AbilitySlotHover';
-import { ChampionAbilityProps } from './types';
+import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
+import { getChampionBySet } from "../../../data/loaders/championDataLoader";
+import { useChampionCardHoverContext } from "./ChampionCardHoverContext";
+import { AbilitySlotHover } from "./SlotHover/AbilitySlotHover";
+import { ChampionAbilityProps } from "./types";
 
 /**
  * ChampionAbilitySlot component
@@ -37,8 +37,8 @@ export const ChampionAbilitySlot = ({ champion }: ChampionAbilityProps): JSX.Ele
       {/* Ability Slot Hover */}
       {abilityHover && champion && championData && (
         <AbilitySlotHover
-          ability={championData?.abilityName || ''}
-          description={championData?.abilityDescription || ''}
+          ability={championData?.abilityName || ""}
+          description={championData?.abilityDescription || ""}
         />
       )}
     </div>

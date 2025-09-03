@@ -1,5 +1,5 @@
-import { useHexBoardContext } from '../../HexBoard/HexBoardContext';
-import { TraitsCard } from './TraitsCard';
+import { useHexBoardContext } from "../../HexBoard/HexBoardContext";
+import { TraitsCard } from "./TraitsCard";
 
 export const BattleTraits = () => {
   const { orderedPlayerTraits, orderedOpponentTraits } = useHexBoardContext();

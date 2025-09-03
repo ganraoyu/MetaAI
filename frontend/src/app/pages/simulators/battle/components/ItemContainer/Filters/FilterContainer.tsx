@@ -1,5 +1,5 @@
-import { SearchBar } from './SearchBar';
-import { ItemTypeToggle } from './ItemTypeToggle';
+import { SearchBar } from "./SearchBar";
+import { ItemTypeToggle } from "./ItemTypeToggle";
 
 export const FilterContainer = () => {
   return (

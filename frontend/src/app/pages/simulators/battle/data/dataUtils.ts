@@ -1,6 +1,6 @@
-import { traitsSET13 } from './SET13/trait-data';
-import { Trait } from './types';
-import { basicItems, combinedItems } from './items/item-data';
+import { traitsSET13 } from "./SET13/trait-data";
+import { Trait } from "./types";
+import { basicItems, combinedItems } from "./items/item-data";
 const traitsBySet: Record<string, any> = {
   SET13: traitsSET13,
 };

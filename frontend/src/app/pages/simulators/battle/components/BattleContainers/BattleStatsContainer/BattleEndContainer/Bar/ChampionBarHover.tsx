@@ -1,4 +1,4 @@
-import { ChampionProps } from './types';
+import { ChampionProps } from "./types";
 
 /**
  * ChampionBarHover
@@ -22,11 +22,11 @@ import { ChampionProps } from './types';
  */
 
 const getDamageTextColor = (damageType: string): string => {
-  if (damageType === 'allChampionDamage') return 'text-gray-400';
-  if (damageType === 'totalChampionTrueDamage') return 'text-white';
-  if (damageType === 'totalChampionMagicDamage') return 'text-blue-400';
-  if (damageType === 'totalChampionAbilityDamage') return 'text-purple-500';
-  return 'text-red-400';
+  if (damageType === "allChampionDamage") return "text-gray-400";
+  if (damageType === "totalChampionTrueDamage") return "text-white";
+  if (damageType === "totalChampionMagicDamage") return "text-blue-400";
+  if (damageType === "totalChampionAbilityDamage") return "text-purple-500";
+  return "text-red-400";
 };
 
 export const ChampionBarHover = ({ champion }: ChampionProps): JSX.Element => {
@@ -47,20 +47,20 @@ export const ChampionBarHover = ({ champion }: ChampionProps): JSX.Element => {
       <div className="text-[0.75rem] text-white flex flex-col gap-1">
         {[
           {
-            label: 'Physical',
+            label: "Physical",
             value: champion.totalChampionDamage ?? 0,
-            type: 'totalChampionDamage',
+            type: "totalChampionDamage",
           },
           {
-            label: 'Magic',
+            label: "Magic",
             value:
               (champion.totalChampionAbilityDamage ?? 0) + (champion.totalChampionMagicDamage ?? 0),
-            type: 'totalChampionAbilityDamage',
+            type: "totalChampionAbilityDamage",
           },
           {
-            label: 'True',
+            label: "True",
             value: champion.totalChampionTrueDamage ?? 0,
-            type: 'totalChampionTrueDamage',
+            type: "totalChampionTrueDamage",
           },
         ].map(({ label, value, type }) => (
           <div key={label} className="flex justify-between">
@@ -78,7 +78,7 @@ export const ChampionBarHover = ({ champion }: ChampionProps): JSX.Element => {
       {/* Total damage */}
       <div className="text-[0.75rem] text-white flex justify-between mb-2">
         <div>Total:</div>
-        <div className={getDamageTextColor('allChampionDamage')}>{champion.allChampionDamage}</div>
+        <div className={getDamageTextColor("allChampionDamage")}>{champion.allChampionDamage}</div>
       </div>
     </div>
   );

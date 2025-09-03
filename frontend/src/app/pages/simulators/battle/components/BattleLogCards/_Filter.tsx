@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ItemDropDown } from './Item/_ItemDropDown';
+import { useState } from "react";
+import { ItemDropDown } from "./Item/_ItemDropDown";
 
 interface FilterProps {
   toggleMovement: boolean;
@@ -36,8 +36,8 @@ export const Filter = ({
         <button
           className={`relative h-11 w-11 rounded-md transition-all duration-300 ${
             toggleMovement
-              ? 'bg-gradient-to-br from-teal-700 to-teal-900 border-2 border-teal-500 shadow-lg shadow-teal-900/50'
-              : 'bg-gray-800 border-2 border-gray-700 opacity-60'
+              ? "bg-gradient-to-br from-teal-700 to-teal-900 border-2 border-teal-500 shadow-lg shadow-teal-900/50"
+              : "bg-gray-800 border-2 border-gray-700 opacity-60"
           }`}
           onClick={() => setToggleMovement(!toggleMovement)}
         >
@@ -57,8 +57,8 @@ export const Filter = ({
         <button
           className={`relative h-11 w-11 rounded-md transition-all duration-300 ${
             toggleAttack
-              ? 'bg-gradient-to-br from-red-700 to-red-900 border-2 border-red-500 shadow-lg shadow-red-900/50'
-              : 'bg-gray-800 border-2 border-gray-700 opacity-60'
+              ? "bg-gradient-to-br from-red-700 to-red-900 border-2 border-red-500 shadow-lg shadow-red-900/50"
+              : "bg-gray-800 border-2 border-gray-700 opacity-60"
           }`}
           onClick={() => setToggleAttack(!toggleAttack)}
         >
@@ -78,8 +78,8 @@ export const Filter = ({
         <button
           className={`relative  h-11 w-11 rounded-md transition-all duration-300 ${
             toggleAbility
-              ? 'bg-gradient-to-br from-blue-700 to-blue-900 border-2 border-blue-500 shadow-lg shadow-blue-900/50'
-              : 'bg-gray-800 border-2 border-gray-700 opacity-60'
+              ? "bg-gradient-to-br from-blue-700 to-blue-900 border-2 border-blue-500 shadow-lg shadow-blue-900/50"
+              : "bg-gray-800 border-2 border-gray-700 opacity-60"
           }`}
           onClick={() => setToggleAbility(!toggleAbility)}
         >
@@ -99,8 +99,8 @@ export const Filter = ({
         <button
           className={`relative  h-11 w-11 rounded-md transition-all duration-300 ${
             toggleHeal
-              ? 'bg-gradient-to-br from-green-700 to-green-900 border-2 border-green-500 shadow-lg shadow-green-900/50'
-              : 'bg-gray-800 border-2 border-gray-700 opacity-60'
+              ? "bg-gradient-to-br from-green-700 to-green-900 border-2 border-green-500 shadow-lg shadow-green-900/50"
+              : "bg-gray-800 border-2 border-gray-700 opacity-60"
           }`}
           onClick={() => setToggleHeal(!toggleHeal)}
         >
@@ -120,8 +120,8 @@ export const Filter = ({
         <button
           className={`relative h-11 w-11 rounded-md transition-all duration-300 ${
             toggleItem
-              ? 'bg-gradient-to-br from-purple-700 to-purple-900 border-2 border-purple-500 shadow-lg shadow-purple-900/50'
-              : 'bg-gray-800 border-2 border-gray-700 opacity-60'
+              ? "bg-gradient-to-br from-purple-700 to-purple-900 border-2 border-purple-500 shadow-lg shadow-purple-900/50"
+              : "bg-gray-800 border-2 border-gray-700 opacity-60"
           }`}
           onClick={() => setToggleItem(!toggleItem)}
           onMouseEnter={() => setShowToggle(!toggleItem)}

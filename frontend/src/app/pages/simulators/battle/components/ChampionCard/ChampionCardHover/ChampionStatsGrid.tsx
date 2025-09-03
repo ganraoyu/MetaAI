@@ -1,4 +1,4 @@
-import { ChampionStatsGridProps } from './types';
+import { ChampionStatsGridProps } from "./types";
 
 export const ChampionStatsGrid = ({
   armor,

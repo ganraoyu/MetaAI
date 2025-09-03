@@ -1,5 +1,5 @@
-import { shortRegionClient } from '../generalUtils';
-import { regions, regionMapping } from '../regionData';
+import { shortRegionClient } from "../generalUtils";
+import { regions, regionMapping } from "../regionData";
 
 interface SummonerData {
   summonerId: string;
@@ -30,7 +30,7 @@ const fetchSummonerIds = async (rank: string, division: string): Promise<Summone
       const client = shortRegionClient(region);
       let response: any;
 
-      if (rank === 'master' || rank === 'grandmaster' || rank === 'challenger') {
+      if (rank === "master" || rank === "grandmaster" || rank === "challenger") {
         response = await client.get(`/tft/league/v1/${rank}`);
         const players = response.data.entries.slice(0, 1);
         return players.map((player: any) => ({ summonerId: player.summonerId, region }));
@@ -105,7 +105,7 @@ const calculateTraitData = (playerData: PlayerData[]) => {
     .sort((a, b) => b.count - a.count);
 };
 
-const getTraitData = async (rank: string, division: string = '') => {
+const getTraitData = async (rank: string, division: string = "") => {
   try {
     const summonerIds = await fetchSummonerIds(rank, division);
     const summonerPuuids = await fetchSummonerPuuids(summonerIds);
@@ -117,7 +117,7 @@ const getTraitData = async (rank: string, division: string = '') => {
     return traitData;
   } catch (error: any) {
     console.error(error);
-    throw new Error('Failed to fetch trait data');
+    throw new Error("Failed to fetch trait data");
   }
 };
 

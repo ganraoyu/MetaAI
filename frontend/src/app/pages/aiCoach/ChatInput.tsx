@@ -1,7 +1,7 @@
-import { GoArrowUp } from 'react-icons/go';
-import { MdOutlineKeyboardVoice } from 'react-icons/md';
-import { useState } from 'react';
-import { useChatContext } from './ChatContext';
+import { GoArrowUp } from "react-icons/go";
+import { MdOutlineKeyboardVoice } from "react-icons/md";
+import { useState } from "react";
+import { useChatContext } from "./ChatContext";
 
 export const ChatInput = () => {
   const [inputValue, setInputvalue] = useState<string | null>(null);
@@ -11,7 +11,7 @@ export const ChatInput = () => {
     if (!inputValue?.trim()) return;
 
     sendMessage(inputValue);
-    setInputvalue('');
+    setInputvalue("");
   };
   return (
     <div>
@@ -20,10 +20,10 @@ export const ChatInput = () => {
         <input
           type="text"
           placeholder="Ask anything TFT related!"
-          value={inputValue || ''}
+          value={inputValue || ""}
           className="bg-[#1e1e1e] outline-none w-[45rem] h-[2.5rem] rounded-l-2xl text-[0.8rem] p-5"
           onChange={(event) => setInputvalue(event.target.value)}
-          onKeyDown={(event) => event.key === 'Enter' && handleSend()}
+          onKeyDown={(event) => event.key === "Enter" && handleSend()}
         />
         <button
           type="submit"

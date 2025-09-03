@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import getItemsRankingClient from '../../../utils/statisticsUtils/itemsUtils';
+import { Request, Response } from "express";
+import getItemsRankingClient from "../../../utils/statisticsUtils/itemsUtils";
 
 const getBelowMasterItemsData = async (req: Request, res: Response): Promise<void> => {
   const { rank, division } = req.params;
@@ -10,7 +10,7 @@ const getBelowMasterItemsData = async (req: Request, res: Response): Promise<voi
     res.json(itemsRanking);
   } catch (error: any) {
     console.error(error);
-    res.status(500).send('Error fetching items data');
+    res.status(500).send("Error fetching items data");
   }
 };
 
