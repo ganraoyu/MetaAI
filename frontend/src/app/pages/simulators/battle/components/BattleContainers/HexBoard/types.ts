@@ -48,7 +48,7 @@ export interface HexBoardContextType {
   setOpponentSunder: React.Dispatch<React.SetStateAction<boolean>>;
 
   opponentShred: boolean;
-  wsetOpponentShred: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpponentShred: React.Dispatch<React.SetStateAction<boolean>>;
 
   playerTraitsObj: TraitCountMap;
   opponentTraitsObj: TraitCountMap;

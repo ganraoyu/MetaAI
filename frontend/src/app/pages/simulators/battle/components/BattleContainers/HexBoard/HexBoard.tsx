@@ -1,5 +1,7 @@
+
 import { useHexBoardContext } from './HexBoardContext';
 import { HexCell } from './HexCell';
+import { useBattleContext } from '../../../BattleContext';
 
 /**
  * HexBoard
@@ -29,6 +31,9 @@ export const HexBoard = (): JSX.Element => {
     playerChampionCostCount,
     opponentChampionCostCount,
   } = useHexBoardContext();
+
+  const { battleEndStats } = useBattleContext()
+  
   return (
     <div className="flex flex-col items-center justify-center space-y-8">
       {/* Opponent Board */}
@@ -79,11 +84,37 @@ export const HexBoard = (): JSX.Element => {
             <p className="text-[0.8rem]">{playerChampionCostCount}</p>
           </div>
         </div>
+
         {/* Win rates */}
-        <div>
-          <p className={`${51 > 50 ? "text-green-600" : "text-red-600"}`}>{0}%</p>
-          <p className={`${49 > 50 ? "text-green-600" : "text-red-600"}`}>{0}%</p>
+        <div className='flex flex-col justify-center items-center'>
+          <p
+            className={`
+              ${
+                battleEndStats?.opponentChampionStatistics?.[0]?.opponentWinRate
+                  ? (parseInt(battleEndStats.opponentChampionStatistics[0].opponentWinRate) * 100 > 50
+                      ? "text-green-600"
+                      : "text-red-600")
+                  : "text-gray-400"
+              }
+            `}
+          >
+            {parseInt(battleEndStats?.opponentChampionStatistics?.[0]?.opponentWinRate ?? '0') * 100}%
+          </p>
+          <p
+            className={`
+              ${
+                battleEndStats?.playerChampionStatistics?.[0]?.playerWinRate
+                  ? (parseInt(battleEndStats.playerChampionStatistics[0].playerWinRate) * 100 > 50
+                      ? "text-green-600"
+                      : "text-red-600")
+                  : "text-gray-400"
+              }
+            `}
+          >
+            {parseInt(battleEndStats?.playerChampionStatistics?.[0]?.playerWinRate ?? '0') * 100}%
+          </p>
         </div>
+
         {/* Right side (example, mirror left side) */}
         <div className="flex flex-col">
           <div className="flex items-center gap-1">
