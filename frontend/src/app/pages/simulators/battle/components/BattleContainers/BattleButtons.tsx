@@ -18,8 +18,7 @@ export const BattleButtons = () => {
 
   const { boardState, setBoardState, boardArray, setBoardArray } = useHexBoardContext();
 
-  const { toggleTraits, setToggleTraits, toggleBattleEndStats, setToggleBattleEndStats } =
-    useBattleStatsContext();
+  const { toggleTraits, setToggleTraits, setToggleBattleEndStats } = useBattleStatsContext();
 
   const [error, setError] = useState<string | null>(null);
   const [showAnalytics, setShowAnalytics] = useState<boolean>(false);
@@ -107,7 +106,8 @@ export const BattleButtons = () => {
   return (
     <div>
       <div className="flex items-center gap-1 mb-[0.5rem]">
-        {/* Main battle control buttons */}
+
+        {/* Start battle button */}
         <button
           className={`${baseButtonClass} text-green-400 border border-green-600/60 ${
             loading || championsOnBoard === 0 ? "opacity-50 cursor-not-allowed" : ""
@@ -122,7 +122,8 @@ export const BattleButtons = () => {
           <MdPlayArrow className="h-4 w-4" />
           {loading ? "Simulating..." : "Start Battle"}
         </button>
-
+        
+        {/* Clear board button */}
         <button
           className={`
             ${baseButtonClass} text-red-400 border border-red-600/60

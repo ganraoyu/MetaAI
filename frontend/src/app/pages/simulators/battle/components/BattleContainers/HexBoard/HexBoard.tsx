@@ -2,6 +2,7 @@
 import { useHexBoardContext } from './HexBoardContext';
 import { HexCell } from './HexCell';
 import { useBattleContext } from '../../../BattleContext';
+import { useBattleStatsContext } from '../BattleStatsContainer/BattleStatsContext';
 
 /**
  * HexBoard
@@ -20,6 +21,11 @@ import { useBattleContext } from '../../../BattleContext';
  * @returns {JSX.Element} A React component displaying the hexagonal grid for both players.
  */
 
+const getWinRate = (rate?: string) => parseInt(rate ?? '0') * 100;
+
+const getTextColor = (rate?: string) =>
+  rate ? (parseInt(rate) * 100 > 50 ? 'text-green-600' : 'text-red-600') : 'text-[#4A4040]';
+
 export const HexBoard = (): JSX.Element => {
   const {
     playerSunder,
@@ -31,6 +37,10 @@ export const HexBoard = (): JSX.Element => {
     playerChampionCostCount,
     opponentChampionCostCount,
   } = useHexBoardContext();
+
+  const {
+    toggleBattleEndStats
+  } = useBattleStatsContext()
 
   const { battleEndStats } = useBattleContext()
   
@@ -86,33 +96,17 @@ export const HexBoard = (): JSX.Element => {
         </div>
 
         {/* Win rates */}
-        <div className='flex flex-col justify-center items-center'>
-          <p
-            className={`
-              ${
-                battleEndStats?.opponentChampionStatistics?.[0]?.opponentWinRate
-                  ? (parseInt(battleEndStats.opponentChampionStatistics[0].opponentWinRate) * 100 > 50
-                      ? "text-green-600"
-                      : "text-red-600")
-                  : "text-gray-400"
-              }
-            `}
-          >
-            {parseInt(battleEndStats?.opponentChampionStatistics?.[0]?.opponentWinRate ?? '0') * 100}%
-          </p>
-          <p
-            className={`
-              ${
-                battleEndStats?.playerChampionStatistics?.[0]?.playerWinRate
-                  ? (parseInt(battleEndStats.playerChampionStatistics[0].playerWinRate) * 100 > 50
-                      ? "text-green-600"
-                      : "text-red-600")
-                  : "text-gray-400"
-              }
-            `}
-          >
-            {parseInt(battleEndStats?.playerChampionStatistics?.[0]?.playerWinRate ?? '0') * 100}%
-          </p>
+        <div>
+          {toggleBattleEndStats ? (
+            <div className="flex flex-col justify-center items-center">
+              <p className={getTextColor(battleEndStats?.opponentChampionStatistics?.[0]?.opponentWinRate)}>
+                {getWinRate(battleEndStats?.opponentChampionStatistics?.[0]?.opponentWinRate)}%
+              </p>
+              <p className={getTextColor(battleEndStats?.playerChampionStatistics?.[0]?.playerWinRate)}>
+                {getWinRate(battleEndStats?.playerChampionStatistics?.[0]?.playerWinRate)}%
+              </p>
+            </div>
+          ) : <div></div>}
         </div>
 
         {/* Right side (example, mirror left side) */}
