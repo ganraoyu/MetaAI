@@ -84,7 +84,7 @@ export const HexBoard = (): JSX.Element => {
               <img src="../assets/icons/shred.png" className="w-4 h-4" />
               <p className="text-[0.8rem]">Shred</p>
             </div>
-          </div>
+          </div>  
 
           {/* Bottom row: champions and coin */}
           <div className="flex items-center gap-1">
