@@ -1,3 +1,5 @@
+import './IntialChatWindow.css';  
+
 export const InitialChatWindow = () => {
   return (
     <div className="text-[0.85rem] px-4">
@@ -22,30 +24,12 @@ export const InitialChatWindow = () => {
             {['What is TFT?', 'How do I get started?', 'Tips & Tricks', 'Meta Updates'].map((text, i) => (
               <button key={i} className="m-2 px-3 py-1 bg-[#1e1e1e] text-white rounded-md">{text}</button>
             ))}
-
-            {/* Duplicate the buttons for seamless loop */}
             {['What is TFT?', 'How do I get started?', 'Tips & Tricks', 'Meta Updates'].map((text, i) => (
               <button key={`dup-${i}`} className="m-2 px-3 py-1 bg-[#1e1e1e] text-white rounded-md">{text}</button>
             ))}
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes slide {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-        .animate-slide {
-          display: flex;
-          width: max-content;
-          animation: slide 10s linear infinite;
-        }
-      `}</style>
     </div>
   );
 };
