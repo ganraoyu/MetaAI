@@ -21,3 +21,18 @@
 .animate-fade-slide-up {
   animation: fadeSlideUp 0.5s forwards;
 }
+
+@keyframes fadeSlideRight {
+  0% { 
+    opacity: 0; 
+    transform: translateX(-20px); /* start slightly left */
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateX(0); /* end at original position */
+  }
+}
+
+.animate-fade-slide-right {
+  animation: fadeSlideRight 0.5s forwards;
+}

@@ -1,7 +1,7 @@
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw"; // allows HTML + formatting in Markdown
 import { useChatContext } from "./ChatContext";
-import { InitialChatWindow } from "./InitialChatWindow";
+import { InitialChatWindow } from "../InitialChatWindow/_InitialChatWindow";
 
 export const ChatWindow = () => {
   const { messages } = useChatContext();
