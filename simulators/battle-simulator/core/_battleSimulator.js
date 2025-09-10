@@ -563,11 +563,11 @@ function clearBoard() {
   board.displayBoard();
 }
 
-placeChampionByName("Akali", 4, 4, 3, "player");
-placeChampionByName("Akali", 3, 2, 3, "opponent");
-addItemByName(board.getChampion(3, 2), "Warmog's Armor");
-board.displayBoard();
-startBattle();
+// placeChampionByName("Akali", 4, 4, 3, "player");
+// placeChampionByName("Akali", 3, 2, 3, "opponent");
+// addItemByName(board.getChampion(3, 2), "Warmog's Armor");
+// board.displayBoard();
+// startBattle();
 
 module.exports = {
   router,
