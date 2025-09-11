@@ -1,4 +1,4 @@
-import TypeWriterText from "./TypewriterText";
+import { TypeWriterText} from "./TypewriterText";
 import { SearchBar } from './SearchBar';
 import { ScrollButtons } from './ScrollButtons';
 

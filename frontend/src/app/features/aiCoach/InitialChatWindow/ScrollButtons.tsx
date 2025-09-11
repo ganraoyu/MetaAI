@@ -13,7 +13,7 @@ export const ScrollButtons = () => {
               (text, i) => (
                 <button
                   key={i}
-                  className="m-2 px-3 py-1 bg-[#1c1c1c] text-white rounded-md hover:bg-[#2a2a2a] transition-colors"
+                  className="m-2 px-3 py-2 bg-[#1c1c1c] text-white rounded-md hover:bg-[#2a2a2a] transition-colors"
                 >
                   {text}
                 </button>
@@ -23,7 +23,7 @@ export const ScrollButtons = () => {
               (text, i) => (
                 <button
                   key={`dup-${i}`}
-                  className="m-2 px-3 py-1 bg-[#1c1c1c] text-white rounded-md hover:bg-[#2a2a2a] transition-colors"
+                  className="m-2 px-3 py-2 bg-[#1c1c1c] text-white rounded-md hover:bg-[#2a2a2a] transition-colors"
                 >
                   {text}
                 </button>

@@ -34,8 +34,8 @@ export const TypeWriterText = () => {
       }, randomSpeed);
       return () => clearTimeout(timeout);
     } else {
-      const inputTimeout = setTimeout(() => setShowInput(true), 250);
-      const buttonsTimeout = setTimeout(() => setShowButtons(true), 800);
+      const inputTimeout = setTimeout(() => setShowInput(true), 150);
+      const buttonsTimeout = setTimeout(() => setShowButtons(true), 300);
       return () => {
         clearTimeout(inputTimeout);
         clearTimeout(buttonsTimeout);
@@ -45,13 +45,13 @@ export const TypeWriterText = () => {
 
   return (
     <div className="text-[0.85rem] px-4">
-      <div className="flex flex-row text-white mt-6 mb-4">
+      <div className="flex flex-row text-white mt-6">
         <img
           src="./assets/TFT.png"
           alt="AI Avatar"
-          className="w-10 h-10 mb-4 mt-3 animate-fade-slide-right"
+          className="w-11 h-11 mb-4 mt-3 animate-fade-slide-right"
         />
-        <p className="whitespace-pre-line text-left ml-2 mt-2 mb-6">
+        <p className="whitespace-pre-line leading-tight text-left ml-6 mt-3 mb-10">
           {displayText}
           {index < fullText.length && <span className="animate-blink">|</span>}
         </p>
@@ -59,5 +59,3 @@ export const TypeWriterText = () => {
     </div>
   );
 };
-
-export default TypeWriterText;

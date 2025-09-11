@@ -1,53 +1,61 @@
-import { useState, createContext, ReactNode, useContext } from "react";
+  import axios from "axios";
+  import { useState, createContext, ReactNode, useContext } from "react";
+  import { UserData } from "./types";
 
-interface InitialChatContextType {
-  displayText: string;
-  setDisplayText: React.Dispatch<React.SetStateAction<string>>;
-  index: number;
-  setIndex: React.Dispatch<React.SetStateAction<number>>;
-  start: boolean;
-  setStart: React.Dispatch<React.SetStateAction<boolean>>;
-  showInput: boolean;
-  setShowInput: React.Dispatch<React.SetStateAction<boolean>>;
-  showButtons: boolean;
-  setShowButtons: React.Dispatch<React.SetStateAction<boolean>>;
-}
+  const InitialChatContext = createContext<InitialChatContextType | null>(null);
 
-const InitialChatContext = createContext<InitialChatContextType | null>(null);
+  interface InitialChatProviderProps {
+    children: ReactNode;
+  };
 
-interface InitialChatProviderProps {
-  children: ReactNode;
-};
+  export const IntialChatProvider = ({ children }: InitialChatProviderProps) => {
+    const [index, setIndex] = useState(0);
+    const [displayText, setDisplayText] = useState("");
+    const [start, setStart] = useState(false);
+    const [showInput, setShowInput] = useState(false);
+    const [showButtons, setShowButtons] = useState(false);
+    const [userData, setUserData] = useState<UserData>()
 
-export const IntialChatProvider = ({ children }: InitialChatProviderProps) => {
-  const [index, setIndex] = useState(0);
-  const [displayText, setDisplayText] = useState("");
-  const [start, setStart] = useState(false);
-  const [showInput, setShowInput] = useState(false);
-  const [showButtons, setShowButtons] = useState(false);
-  
-  return (
-    <InitialChatContext.Provider value={{ 
-      index, 
-      setIndex,
-      displayText, 
-      setDisplayText, 
-      start, 
-      setStart, 
-      showInput, 
-      setShowInput, 
-      showButtons, 
-      setShowButtons 
-      }}
-    >
-      {children}
-    </InitialChatContext.Provider>
-  );
-};
+    
+    const getFetchUserData = async (region: string, gameName: string, tagLine: string) => {
+      try {
+        const userWinrate = await axios.get(`http://localhost:3000/player/${region}/${gameName}/${tagLine}`);
+        const userTraitCount = await axios.get(`http://localhost:3000/player/statistics/${region}/${gameName}/${tagLine}/traits`)
 
-export const useInitialChatContext = () => {
-  const context = useContext(InitialChatContext);
-  if (!context) throw new Error("useInitialChatContext must be used inside IntialChatProvider");
-  return context;
-};
-  
+        const data: UserData = {
+          winrate: userWinrate.data,
+          traitCount: userTraitCount.data
+        }
+        
+        setUserData(data)
+
+      } catch (error: any) {
+
+      }
+    }
+
+    return ( 
+      <InitialChatContext.Provider value={{ 
+        index, 
+        setIndex,
+        displayText, 
+        setDisplayText, 
+        start, 
+        setStart, 
+        showInput, 
+        setShowInput, 
+        showButtons, 
+        setShowButtons 
+        }}
+      >
+        {children}
+      </InitialChatContext.Provider>
+    );
+  };
+
+  export const useInitialChatContext = () => {
+    const context = useContext(InitialChatContext);
+    if (!context) throw new Error("useInitialChatContext must be used inside IntialChatProvider");
+    return context;
+  };
+    
