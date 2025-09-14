@@ -11,6 +11,8 @@ export interface InitialChatContextType {
   showButtons: boolean;
   setShowButtons: React.Dispatch<React.SetStateAction<boolean>>;
 
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>; 
   userData: UserData | null;
   setUserData: React.Dispatch<React.SetStateAction<UserData | null>>;
 

@@ -13,10 +13,12 @@
     const [userName, setUserName] = useState<string>("")
     const [showInput, setShowInput] = useState<boolean>(false);
     const [showButtons, setShowButtons] = useState<boolean>(false);
+      const [loading, setLoading] = useState<boolean>(false); 
     const [userData, setUserData] = useState<UserData | null>(null);
 
     const fetchUserData = async (region: string, gameName: string, tagLine: string) => {
       try {
+        setLoading(true);
         const userWinrate = await axios.get(`http://localhost:3000/player/statistics/${region}/${gameName}/${tagLine}/winrate`);
         const traitCount = await axios.get(`http://localhost:3000/player/statistics/${region}/${gameName}/${tagLine}/traits`)
 
@@ -30,8 +32,10 @@
           
       } catch (error: any) {
       console.error("Error fetching battle history:", error);
-      };
-    }
+      } finally {
+        setLoading(false);
+      }
+    };
 
     return ( 
       <InitialChatContext.Provider value={{ 
@@ -43,6 +47,8 @@
         setShowInput, 
         showButtons, 
         setShowButtons,
+        loading,
+        setLoading,
         userData,
         setUserData,
         fetchUserData,

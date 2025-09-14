@@ -41,7 +41,7 @@ export const TypeWriterText = () => {
     <div className="text-[0.85rem] px-4">
       <div className="flex flex-row text-white mt-6">
         <img
-          src="./assets/TFT.pn"
+          src="./assets/TFT.png"
           alt="AI Avatar"
           className="w-11 h-11 mb-4 mt-3 animate-fade-slide-right"
         />

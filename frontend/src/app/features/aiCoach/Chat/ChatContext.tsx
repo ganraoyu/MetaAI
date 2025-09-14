@@ -7,6 +7,8 @@ type MessageType = {
 };
 
 type ChatContextType = {
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   messages: MessageType[];
   setMessages: React.Dispatch<React.SetStateAction<MessageType[]>>;
   addMessage: (role: "user" | "ai", content: string) => void;
@@ -20,6 +22,7 @@ interface ChatProviderProps {
 }
 
 export const ChatProvider = ({ children }: ChatProviderProps): JSX.Element => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [messages, setMessages] = useState<MessageType[]>([]);
 
   const addMessage = (role: "user" | "ai", content: string) => {
@@ -30,20 +33,26 @@ export const ChatProvider = ({ children }: ChatProviderProps): JSX.Element => {
     addMessage("user", content);
 
     try {
+      setLoading(true);
+
       const { data } = await axios.post("http://localhost:3000/ai-coach/chat", {
         message: content,
         context: extraUserData,
       });
+
       addMessage("ai", data.reply);
       console.log(data);
+      
     } catch (err) {
       console.error(err);
       addMessage("ai", "Error: Could not get response from backend.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <ChatContext.Provider value={{ messages, setMessages, addMessage, sendMessage }}>
+    <ChatContext.Provider value={{ loading, setLoading, messages, setMessages, addMessage, sendMessage }}>
       {children}
     </ChatContext.Provider>
   );

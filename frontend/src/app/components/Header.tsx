@@ -24,7 +24,7 @@ const Header = () => {
       <div className="flex justify-between items-center h-full bg-mainBackground px-6">
         {/* Logo + Title */}
         <div className="flex items-center gap-2 cursor-pointer select-none">
-         
+          <img src={logo} alt="Logo" className="w-8 h-8 invert brightness-0 drop-shadow-md" />
           <div className="text-white text-xl tracking-widest font-semibold hover:text-purple-300 transition-colors">
             <Link to="/">TFTStratify</Link>
           </div>
