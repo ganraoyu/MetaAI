@@ -1,13 +1,4 @@
 export interface InitialChatContextType {
-  displayText: string;
-  setDisplayText: React.Dispatch<React.SetStateAction<string>>;
-
-  index: number;
-  setIndex: React.Dispatch<React.SetStateAction<number>>;
-
-  start: boolean;
-  setStart: React.Dispatch<React.SetStateAction<boolean>>;
-
   region: string;
   setRegion: React.Dispatch<React.SetStateAction<string>>;
   

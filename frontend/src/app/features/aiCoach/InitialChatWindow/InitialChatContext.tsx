@@ -9,9 +9,6 @@
   };
 
   export const IntialChatProvider = ({ children }: InitialChatProviderProps) => {
-    const [index, setIndex] = useState<number>(0);
-    const [displayText, setDisplayText] = useState<string>("");
-    const [start, setStart] = useState<boolean>(false);
     const [region, setRegion] = useState<string>('AMERICAS');
     const [userName, setUserName] = useState<string>("")
     const [showInput, setShowInput] = useState<boolean>(false);
@@ -38,12 +35,6 @@
 
     return ( 
       <InitialChatContext.Provider value={{ 
-        index, 
-        setIndex, 
-        displayText, 
-        setDisplayText, 
-        start, 
-        setStart, 
         region,
         setRegion,
         userName,

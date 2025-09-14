@@ -1,16 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
-import { getRandomWelcomeMessage } from "./welcomeMessages";
-import { useInitialChatContext } from "./InitialChatContext";
-import "./InitialChatWindow.css";
+import { useEffect, useMemo, useState } from "react"; 
+import { getRandomFollowUpMessage } from "./followUpMessages";
 
-export const TypeWriterText = () => {
-  const fullText = useMemo(() => getRandomWelcomeMessage(), []);
+export const FollowUpChatWindow = () => {
+  const fullText = useMemo(() => getRandomFollowUpMessage(), []);
 
   const [index, setIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [start, setStart] = useState(false);
-
-  const { setShowInput, setShowButtons } = useInitialChatContext();
 
   useEffect(() => {
     const startTimeout = setTimeout(() => setStart(true), 300);
@@ -27,14 +23,7 @@ export const TypeWriterText = () => {
         setIndex((prev) => prev + 1);
       }, randomSpeed);
       return () => clearTimeout(timeout);
-    } else {
-      const inputTimeout = setTimeout(() => setShowInput(true), 150);
-      const buttonsTimeout = setTimeout(() => setShowButtons(true), 300);
-      return () => {
-        clearTimeout(inputTimeout);
-        clearTimeout(buttonsTimeout);
-      };
-    }
+    }   
   }, [index, fullText, start]);
 
   return (
