@@ -4,10 +4,10 @@ import { ScrollButtons } from './ScrollButtons';
 
 export const InitialChatWindow = () => {
   return (
-    <div className="text-[0.85rem] px-4">
+    <div className="text-[0.85rem] px-4 h-56">
       <TypeWriterText />
       <SearchBar />
-      <ScrollButtons />
+      <ScrollButtons  />
     </div>
   );
 };

@@ -10,7 +10,7 @@ type ChatContextType = {
   messages: MessageType[];
   setMessages: React.Dispatch<React.SetStateAction<MessageType[]>>;
   addMessage: (role: "user" | "ai", content: string) => void;
-  sendMessage: (content: string) => Promise<void>;
+  sendMessage: (content: string, context: any) => Promise<void>;
 };
 
 const ChatContext = createContext<ChatContextType | null>(null);
@@ -26,12 +26,13 @@ export const ChatProvider = ({ children }: ChatProviderProps): JSX.Element => {
     setMessages((prev) => [...prev, { role, content }]);
   };
 
-  const sendMessage = async (content: string) => {
+  const sendMessage = async (content: string, extraUserData: any) => {
     addMessage("user", content);
 
     try {
       const { data } = await axios.post("http://localhost:3000/ai-coach/chat", {
         message: content,
+        context: extraUserData,
       });
       addMessage("ai", data.reply);
       console.log(data);

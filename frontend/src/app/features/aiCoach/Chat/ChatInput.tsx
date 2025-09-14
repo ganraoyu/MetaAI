@@ -2,17 +2,20 @@ import { GoArrowUp } from "react-icons/go";
 import { MdOutlineKeyboardVoice } from "react-icons/md";
 import { useState } from "react";
 import { useChatContext } from "./ChatContext";
+import { useInitialChatContext } from "../InitialChatWindow/InitialChatContext";
 
 export const ChatInput = () => {
   const [inputValue, setInputvalue] = useState<string | null>(null);
   const { sendMessage } = useChatContext();
+  const { userData } = useInitialChatContext();
 
   const handleSend = () => {
     if (!inputValue?.trim()) return;
 
-    sendMessage(inputValue);
+    sendMessage(inputValue, userData);
     setInputvalue("");
   };
+  
   return (
     <div>
       {/* Input */}

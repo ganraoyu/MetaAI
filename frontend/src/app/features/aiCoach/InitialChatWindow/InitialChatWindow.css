@@ -36,3 +36,18 @@
 .animate-fade-slide-right {
   animation: fadeSlideRight 0.5s forwards;
 }
+
+@keyframes fadeSlideDown {
+  0% { 
+    opacity: 0; 
+    transform: translateY(-20px); /* start slightly above */
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0); /* back to normal position */
+  }
+}
+
+.animate-fade-slide-down {
+  animation: fadeSlideDown 0.5s ease forwards;
+}

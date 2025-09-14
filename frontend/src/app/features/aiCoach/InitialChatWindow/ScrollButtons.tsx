@@ -7,7 +7,7 @@ export const ScrollButtons = () => {
   return (
     <div>
       {showButtons && (
-        <div className="relative w-full h-20 overflow-hidden mt-6 animate-fade-slide-up">
+        <div className="relative w-full h-20 mt-6 animate-fade-slide-up">
           <div className="flex animate-slide">
             {["What is TFT?", "How do I get started?", "Tips & Tricks", "Meta Updates"].map(
               (text, i) => (

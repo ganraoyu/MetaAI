@@ -1,6 +1,6 @@
   import axios from "axios";
   import { useState, createContext, ReactNode, useContext } from "react";
-  import { UserData } from "./types";
+  import { InitialChatContextType, UserData } from "./types";
 
   const InitialChatContext = createContext<InitialChatContextType | null>(null);
 
@@ -9,43 +9,52 @@
   };
 
   export const IntialChatProvider = ({ children }: InitialChatProviderProps) => {
-    const [index, setIndex] = useState(0);
-    const [displayText, setDisplayText] = useState("");
-    const [start, setStart] = useState(false);
-    const [showInput, setShowInput] = useState(false);
-    const [showButtons, setShowButtons] = useState(false);
-    const [userData, setUserData] = useState<UserData>()
+    const [index, setIndex] = useState<number>(0);
+    const [displayText, setDisplayText] = useState<string>("");
+    const [start, setStart] = useState<boolean>(false);
+    const [region, setRegion] = useState<string>('AMERICAS');
+    const [userName, setUserName] = useState<string>("")
+    const [showInput, setShowInput] = useState<boolean>(false);
+    const [showButtons, setShowButtons] = useState<boolean>(false);
+    const [userData, setUserData] = useState<UserData | null>(null);
 
-    
-    const getFetchUserData = async (region: string, gameName: string, tagLine: string) => {
+    const fetchUserData = async (region: string, gameName: string, tagLine: string) => {
       try {
-        const userWinrate = await axios.get(`http://localhost:3000/player/${region}/${gameName}/${tagLine}`);
-        const userTraitCount = await axios.get(`http://localhost:3000/player/statistics/${region}/${gameName}/${tagLine}/traits`)
+        const userWinrate = await axios.get(`http://localhost:3000/player/statistics/${region}/${gameName}/${tagLine}/winrate`);
+        const traitCount = await axios.get(`http://localhost:3000/player/statistics/${region}/${gameName}/${tagLine}/traits`)
 
         const data: UserData = {
           winrate: userWinrate.data,
-          traitCount: userTraitCount.data
-        }
-        
-        setUserData(data)
+          traitCount: traitCount.data,
+        };
 
+        setUserData(data);
+        console.log(data);
+          
       } catch (error: any) {
-
-      }
+      console.error("Error fetching battle history:", error);
+      };
     }
 
     return ( 
       <InitialChatContext.Provider value={{ 
         index, 
-        setIndex,
+        setIndex, 
         displayText, 
         setDisplayText, 
         start, 
         setStart, 
+        region,
+        setRegion,
+        userName,
+        setUserName,
         showInput, 
         setShowInput, 
         showButtons, 
-        setShowButtons 
+        setShowButtons,
+        userData,
+        setUserData,
+        fetchUserData,
         }}
       >
         {children}
