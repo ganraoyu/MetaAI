@@ -1,5 +1,6 @@
 export interface ChampionCardProps {
   champion: string;
+  cost: number;
   tier: string;
   averagePlacement: number;
   winRate: number;
@@ -13,3 +14,10 @@ export interface ChampionCellProps {
   width: string;
   index: number;
 };
+
+export interface HeaderCellProps {
+  children: React.ReactNode;
+  width: string;
+  isFirst?: boolean;
+  isLast?: boolean;
+}

@@ -1,4 +1,4 @@
-export const tierBackgroundColors = (tier: string) => {
+export const getTierBackgroundColors = (tier: string) => {
 switch (tier) {
   case "S":
     return "bg-[#df5b5b]"; // darkest gold
@@ -13,7 +13,7 @@ switch (tier) {
   case "F":
     return "bg-[#f8f0ad]"; // lightest / softest
   default:
-    return "bg-gray-200"; // fallback
+    return "bg-gray-200";
 }
 
 };
