@@ -1,16 +1,16 @@
 import { ChampionCard } from "./ChampionCard";
+import { champions } from "./testData";
 
 export const ChampionList = () => {
   return (
-    <div className="flex justify-center w-full">
-      <ChampionCard
-        champion="Darius"
-        tier="S"
-        averagePlacement={1.5}
-        winRate={55}
-        frequency={20}
-        popularItems={["item1", "item2", "item3"]}
-      />
+    <div className="flex flex-col justify-center items-center w-full ">
+      <div className="w-full">
+        {champions.map((champion, index) => (
+          <div key={index}>
+            <ChampionCard {...champion} index={index} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

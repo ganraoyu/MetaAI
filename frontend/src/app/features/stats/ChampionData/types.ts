@@ -5,5 +5,11 @@ export interface ChampionCardProps {
   winRate: number;
   frequency: number;
   popularItems: string[];
-}
+  index: number;
+};
 
+export interface ChampionCellProps {
+  children: React.ReactNode;
+  width: string;
+  index: number;
+};

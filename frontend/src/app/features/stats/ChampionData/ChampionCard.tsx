@@ -1,5 +1,13 @@
 import { useTFTSetContext } from "../../../utilities/TFTSetContext";
-import { ChampionCardProps } from "./types";
+import { averagePlaceColors } from "../utils/averagePlaceColors";
+import { tierBackgroundColors } from "../utils/tierColors";
+import { ChampionCardProps, ChampionCellProps } from "./types";
+
+const ChampionCell = ({children, width, index}: ChampionCellProps) => (
+  <div className={`h-[2.4rem] flex items-center ${width} ${index % 2 === 1 ? "bg-[#141212]" : "bg-[#1e1d1d]"}`}>
+    {children}
+  </div>
+);
 
 export const ChampionCard = ({
   champion,
@@ -8,43 +16,47 @@ export const ChampionCard = ({
   winRate,
   frequency,
   popularItems,
+  index,
 }: ChampionCardProps) => {
   const { set } = useTFTSetContext();
 
   return (
-    <div className="flex flex-row items-center">
+    <div className={`flex flex-row items-center justify-center`}>
+
       {/* Champion Image */}
-      <div className="flex flex-row items-center w-[20rem] border border-[#5e5e5e] h-[2.8rem]">
+      <ChampionCell width="w-[20rem] border-l border-r border-[#5e5e5e]"index={index}>
         <img
           src={`../assets/${set}/champions/centered/${champion}.png`}
           alt={champion}
-          className="w-6 h-6 m-1"
+          className="w-8 h-8 m-1"
         />
-        <p>{champion}</p>
-      </div>
+        <p className="text-[#bcbcbc]">{champion}</p>
+      </ChampionCell>
 
       {/* Tier */}
-      <div className="w-[5rem] border border-[#5e5e5e] h-[2.8rem] flex items-center justify-center">
-        {tier}
-      </div>
+      <ChampionCell width="w-[5rem] justify-center border-r border-[#5e5e5e]" index={index}>
+        <div className={`w-[2rem] h-[2rem] text-black flex items-center justify-center text-[1rem] font-bold rounded-sm ${tierBackgroundColors(tier)}`}>
+          {tier}
+        </div>
+      </ChampionCell>
 
       {/* Average Placement */}
-      <div className="w-[5rem] border border-[#5e5e5e] h-[2.8rem] flex items-center justify-center">
+      <ChampionCell width={`w-[8rem] justify-center border-r border-[#5e5e5e] text-[0.9rem] ${averagePlaceColors(averagePlacement)}`} index={index}>
         {averagePlacement}
-      </div>
+      </ChampionCell>
 
-      {/* Win rate */}
-      <div className="w-[10rem] border border-[#5e5e5e] h-[2.8rem] flex items-center justify-center">
-        {winRate}
-      </div>
+      {/* Win Rate */}
+      <ChampionCell width="w-[10rem] justify-center border-r border-[#5e5e5e] text-[0.9rem]" index={index}>
+        {winRate}%
+      </ChampionCell>
 
       {/* Frequency */}
-      <div className="w-[10rem] border border-[#5e5e5e] h-[2.8rem] flex items-center justify-center">
+      <ChampionCell width="w-[10rem] justify-center border-r border-[#5e5e5e] text-[0.9rem]" index={index}>
         {frequency}
-      </div>
+      </ChampionCell>
 
       {/* Popular Items */}
-      <div className="flex flex-row items-center w-[17rem] border border-[#5e5e5e] h-[2.8rem]">
+      <ChampionCell width="w-[17rem] justify-center border-r border-[#5e5e5e] text-[0.9rem]" index={index}>
         {popularItems.map((item, index) => (
           <img
             key={index}
@@ -53,7 +65,7 @@ export const ChampionCard = ({
             className="w-6 h-6 m-1"
           />
         ))}
-      </div>
+      </ChampionCell>
     </div>
   );
 };
