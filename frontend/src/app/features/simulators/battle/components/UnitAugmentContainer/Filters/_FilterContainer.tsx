@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useUnitAugmentContext } from "../UnitAugmentContext";
 import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
-import { getTraitBySet } from "../../../data/loaders/traitDataLoader";
+import { getTraitBySet } from "../../../../../../data/loaders/traitDataLoader";
 
 import { SearchBar } from "./SearchBar";
 import { SortButtons } from "./SortButtons";

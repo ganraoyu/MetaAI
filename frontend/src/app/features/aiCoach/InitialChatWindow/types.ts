@@ -13,6 +13,10 @@ export interface InitialChatContextType {
 
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>; 
+
+  error: boolean;
+  setError: React.Dispatch<React.SetStateAction<boolean>>; 
+
   userData: UserData | null;
   setUserData: React.Dispatch<React.SetStateAction<UserData | null>>;
 

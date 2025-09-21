@@ -31,7 +31,7 @@ import {
  * @property {Function} removeChampion Remove a champion from a specific cell
  * @property {Function} moveChampion Move a champion from one cell to another
  * @property {Function} getChampion Get the champion data at a specific cell
- * @property {Function} setChampionStarLevel Update a champion's star level
+ * @property {Function} setChampionStarLevel Update a champion's star level 
  * @property {Function} addItemToChampion Add an item to a champion
  * @property {Function} removeItemFromChampion Remove an item from a champion
  */

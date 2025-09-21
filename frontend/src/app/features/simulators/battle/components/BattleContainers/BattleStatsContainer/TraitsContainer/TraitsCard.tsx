@@ -1,4 +1,4 @@
-import { getTraitByName } from "../../../../data/dataUtils";
+import { getTraitByName } from "../../../../../../../data/dataUtils";
 import { useTFTSetContext } from "../../../../../../../utilities/TFTSetContext";
 import { mapTraitTierBorderColor, mapTraitTierColor } from "../utils";
 

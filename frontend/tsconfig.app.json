@@ -22,5 +22,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "src/app/features/simulators/battle/data/loaders/traitDataLoader.ts"]
+  "include": ["src", "src/app/data/loaders/traitDataLoader.ts"]
 }

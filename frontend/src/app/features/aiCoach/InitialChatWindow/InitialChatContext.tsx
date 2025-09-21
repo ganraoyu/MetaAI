@@ -13,12 +13,15 @@
     const [userName, setUserName] = useState<string>("")
     const [showInput, setShowInput] = useState<boolean>(false);
     const [showButtons, setShowButtons] = useState<boolean>(false);
-      const [loading, setLoading] = useState<boolean>(false); 
+    const [loading, setLoading] = useState<boolean>(false); 
+    const [error, setError] = useState<boolean>(false);
     const [userData, setUserData] = useState<UserData | null>(null);
 
     const fetchUserData = async (region: string, gameName: string, tagLine: string) => {
       try {
         setLoading(true);
+        setError(false);
+        
         const userWinrate = await axios.get(`http://localhost:3000/player/statistics/${region}/${gameName}/${tagLine}/winrate`);
         const traitCount = await axios.get(`http://localhost:3000/player/statistics/${region}/${gameName}/${tagLine}/traits`)
 
@@ -31,7 +34,9 @@
         console.log(data);
           
       } catch (error: any) {
-      console.error("Error fetching battle history:", error);
+        setError(true);
+        console.error("Error fetching battle history:", error);
+
       } finally {
         setLoading(false);
       }
@@ -49,6 +54,8 @@
         setShowButtons,
         loading,
         setLoading,
+        error,
+        setError,
         userData,
         setUserData,
         fetchUserData,

@@ -8,9 +8,9 @@ import ChampionsTierlist from "./features/tierlists/ChampionsTierlist.tsx";
 import ItemsTierlist from "./features/tierlists/ItemsTierlist.tsx";
 import AugmentsTierlist from "./features/tierlists/AugmentsTierlist.tsx";
 
-import ChampionsData from "./features/data/ChampionsData.tsx";
-import ItemsData from "./features/data/ItemsData.tsx";
-import AugmentsData from "./features/data/AugmentsData.tsx";
+import { ChampionsData } from "./features/stats/ChampionData/ChampionData.tsx";
+import ItemsData from "./features/stats/ItemsData/ItemsData.tsx";
+import AugmentsData from "./features/stats/AugmentsData/AugmentsData.tsx";
 
 import ChampionsStatistics from "./features/statistics/ChampionsStatistics.tsx";
 import ItemsStatistics from "./features/statistics/ItemsStatistics.tsx";

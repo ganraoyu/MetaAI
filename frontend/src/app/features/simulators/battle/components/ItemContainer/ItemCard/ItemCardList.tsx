@@ -1,5 +1,5 @@
 import { useItemContainerContext } from "../ItemContainerContext";
-import { basicItems, combinedItems } from "../../../data/items/item-data";
+import { basicItems, combinedItems } from "../../../../../../data/items/item-data";
 import { ItemCard } from "./ItemCard";
 
 export const ItemCardList = () => {

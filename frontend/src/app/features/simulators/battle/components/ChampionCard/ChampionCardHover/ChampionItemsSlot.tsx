@@ -1,4 +1,4 @@
-import { combinedItems } from "../../../data/items/item-data";
+import { combinedItems } from "../../../../../../data/items/item-data";
 import { useChampionCardHoverContext } from "./ChampionCardHoverContext";
 import { ItemHover } from "./SlotHover/ItemSlotHover";
 import { ChampionItemSlotProps } from "./types";

@@ -1,7 +1,7 @@
 import { useChatContext } from "../ChatContext";
-import "../Chat.css";
 import { AIMessage } from "./AIMessage";
 import { UserMessage } from "./UserMessage";
+import "../Chat.css";
 
 export const ChatMessages = () => {
   const { loading, messages } = useChatContext();
@@ -10,11 +10,13 @@ export const ChatMessages = () => {
     <div className="ml-[1.9rem]"> 
       {messages.map((message, index) => {
         const isUser = message.role === "user";
+        const isAI = message.role === "ai";
         return (
           <div key={index} className="flex mt-3 w-[70em]">
-            {isUser ? (
+            {isUser && (
               <UserMessage content={message.content} />
-            ) : (
+            )} 
+            {isAI&& (
               <AIMessage content={message.content} loading={loading} />
             )}
           </div>

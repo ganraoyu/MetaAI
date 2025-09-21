@@ -1,4 +1,3 @@
-import logo from "../../assets/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faPaypal } from "@fortawesome/free-brands-svg-icons";
@@ -10,7 +9,11 @@ const navigationItems: NavProps[] = [
   { label: "Guide" },
   { label: "Builder" },
   { label: "AI Coach", endPoint: "/coach" },
-  { label: "Stats", icon: faCaretDown },
+  { label: "Stats", endPoint: {
+    champions: "/data/champions",
+    items: "/data/items",
+    augments: "/data/augments",
+  }, icon: faCaretDown },
   { label: "Simulators", icon: faCaretDown },
   { label: "About", icon: faCaretDown },
   { label: "Info" },
@@ -24,9 +27,8 @@ const Header = () => {
       <div className="flex justify-between items-center h-full bg-mainBackground px-6">
         {/* Logo + Title */}
         <div className="flex items-center gap-2 cursor-pointer select-none">
-          <img src={logo} alt="Logo" className="w-8 h-8 invert brightness-0 drop-shadow-md" />
           <div className="text-white text-xl tracking-widest font-semibold hover:text-purple-300 transition-colors">
-            <Link to="/">TFTStratify</Link>
+            <Link to="/">MetaAI</Link>
           </div>
         </div>
 
@@ -65,13 +67,13 @@ const Header = () => {
                         Composition
                       </div>
                       <div className="p-2 flex text-white text-sm hover:bg-gray-800 cursor-pointer justify-center items-center border-t  border-[#313131]">
-                        Champion
+                        <Link to={item.endPoint.champions}>Champion</Link>
                       </div>
                       <div className="p-2 flex text-white text-sm hover:bg-gray-800 cursor-pointer justify-center items-center border-t border-[#313131]">
-                        Trait
+                        <Link to={item.endPoint.augments}>Trait</Link>
                       </div>
                       <div className="p-2 flex text-white text-sm hover:bg-gray-800 cursor-pointer justify-center items-center border-t border-b border-[#313131]">
-                        Item
+                        <Link to={item.endPoint.items}>Item</Link>
                       </div>
                     </>
                   )}

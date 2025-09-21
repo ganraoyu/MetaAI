@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { useUnitAugmentContext } from "./UnitAugmentContext";
-import { getChampionBySet } from "../../data/loaders/championDataLoader";
+import { getChampionBySet } from "../../../../../data/loaders/championDataLoader";
 import { ChampionHoverInfo } from "./ChampionHoverInfo/_ChampionHoverInfo";
 
 export const ChampionCardList = ({ set }: { set: string }) => {

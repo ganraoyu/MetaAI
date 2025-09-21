@@ -1,4 +1,4 @@
-import { getItemByName } from "../../../data/dataUtils";
+import { getItemByName } from "../../../../../../data/dataUtils";
 import { ItemCardHoverProps } from "./types";
 
 export const ItemCardHover = ({ itemName, className = "" }: ItemCardHoverProps) => {

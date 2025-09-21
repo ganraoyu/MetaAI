@@ -4,7 +4,7 @@ import { useInitialChatContext } from "../InitialChatContext";
 import "./FollowUpChatWindow.css"
 
 export const FollowUpChatWindow = () => {
-  const { loading, userData } = useInitialChatContext();
+  const { error, loading, userData } = useInitialChatContext();
 
   const [index, setIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
@@ -35,7 +35,7 @@ export const FollowUpChatWindow = () => {
 
   return (
     <div className="flex flex-row text-[0.85rem] px-3 mt-6">
-      {(loading || userData)&& (
+      {(loading || userData || error) && (
         <img
           src="./assets/TFT.png"
           alt="AI Avatar"
@@ -63,6 +63,15 @@ export const FollowUpChatWindow = () => {
           </p>
         </div>
       )}
+      {/* Show Error message if no user is found or rate limit exceeded */}
+      {error && (
+        <div className="flex flex-row items-center text-white">
+          <div className="ml-6 flex items-center justify-center">
+            <div className="pulse-dot"></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
+

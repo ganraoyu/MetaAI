@@ -1,5 +1,5 @@
 import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
-import { getChampionBySet } from "../../../data/loaders/championDataLoader";
+import { getChampionBySet } from "../../../../../../data/loaders/championDataLoader";
 import { useChampionCardHoverContext } from "./ChampionCardHoverContext";
 import { AbilitySlotHover } from "./SlotHover/AbilitySlotHover";
 import { ChampionAbilityProps } from "./types";
