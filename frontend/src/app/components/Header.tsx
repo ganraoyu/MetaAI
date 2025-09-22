@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faPaypal } from "@fortawesome/free-brands-svg-icons";
 import { useState } from "react";
 import { NavProps } from "./types";
@@ -13,9 +13,9 @@ const navigationItems: NavProps[] = [
     champions: "/data/champions",
     items: "/data/items",
     augments: "/data/augments",
-  }, icon: faCaretDown },
-  { label: "Simulators", icon: faCaretDown },
-  { label: "About", icon: faCaretDown },
+  }, icon: faAngleDown },
+  { label: "Simulators", icon: faAngleDown },
+  { label: "About", icon: faAngleDown },
   { label: "Info" },
 ];
 

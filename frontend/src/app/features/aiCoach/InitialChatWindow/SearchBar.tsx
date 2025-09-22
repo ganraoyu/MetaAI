@@ -1,4 +1,4 @@
-import { faCaretDown, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useInitialChatContext } from "./InitialChatContext";
 import "./InitialChatWindow.css";
@@ -45,7 +45,7 @@ export const SearchBar = () => {
               >
                 {region || "Select Region"}
                 <FontAwesomeIcon
-                  icon={faCaretDown}
+                  icon={faAngleDown}
                   className={`text-gray-400 text-xs ml-2 transition-transform duration-200 ${
                     openDropDown ? "rotate-180" : "rotate-0"
                   }`}

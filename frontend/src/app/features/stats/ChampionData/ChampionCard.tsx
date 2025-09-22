@@ -23,10 +23,10 @@ export const ChampionCard = ({
   const { set } = useTFTSetContext();
 
   return (
-    <div className={`flex flex-row items-center justify-center`}>
+    <div className={`flex flex-row items-center justify-center hover:bg-[#0a0a0a] hover:cursor-pointer group`}>
       
       {/* Rank */}
-      <ChampionCell width="w-[5rem] justify-center border-l border-r border-[#363636] text-[0.9rem] text-[#bcbcbc]" index={index}> 
+      <ChampionCell width="w-[5rem] justify-center border-l border-r border-[#363636] text-[0.9rem] text-[#bcbcbc] group-hover:bg-[#2a2a2a]" index={index}> 
         <p
           className={`font-medium ${
             index === 0
@@ -43,7 +43,7 @@ export const ChampionCard = ({
       </ChampionCell>
       
       {/* Champion Image */}
-      <ChampionCell width={`w-[20rem] border-r border-[#363636]`} index={index}>
+      <ChampionCell width={`w-[20rem] border-r border-[#363636] group-hover:bg-[#2a2a2a]`} index={index}>
         <img
           src={`../assets/${set}/champions/centered/${champion}.png`}
           alt={champion}
@@ -52,30 +52,26 @@ export const ChampionCard = ({
         <p className="text-[#bcbcbc] text-[0.9rem]">{champion}</p>
       </ChampionCell>
 
-      {/* Tier */}
-      <ChampionCell width="w-[5rem] justify-center border-r border-[#363636]" index={index}>
+      {/* Rest of your cells with group-hover:bg-[#2a2a2a] added to each */}
+      <ChampionCell width="w-[5rem] justify-center border-r border-[#363636] group-hover:bg-[#2a2a2a]" index={index}>
         <div className={`w-[1.7rem] h-[1.7rem] text-black flex items-center justify-center text-[0.9rem] font-bold rounded-sm ${getTierBackgroundColors(tier)}`}>
           {tier}
         </div>
       </ChampionCell>
 
-      {/* Average Placement */}
-      <ChampionCell width={`w-[8rem] justify-center border-r border-[#363636] text-[0.9rem] ${getAveragePlaceColors(averagePlacement)}`} index={index}>
+      <ChampionCell width={`w-[8rem] justify-center border-r border-[#363636] text-[0.9rem] ${getAveragePlaceColors(averagePlacement)} group-hover:bg-[#2a2a2a]`} index={index}>
         {averagePlacement}
       </ChampionCell>
 
-      {/* Win Rate */}
-      <ChampionCell width="w-[10rem] justify-center border-r border-[#363636] text-[0.9rem]" index={index}>
+      <ChampionCell width="w-[10rem] justify-center border-r border-[#363636] text-[0.9rem] group-hover:bg-[#2a2a2a]" index={index}>
         {winRate}%
       </ChampionCell>
 
-      {/* Frequency */}
-      <ChampionCell width="w-[10rem] justify-center border-r border-[#363636] text-[0.9rem]" index={index}>
+      <ChampionCell width="w-[10rem] justify-center border-r border-[#363636] text-[0.9rem] group-hover:bg-[#2a2a2a]" index={index}>
         {frequency}
       </ChampionCell>
 
-      {/* Popular Items */}
-      <ChampionCell width="w-[17rem] justify-center border-r border-[#363636] text-[0.9rem]" index={index}>
+      <ChampionCell width="w-[17rem] justify-center border-r border-[#363636] text-[0.9rem] group-hover:bg-[#2a2a2a]" index={index}>
         {popularItems.map((item, index) => (
           <img
             key={index}
@@ -88,3 +84,4 @@ export const ChampionCard = ({
     </div>
   );
 };
+  

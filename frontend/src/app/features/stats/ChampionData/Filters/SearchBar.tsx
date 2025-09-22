@@ -1,0 +1,16 @@
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+export const SearchBar = () => {
+  return (
+    <div className="flex flex-row justify-center">
+      <div className="relative flex items-center">
+        <input 
+          className="bg-[#1e1d1d] rounded-md outline-none px-3 py-1 pr-8 text-[0.75rem] w-[15rem] h-[2rem]"
+          placeholder="Search Units"
+        />
+        <FontAwesomeIcon icon={faMagnifyingGlass} className="absolute right-3 w-3 h-3 text-lighterGray" />
+      </div>
+    </div>
+  )
+};

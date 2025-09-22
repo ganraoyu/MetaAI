@@ -21,3 +21,26 @@ export interface HeaderCellProps {
   isFirst?: boolean;
   isLast?: boolean;
 }
+
+export type Rank = 
+  | "Iron"
+  | "Bronze"
+  | "Silver"
+  | "Gold"
+  | "Platinum"
+  | "Diamond"
+  | "Master"
+  | "Grandmaster"
+  | "Challenger";
+
+export const ranks: Rank[] = [
+  "Iron",
+  "Bronze",
+  "Silver",
+  "Gold",
+  "Platinum",
+  "Diamond",
+  "Master",
+  "Grandmaster",
+  "Challenger"
+];

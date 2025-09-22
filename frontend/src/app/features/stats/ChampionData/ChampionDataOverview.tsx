@@ -10,8 +10,8 @@ export const ChampionDataOverview = () => {
         </div>
 
         {/* Description */}
-        <div className="text-[0.8rem] max-w-lg">
-          <p>Stats on the best tft champions to play in set 15. Select a unit to see the best items and builds for that unit. </p>
+        <div className="text-[0.8rem] max-w-full">
+          <p>Stats on the best tft champions to play in set 15. Click on a champion for more details.</p>
         </div>
       </div>
 
