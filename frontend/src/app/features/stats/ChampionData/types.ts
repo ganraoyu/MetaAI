@@ -44,3 +44,5 @@ export const ranks: Rank[] = [
   "Grandmaster",
   "Challenger"
 ];
+
+export type Cost = 1 | 2 | 3 | 4 | 5 | 6;

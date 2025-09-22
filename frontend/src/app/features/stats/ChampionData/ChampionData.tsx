@@ -5,8 +5,8 @@ import { FilterContainer } from "./Filters/FilterContainer";
 
 export const ChampionsData = () => {
   return (
-    <div className="flex justify-center items-center bg-mainBackground min-h-screen pt-[4.5rem] w-full">
-      <div>
+    <div className="flex flex-row justify-center items-center bg-mainBackground min-h-screen pt-[4.5rem] w-full">
+      <div className="">
         <ChampionDataProvider>
           <ChampionDataOverview />
           <FilterContainer />

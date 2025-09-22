@@ -75,7 +75,7 @@ export const ChampionCard = ({
         {popularItems.map((item, index) => (
           <img
             key={index}
-            src={`./assets/${set}/items/${item}.png`}
+            src={`../assets/items/combined/${item}.png`}
             alt={item}
             className="w-6 h-6 m-1"
           />

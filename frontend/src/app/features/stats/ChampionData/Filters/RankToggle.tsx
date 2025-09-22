@@ -29,7 +29,7 @@ export const RankToggle = () => {
     return (
       <div
         key={r}
-        className="flex items-center justify-between p-2 hover:bg-gray-700 cursor-pointer"
+        className="flex items-center justify-between p-2 hover:bg-[#2d2d2d] cursor-pointer"
         onClick={toggleRank}
       >
         <div className="flex items-center">
@@ -62,6 +62,7 @@ export const RankToggle = () => {
           />
             <p className="text-[0.8rem] px-2 whitespace-nowrap overflow-hidden text-ellipsis flex-1 text-center">
             {lowestSelectedRank}
+            {rank.length > 1 ? "+" : ""}
           </p>
         </div>
         <FontAwesomeIcon icon={faAngleDown} className="text-[0.8rem] ml-2" />

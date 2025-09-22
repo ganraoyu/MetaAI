@@ -18,7 +18,7 @@ const HeaderCell = ({
 
 export const ChampionList = () => {
   return (
-    <div className="flex flex-col justify-center items-center w-full">
+    <div className="flex flex-col justify-center items-center w-full mt-[-0.4rem]">
 
       {/* Header */}
       <div className="flex flex-row items-center justify-center text-[0.9rem]">

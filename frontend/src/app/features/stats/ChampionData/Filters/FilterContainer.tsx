@@ -10,7 +10,7 @@ export const FilterContainer = () => {
         <SearchBar />
         <RankToggle />
       </div>
-      <div>
+      <div className="flex flex-row gap-2">
         <CostFilter />
         <TableChartToggle />
       </div>
