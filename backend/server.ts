@@ -1,8 +1,7 @@
-const dotenv = require("dotenv");
-const path = require("path");
-const express = require("express");
-const cors = require("cors");
-const app = express();
+import dotenv from "dotenv";
+import path from "path";
+import express from "express";
+import cors from "cors";
 
 const battleSimulatorRoutes = require("./routes/battle-simulator/statistics/battleSimulator.routes.js");
 
@@ -11,13 +10,14 @@ import playerStatsRoutes from "./routes/player/playerStatistics.routes";
 import statisticsRoutes from "./routes/statistics/statistics.routes";
 import leaderboardRoutes from "./routes/leaderboard/leaderboard.routes";
 import aiCoachRoutes from "./routes/aiCoach/aiCoach.routes";
+import { connectDB } from "./database/db";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
+const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
-
 app.use(express.json());
 
 app.use("/player", userRoutes);
@@ -27,9 +27,17 @@ app.use("/statistics", statisticsRoutes);
 app.use("/battle-simulator", battleSimulatorRoutes);
 app.use("/ai-coach", aiCoachRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("Failed to connect to the database:", error);
+    process.exit(1);
+  });
 
 console.log("RIOT-API-KEY", process.env.RIOT_API_KEY);
 console.log("OPENAI-API-KEY", process.env.OPENAI_API_KEY);
+console.log("MONGO-URI", process.env.MONGO_URI);

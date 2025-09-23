@@ -1,43 +1,11 @@
+import { connectDB } from "../../database/db";
 import { shortRegionClient } from "../generalUtils";
 import { regions, regionMapping } from "../regionData";
-
-interface SummonerData {
-  summonerId: string;
-  region: string; // platform region: na1, euw1, kr, etc.
-}
-
-interface PuuidData {
-  puuid: string;
-  region: string; // platform region
-}
-
-interface MatchIdData {
-  matchId: string;
-  region: string; // regional host: americas, europe, asia
-}
-
-interface Unit {
-  character_id: string;
-  itemNames: string[];
-  tier: number;
-}
-
-interface PlayerData {
-  placement: number;
-  units: Unit[];
-}
-
-interface ChampionStats {
-  totalGames: number;
-  wins: number;
-  placements: number[];
-}
-
-// ----------------------- FETCH FUNCTIONS -----------------------
+import { SummonerData, PuuidData, MatchIdData, Unit, PlayerData, ChampionStats } from "./types";
 
 const fetchPuuids = async (rank: string, division: string): Promise<PuuidData[]> => {
   const allPuuids = await Promise.all(
-    regions.map(async (region) => {
+    regions.slice(0, 5).map(async (region) => {
       const client = shortRegionClient(region);
 
       if (["master", "grandmaster", "challenger"].includes(rank.toLowerCase())) {
@@ -85,15 +53,15 @@ const fetchMatchHistory = async (puuids: PuuidData[]): Promise<MatchIdData[]> =>
 
 const fetchMatchDetails = async (matches: MatchIdData[]): Promise<any[]> => {
   const responses = await Promise.all(
-    matches.map(({ matchId, region }) => shortRegionClient(region).get(`/tft/match/v1/matches/${matchId}`))
+    matches.map(({ matchId, region }) =>
+      shortRegionClient(region).get(`/tft/match/v1/matches/${matchId}`)
+    )
   );
 
   return responses.map((res) => res.data);
 };
 
-// ----------------------- DATA PROCESSING -----------------------
-
-const processPlayerData = (matches: any[]): PlayerData[] => 
+const processPlayerData = (matches: any[]): PlayerData[] =>
   matches.flatMap((match) =>
     match.info.participants.map((p: any) => ({
       placement: p.placement,
@@ -128,24 +96,22 @@ const calculateChampionData = (players: PlayerData[]): Record<string, ChampionSt
 const calculateChampionRanking = (champData: Record<string, ChampionStats>) =>
   Object.entries(champData)
     .map(([id, { totalGames, wins, placements }]) => ({
-      championId: id,
+      championId: id.toUpperCase(),
+      wins: wins,
       winrate: ((wins / totalGames) * 100).toFixed(2),
       placement: (placements.reduce((sum, p) => sum + p, 0) / totalGames).toFixed(2),
       totalGames,
     }))
     .sort((a, b) => Number(a.placement) - Number(b.placement));
 
-// ----------------------- MAIN FUNCTION -----------------------
-
 const getChampionData = async (rank: string, division: string = "") => {
   try {
     const puuidData = await fetchPuuids(rank, division);
     if (!puuidData.length) throw new Error(`No ${rank} players found`);
 
-    const summonerPuuids =
-      ["master", "grandmaster", "challenger"].includes(rank.toLowerCase()) 
-        ? puuidData 
-        : await fetchSummonerPuuids(puuidData as any);
+    const summonerPuuids = ["master", "grandmaster", "challenger"].includes(rank.toLowerCase())
+      ? puuidData
+      : await fetchSummonerPuuids(puuidData as any);
 
     if (!summonerPuuids.length) throw new Error(`No ${rank} players found`);
 
@@ -161,12 +127,45 @@ const getChampionData = async (rank: string, division: string = "") => {
     const championData = calculateChampionData(playerData);
     const championRanking = calculateChampionRanking(championData);
 
+    const db = await connectDB();
+    const championsCollection = db.db("TFT").collection("champions");
+
+    for (const championStats of championRanking) {
+      const champ = await championsCollection.findOne({ championId: championStats.championId });
+
+      const totalGames = (champ?.totalGames || 0) + championStats.totalGames;
+
+      const averagePlacement =
+        (Number(championStats.placement) * championStats.totalGames +
+          (champ?.averagePlacement || 0) * (champ?.totalGames || 0)) /
+        totalGames;
+      
+      const wins = Number(championStats.wins) + (champ?.wins || 0);
+      const winrate = (wins / totalGames) * 100;
+
+      await championsCollection.updateOne(
+        { championId: championStats.championId },
+        {
+          $set: {
+            totalGames: totalGames,
+            averagePlacement: Number(averagePlacement.toFixed(2)),
+            wins: wins,
+            winrate: Number(winrate.toFixed(2)),
+          },
+        },
+        { upsert: true }
+      );
+
+      console.log(`Updated stats for champion ${championStats.championId}`);
+    }
+
     return championRanking;
   } catch (error: any) {
-    const msg = error?.response?.data?.status?.message
-      || error?.response?.data?.message
-      || error?.message
-      || String(error);
+    const msg =
+      error?.response?.data?.status?.message ||
+      error?.response?.data?.message ||
+      error?.message ||
+      String(error);
     console.error("Error in getChampionData:", msg);
     throw new Error("Failed to fetch champion data");
   }
