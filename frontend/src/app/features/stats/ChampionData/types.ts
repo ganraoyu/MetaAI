@@ -46,3 +46,32 @@ export const ranks: Rank[] = [
 ];
 
 export type Cost = 1 | 2 | 3 | 4 | 5 | 6;
+
+export interface ChampionData {
+  championId: string;
+  totalGames: number;
+  averagePlacement: number;
+  win: number;
+  winrate: number;
+  cost: number | 1;
+  frequency: number | 1;
+  tier: string | '';
+  popularItems: string[] | [];
+}
+
+export interface ChampionDataContextProps {
+  rank: Rank[];
+  setRank: React.Dispatch<React.SetStateAction<Rank[]>>;
+
+  cost: Cost[];
+  setCost: React.Dispatch<React.SetStateAction<Cost[]>>;
+
+  table: boolean;
+  setTable: React.Dispatch<React.SetStateAction<boolean>>;
+
+  chart: boolean;
+  setChart: React.Dispatch<React.SetStateAction<boolean>>;
+
+  championData: ChampionData[]
+  setChampionData: React.Dispatch<React.SetStateAction<ChampionData[]>>
+};

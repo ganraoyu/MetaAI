@@ -28,16 +28,11 @@ app.use("/battle-simulator", battleSimulatorRoutes);
 app.use("/ai-coach", aiCoachRoutes);
 
 connectDB()
-  .then(() => {
+  .then(async (db) => {
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
   })
-  .catch((error) => {
-    console.error("Failed to connect to the database:", error);
-    process.exit(1);
+  .catch((err) => {
+    console.error("Failed to connect to the database:", err);
   });
-
-console.log("RIOT-API-KEY", process.env.RIOT_API_KEY);
-console.log("OPENAI-API-KEY", process.env.OPENAI_API_KEY);
-console.log("MONGO-URI", process.env.MONGO_URI);

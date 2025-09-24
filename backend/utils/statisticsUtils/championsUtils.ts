@@ -104,6 +104,55 @@ const calculateChampionRanking = (champData: Record<string, ChampionStats>) =>
     }))
     .sort((a, b) => Number(a.placement) - Number(b.placement));
 
+const pushChampionDataToDB = async (championRanking: any[]) => {
+  const updatedChampions: any[] = [];
+  try {
+    const db = await connectDB();
+    const championsCollection = db.db("TFT").collection("champions");
+
+    for (const championStats of championRanking) {
+      const champ = await championsCollection.findOne({ championId: championStats.championId });
+
+      const totalGames = (champ?.totalGames || 0) + championStats.totalGames;
+
+      const averagePlacement =
+        (Number(championStats.placement) * championStats.totalGames +
+          (champ?.averagePlacement || 0) * (champ?.totalGames || 0)) /
+        totalGames;
+
+      const wins = Number(championStats.wins) + (champ?.wins || 0);
+      const winrate = Number((wins / totalGames) * 100).toFixed(2);
+
+      await championsCollection.updateOne(
+        { championId: championStats.championId },
+        {
+          $set: {
+            totalGames: totalGames,
+            averagePlacement: Number(averagePlacement.toFixed(2)),
+            wins: wins,
+            winrate: Number(winrate),
+          },
+        },
+        { upsert: true }
+      );
+
+      console.log(`Updated stats for champion ${championStats.championId}`);
+      updatedChampions.push({
+        championId: championStats.championId,
+        totalGames,
+        averagePlacement: Number(averagePlacement.toFixed(2)),
+        wins,
+        winrate: Number(winrate),
+      });
+    };
+
+    return updatedChampions;
+  } catch (error) {
+    console.error("Error pushing champion data to DB:", error);
+    return [];
+  }
+};
+
 const getChampionData = async (rank: string, division: string = "") => {
   try {
     const puuidData = await fetchPuuids(rank, division);
@@ -127,39 +176,9 @@ const getChampionData = async (rank: string, division: string = "") => {
     const championData = calculateChampionData(playerData);
     const championRanking = calculateChampionRanking(championData);
 
-    const db = await connectDB();
-    const championsCollection = db.db("TFT").collection("champions");
+    const newChampionRanking = await pushChampionDataToDB(championRanking);
 
-    for (const championStats of championRanking) {
-      const champ = await championsCollection.findOne({ championId: championStats.championId });
-
-      const totalGames = (champ?.totalGames || 0) + championStats.totalGames;
-
-      const averagePlacement =
-        (Number(championStats.placement) * championStats.totalGames +
-          (champ?.averagePlacement || 0) * (champ?.totalGames || 0)) /
-        totalGames;
-      
-      const wins = Number(championStats.wins) + (champ?.wins || 0);
-      const winrate = (wins / totalGames) * 100;
-
-      await championsCollection.updateOne(
-        { championId: championStats.championId },
-        {
-          $set: {
-            totalGames: totalGames,
-            averagePlacement: Number(averagePlacement.toFixed(2)),
-            wins: wins,
-            winrate: Number(winrate.toFixed(2)),
-          },
-        },
-        { upsert: true }
-      );
-
-      console.log(`Updated stats for champion ${championStats.championId}`);
-    }
-
-    return championRanking;
+    return newChampionRanking;
   } catch (error: any) {
     const msg =
       error?.response?.data?.status?.message ||

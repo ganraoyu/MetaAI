@@ -1,31 +1,35 @@
-import { createContext, useContext, useState, ReactNode } from "react";
-import { Cost, Rank } from "./types";
+import axios from "axios";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { Cost, Rank, ChampionData, ChampionDataContextProps } from "./types";
 
-interface ChampionDataContextProps {
-  rank: Rank[];
-  setRank: React.Dispatch<React.SetStateAction<Rank[]>>;
-
-  cost: Cost[];
-  setCost: React.Dispatch<React.SetStateAction<Cost[]>>;
-
-  table: boolean;
-  setTable: React.Dispatch<React.SetStateAction<boolean>>;
-
-  chart: boolean;
-  setChart: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-const ChampionDataContext = createContext<ChampionDataContextProps |  null>(null);
+const ChampionDataContext = createContext<ChampionDataContextProps | null>(null);
 
 interface ChampionDataProviderProps {
   children: ReactNode;
-};
+}
 
 export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) => {
   const [rank, setRank] = useState<Rank[]>(["Master"]);
   const [cost, setCost] = useState<Cost[]>([]);
   const [table, setTable] = useState<boolean>(true);
   const [chart, setChart] = useState<boolean>(false);
+  const [championData, setChampionData] = useState<ChampionData[]>([]);
+
+  // fetch data on mount
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/statistics/challenger/champions"
+        );
+        setChampionData(response.data);
+      } catch (error) {
+        console.error("Error fetching champion data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <ChampionDataContext.Provider value={{
@@ -36,12 +40,15 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
       table, 
       setTable, 
       chart, 
-      setChart
+      setChart,
+      championData,
+      setChampionData,
     }}>
       {children}
     </ChampionDataContext.Provider>
   )
 };
+
 
 export const useChampionDataContext = () => {
   const context = useContext(ChampionDataContext);

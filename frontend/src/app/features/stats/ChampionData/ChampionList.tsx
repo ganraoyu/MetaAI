@@ -1,5 +1,5 @@
 import { ChampionCard } from "./ChampionCard";
-import { champions } from "./testData";
+import { useChampionDataContext } from "./ChampionDataContext";
 import { HeaderCellProps } from "./types";
 
 const HeaderCell = ({
@@ -17,6 +17,8 @@ const HeaderCell = ({
 );
 
 export const ChampionList = () => {
+  const { championData } = useChampionDataContext();
+
   return (
     <div className="flex flex-col justify-center items-center w-full mt-[-0.4rem]">
 
@@ -33,8 +35,18 @@ export const ChampionList = () => {
 
       {/* Champion Rows */}
       <div className="w-full">
-        {champions.map((champion, index) => (
-          <ChampionCard key={index} {...champion} index={index} />
+        {championData.map((champion, index) => (
+          <ChampionCard 
+            key={index} 
+            champion={champion.championId} 
+            winRate={champion.winrate} 
+            index={index}
+            cost={champion.cost || 1}
+            tier={champion.tier || ''}
+            averagePlacement={champion.averagePlacement || 1}
+            frequency={champion.frequency || 1}
+            popularItems={champion.popularItems || []} 
+          />
         ))}
       </div>
     </div>
