@@ -1,5 +1,5 @@
 import { Request, Response, RequestHandler } from "express";
-import championsClient from "../../../utils/statisticsUtils/championsUtils";
+import { getChampionData} from "../../../utils/statisticsUtils/championsUtils";
 
 const getBelowMasterChampionData: RequestHandler = async (req, res) => {
   const { rank, division } = req.params;
@@ -7,7 +7,7 @@ const getBelowMasterChampionData: RequestHandler = async (req, res) => {
   console.log("Rank:", rank, "Division:", division);
 
   try {
-    const championRanking = await championsClient(rank, division);
+    const championRanking = await getChampionData(rank, division);
     res.json({ championRanking });
   } catch (error: any) {
     console.error(error);

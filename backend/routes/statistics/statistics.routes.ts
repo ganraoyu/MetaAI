@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from "express";
-import { getAboveMasterChampionData } from "../../controllers/statistics/master+/champions.controller";
+import { getAboveMasterChampionData, getUpdatedAboveMasterChampionData } from "../../controllers/statistics/master+/champions.controller";
 import { getAboveMasterTraitsData } from "../../controllers/statistics/master+/traits.controller";
 import { getAboveMasterItemsData } from "../../controllers/statistics/master+/items.controller";
 
@@ -11,6 +11,8 @@ const router: Router = express.Router();
 
 // Above Master endpoints
 router.get("/:rank/champions", getAboveMasterChampionData);
+router.get("/update/:rank/champions", getUpdatedAboveMasterChampionData);
+
 router.get("/:rank/traits", getAboveMasterTraitsData);
 router.get("/:rank/items", getAboveMasterItemsData);
 

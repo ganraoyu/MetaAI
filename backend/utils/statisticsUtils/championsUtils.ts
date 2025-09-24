@@ -104,7 +104,55 @@ const calculateChampionRanking = (champData: Record<string, ChampionStats>) =>
     }))
     .sort((a, b) => Number(a.placement) - Number(b.placement));
 
-const pushChampionDataToDB = async (championRanking: any[]) => {
+const getChampionDataFromDB = async () => {
+  try {
+    const db = await connectDB();
+    const championCollections = db.db("TFT").collection("champions");
+    const champions = await championCollections.find().toArray();
+    return champions;
+
+  } catch (error) {
+    console.error("Error fetching champion data from DB:", error);
+    return [];
+  }
+};
+
+const getChampionData = async (rank: string, division: string = "") => {
+  try {
+    const puuidData = await fetchPuuids(rank, division);
+    if (!puuidData.length) throw new Error(`No ${rank} players found`);
+
+    const summonerPuuids = ["master", "grandmaster", "challenger"].includes(rank.toLowerCase())
+      ? puuidData
+      : await fetchSummonerPuuids(puuidData as any);
+
+    if (!summonerPuuids.length) throw new Error(`No ${rank} players found`);
+
+    const matchHistory = await fetchMatchHistory(summonerPuuids);
+    if (!matchHistory.length) throw new Error(`No ${rank} matches found`);
+
+    const matchDetails = await fetchMatchDetails(matchHistory);
+    if (!matchDetails.length) throw new Error(`No ${rank} match details found`);
+
+    const playerData = processPlayerData(matchDetails);
+    if (!playerData.length) throw new Error(`No ${rank} player data found`);
+
+    const championData = calculateChampionData(playerData);
+    const championRanking = calculateChampionRanking(championData);
+
+    return championRanking;
+  } catch (error: any) {
+    const msg =
+      error?.response?.data?.status?.message ||
+      error?.response?.data?.message ||
+      error?.message ||
+      String(error);
+    console.error("Error in getChampionData:", msg);
+    throw new Error("Failed to fetch champion data");
+  }
+};
+
+const updateChampionDataInDB = async (championRanking: any[]) => {
   const updatedChampions: any[] = [];
   try {
     const db = await connectDB();
@@ -153,41 +201,4 @@ const pushChampionDataToDB = async (championRanking: any[]) => {
   }
 };
 
-const getChampionData = async (rank: string, division: string = "") => {
-  try {
-    const puuidData = await fetchPuuids(rank, division);
-    if (!puuidData.length) throw new Error(`No ${rank} players found`);
-
-    const summonerPuuids = ["master", "grandmaster", "challenger"].includes(rank.toLowerCase())
-      ? puuidData
-      : await fetchSummonerPuuids(puuidData as any);
-
-    if (!summonerPuuids.length) throw new Error(`No ${rank} players found`);
-
-    const matchHistory = await fetchMatchHistory(summonerPuuids);
-    if (!matchHistory.length) throw new Error(`No ${rank} matches found`);
-
-    const matchDetails = await fetchMatchDetails(matchHistory);
-    if (!matchDetails.length) throw new Error(`No ${rank} match details found`);
-
-    const playerData = processPlayerData(matchDetails);
-    if (!playerData.length) throw new Error(`No ${rank} player data found`);
-
-    const championData = calculateChampionData(playerData);
-    const championRanking = calculateChampionRanking(championData);
-
-    const newChampionRanking = await pushChampionDataToDB(championRanking);
-
-    return newChampionRanking;
-  } catch (error: any) {
-    const msg =
-      error?.response?.data?.status?.message ||
-      error?.response?.data?.message ||
-      error?.message ||
-      String(error);
-    console.error("Error in getChampionData:", msg);
-    throw new Error("Failed to fetch champion data");
-  }
-};
-
-export default getChampionData;
+export { getChampionDataFromDB, getChampionData, updateChampionDataInDB };
