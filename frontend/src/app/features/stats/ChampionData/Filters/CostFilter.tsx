@@ -23,7 +23,7 @@ export const CostFilter = () => {
       {[1, 2, 3, 4, 5, 6].map((costValue) => (
         <div
           key={costValue}
-          className={`flex flex-row items-center justify-center cursor-pointer rounded-xl w-12 h-6 bg-[#1e1d1d] hover:bg-[#2a2929] gap-1 border border-${getCostBorderColors(costValue)} ${setOpacity(costValue)}`}
+          className={`flex flex-row items-center justify-center cursor-pointer rounded-xl w-12 h-6 bg-[#1e1d1d] hover:bg-[#3a3838] gap-1 border border-${getCostBorderColors(costValue)} ${setOpacity(costValue)}`}
           onClick={() => toggleCost(costValue)}
         >
           <p className="text-sm font-medium">{costValue}</p>

@@ -114,7 +114,9 @@ const getChampionDataFromDB = async () => {
     const championData = await championCollections.find().toArray();
     const totalGamesDoc = await totalGamesCollection.findOne({ id: "totalGames" });
 
-    return { championData, totalGames: totalGamesDoc || 0 };
+    const sortedChampionRanking = championData.sort((a, b) => Number(a.averagePlacement) - Number(b.averagePlacement));
+
+    return { championData: sortedChampionRanking, totalGames: totalGamesDoc || 0 };
 
   } catch (error) {
     console.error("Error fetching champion data from DB:", error);
@@ -210,10 +212,12 @@ const updateChampionDataInDB = async (championRanking: any[]) => {
 
     console.log("Successfully push 5 matches worth of champion data to DB");
 
-    return { updatedChampions, totalGames: totalGamesDoc || 0 };
+    const sortedUpdatedChampions = updatedChampions.sort((a, b) => a.averagePlacement - b.averagePlacement);
+
+    return { updatedChampions: sortedUpdatedChampions, totalGames: totalGamesDoc || 0 };
   } catch (error) {
     console.error("Error pushing champion data to DB:", error);
-    return { updatedChampions, totalGames: 0}
+    return { updatedChampions: [], totalGames: 0 }
   }
 };
 

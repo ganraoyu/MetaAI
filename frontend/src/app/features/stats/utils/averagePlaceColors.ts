@@ -4,6 +4,6 @@ export const getAveragePlaceColors = (averagePlaceColors: number) => {
   } else if (averagePlaceColors <= 4.5) {
     return "text-[#f0e898]"; // yellow
   } else {
-    return "text-[#df5b5b]"; // red
+    return "text-[#ff0000]"; // red
   }
 };

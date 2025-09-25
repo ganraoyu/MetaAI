@@ -42,7 +42,7 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
 
   const updateChampionData = async () => {
     try { 
-      const response = await axios.get("http://localhost:3000/statistics/update/challenger/champions");
+      const response = await axios.get("http://localhost:3000/statistics/update/grandmaster/champions");
 
       setTotalGames(response.data.totalGames.count);
       setChampionData(response.data.updatedChampions);  

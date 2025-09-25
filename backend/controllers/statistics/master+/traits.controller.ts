@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import traitsClient from "../../../utils/stats/traitsUtils";
+import traitsClient from "../../../utils/statisticsUtils/traitsUtils";
 
 const getAboveMasterTraitsData = async (req: Request, res: Response): Promise<void> => {
   const { rank } = req.params as { rank: string };

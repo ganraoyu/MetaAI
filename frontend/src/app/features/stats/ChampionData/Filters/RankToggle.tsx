@@ -49,9 +49,10 @@ export const RankToggle = () => {
 
   return (
     <div className="relative hover:cursor-pointer w-fit">
+      
       {/* Toggle Button */}
       <div
-        className="flex items-center justify-between bg-[#1e1d1d] min-w-[9rem] h-[2rem] rounded-md px-2"
+        className="flex items-center justify-between bg-[#272525] hover:bg-[#3a3838] min-w-[9rem] h-[2rem] rounded-md px-2"
         onClick={() => setOpenDropDown(!openDropDown)}
       >
         <div className="flex items-center overflow-hidden">
@@ -70,7 +71,7 @@ export const RankToggle = () => {
 
       {/* Dropdown Menu */}
       {openDropDown && (
-        <div className="absolute top-full min-w-[12rem] mt-1 bg-[#1e1d1d] rounded-md shadow-lg z-10">
+        <div className="absolute top-full min-w-[12rem] mt-1 bg-[#272525] rounded-md shadow-lg z-10">
           {ranks.map(renderRankItem)}
         </div>
       )}

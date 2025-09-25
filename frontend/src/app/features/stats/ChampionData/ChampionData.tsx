@@ -1,7 +1,7 @@
 import { ChampionDataProvider, useChampionDataContext } from "./ChampionDataContext";
 import { ChampionDataOverview } from "./ChampionDataOverview";
 import { ChampionList } from "./ChampionList";
-import { FilterContainer } from "./Filters/FilterContainer";
+import { FilterContainer } from "./Filters/_FilterContainer";
 
 const ChampionDataContent = () => {
   const { table, chart } = useChampionDataContext();

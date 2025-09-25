@@ -1,7 +1,8 @@
 import { useChampionDataContext } from "./ChampionDataContext"
 
 export const ChampionDataOverview = () => {
-  const { updateChampionData } = useChampionDataContext();
+  const { totalGames } = useChampionDataContext();
+
   return (
     <div className="flex flex-row items-center justify-between w-full pt-6 pb-4">
 
@@ -22,8 +23,7 @@ export const ChampionDataOverview = () => {
       <div className="flex flex-col items-center justify-center bg-[#1f1e1e] w-[15rem] h-[4rem] text-[0.7rem] rounded-lg">
         <div className="flex flex-row justify-between w-full px-4">
           <p>Matches Analyzed:</p>
-          <p>1,234,567</p>
-          <button onClick={updateChampionData}>Hi</button>
+          <p>{Math.floor(totalGames * 13.5)} </p>
         </div>
         <div className="flex flex-row justify-between w-full px-4 pt-2">
           <p>Last updated:</p>
