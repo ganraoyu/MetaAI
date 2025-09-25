@@ -5,8 +5,8 @@ const getAboveMasterChampionData = async (req: Request, res: Response): Promise<
   const { rank } = req.params as { rank: string };
 
   try {
-    const championRanking = await getChampionDataFromDB();
-    res.json(championRanking);
+    const { totalGames, championData } = await getChampionDataFromDB();
+    res.json({ totalGames, championData });
   } catch (error: any) {
     console.error(`Error fetching ${rank} players:`, error.message);
     res.status(500).send(`Error fetching ${rank} players`);
@@ -18,8 +18,9 @@ const getUpdatedAboveMasterChampionData = async (req: Request, res: Response): P
 
   try {
     const championRanking = await getChampionData(rank);
-    const updatedChampionRanking = await updateChampionDataInDB(championRanking);
-    res.json(updatedChampionRanking);
+    const { updatedChampions, totalGames } = await updateChampionDataInDB(championRanking);
+
+    res.json({ totalGames, updatedChampions });
   } catch (error: any) {
     console.error(`Error fetching ${rank} players:`, error.message);
     res.status(500).send(`Error fetching ${rank} players`);

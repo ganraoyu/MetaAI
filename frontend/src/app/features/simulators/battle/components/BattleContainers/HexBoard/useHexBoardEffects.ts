@@ -32,7 +32,7 @@ export function useChampionMapEffect(
     setOpponentChampionArray(opponentChampions);
     setOpponentChampionsCostCount(opponentChampionsCostCount);
   }, [boardArray, setPlayerChampionArray, setOpponentChampionArray]);
-}
+};
 
 export function useTraitCountingEffect(
   boardArray: ChampionPosition[],
@@ -55,7 +55,7 @@ export function useTraitCountingEffect(
         )
       ) {
         filteredBoardArray.push(champion);
-      }
+      };
     }
 
     for (const champion of filteredBoardArray) {

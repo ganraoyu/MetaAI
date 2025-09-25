@@ -4,6 +4,7 @@ export interface ChampionCardProps {
   tier: string;
   averagePlacement: number;
   winRate: number;
+  totalGames: number;
   frequency: number;
   popularItems: string[];
   index: number;
@@ -47,17 +48,28 @@ export const ranks: Rank[] = [
 
 export type Cost = 1 | 2 | 3 | 4 | 5 | 6;
 
+export interface TotalGames {
+  _id: string;
+  id: string;
+  count: number;
+};
+
 export interface ChampionData {
   championId: string;
-  totalGames: number;
   averagePlacement: number;
   win: number;
   winrate: number;
   cost: number | 1;
+  totalGames: number | 1;
   frequency: number | 1;
   tier: string | '';
   popularItems: string[] | [];
-}
+};
+
+export interface ChampionStatsWithTotalGames {
+  totalGames: TotalGames;
+  championData: ChampionData[];
+};
 
 export interface ChampionDataContextProps {
   rank: Rank[];
@@ -72,6 +84,12 @@ export interface ChampionDataContextProps {
   chart: boolean;
   setChart: React.Dispatch<React.SetStateAction<boolean>>;
 
+  totalGames: TotalGames;
+  setTotalGames: React.Dispatch<React.SetStateAction<TotalGames>>;
+
   championData: ChampionData[]
   setChampionData: React.Dispatch<React.SetStateAction<ChampionData[]>>
+
+  championStatsWithTotalGames: ChampionStatsWithTotalGames | null;
+  setChampionStatsWithTotalGames: React.Dispatch<React.SetStateAction<ChampionStatsWithTotalGames | null>>;
 };

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { Cost, Rank, ChampionData, ChampionDataContextProps } from "./types";
+import { Cost, Rank, ChampionData, ChampionDataContextProps, ChampionStatsWithTotalGames } from "./types";
 
 const ChampionDataContext = createContext<ChampionDataContextProps | null>(null);
 
@@ -13,7 +13,9 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
   const [cost, setCost] = useState<Cost[]>([]);
   const [table, setTable] = useState<boolean>(true);
   const [chart, setChart] = useState<boolean>(false);
+  const [totalGames, setTotalGames] = useState<any[]>([]);
   const [championData, setChampionData] = useState<ChampionData[]>([]);
+  const [championStatsWithTotalGames, setChampionStatsWithTotalGames] = useState<ChampionStatsWithTotalGames | null>(null);
 
   // fetch data on mount
   useEffect(() => {
@@ -22,7 +24,14 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
         const response = await axios.get(
           "http://localhost:3000/statistics/challenger/champions"
         );
-        setChampionData(response.data);
+        setTotalGames(response.data.totalGames);
+        setChampionData(response.data.championData);
+        setChampionStatsWithTotalGames(response.data.championStatsWithTotalGames);
+        
+        console.log("Fetched champion data:", response.data);
+        console.log("Total games:", response.data.totalGames);
+        console.log("Champion data:", response.data.championData);
+        console.log("Champion stats with total games:", response.data.championStatsWithTotalGames);
       } catch (error) {
         console.error("Error fetching champion data:", error);
       }
@@ -41,8 +50,12 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
       setTable, 
       chart, 
       setChart,
+      totalGames,
+      setTotalGames,
       championData,
       setChampionData,
+      championStatsWithTotalGames,
+      setChampionStatsWithTotalGames
     }}>
       {children}
     </ChampionDataContext.Provider>

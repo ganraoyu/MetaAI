@@ -5,7 +5,7 @@ import { SummonerData, PuuidData, MatchIdData, Unit, PlayerData, ChampionStats }
 
 const fetchPuuids = async (rank: string, division: string): Promise<PuuidData[]> => {
   const allPuuids = await Promise.all(
-    regions.slice(0, 5).map(async (region) => {
+    regions.slice(0, 5).map(async (region) => { // Change later, currently only fetch from NA, EUW, EUNE, KR, JP
       const client = shortRegionClient(region);
 
       if (["master", "grandmaster", "challenger"].includes(rank.toLowerCase())) {
@@ -108,12 +108,15 @@ const getChampionDataFromDB = async () => {
   try {
     const db = await connectDB();
     const championCollections = db.db("TFT").collection("champions");
-    const champions = await championCollections.find().toArray();
-    return champions;
+    const championData = await championCollections.find().toArray();
+    const totalGamesCollection = db.db("TFT").collection("totalGames");
+    const totalGamesDoc = await totalGamesCollection.findOne({ id: "totalGames" });
+
+    return { championData: championData, totalGames: totalGamesDoc || 0 };
 
   } catch (error) {
     console.error("Error fetching champion data from DB:", error);
-    return [];
+    return { champions: [], totalGames: 0 };
   }
 };
 
@@ -157,6 +160,9 @@ const updateChampionDataInDB = async (championRanking: any[]) => {
   try {
     const db = await connectDB();
     const championsCollection = db.db("TFT").collection("champions");
+    const totalGamesCollection = db.db("TFT").collection("totalGames");
+
+    const totalGamesDoc = await totalGamesCollection.findOne({ id: "totalGames" }) || 0;
 
     for (const championStats of championRanking) {
       const champ = await championsCollection.findOne({ championId: championStats.championId });
@@ -194,10 +200,18 @@ const updateChampionDataInDB = async (championRanking: any[]) => {
       });
     };
 
-    return updatedChampions;
+    await totalGamesCollection.updateOne(
+        { id: "totalGames" },
+        { $inc: { count: 40 } }, // Update later, current API rate limits to 20, but we fetch 5 games total.
+        { upsert: true }
+    );
+
+    console.log("Successfully push 5 matches worth of champion data to DB");
+
+    return { updatedChampions, totalGames: totalGamesDoc || 0 };
   } catch (error) {
     console.error("Error pushing champion data to DB:", error);
-    return [];
+    return { updatedChampions, totalGames: 0}
   }
 };
 

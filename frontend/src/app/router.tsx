@@ -4,9 +4,9 @@ import GuidePage from "./features/GuidePage.tsx";
 import InfoPage from "./features/InfoPage.tsx";
 import AboutPage from "./features/AboutPage.tsx";
 
-import ChampionsTierlist from "./features/tierlists/ChampionsTierlist.tsx";
-import ItemsTierlist from "./features/tierlists/ItemsTierlist.tsx";
-import AugmentsTierlist from "./features/tierlists/AugmentsTierlist.tsx";
+import ChampionsTierlist from "./features/tierLists/ChampionsTierlist.tsx";
+import ItemsTierlist from "./features/tierLists/ItemsTierlist.tsx";
+import AugmentsTierlist from "./features/tierLists/AugmentsTierlist.tsx";
 
 import { ChampionsData } from "./features/stats/ChampionData/ChampionData.tsx";
 import ItemsData from "./features/stats/ItemsData/ItemsData.tsx";
