@@ -1,3 +1,4 @@
+import { getTier } from "../utils/tierLetter";
 import { ChampionCard } from "./ChampionCard";
 import { useChampionDataContext } from "./ChampionDataContext";
 import { HeaderCellProps } from "./types";
@@ -16,8 +17,10 @@ const HeaderCell = ({
   </div>
 );
 
+
 export const ChampionList = () => {
-  const { totalGames, championData } = useChampionDataContext();
+  const { totalGames, championData } = useChampionDataContext(); 
+  console.log("Total games in ChampionList:", totalGames);
 
   return (
     <div className="flex flex-col justify-center items-center w-full mt-[-0.4rem]">
@@ -42,10 +45,10 @@ export const ChampionList = () => {
             winRate={champion.winrate} 
             index={index}
             cost={champion.cost || 1}
-            tier={champion.tier || 'S'}
-            averagePlacement={champion.averagePlacement || 1}
-            totalGames={champion.totalGames || 1}
-            frequency={champion.totalGames / totalGames.count || 0}
+            tier={getTier(champion.averagePlacement)}
+            averagePlacement={champion.averagePlacement}
+            totalGames={champion.totalGames}
+            frequency={champion.totalGames / totalGames }
             popularItems={champion.popularItems || []} 
           />
         ))}

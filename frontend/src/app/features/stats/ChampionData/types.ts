@@ -48,11 +48,7 @@ export const ranks: Rank[] = [
 
 export type Cost = 1 | 2 | 3 | 4 | 5 | 6;
 
-export interface TotalGames {
-  _id: string;
-  id: string;
-  count: number;
-};
+export type TotalGames = number;
 
 export interface ChampionData {
   championId: string;
@@ -92,4 +88,6 @@ export interface ChampionDataContextProps {
 
   championStatsWithTotalGames: ChampionStatsWithTotalGames | null;
   setChampionStatsWithTotalGames: React.Dispatch<React.SetStateAction<ChampionStatsWithTotalGames | null>>;
+
+  updateChampionData: () => Promise<void>; 
 };

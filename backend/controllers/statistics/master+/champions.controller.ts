@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getChampionDataFromDB, getChampionData, updateChampionDataInDB } from "../../../utils/statisticsUtils/championsUtils";
+import { getChampionDataFromDB, getChampionData, updateChampionDataInDB } from "../../../utils/stats/championData";
 
 const getAboveMasterChampionData = async (req: Request, res: Response): Promise<void> => {
   const { rank } = req.params as { rank: string };

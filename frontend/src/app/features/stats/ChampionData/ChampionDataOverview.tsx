@@ -1,4 +1,7 @@
+import { useChampionDataContext } from "./ChampionDataContext"
+
 export const ChampionDataOverview = () => {
+  const { updateChampionData } = useChampionDataContext();
   return (
     <div className="flex flex-row items-center justify-between w-full pt-6 pb-4">
 
@@ -20,6 +23,7 @@ export const ChampionDataOverview = () => {
         <div className="flex flex-row justify-between w-full px-4">
           <p>Matches Analyzed:</p>
           <p>1,234,567</p>
+          <button onClick={updateChampionData}>Hi</button>
         </div>
         <div className="flex flex-row justify-between w-full px-4 pt-2">
           <p>Last updated:</p>

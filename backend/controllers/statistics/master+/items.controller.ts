@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import itemsClient from "../../../utils/statisticsUtils/itemsUtils";
+import itemsClient from "../../../utils/stats/itemsUtils";
 
 const getAboveMasterItemsData = async (req: Request, res: Response): Promise<void> => {
   const { rank } = req.params as { rank: string };

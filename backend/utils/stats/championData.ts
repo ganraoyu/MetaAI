@@ -107,12 +107,14 @@ const calculateChampionRanking = (champData: Record<string, ChampionStats>) =>
 const getChampionDataFromDB = async () => {
   try {
     const db = await connectDB();
-    const championCollections = db.db("TFT").collection("champions");
+
+    const championCollections = db.db("SET15").collection("champions");
+    const totalGamesCollection = db.db("SET15").collection("totalGames");
+
     const championData = await championCollections.find().toArray();
-    const totalGamesCollection = db.db("TFT").collection("totalGames");
     const totalGamesDoc = await totalGamesCollection.findOne({ id: "totalGames" });
 
-    return { championData: championData, totalGames: totalGamesDoc || 0 };
+    return { championData, totalGames: totalGamesDoc || 0 };
 
   } catch (error) {
     console.error("Error fetching champion data from DB:", error);
@@ -154,13 +156,13 @@ const getChampionData = async (rank: string, division: string = "") => {
     throw new Error("Failed to fetch champion data");
   }
 };
-
+  
 const updateChampionDataInDB = async (championRanking: any[]) => {
   const updatedChampions: any[] = [];
   try {
     const db = await connectDB();
-    const championsCollection = db.db("TFT").collection("champions");
-    const totalGamesCollection = db.db("TFT").collection("totalGames");
+    const championsCollection = db.db("SET15").collection("champions");
+    const totalGamesCollection = db.db("SET15").collection("totalGames");
 
     const totalGamesDoc = await totalGamesCollection.findOne({ id: "totalGames" }) || 0;
 
@@ -202,7 +204,7 @@ const updateChampionDataInDB = async (championRanking: any[]) => {
 
     await totalGamesCollection.updateOne(
         { id: "totalGames" },
-        { $inc: { count: 40 } }, // Update later, current API rate limits to 20, but we fetch 5 games total.
+        { $inc: { count: 5 } }, // Update later, current API rate limits to 20, but we fetch 5 games total.
         { upsert: true }
     );
 

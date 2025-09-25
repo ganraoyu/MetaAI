@@ -13,7 +13,7 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
   const [cost, setCost] = useState<Cost[]>([]);
   const [table, setTable] = useState<boolean>(true);
   const [chart, setChart] = useState<boolean>(false);
-  const [totalGames, setTotalGames] = useState<any[]>([]);
+  const [totalGames, setTotalGames] = useState<number>(0);
   const [championData, setChampionData] = useState<ChampionData[]>([]);
   const [championStatsWithTotalGames, setChampionStatsWithTotalGames] = useState<ChampionStatsWithTotalGames | null>(null);
 
@@ -24,14 +24,14 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
         const response = await axios.get(
           "http://localhost:3000/statistics/challenger/champions"
         );
-        setTotalGames(response.data.totalGames);
+        setTotalGames(response.data.totalGames.count);
         setChampionData(response.data.championData);
         setChampionStatsWithTotalGames(response.data.championStatsWithTotalGames);
-        
+
         console.log("Fetched champion data:", response.data);
         console.log("Total games:", response.data.totalGames);
         console.log("Champion data:", response.data.championData);
-        console.log("Champion stats with total games:", response.data.championStatsWithTotalGames);
+        console.log("Champion stats with total games:", response.data);
       } catch (error) {
         console.error("Error fetching champion data:", error);
       }
@@ -39,6 +39,18 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
 
     fetchData();
   }, []);
+
+  const updateChampionData = async () => {
+    try { 
+      const response = await axios.get("http://localhost:3000/statistics/update/challenger/champions");
+
+      setTotalGames(response.data.totalGames.count);
+      setChampionData(response.data.updatedChampions);  
+      setChampionStatsWithTotalGames(response.data);
+    } catch (error) {
+      console.error("Error updating champion data:", error);
+    }
+  }
 
   return (
     <ChampionDataContext.Provider value={{
@@ -55,7 +67,8 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
       championData,
       setChampionData,
       championStatsWithTotalGames,
-      setChampionStatsWithTotalGames
+      setChampionStatsWithTotalGames,
+      updateChampionData
     }}>
       {children}
     </ChampionDataContext.Provider>
