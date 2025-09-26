@@ -1,6 +1,5 @@
 import { PlayerData, ChampionStats } from "../types";
 
-
 export class ChampionProcessor {
   static processMatches(matches: any[]) {
     const playerData = this.processPlayerData(matches);

@@ -1,26 +1,3 @@
-interface AccountResponse {
-  puuid: string;
-  [key: string]: any;
-};
-
-interface MatchDetail {
-  [key: string]: any;
-};
-
-interface SummonerData {
-  summonerId: string;
-  region: string; 
-};
-
-interface PuuidData {
-  puuid: string;
-  region: string;
-};
-
-interface MatchIdData {
-  matchId: string;
-  region: string;
-}
 
 interface Unit {
   character_id: string;
@@ -40,11 +17,6 @@ interface ChampionStats {
 }
 
 export {
-  AccountResponse,
-  MatchDetail,
-  SummonerData,
-  PuuidData,
-  MatchIdData,
   Unit,
   PlayerData,
   ChampionStats,

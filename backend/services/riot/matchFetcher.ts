@@ -1,6 +1,6 @@
 import { shortRegionClient } from "../../utilities/riotHttpClient";
 import { regions, regionMapping } from "../../utilities/regionMappings";
-import { SummonerData, PuuidData, MatchIdData } from "../types";
+import { SummonerData, PuuidData, MatchIdData } from "./types";
 
 export class MatchFetcher {
   static async fetchMatches(rank: string, division: string = ""): Promise<any[]> {
