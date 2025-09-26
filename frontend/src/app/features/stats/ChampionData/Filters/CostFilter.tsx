@@ -1,4 +1,4 @@
-import { getCostBorderColors } from "../../utils/costBorderColors";
+import { getCostBorderColors } from "../../utilities/costBorderColors";
 import { useChampionDataContext } from "../ChampionDataContext";
 
 export const CostFilter = () => {

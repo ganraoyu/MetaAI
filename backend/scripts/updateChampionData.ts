@@ -1,4 +1,4 @@
-import getChampionData from "../utils/statisticsUtils/championData";
+import getChampionData from "../utilities/statisticsUtils/championData";
 
 export const updateChampionData = async () => {
   try {

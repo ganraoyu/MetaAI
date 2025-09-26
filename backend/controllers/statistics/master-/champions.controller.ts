@@ -1,5 +1,5 @@
 import { Request, Response, RequestHandler } from "express";
-import { getChampionData} from "../../../utils/statisticsUtils/championData";
+import { getChampionData} from "../../../utilities/statisticsUtils/championData";
 
 const getBelowMasterChampionData: RequestHandler = async (req, res) => {
   const { rank, division } = req.params;

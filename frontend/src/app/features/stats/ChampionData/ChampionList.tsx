@@ -1,4 +1,4 @@
-import { getTier } from "../utils/tierLetter";
+import { getTier } from "../utilities/tierLetter";
 import { ChampionCard } from "./ChampionCard";
 import { useChampionDataContext } from "./ChampionDataContext";
 import { HeaderCellProps } from "./types";

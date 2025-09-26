@@ -1,4 +1,4 @@
-export const regions = [
+export const regions: string[] = [
   "BR1",
   "EUN1",
   "EUW1",

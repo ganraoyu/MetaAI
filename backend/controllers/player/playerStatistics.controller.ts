@@ -1,5 +1,5 @@
 import { Request, Response, RequestHandler } from "express";
-import { fetchPlayerMatches, fetchPlayerPuuid } from "../../utils/playerUtils";
+import { fetchPlayerMatches, fetchPlayerPuuid } from "../../services/riot/playerService";
 
 interface Trait {
   name: string;

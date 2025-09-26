@@ -1,6 +1,6 @@
 import { useHexBoardContext } from "./HexBoardContext";
-import { Star } from "../../../utils/Star";
-import { itemMap } from "../../../utils/ItemMapping";
+import { Star } from "../../../utilities/Star";
+import { itemMap } from "../../../utilities/ItemMapping";
 import { HexCellProps } from "./types";
 
 const getBorderColor = (cost: number): string => {

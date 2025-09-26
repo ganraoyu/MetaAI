@@ -1,5 +1,5 @@
-import { shortRegionClient } from "../generalUtils";
-import { regions, regionMapping } from "../regionData";
+import { shortRegionClient } from "../riotHttpClient";
+import { regions, regionMapping } from "../regionMappings";
 
 interface SummonerData {
   summonerId: string;

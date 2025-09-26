@@ -1,6 +1,6 @@
 import { connectDB } from "../../database/db";
-import { shortRegionClient } from "../generalUtils";
-import { regions, regionMapping } from "../regionData";
+import { shortRegionClient } from "../riotHttpClient";
+import { regions, regionMapping } from "../regionMappings";
 import { SummonerData, PuuidData, MatchIdData, Unit, PlayerData, ChampionStats } from "./types";
 
 const fetchPuuids = async (rank: string, division: string): Promise<PuuidData[]> => {

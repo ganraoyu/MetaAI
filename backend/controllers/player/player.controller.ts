@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { fetchPlayerPuuid, fetchPlayerMatches } from "../../utils/playerUtils";
+import { fetchPlayerPuuid, fetchPlayerMatches } from "../../services/riot/playerService";
 
 const getPlayerPuuid = async (req: Request, res: Response): Promise<void> => {
   const { gameName, tagLine, region } = req.params;

@@ -1,6 +1,6 @@
 import { useTFTSetContext } from "../../../../../../../../utilities/TFTSetContext";
 import { ChampionProps } from "./types";
-import { Star } from "../../../../../utils/Star";
+import { Star } from "../../../../../utilities/Star";
 
 /**
  * ChampionImage

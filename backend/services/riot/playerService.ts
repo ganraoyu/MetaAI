@@ -1,14 +1,19 @@
-import { fullRegionClient } from "./generalUtils";
+import { fullRegionClient } from "../../utilities/riotHttpClient";
 import { AxiosResponse } from "axios";
+import { AccountResponse, MatchDetail } from "../types";
 
-interface AccountResponse {
-  puuid: string;
-  [key: string]: any;
-}
-
-interface MatchDetail {
-  [key: string]: any;
-}
+/**
+ * Riot API Player Utilities
+ *
+ * Process:
+ * 1. Fetch player PUUID by their Riot ID (gameName + tagLine).
+ * 2. Use the PUUID to fetch a list of recent match IDs.
+ * 3. Fetch detailed match data for each match ID.
+ *
+ * Exports:
+ * - fetchPlayerPuuid: Get a player's PUUID from Riot ID.
+ * - fetchPlayerMatches: Get recent match details for a player.
+*/
 
 export const fetchPlayerPuuid = async (
   gameName: string,

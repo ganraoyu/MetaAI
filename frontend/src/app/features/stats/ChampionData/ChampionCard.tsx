@@ -1,9 +1,9 @@
 import { useTFTSetContext } from "../../../utilities/TFTSetContext";
-import { getAveragePlaceColors } from "../utils/averagePlaceColors";
-import { getTierBackgroundColors } from "../utils/tierColors";
-import { getCostBorderColors } from "../utils/costBorderColors";
+import { getAveragePlaceColors } from "../utilities/averagePlaceColors";
+import { getTierBackgroundColors } from "../utilities/tierColors";
+import { getCostBorderColors } from "../utilities/costBorderColors";
 import { ChampionCardProps, ChampionCellProps } from "./types";
-import { getRankColor } from "../utils/rankFontColors";
+import { getRankColor } from "../utilities/rankFontColors";
 
 const ChampionCell = ({ children, width, index }: ChampionCellProps) => (
   <div

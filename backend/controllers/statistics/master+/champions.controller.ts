@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
-import { getChampionDataFromDB, getChampionData, updateChampionDataInDB } from "../../../utils/statisticsUtils/championData";
+import { MatchFetcher } from "../../../services/riot/matchFetcher";
+import { StatisticsService } from "../../../services/statistics/statisticsService";
 
+// Fetch champion data from DB, no API calls
 const getAboveMasterChampionData = async (req: Request, res: Response): Promise<void> => {
   const { rank } = req.params as { rank: string };
 
   try {
-    const { totalGames, championData } = await getChampionDataFromDB();
+    const { totalGames, championData } = await StatisticsService.getChampionDataFromDB();
     res.json({ totalGames, championData });
   } catch (error: any) {
     console.error(`Error fetching ${rank} players:`, error.message);
@@ -13,12 +15,20 @@ const getAboveMasterChampionData = async (req: Request, res: Response): Promise<
   }
 };
 
+// Fetch new data from Riot API and update DB
 const getUpdatedAboveMasterChampionData = async (req: Request, res: Response): Promise<void> => {
   const { rank } = req.params as { rank: string };
 
   try {
-    const championRanking = await getChampionData(rank);
-    const { updatedChampions, totalGames } = await updateChampionDataInDB(championRanking);
+    const championRanking = await StatisticsService.getChampionData(rank);
+
+    if (!championRanking || !Array.isArray(championRanking)) {
+      res.status(400).send(`No champion data available for ${rank}`);
+      return;
+    }
+    const { updatedChampions, totalGames } = await StatisticsService.updateChampionDataInDB(
+      championRanking
+    );
 
     res.json({ totalGames, updatedChampions });
   } catch (error: any) {

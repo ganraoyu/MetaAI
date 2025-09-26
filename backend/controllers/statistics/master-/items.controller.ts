@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import getItemsRankingClient from "../../../utils/statisticsUtils/itemsUtils";
+import getItemsRankingClient from "../../../utilities/statisticsUtils/itemsUtils";
 
 const getBelowMasterItemsData = async (req: Request, res: Response): Promise<void> => {
   const { rank, division } = req.params;

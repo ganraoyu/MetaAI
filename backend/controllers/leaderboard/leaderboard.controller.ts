@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { shortRegionClient } from "../../utils/generalUtils";
-import { queues, queueMapping } from "../../utils/queueData";
+import { shortRegionClient } from "../../utilities/riotHttpClient";
+import { queues, queueMapping } from "../../utilities/queueMappings";
 
 const getAboveMasterLeaderboards = async (
   endpoint: string,

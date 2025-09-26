@@ -1,4 +1,4 @@
-import { Star } from "../../../utils/Star";
+import { Star } from "../../../utilities/Star";
 import { useTFTSetContext } from "../../../../../../utilities/TFTSetContext";
 import { ChampionImageProps } from "./types";
 import { getBorderColor, getCostGradient } from "./utils";
