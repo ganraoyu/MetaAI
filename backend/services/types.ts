@@ -4,10 +4,15 @@ interface Unit {
   tier: number;
 }
 
+interface PlayerItem {
+  items: string[];
+}
+
 interface PlayerData {
   placement: number;
   units: Unit[];
   traits?: Trait[];
+  items?: PlayerItem[];
 }
 
 interface ChampionStats {
@@ -26,10 +31,17 @@ interface Trait {
   traitName: string;
 }
 
+interface ItemStats {
+  totalGames: number;
+  wins: number;
+  placements: number[];
+}
+
 export {
   Unit,
   PlayerData,
   ChampionStats,
   Trait,
-  TraitStats
+  TraitStats,
+  ItemStats,
 }

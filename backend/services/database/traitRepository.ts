@@ -69,7 +69,7 @@ export class TraitRepository {
 
       await totalGamesCollection.updateOne(
         { id: "totalGames" },
-        { $inc: { count: 5 } }, // hardcoded since we fetch 5 games at a time
+        { $inc: { count: 5 } }, 
         { upsert: true }
       );
 

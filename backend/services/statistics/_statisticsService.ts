@@ -3,6 +3,8 @@ import { ChampionProcessor } from "./championProcessor";
 import { ChampionRepository } from "../database/championRepository";
 import { TraitProcessor } from "./traitProcessor";
 import { TraitRepository } from "../database/traitRepository";
+import { ItemProcessor } from "./itemProcessor";
+import { ItemRepository } from "../database/itemRepository";
 
 // Generic data service for fetch → process → DB operations
 class DataService {
@@ -35,6 +37,7 @@ class DataService {
 
 export const ChampionService = new DataService(ChampionProcessor, ChampionRepository);
 export const TraitService = new DataService(TraitProcessor, TraitRepository);
+export const ItemService = new DataService(ItemProcessor, ItemRepository);
 
 export class StatisticsService {
   // Champion methods
@@ -71,6 +74,23 @@ export class StatisticsService {
     return TraitService.updateDataDirect(data);
   }
 
+  // Item methods
+  static async getItemData(rank: string, division: string = "") {
+    return ItemService.getData(rank, division);
+  }
+
+  static async getItemDataFromDB() {
+    return ItemService.getDataFromDB();
+  }
+
+  static async updateItemStatistics(traitData: any[]) {
+    return ItemService.updateDBData(traitData);
+  }
+
+  static async updateItemDirect(data: any[]) {
+    return ItemService.updateDataDirect(data);
+  }
+
   static async updateAllStatistics(rank: string, division: string = "") {
     try {
       // Fetch live match data for this rank/division
@@ -83,19 +103,23 @@ export class StatisticsService {
 
       // Process champion and trait data
       const championRanking = ChampionProcessor.processMatches(matches);
+      const itemRanking = ItemProcessor.processMatches(matches);
       const traitRanking = TraitProcessor.processMatches(matches);
 
       // Update DB for both
       const { updatedChampions, totalGames: championTotalGames } = await ChampionRepository.updateMany(championRanking);
+      const { updatedItems, totalGames: itemTotalGames } = await ItemRepository.updateMany(itemRanking);
       const { updatedTraits, totalGames: traitTotalGames } = await TraitRepository.updateMany(traitRanking);
 
       console.log(
-        `Updated all statistics for ${rank} ${division}: ${updatedChampions.length} champions, ${updatedTraits.length} traits`
+        `Updated all statistics for ${rank} ${division}: ${updatedChampions.length} champions, ${updatedItems.length} items, ${updatedTraits.length} traits`
       );
 
       return {
         updatedChampions,
         championTotalGames,
+        updatedItems,
+        itemTotalGames,
         updatedTraits,
         traitTotalGames,
       };
