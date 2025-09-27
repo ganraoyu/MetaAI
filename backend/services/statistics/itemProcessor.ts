@@ -1,3 +1,7 @@
 class ItemProcessor {
-  static 
+  static processMatches(matches: any[]) {
+    
+  }
+
+  private static 
 }

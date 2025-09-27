@@ -5,20 +5,20 @@ export class ChampionRepository {
     try {
       const db = await connectDB();
 
-      const traitCollection = db.db("SET15").collection("traits");
+      const championCollections = db.db("SET15").collection("champions");
       const totalGamesCollection = db.db("SET15").collection("totalGames");
 
-      const traitData = await traitCollection.find().toArray();
+      const championData = await championCollections.find().toArray();
       const totalGamesDoc = await totalGamesCollection.findOne({ id: "totalGames" });
 
-      const sortedTraitRanking = traitData.sort(
-        (a, b) => (a.averagePlacement || 0) - (b.averagePlacement || 0)
+      const sortedChampionRanking = championData.sort(
+        (a, b) => Number(a.averagePlacement) - Number(b.averagePlacement)
       );
 
-      return { totalGames: totalGamesDoc?.total || 0, traitData: sortedTraitRanking };
+      return { totalGames: totalGamesDoc || 0, championData: sortedChampionRanking};
     } catch (error) {
-      console.error("Error fetching traits:", error);
-      return { traitData: [], totalGames: 0 };
+      console.error("Error fetching champion data from DB:", error);
+      return { champions: [], totalGames: 0 };
     }
   }
 

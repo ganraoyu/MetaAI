@@ -5,59 +5,50 @@ export class TraitRepository {
     try {
       const db = await connectDB();
 
-      const traitCollection = db.db("SET15").collection("traits");
+      const traitsCollection = db.db("SET15").collection("traits");
       const totalGamesCollection = db.db("SET15").collection("totalGames");
 
+      const traitData = await traitsCollection.find().toArray();
       const totalGamesDoc = await totalGamesCollection.findOne({ id: "totalGames" });
-      const traitData = await traitCollection.find().toArray();
-      
-      const sortedTraitsRanking = traitData.sort(
+
+      const sortedTraitRanking = traitData.sort(
         (a, b) => Number(a.averagePlacement) - Number(b.averagePlacement)
       );
-      
-      return {
-        totalGames: totalGamesDoc?.total || 0,
-        traits: sortedTraitsRanking,
-      };
+
+      return { totalGames: totalGamesDoc || 0, traitData: sortedTraitRanking };
     } catch (error) {
-      console.error("Error fetching traits:", error);
-      throw new Error("Error fetching traits");
+      console.error("Error fetching trait data from DB:", error);
+      return { traitData: [], totalGames: 0 };
     }
   }
 
-  static async updateMany(traitStats: any[]) {
+  static async updateMany(traitRanking: any[]) {
     const updatedTraits: any[] = [];
-
     try {
       const db = await connectDB();
-
-      const traitCollection = db.db("SET15").collection("traits");
+      const traitsCollection = db.db("SET15").collection("traits");
       const totalGamesCollection = db.db("SET15").collection("totalGames");
 
-      // Fetch current totalGames doc
-      const totalGamesDoc = (await totalGamesCollection.findOne({ id: "totalGames" })) || {
-        total: 0,
-      };
+      const totalGamesDoc = (await totalGamesCollection.findOne({ id: "totalGames" })) || 0;
 
-      for (const traitData of traitStats) {
-        const existingTrait = await traitCollection.findOne({ name: traitData.traitId });
+      for (const traitStats of traitRanking) {
+        const trait = await traitsCollection.findOne({ traitId: traitStats.traitId });
 
-        const previousTotalGames = existingTrait?.totalGames || 0;
-        const newTotalGames = previousTotalGames + (traitData.totalGames || 0);
+        const totalGames = (trait?.totalGames || 0) + traitStats.totalGames;
 
         const averagePlacement =
-          ((existingTrait?.averagePlacement || 0) * previousTotalGames +
-            (traitData.placement || 0) * (traitData.totalGames || 0)) /
-          (newTotalGames || 1);
+          (Number(traitStats.placement) * traitStats.totalGames +
+            (trait?.averagePlacement || 0) * (trait?.totalGames || 0)) /
+          totalGames;
 
-        const wins = (existingTrait?.wins || 0) + (traitData.wins || 0);
-        const winrate = Number(((wins / newTotalGames) * 100).toFixed(2));
+        const wins = Number(traitStats.wins) + (trait?.wins || 0);
+        const winrate = Number(((wins / totalGames) * 100).toFixed(2));
 
-        await traitCollection.updateOne(
-          { name: traitData.traitId },
+        await traitsCollection.updateOne(
+          { traitId: traitStats.traitId },
           {
             $set: {
-              totalGames: newTotalGames,
+              totalGames,
               averagePlacement: Number(averagePlacement.toFixed(2)),
               wins,
               winrate,
@@ -66,21 +57,32 @@ export class TraitRepository {
           { upsert: true }
         );
 
-        console.log(`Updated stats for trait ${traitData.traitId}`);
-
+        console.log(`Updated stats for trait ${traitStats.traitId}`);
         updatedTraits.push({
-          traitId: traitData.traitId,
-          totalGames: newTotalGames,
+          traitId: traitStats.traitId,
+          totalGames,
+          averagePlacement: Number(averagePlacement.toFixed(2)),
           wins,
           winrate,
-          averagePlacement,
         });
       }
 
-      return { totalGames: totalGamesDoc?.total || 0, updatedTraits };
+      await totalGamesCollection.updateOne(
+        { id: "totalGames" },
+        { $inc: { count: 5 } }, // hardcoded since we fetch 5 games at a time
+        { upsert: true }
+      );
+
+      console.log("Successfully pushed 5 matches worth of trait data to DB");
+
+      const sortedUpdatedTraits = updatedTraits.sort(
+        (a, b) => a.averagePlacement - b.averagePlacement
+      );
+
+      return { updatedTraits: sortedUpdatedTraits, totalGames: totalGamesDoc || 0 };
     } catch (error) {
-      console.error("Error updating traits:", error);
-      throw new Error("Error updating traits");
+      console.error("Error pushing trait data to DB:", error);
+      return { updatedTraits: [], totalGames: 0 };
     }
   }
 }

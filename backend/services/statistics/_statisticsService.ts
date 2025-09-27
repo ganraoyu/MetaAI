@@ -70,4 +70,38 @@ export class StatisticsService {
   static async updateTraitDirect(data: any[]) {
     return TraitService.updateDataDirect(data);
   }
+
+  static async updateAllStatistics(rank: string, division: string = "") {
+    try {
+      // Fetch live match data for this rank/division
+      const matches = await MatchFetcher.fetchMatches(rank, division);
+
+      if (!matches || !matches.length) {
+        console.log(`No matches found for ${rank} ${division}`);
+        return { updatedChampions: [], updatedTraits: [], totalGames: 0 };
+      }
+
+      // Process champion and trait data
+      const championRanking = ChampionProcessor.processMatches(matches);
+      const traitRanking = TraitProcessor.processMatches(matches);
+
+      // Update DB for both
+      const { updatedChampions, totalGames: championTotalGames } = await ChampionRepository.updateMany(championRanking);
+      const { updatedTraits, totalGames: traitTotalGames } = await TraitRepository.updateMany(traitRanking);
+
+      console.log(
+        `Updated all statistics for ${rank} ${division}: ${updatedChampions.length} champions, ${updatedTraits.length} traits`
+      );
+
+      return {
+        updatedChampions,
+        championTotalGames,
+        updatedTraits,
+        traitTotalGames,
+      };
+    } catch (error: any) {
+      console.error("Error updating all statistics:", error.message);
+      throw new Error("Failed to update all statistics");
+    }
+  }
 }

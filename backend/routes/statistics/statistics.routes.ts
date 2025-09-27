@@ -1,4 +1,4 @@
-import express, { Router, Request, Response } from "express";
+import express, { Router } from "express";
 import { getAboveMasterChampionData, getUpdatedAboveMasterChampionData } from "../../controllers/statistics/master+/champions.controller";
 import { getAboveMasterTraitsData, getUpdatedAboveMasterTraitsData } from "../../controllers/statistics/master+/traits.controller";
 import { getAboveMasterItemsData } from "../../controllers/statistics/master+/items.controller";
@@ -6,8 +6,11 @@ import { getAboveMasterItemsData } from "../../controllers/statistics/master+/it
 import { getBelowMasterChampionData } from "../../controllers/statistics/master-/champions.controller";
 import { getBelowMasterTraitsData } from "../../controllers/statistics/master-/traits.controller";
 import { getBelowMasterItemsData } from "../../controllers/statistics/master-/items.controller";
+import { updateAllStatistics } from "../../controllers/statistics/master+/allStatistics.controller";
 
 const router: Router = express.Router();
+
+router.get("/:rank/allStatistics", updateAllStatistics);
 
 // Above Master endpoints
 router.get("/:rank/champions", getAboveMasterChampionData);
