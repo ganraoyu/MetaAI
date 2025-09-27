@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { MatchFetcher } from "../../../services/riot/matchFetcher";
-import { StatisticsService } from "../../../services/statistics/statisticsService";
+import { StatisticsService } from "../../../services/statistics/_statisticsService";
 
 // Fetch champion data from DB, no API calls
 const getAboveMasterChampionData = async (req: Request, res: Response): Promise<void> => {
@@ -26,7 +26,7 @@ const getUpdatedAboveMasterChampionData = async (req: Request, res: Response): P
       res.status(400).send(`No champion data available for ${rank}`);
       return;
     }
-    const { updatedChampions, totalGames } = await StatisticsService.updateChampionDataInDB(
+    const { updatedChampions, totalGames } = await StatisticsService.updateChampionStatistics(
       championRanking
     );
 

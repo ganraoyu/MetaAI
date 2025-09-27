@@ -31,7 +31,7 @@ export class ChampionProcessor {
         if (existing) {
           existing.totalGames += 1;
           existing.placements.push(player.placement);
-          if (player.placement === 1) existing.wins += 1;
+          existing.wins += (player.placement === 1 ? 1 : 0);
         } else {
           acc[unit.character_id] = {
             totalGames: 1,
@@ -44,7 +44,7 @@ export class ChampionProcessor {
     }, {});
   }
 
-  // Generate champion ranking based on average placement, winrate, and total games
+  // Generate champion ranking based on average placement, winrate, and total games, then sort them
   private static calculateChampionRanking(champData: Record<string, ChampionStats>) {
     return Object.entries(champData)
       .map(([id, { totalGames, wins, placements }]) => ({

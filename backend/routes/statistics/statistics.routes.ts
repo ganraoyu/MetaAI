@@ -1,6 +1,6 @@
 import express, { Router, Request, Response } from "express";
 import { getAboveMasterChampionData, getUpdatedAboveMasterChampionData } from "../../controllers/statistics/master+/champions.controller";
-import { getAboveMasterTraitsData } from "../../controllers/statistics/master+/traits.controller";
+import { getAboveMasterTraitsData, getUpdatedAboveMasterTraitsData } from "../../controllers/statistics/master+/traits.controller";
 import { getAboveMasterItemsData } from "../../controllers/statistics/master+/items.controller";
 
 import { getBelowMasterChampionData } from "../../controllers/statistics/master-/champions.controller";
@@ -14,6 +14,8 @@ router.get("/:rank/champions", getAboveMasterChampionData);
 router.get("/update/:rank/champions", getUpdatedAboveMasterChampionData);
 
 router.get("/:rank/traits", getAboveMasterTraitsData);
+router.get("/update/:rank/traits", getUpdatedAboveMasterTraitsData);
+
 router.get("/:rank/items", getAboveMasterItemsData);
 
 // Below Master endpoints

@@ -41,7 +41,7 @@ Champion Statistics:
     http://localhost:3000/statistics/:rank/champions
     http://localhost:3000/statistics/:rank/traits
     http://localhost:3000/statistics/:rank/items
-          http://localhost:3000/statistics/challenger/champions
+            
 
     http://localhost:3000/statistics/:rank/:division/champions
     http://localhost:3000/statistics/:rank/:division/traits

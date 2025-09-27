@@ -5,20 +5,20 @@ export class ChampionRepository {
     try {
       const db = await connectDB();
 
-      const championCollections = db.db("SET15").collection("champions");
+      const traitCollection = db.db("SET15").collection("traits");
       const totalGamesCollection = db.db("SET15").collection("totalGames");
 
-      const championData = await championCollections.find().toArray();
+      const traitData = await traitCollection.find().toArray();
       const totalGamesDoc = await totalGamesCollection.findOne({ id: "totalGames" });
 
-      const sortedChampionRanking = championData.sort(
-        (a, b) => Number(a.averagePlacement) - Number(b.averagePlacement)
+      const sortedTraitRanking = traitData.sort(
+        (a, b) => (a.averagePlacement || 0) - (b.averagePlacement || 0)
       );
 
-      return { totalGames: totalGamesDoc || 0, championData: sortedChampionRanking };
+      return { totalGames: totalGamesDoc?.total || 0, traitData: sortedTraitRanking };
     } catch (error) {
-      console.error("Error fetching champion data from DB:", error);
-      return { champions: [], totalGames: 0 };
+      console.error("Error fetching traits:", error);
+      return { traitData: [], totalGames: 0 };
     }
   }
 
@@ -66,7 +66,7 @@ export class ChampionRepository {
           winrate,
         });
       }
-      
+
       await totalGamesCollection.updateOne(
         { id: "totalGames" },
         { $inc: { count: 5 } }, // hardcoded since we fetch 5 games at a time
