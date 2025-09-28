@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { LeaderboardService } from "../../services/riot/leaderboardService";
+import { LeaderboardService } from "../../services/riot/leaderboardFetcher";
 
 const getLeaderBoards = async (req: Request, res: Response) => {
   const { region, mode, rank, division } = req.params as {

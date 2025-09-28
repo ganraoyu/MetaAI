@@ -98,7 +98,7 @@ export const ChampionCard = ({
       >
         <div className="flex items-baseline gap-1 mr-2">
           <p>{totalGames}</p>
-          <p className="text-[0.6rem] text-[#bcbcbc]">{frequency.toFixed(1)}%</p>
+          <p className="text-[0.6rem] text-[#bcbcbc]">{frequency.toFixed(2)}%</p>
         </div>
       </ChampionCell>
 

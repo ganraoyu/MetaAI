@@ -10,7 +10,7 @@ import { ItemRepository } from "../database/itemRepository";
 class DataService {
   constructor(
     private processor: { processMatches: (matches: any[]) => any[] },
-    private repository: { getAll: () => any; updateMany: (data: any[]) => any }
+    private repository: { getAll: (rank: string) => any; updateMany: (rank: string, data: any[]) => any }
   ) {}
 
   // Fetch + process live match data
@@ -20,19 +20,15 @@ class DataService {
   }
 
   // Get data from DB
-  async getDataFromDB() {
-    return this.repository.getAll();
+  async getDataFromDB(rank: string) {
+    return this.repository.getAll(rank);
   }
 
   // Fetch live data and update DB
-  async updateDBData(typeRanking: any[]) {
-    return this.repository.updateMany(typeRanking);
+  async updateDBData(rank: string, typeRanking: any[]) {
+    return this.repository.updateMany(rank, typeRanking);
   }
 
-  // Directly update DB with provided data
-  async updateDataDirect(data: any[]) {
-    return this.repository.updateMany(data);
-  }
 }
 
 export const ChampionService = new DataService(ChampionProcessor, ChampionRepository);
@@ -45,16 +41,12 @@ export class StatisticsService {
     return ChampionService.getData(rank, division);
   }
 
-  static async getChampionDataFromDB() {
-    return ChampionService.getDataFromDB();
+  static async getChampionDataFromDB(rank: string) {
+    return ChampionService.getDataFromDB(rank);
   }
 
-  static async updateChampionStatistics(championData: any[]) {
-    return ChampionService.updateDBData(championData);
-  }
-
-  static async updateChampionDirect(data: any[]) {
-    return ChampionService.updateDataDirect(data);
+  static async updateChampionStatistics(rank: string, championData: any[]) {
+    return ChampionService.updateDBData(rank, championData);
   }
 
   // Trait methods
@@ -62,16 +54,12 @@ export class StatisticsService {
     return TraitService.getData(rank, division);
   }
 
-  static async getTraitDataFromDB() {
-    return TraitService.getDataFromDB();
+  static async getTraitDataFromDB(rank: string) {
+    return TraitService.getDataFromDB(rank);
   }
 
-  static async updateTraitStatistics(traitData: any[]) {
-    return TraitService.updateDBData(traitData);
-  }
-
-  static async updateTraitDirect(data: any[]) {
-    return TraitService.updateDataDirect(data);
+  static async updateTraitStatistics(rank:string, traitData: any[]) {
+    return TraitService.updateDBData(rank, traitData);
   }
 
   // Item methods
@@ -79,16 +67,12 @@ export class StatisticsService {
     return ItemService.getData(rank, division);
   }
 
-  static async getItemDataFromDB() {
-    return ItemService.getDataFromDB();
+  static async getItemDataFromDB(rank: string) {
+    return ItemService.getDataFromDB(rank);
   }
 
-  static async updateItemStatistics(traitData: any[]) {
-    return ItemService.updateDBData(traitData);
-  }
-
-  static async updateItemDirect(data: any[]) {
-    return ItemService.updateDataDirect(data);
+  static async updateItemStatistics(rank:string, itemData: any[]) {
+    return ItemService.updateDBData(rank, itemData);
   }
 
   static async updateAllStatistics(rank: string, division: string = "") {
@@ -107,12 +91,12 @@ export class StatisticsService {
       const traitRanking = TraitProcessor.processMatches(matches);
 
       // Update DB for both
-      const { updatedChampions, totalGames: championTotalGames } = await ChampionRepository.updateMany(championRanking);
-      const { updatedItems, totalGames: itemTotalGames } = await ItemRepository.updateMany(itemRanking);
-      const { updatedTraits, totalGames: traitTotalGames } = await TraitRepository.updateMany(traitRanking);
+      const { updatedChampions, totalGames: championTotalGames } = await ChampionRepository.updateMany(rank, championRanking);
+      const { updatedItems, totalGames: itemTotalGames } = await ItemRepository.updateMany(rank, itemRanking);
+      const { updatedTraits, totalGames: traitTotalGames } = await TraitRepository.updateMany(rank, traitRanking);
 
       console.log(
-        `Updated all statistics for ${rank} ${division}: ${updatedChampions.length} champions, ${updatedItems.length} items, ${updatedTraits.length} traits`
+        `Updated all statistics for ${rank} ${division}: ${updatedChampions?.length} champions, ${updatedItems.length} items, ${updatedTraits.length} traits`
       );
 
       return {

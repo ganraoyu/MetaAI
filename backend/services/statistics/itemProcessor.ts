@@ -19,14 +19,13 @@ export class ItemProcessor {
           itemNames: u.itemNames ?? [],
           tier: u.tier,
         })),
-        traits: [] // Add empty traits for interface compliance
+        traits: [] 
       }))
     );
   }
 
   private static calculateItemData(playerData: PlayerData[]): Record<string, ItemStats> {
     return playerData.reduce<Record<string, ItemStats>>((acc, player) => {
-      // Extract all items from all units for this player
       const playerItems: string[] = [];
       player.units.forEach(unit => {
         if (unit.itemNames && unit.itemNames.length > 0) {

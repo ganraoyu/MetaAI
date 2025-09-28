@@ -9,7 +9,7 @@ interface ChampionDataProviderProps {
 }
 
 export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) => {
-  const [rank, setRank] = useState<Rank[]>(["Master"]);
+  const [rank, setRank] = useState<Rank[]>(["Challenger"]);
   const [cost, setCost] = useState<Cost[]>([]);
   const [table, setTable] = useState<boolean>(true);
   const [chart, setChart] = useState<boolean>(false);
@@ -21,17 +21,10 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3000/statistics/challenger/champions"
-        );
-        setTotalGames(response.data.totalGames.count);
+        const response = await axios.get("http://localhost:3000/statistics/all/champions");
+        setTotalGames(response.data.totalGames);
         setChampionData(response.data.championData);
         setChampionStatsWithTotalGames(response.data.championStatsWithTotalGames);
-
-        console.log("Fetched champion data:", response.data);
-        console.log("Total games:", response.data.totalGames);
-        console.log("Champion data:", response.data.championData);
-        console.log("Champion stats with total games:", response.data);
       } catch (error) {
         console.error("Error fetching champion data:", error);
       }
@@ -42,7 +35,7 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
 
   const updateChampionData = async () => {
     try { 
-      const response = await axios.get("http://localhost:3000/statistics/update/challenger/champions");
+      const response = await axios.get("http://localhost:3000/statistics/challenger/allStatistics");
 
       setTotalGames(response.data.totalGames.count);
       setChampionData(response.data.updatedChampions);  

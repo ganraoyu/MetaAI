@@ -1,12 +1,9 @@
 import express, { Router } from "express";
-import { getAboveMasterChampionData, getUpdatedAboveMasterChampionData } from "../../controllers/statistics/master+/champions.controller";
-import { getAboveMasterTraitsData, getUpdatedAboveMasterTraitsData } from "../../controllers/statistics/master+/traits.controller";
-import { getAboveMasterItemsData, getUpdatedAboveMasterItemsData } from "../../controllers/statistics/master+/items.controller";
+import { getAboveMasterChampionData, getUpdatedAboveMasterChampionData } from "../../controllers/statistics/champions.controller";
+import { getAboveMasterTraitsData, getUpdatedAboveMasterTraitsData } from "../../controllers/statistics/traits.controller";
+import { getAboveMasterItemsData, getUpdatedAboveMasterItemsData } from "../../controllers/statistics/items.controller";
 
-import { getBelowMasterChampionData } from "../../controllers/statistics/master-/champions.controller";
-import { getBelowMasterTraitsData } from "../../controllers/statistics/master-/traits.controller";
-import { getBelowMasterItemsData } from "../../controllers/statistics/master-/items.controller";
-import { updateAllStatistics } from "../../controllers/statistics/master+/allStatistics.controller";
+import { updateAllStatistics } from "../../controllers/statistics/allStatistics.controller";
 
 const router: Router = express.Router();
 
@@ -21,10 +18,5 @@ router.get("/update/:rank/traits", getUpdatedAboveMasterTraitsData);
 
 router.get("/:rank/items", getAboveMasterItemsData);
 router.get("/update/:rank/items", getUpdatedAboveMasterItemsData);
-
-// Below Master endpoints
-router.get("/:rank/:division/champions", getBelowMasterChampionData);
-router.get("/:rank/:division/traits", getBelowMasterTraitsData);
-router.get("/:rank/:division/items", getBelowMasterItemsData);
 
 export default router;

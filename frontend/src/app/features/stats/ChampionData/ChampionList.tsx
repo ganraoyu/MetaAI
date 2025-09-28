@@ -21,6 +21,7 @@ const HeaderCell = ({
 export const ChampionList = () => {
   const { totalGames, championData } = useChampionDataContext(); 
   console.log("Total games in ChampionList:", totalGames);
+  console.log(championData)
 
   return (
     <div className="flex flex-col justify-center items-center w-full mt-[-0.4rem]">
@@ -41,7 +42,7 @@ export const ChampionList = () => {
         {championData.map((champion, index) => (
           <ChampionCard 
             key={index} 
-            champion={champion.championId} 
+            champion={champion.championId}  
             winRate={champion.winrate} 
             index={index}
             cost={champion.cost || 1}

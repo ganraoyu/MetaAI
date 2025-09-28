@@ -1,7 +1,7 @@
 import { connectDB } from "../../database/db";
 
 export class TraitRepository {
-  static async getAll() {
+  static async getAll(rank: string) {
     try {
       const db = await connectDB();
 
@@ -22,7 +22,7 @@ export class TraitRepository {
     }
   }
 
-  static async updateMany(traitRanking: any[]) {
+  static async updateMany(rank:string, traitRanking: any[]) {
     const updatedTraits: any[] = [];
     try {
       const db = await connectDB();
@@ -72,8 +72,6 @@ export class TraitRepository {
         { $inc: { count: 5 } }, 
         { upsert: true }
       );
-
-      console.log("Successfully pushed 5 matches worth of trait data to DB");
 
       const sortedUpdatedTraits = updatedTraits.sort(
         (a, b) => a.averagePlacement - b.averagePlacement

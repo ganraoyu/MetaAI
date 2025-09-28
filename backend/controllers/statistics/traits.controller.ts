@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { StatisticsService } from "../../../services/statistics/_statisticsService";
+import { StatisticsService } from "../../services/statistics/_statisticsService";
 
 const getAboveMasterTraitsData = async (req: Request, res: Response): Promise<void> => {
   const { rank } = req.params as { rank: string };
 
   try {
-    const { totalGames, traitData } = await StatisticsService.getTraitDataFromDB();
+    const { totalGames, traitData } = await StatisticsService.getTraitDataFromDB(rank);
     
     res.json({ totalGames, traitData });
   } catch (error: any) {
@@ -25,7 +25,7 @@ const getUpdatedAboveMasterTraitsData = async (req: Request, res: Response): Pro
       return;
     }
     
-    const { updatedTraits, totalGames } = await StatisticsService.updateTraitStatistics(traitRanking);
+    const { updatedTraits, totalGames } = await StatisticsService.updateTraitStatistics(rank, traitRanking);
 
     res.json({ totalGames, traitsRanking: updatedTraits });
   } catch (error: any) {

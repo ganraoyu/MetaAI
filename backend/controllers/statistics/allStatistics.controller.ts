@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { StatisticsService } from "../../../services/statistics/_statisticsService";
+import { StatisticsService } from "../../services/statistics/_statisticsService";
 
 export const updateAllStatistics = async (req: Request, res: Response) => {
   const { rank } = req.params as { rank: string };

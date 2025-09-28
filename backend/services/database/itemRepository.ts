@@ -22,7 +22,7 @@ export class ItemRepository {
     }
   }
 
-  static async updateMany(itemRanking: any[]) {
+  static async updateMany(rank:string, itemRanking: any[]) {
     const updatedItems: any[] = [];
     try {
       const db = await connectDB();
@@ -30,7 +30,6 @@ export class ItemRepository {
       const totalGamesCollection = db.db("SET15").collection("totalGames");
       const totalGamesDoc = (await totalGamesCollection.findOne({ id: "totalGames" })) || { count: 0 };
 
-      console.log(`Updating ${itemRanking.length} items:`, itemRanking.slice(0, 3));
 
       for (const itemStats of itemRanking) {
         const item = await itemsCollection.findOne({ itemId: itemStats.itemId });
@@ -74,9 +73,6 @@ export class ItemRepository {
         { $inc: { count: 5 } },
         { upsert: true }
       );
-
-      console.log("Successfully updated item data in DB");
-
       const sortedUpdatedItems = updatedItems.sort(
         (a, b) => a.averagePlacement - b.averagePlacement
       );
