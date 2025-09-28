@@ -24,8 +24,8 @@ export class ChampionProcessor {
   }
 
   // Calculate total games, wins, and placements for each champion
-  private static calculateChampionData(players: PlayerData[]): Record<string, ChampionStats> {
-    return players.reduce((acc: Record<string, ChampionStats>, player) => {
+  private static calculateChampionData(playerData: PlayerData[]): Record<string, ChampionStats> {
+    return playerData.reduce((acc: Record<string, ChampionStats>, player) => {
       player.units.forEach((unit) => {
         const existing = acc[unit.character_id];
         if (existing) {

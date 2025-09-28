@@ -15,7 +15,132 @@ export class ChampionRepository {
       let championsData;
       if (rank !== "all") {
         championsData = championsDocs.map((champion) => ({
-          championId: champion.championId,
+          championId: champion.championId{
+    "explorer.confirmDelete": false,
+    "liveServer.settings.donotShowInfoMsg": true,
+    "editor.inlineSuggest.enabled": true,
+    "wallpaper-setting.filePath": "c:\\Users\\vince\\Downloads\\animegirl.jpeg",
+    "wallpaper-setting.opacity": 0.9,
+    "editor.accessibilitySupport": "off",
+    "liveServer.settings.donotVerifyTags": true,
+    "liveServer.settings.wait": 1,
+    "liveServer.settings.useLocalIp": true,
+    "files.autoSave": "afterDelay",
+    "github.copilot.enable": {
+        "*": true,
+        "yaml": false,
+        "plaintext": false,
+        "markdown": false
+    },
+    "explorer.confirmDragAndDrop": false,
+    "workbench.iconTheme": "fira-code-material-icon-theme",
+    "codemosModern.dark.auxiliaryUiTheme": null,
+    "codemosModern.dark.design": "modern",
+    "codemosModern.dark.accentColor": "#CB8569",
+    "codemosModern.dark.adaptiveMode": "gentle",
+    "codemosModern.dark.auxiliaryCodeTheme": "Codemos-Inc/Auxiliary-Theme-Registry/Microsoft/Defaults/Dark+",
+    "editor.fontFamily": "Fira Code",
+    "editor.fontLigatures": true,
+    "git.autofetch": true,
+    "editor.cursorBlinking": "expand",
+    "workbench.editorAssociations": {
+        "*.copilotmd": "vscode.markdown.preview.editor",
+        "*.zip": "default",
+        "*.msi": "default"
+    },
+    "window.confirmSaveUntitledWorkspace": false,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "rapidapi.terminalLink.enabled": false,
+    "git.enableSmartCommit": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "git.confirmSync": false,
+    "github.copilot.editor.enableAutoCompletions": true,
+    "git.openRepositoryInParentFolders": "never",
+    "vscode_custom_css.imports": [
+        "file:///c:/Users/vince/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
+    ],
+    "animations.Enabled": true,
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "terminal.integrated.enableMultiLinePasteWarning": false,
+    "editor.stickyScroll.enabled": false,
+    "editor.minimap.size": "fill",
+    "editor.wordWrap": "on",
+    "editor.largeFileOptimizations": false,
+    "workbench.editor.empty.hint": "hidden",
+    "chat.instructionsFilesLocations": {
+      ".github/instructions": true,
+      "C:\\Users\\vince\\AppData\\Local\\Temp\\postman-http-request-post-response.instructions.md": true,
+      "C:\\Users\\vince\\AppData\\Local\\Temp\\postman-http-request-pre-request.instructions.md": true,
+      "C:\\Users\\vince\\AppData\\Local\\Temp\\postman-collections-post-response.instructions.md": true,
+      "C:\\Users\\vince\\AppData\\Local\\Temp\\postman-collections-pre-request.instructions.md": true,
+      "C:\\Users\\vince\\AppData\\Local\\Temp\\postman-folder-post-response.instructions.md": true,
+      "C:\\Users\\vince\\AppData\\Local\\Temp\\postman-folder-pre-request.instructions.md": true,
+      "/var/folders/ty/f9_36_555vq2dwkj7zsr01wh0000gn/T/postman-collections-post-response.instructions.md": true,
+      "/var/folders/ty/f9_36_555vq2dwkj7zsr01wh0000gn/T/postman-collections-pre-request.instructions.md": true,
+      "/var/folders/ty/f9_36_555vq2dwkj7zsr01wh0000gn/T/postman-folder-post-response.instructions.md": true,
+      "/var/folders/ty/f9_36_555vq2dwkj7zsr01wh0000gn/T/postman-folder-pre-request.instructions.md": true,
+      "/var/folders/ty/f9_36_555vq2dwkj7zsr01wh0000gn/T/postman-http-request-post-response.instructions.md": true,
+      "/var/folders/ty/f9_36_555vq2dwkj7zsr01wh0000gn/T/postman-http-request-pre-request.instructions.md": true
+    },
+    "debug.onTaskErrors": "debugAnyway",
+    "githubPullRequests.createOnPublishBranch": "never",
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.detectIndentation": false,
+    "docker.extension.dockerEngineAvailabilityPrompt": false,
+    "workbench.experimental.share.enabled": true,
+    "security.workspace.trust.untrustedFiles": "open",
+    "editor.pasteAs.preferences": [
+
+    ],
+    "python.defaultInterpreterPath": "/opt/homebrew/bin/python3",
+    "code-runner.runInTerminal": true,
+    "terminal.integrated.fontSize": 13,
+    "editor.tabSize": 2,
+    "postman.mcp.notifications.postmanMCP": false,
+    "C_Cpp.default.cppStandard": "c++23",
+    "github.copilot.chat.agent.runTasks": false,
+    "github.copilot.chat.scopeSelection": true,
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "github.copilot.chat.codesearch.enabled": true,
+    "github.copilot.chat.agent.thinkingTool": true,
+    "github.copilot.chat.edits.temporalContext.enabled": true,
+    "github.copilot.chat.languageContext.fix.typescript.enabled": true,
+    "github.copilot.chat.languageContext.inline.typescript.enabled": true,
+    "github.copilot.chat.generateTests.codeLens": true,
+    "github.copilot.chat.languageContext.typescript.enabled": true,
+    "github.copilot.chat.notebook.followCellExecution.enabled": true,
+    "workbench.colorTheme": "Tokyo Night Frameless",
+    "workbench.tree.renderIndentGuides": "always",
+    "workbench.activityBar.location": "hidden",
+    "workbench.editor.showTabs": "single",
+    "editor.minimap.renderCharacters": false,
+    "editor.minimap.enabled": false,
+    "terminal.integrated.tabs.enabled": false,
+    "workbench.settings.openDefaultSettings": true,
+    "workbench.settings.openDefaultKeybindings": true,
+    "custom-ui-style.electron": {
+      "frame": false,
+      "transparent": true,
+      "opacity": 0.95
+    },
+    "window.commandCenter": false,
+    "window.titleBarStyle": "custom",
+    "extensions.experimental.affinity": {
+      "asvetliakov.vscode-neovim": 1
+    }
+},
           ...(champion.ranks?.[rank] || {
             totalGames: 0,
             wins: 0,
@@ -53,7 +178,7 @@ export class ChampionRepository {
         )
       );
 
-      await this.updateTotalGamesCount(db, championsRanking.length * 5);
+      await this.updateTotalGamesCount(db, championsRanking.length  );
 
       const sortedUpdatedChampions = updatedChampions.sort(
         (a, b) => a.averagePlacement - b.averagePlacement

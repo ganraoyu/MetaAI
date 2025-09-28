@@ -1,14 +1,14 @@
 backend/services/
-├── riot/                         # Raw API fetching
+├── riot/                        
 │   ├── matchFetcher.ts         
 │   ├── leaderboardFetcher.ts    
-│   └── playerService.ts         # ✅ Keep
-├── statistics/                   # ✅ Keep separate
-│   ├── statisticsService.ts     # Orchestrates everything
-│   └── processors/              # Processing logic
-├── leaderboard/                  # New unified service
-│   └── leaderboardService.ts    # Orchestrates fetcher + repository
-└── database/                # Database operations
+│   └── playerService.ts         
+├── statistics/                  
+│   ├── statisticsService.ts    
+│   └── processors/              
+├── leaderboard/                 
+│   └── leaderboardService.ts   
+└── database/          
     ├── championRepository.ts
     ├── itemRepository.ts
     ├── traitRepository.ts

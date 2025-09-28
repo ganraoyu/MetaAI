@@ -21,6 +21,10 @@ interface ChampionStats {
   placements: number[];
 }
 
+interface ChampionItemStats {
+  
+}
+
 interface TraitStats {
   totalGames: number;
   wins: number;
@@ -41,6 +45,7 @@ export {
   Unit,
   PlayerData,
   ChampionStats,
+  ChampionItemStats,
   Trait,
   TraitStats,
   ItemStats,

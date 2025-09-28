@@ -30,7 +30,6 @@ export class ItemRepository {
       const totalGamesCollection = db.db("SET15").collection("totalGames");
       const totalGamesDoc = (await totalGamesCollection.findOne({ id: "totalGames" })) || { count: 0 };
 
-
       for (const itemStats of itemRanking) {
         const item = await itemsCollection.findOne({ itemId: itemStats.itemId });
 
