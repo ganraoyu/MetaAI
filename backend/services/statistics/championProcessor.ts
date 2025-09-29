@@ -45,8 +45,8 @@ export class ChampionProcessor {
   }
 
   // Generate champion ranking based on average placement, winrate, and total games, then sort them
-  private static calculateChampionRanking(champData: Record<string, ChampionStats>) {
-    return Object.entries(champData)
+  private static calculateChampionRanking(championData: Record<string, ChampionStats>) {
+    return Object.entries(championData)
       .map(([id, { totalGames, wins, placements }]) => ({
         championId: id.toUpperCase(),
         wins,

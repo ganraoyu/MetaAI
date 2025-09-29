@@ -22,7 +22,11 @@ interface ChampionStats {
 }
 
 interface ChampionItemStats {
-  
+  [itemName: string]: {
+    totalGames: number;
+    placements: number[];
+    wins: number;
+  };
 }
 
 interface TraitStats {

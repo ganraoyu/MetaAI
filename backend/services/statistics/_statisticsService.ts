@@ -5,7 +5,8 @@ import { TraitProcessor } from "./traitProcessor";
 import { TraitRepository } from "../database/traitRepository";
 import { ItemProcessor } from "./itemProcessor";
 import { ItemRepository } from "../database/itemRepository";
-
+import { ChampionItemProcessor } from "./championItemProcessor"
+import { ChampionItemRepository } from "../database/championItemRepository";
 // Generic data service for fetch → process → DB operations
 class DataService {
   constructor(
@@ -34,6 +35,7 @@ class DataService {
 export const ChampionService = new DataService(ChampionProcessor, ChampionRepository);
 export const TraitService = new DataService(TraitProcessor, TraitRepository);
 export const ItemService = new DataService(ItemProcessor, ItemRepository);
+export const ChampionItemService = new DataService(ChampionItemProcessor, ChampionItemRepository);
 
 export class StatisticsService {
   // Champion methods
@@ -74,9 +76,21 @@ export class StatisticsService {
   static async updateItemStatistics(rank:string, itemData: any[]) {
     return ItemService.updateDBData(rank, itemData);
   }
+  static async getChampionItemData(rank: string, division: string = "") {
+    return ChampionItemService.getData(rank, division);
+  }
+
+  static async getChampionItemDataFromDB(rank: string) {
+    return ChampionItemService.getDataFromDB(rank);
+  }
+
+  static async updateChampionItemStatistics(rank: string, championData: any[]) {
+    return ChampionItemService.updateDBData(rank, championData);
+  }
 
   static async updateAllStatistics(rank: string, division: string = "") {
     try {
+      
       // Fetch live match data for this rank/division
       const matches = await MatchFetcher.fetchMatches(rank, division);
 
@@ -89,11 +103,13 @@ export class StatisticsService {
       const championRanking = ChampionProcessor.processMatches(matches);
       const itemRanking = ItemProcessor.processMatches(matches);
       const traitRanking = TraitProcessor.processMatches(matches);
-
+      const championItemRanking = ChampionItemProcessor.processMatches(matches);
+   
       // Update DB for both
       const { updatedChampions, totalGames: championTotalGames } = await ChampionRepository.updateMany(rank, championRanking);
       const { updatedItems, totalGames: itemTotalGames } = await ItemRepository.updateMany(rank, itemRanking);
       const { updatedTraits, totalGames: traitTotalGames } = await TraitRepository.updateMany(rank, traitRanking);
+      const { updatedChampionItems: updatedChampionItems, totalGames: championItemTotalGames} = await ChampionItemRepository.updateMany(rank, championItemRanking);
 
       console.log(
         `Updated all statistics for ${rank} ${division}: ${updatedChampions?.length} champions, ${updatedItems.length} items, ${updatedTraits.length} traits`
@@ -106,10 +122,14 @@ export class StatisticsService {
         itemTotalGames,
         updatedTraits,
         traitTotalGames,
+        updatedChampionItems,
+        championItemTotalGames
       };
-    } catch (error: any) {
+    } catch
+    
+    (error: any) {
       console.error("Error updating all statistics:", error.message);
       throw new Error("Failed to update all statistics");
     }
   }
-}
+};

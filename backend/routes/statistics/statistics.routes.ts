@@ -4,6 +4,7 @@ import { getAboveMasterTraitsData, getUpdatedAboveMasterTraitsData } from "../..
 import { getAboveMasterItemsData, getUpdatedAboveMasterItemsData } from "../../controllers/statistics/items.controller";
 
 import { updateAllStatistics } from "../../controllers/statistics/allStatistics.controller";
+import { getChampionItemData, getUpdatedChampionItemData } from "../../controllers/statistics/championItem.controller";
 
 const router: Router = express.Router();
 
@@ -18,5 +19,8 @@ router.get("/update/:rank/traits", getUpdatedAboveMasterTraitsData);
 
 router.get("/:rank/items", getAboveMasterItemsData);
 router.get("/update/:rank/items", getUpdatedAboveMasterItemsData);
+
+router.get("/:rank/championItems" , getChampionItemData);
+router.get("/update/:rank/championItems", getUpdatedChampionItemData);
 
 export default router;

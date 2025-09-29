@@ -35,6 +35,8 @@ export class ItemProcessor {
 
       // Count each item for this player
       playerItems.forEach(itemName => {
+         // Normalize to uppercase for consistency; frontend will handle display mapping
+        itemName = itemName.toUpperCase() 
         const existing = acc[itemName];
         if (existing) {
           existing.totalGames += 1;
