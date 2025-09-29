@@ -13,24 +13,23 @@ export class ChampionItemRepository {
 
       const championData = championItemDocs.map((champion) => ({
         championId: champion.championId,
-        items:
-          champion.items?.map((item: any) => {
-            if (rank !== "all") {
-              const rankStats = item.ranks?.[rank];
-              return {
-                itemId: item.itemId,
-                stats: rankStats || { wins: 0, totalGames: 0, winrate: 0, averagePlacement: 0 },
-              };
-            } else {
-              return {
-                itemId: item.itemId,
-                wins: item.wins,
-                totalGames: item.totalGames,
-                winrate: item.winrate,
-                averagePlacement: item.averagePlacement,
-              };
-            }
-          }) ?? [],
+        items: champion.items?.map((item: any) => {
+          if (rank !== "all") {
+            const rankStats = item.ranks?.[rank];
+            return {
+              itemId: item.itemId,
+              stats: rankStats || { wins: 0, totalGames: 0, winrate: 0, averagePlacement: 0 },
+            };
+          } else {
+            return {
+              itemId: item.itemId,
+              wins: item.wins,
+              totalGames: item.totalGames,
+              winrate: item.winrate,
+              averagePlacement: item.averagePlacement,
+            };
+          };
+        }),
       }));
 
       return { totalGames, championData };
