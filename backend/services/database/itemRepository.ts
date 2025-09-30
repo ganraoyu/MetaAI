@@ -1,17 +1,33 @@
 import { connectDB } from "../../database/db";
 
 export class ItemRepository {
-  static async getAll() {
+  static async getAll(rank: string) {
     try {
       const db = await connectDB();
+
       const itemsCollection = db.db("SET15").collection("items");
       const totalGamesCollection = db.db("SET15").collection("totalGames");
 
-      const itemData = await itemsCollection.find().toArray();
+      const itemsDocs = await itemsCollection.find().toArray();
+      let itemsData;
+
+      if (rank !== "all") {
+        itemsData = itemsDocs.map((item) => ({
+          itemId: item.itemId,
+          ...(item.ranks?.[rank] || {
+            totalGames: 0,
+            wins: 0,
+            winrate: 0,
+            averagePlacement: 0,
+          }),
+        }));
+      } else {
+        itemsData = itemsDocs;
+      }
+
       const totalGamesDoc = await totalGamesCollection.findOne({ id: "totalGames" });
 
-      // Sort by placement (best items first)
-      const sortedItemRanking = itemData.sort(
+      const sortedItemRanking = itemsData.sort(
         (a, b) => Number(a.averagePlacement) - Number(b.averagePlacement)
       );
 
@@ -22,64 +38,114 @@ export class ItemRepository {
     }
   }
 
-  static async updateMany(rank:string, itemRanking: any[]) {
-    const updatedItems: any[] = [];
+  static async updateMany(rank: string, itemRanking: any[]) {
     try {
       const db = await connectDB();
       const itemsCollection = db.db("SET15").collection("items");
-      const totalGamesCollection = db.db("SET15").collection("totalGames");
-      const totalGamesDoc = (await totalGamesCollection.findOne({ id: "totalGames" })) || { count: 0 };
 
-      for (const itemStats of itemRanking) {
-        const item = await itemsCollection.findOne({ itemId: itemStats.itemId });
-
-        const totalGames = (item?.totalGames || 0) + itemStats.totalGames;
-
-        const averagePlacement =
-          (Number(itemStats.placement) * itemStats.totalGames +
-            (item?.averagePlacement || 0) * (item?.totalGames || 0)) /
-          totalGames;
-
-        const wins = Number(itemStats.wins) + (item?.wins || 0);
-        const winrate = Number(((wins / totalGames) * 100).toFixed(2));
-
-        await itemsCollection.updateOne(
-          { itemId: itemStats.itemId },
-          {
-            $set: {
-              totalGames,
-              averagePlacement: Number(averagePlacement.toFixed(2)),
-              wins,
-              winrate,
-            },
-          },
-          { upsert: true }
-        );
-
-        console.log(`Updated stats for item ${itemStats.itemId}`);
-        updatedItems.push({
-          itemId: itemStats.itemId,
-          totalGames,
-          averagePlacement: Number(averagePlacement.toFixed(2)),
-          wins,
-          winrate,
-        });
-      }
-
-      // Update total games count
-      await totalGamesCollection.updateOne(
-        { id: "totalGames" },
-        { $inc: { count: 5 } },
-        { upsert: true }
+      const updatedItems = await Promise.all(
+        itemRanking.map((item) => this.updateSingleItem(itemsCollection, rank, item))
       );
+
+      const totalGamesProcessed = itemRanking.reduce(
+        (sum, item) => sum + (item.totalGames || 0),
+        0
+      );
+
+      await this.updateTotalGamesCount(db, totalGamesProcessed);
+
       const sortedUpdatedItems = updatedItems.sort(
-        (a, b) => a.averagePlacement - b.averagePlacement
+        (a, b) => Number(a.averagePlacement) - Number(b.averagePlacement)
       );
 
-      return { updatedItems: sortedUpdatedItems, totalGames: totalGamesDoc || 0 };
-    } catch (error) {
-      console.error("Error updating items in DB:", error);
+      return { updatedItems: sortedUpdatedItems, totalGames: totalGamesProcessed };
+    } catch (error: any) {
+      console.error("Error updating items:", error);
       return { updatedItems: [], totalGames: 0 };
     }
+  }
+
+  private static async updateSingleItem(collection: any, rank: string, item: any) {
+    const existingItem = await collection.findOne({ itemId: item.itemId });
+
+    const globalStats = this.calculateGlobalStats(existingItem, item);
+    const rankStats = this.calculateRankStats(existingItem, item, rank);
+
+    await collection.updateOne(
+      { itemId: item.itemId },
+      {
+        $set: {
+          itemId: item.itemId,
+          ...globalStats,
+          [`ranks.${rank}`]: rankStats,
+        },
+      },
+      { upsert: true }
+    );
+
+    console.log(`Updated stats for item ${item.itemId}`);
+    return { itemId: item.itemId, ...globalStats };
+  }
+
+  private static calculateGlobalStats(existingItem: any, newItem: any) {
+    const prevStats = {
+      wins: existingItem?.wins || 0,
+      totalGames: existingItem?.totalGames || 0,
+      averagePlacement: existingItem?.averagePlacement || 0,
+    };
+
+    const wins = prevStats.wins + (newItem.wins || 0);
+    const totalGames = prevStats.totalGames + (newItem.totalGames || 0);
+
+    const averagePlacement =
+      totalGames > 0
+        ? Number(
+            (
+              ((newItem.placement ?? newItem.averagePlacement ?? 0) * (newItem.totalGames || 0) +
+                prevStats.averagePlacement * prevStats.totalGames) /
+              totalGames
+            ).toFixed(2)
+          )
+        : 0;
+
+    const winrate = totalGames > 0 ? Number(((wins / totalGames) * 100).toFixed(2)) : 0;
+
+    return { wins, winrate, averagePlacement, totalGames };
+  }
+
+  private static calculateRankStats(existingItem: any, newItem: any, rank: string) {
+    const prevStats = {
+      wins: existingItem?.ranks?.[rank]?.wins || 0,
+      totalGames: existingItem?.ranks?.[rank]?.totalGames || 0,
+      averagePlacement: existingItem?.ranks?.[rank]?.averagePlacement || 0,
+    };
+
+    const wins = prevStats.wins + (newItem.wins || 0);
+    const totalGames = prevStats.totalGames + (newItem.totalGames || 0);
+
+    const averagePlacement =
+      totalGames > 0
+        ? Number(
+            (
+              ((newItem.placement ?? newItem.averagePlacement ?? 0) * (newItem.totalGames || 0) +
+                prevStats.averagePlacement * prevStats.totalGames) /
+              totalGames
+            ).toFixed(2)
+          )
+        : 0;
+
+    const winrate = totalGames > 0 ? Number(((wins / totalGames) * 100).toFixed(2)) : 0;
+
+    return { wins, winrate, averagePlacement, totalGames };
+  }
+
+  private static async updateTotalGamesCount(db: any, increment: number) {
+    const totalGamesCollection = db.db("SET15").collection("totalGames");
+
+    await totalGamesCollection.updateOne(
+      { id: "totalGames" },
+      { $inc: { count: increment } },
+      { upsert: true }
+    );
   }
 }

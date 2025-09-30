@@ -125,6 +125,7 @@ export class ChampionItemRepository {
           );
         } else {
           await collection.updateOne(
+            
             { championId: champion.championId, "items.itemId": item.itemId },
             {
               $set: {

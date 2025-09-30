@@ -53,7 +53,7 @@ export class ChampionRepository {
         )
       );
 
-      await this.updateTotalGamesCount(db, championsRanking.length);
+      await this.updateTotalGamesCount(db, 5);
 
       const sortedUpdatedChampions = updatedChampions.sort(
         (a, b) => a.averagePlacement - b.averagePlacement
