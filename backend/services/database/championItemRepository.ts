@@ -28,7 +28,7 @@ export class ChampionItemRepository {
               winrate: item.winrate,
               averagePlacement: item.averagePlacement,
             };
-          };
+          }
         }),
       }));
 
@@ -44,10 +44,16 @@ export class ChampionItemRepository {
       const db = await connectDB();
       const championItemCollection = db.db("SET15").collection("championItems");
 
-      const updatedChampionItems = await Promise.all(
-        championRanking.map((champion) =>
-          this.updateSingleItem(championItemCollection, rank, champion)
-        )
+      let updatedChampionItems: any[] = []
+      await Promise.all(
+        championRanking.map(async (champion) => {
+          const { championId, items } = await this.updateSingleItem(
+            championItemCollection,
+            rank,
+            champion
+          );
+          updatedChampionItems.push({championId, items})
+        })
       );
 
       const totalGamesProcessed = championRanking.reduce(
@@ -60,6 +66,14 @@ export class ChampionItemRepository {
         0
       );
 
+      const BISItems = await this.calculateBISItems(updatedChampionItems);
+
+      // Update BIS items for each champion
+      await Promise.all(
+        updatedChampionItems.map((champion) =>
+          this.updateBISItems(championItemCollection, champion.championId, BISItems, rank)
+        )
+      );
       await this.updateTotalGamesCount(db, totalGamesProcessed);
 
       const sortedUpdatedItems = updatedChampionItems.sort((a, b) => {
@@ -67,10 +81,10 @@ export class ChampionItemRepository {
         const bItems = b.items || [];
 
         const aAvgPlacement =
-          aItems.reduce((sum, item) => sum + (item.averagePlacement || 0), 0) /
+          aItems.reduce((sum: number, item: any) => sum + (item.averagePlacement || 0), 0) /
           (aItems.length || 1);
         const bAvgPlacement =
-          bItems.reduce((sum, item) => sum + (item.averagePlacement || 0), 0) /
+          bItems.reduce((sum: number, item: any) => sum + (item.averagePlacement || 0), 0) /
           (bItems.length || 1);
 
         return aAvgPlacement - bAvgPlacement;
@@ -125,7 +139,6 @@ export class ChampionItemRepository {
           );
         } else {
           await collection.updateOne(
-            
             { championId: champion.championId, "items.itemId": item.itemId },
             {
               $set: {
@@ -202,6 +215,40 @@ export class ChampionItemRepository {
       winrate: winrateRank,
       averagePlacement: averagePlacementRank,
     };
+  }
+
+  // BIS is "Best In Slot", a term used in TFT to mean best items to place on a champion
+  private static async calculateBISItems(updatedChampionItems: any[]) {
+    // Return a Map for easy lookup by championId
+    const bisMap = new Map();
+
+    updatedChampionItems.forEach((champion) => {
+      const topItems = champion.items
+        .sort((a: any, b: any) => Number(a.averagePlacement) - Number(b.averagePlacement))
+        .slice(0, 3); // Only take top 3 items
+
+      bisMap.set(champion.championId, topItems);
+    });
+
+    return bisMap;
+  }
+
+  // Fix the updateBISItems method
+  private static async updateBISItems(
+    collection: any,
+    championId: string,
+    bisMap: Map<string, any[]>,
+    rank: string
+  ) {
+
+    const championBIS = bisMap.get(championId) || [];
+
+    const update = {
+      BIS: championBIS,
+      [`rankBIS.${rank.toLowerCase()}BIS`]: championBIS, 
+    };
+
+    await collection.updateOne({ championId }, { $set: update });
   }
 
   private static async updateTotalGamesCount(db: any, increment: number) {
