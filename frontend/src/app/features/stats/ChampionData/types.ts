@@ -6,7 +6,7 @@ export interface ChampionCardProps {
   winRate: number;
   totalGames: number;
   frequency: number;
-  popularItems: string[];
+  popularItems: any[];
   index: number;
 };
 
@@ -77,7 +77,7 @@ export interface Item {
 
 export interface ChampionItemStats {
   championId: string;
-  [key: string]: Item[] | string; // BIS, masterBIS, grandmasterBIS, challengerBIS
+  [key: string]: Item[] | any  // BIS, masterBIS, grandmasterBIS, challengerBIS
   items: Item[]
 };
 

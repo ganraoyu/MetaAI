@@ -34,7 +34,7 @@ export class MatchFetcher {
 
   private static async fetchPuuids(rank: string, division: string): Promise<PuuidData[]> {
     const allPuuids = await Promise.all(
-      regions.map(async (region) => {
+      regions.slice(0,5).map(async (region) => {
         const client = shortRegionClient(region);
 
         if (["master", "grandmaster", "challenger"].includes(rank.toLowerCase())) {

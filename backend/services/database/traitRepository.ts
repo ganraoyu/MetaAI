@@ -1,16 +1,36 @@
 import { connectDB } from "../../database/db";
 
 export class TraitRepository {
-  static async getAll(rank: string) {
+  private static cache = new Map<string, { data: any; timestamp: number}>();
+  private static CACHE_TTL = 2 * 60 * 1000;
+
+  static async getAll(rank: string): Promise<{ totalGames: number; traitData: any[] }> {
+    const cacheKey = `traits:${rank}`
+    const cached = this.cache.get(cacheKey);
+    
+    if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
+      return cached.data;
+    }
+
     try {
       const db = await connectDB();
-
       const traitsCollection = db.db("SET15").collection("traits");
       const totalGamesCollection = db.db("SET15").collection("totalGames");
 
-      const traitsDocs = await traitsCollection.find().toArray();
+      const isAllRanks = rank === "all";
+      const projection = isAllRanks 
+        ? { traitId: 1, totalGames: 1, wins: 1, winrate: 1, averagePlacement: 1 }
+        : { 
+            traitId: 1, 
+            [`ranks.${rank}`]: 1 
+          };
+
+      const [traitsDocs, totalGamesDoc] = await Promise.all([
+        traitsCollection.find({}, { projection }).toArray(),
+        totalGamesCollection.findOne({ id: "totalGames" }, { projection: { count: 1 } })
+      ]);
+
       let traitsData;
-      
       if (rank !== "all") {
         traitsData = traitsDocs.map((trait) => ({
           traitId: trait.traitId,
@@ -24,14 +44,22 @@ export class TraitRepository {
       } else {
         traitsData = traitsDocs;
       }
-      
-      const totalGamesDoc = await totalGamesCollection.findOne({ id: "totalGames" });
 
       const sortedTraitRanking = traitsData.sort(
         (a, b) => Number(a.averagePlacement) - Number(b.averagePlacement)
       );
 
-      return { totalGames: totalGamesDoc?.count || 0, traitData: sortedTraitRanking };
+      const result = { 
+        totalGames: totalGamesDoc?.count || 0, 
+        traitData: sortedTraitRanking 
+      };
+
+      this.cache.set(cacheKey, {
+        data: result,
+        timestamp: Date.now()
+      });
+
+      return result;
     } catch (error) {
       console.error("Error fetching trait data from DB:", error);
       return { traitData: [], totalGames: 0 };
@@ -40,15 +68,15 @@ export class TraitRepository {
 
   static async updateMany(rank: string, traitRanking: any[]) {
     try {
+      this.cache.clear();
+      
       const db = await connectDB();
-      // Fix: Use correct collection name
       const traitCollection = db.db("SET15").collection("traits");
       
       const updatedTraits = await Promise.all(
         traitRanking.map((trait) => this.updateSingleTrait(traitCollection, rank, trait))
       );
 
-      // Fix: Calculate actual total games
       const totalGamesProcessed = traitRanking.reduce(
         (sum, trait) => sum + (trait.totalGames || 0), 0
       );
@@ -67,13 +95,22 @@ export class TraitRepository {
   }
 
   private static async updateSingleTrait(collection: any, rank: string, trait: any) {
-    // Fix: Use correct field name
-    const existingTrait = await collection.findOne({ traitId: trait.traitId });
+    const existingTrait = await collection.findOne(
+      { traitId: trait.traitId },
+      { 
+        projection: { 
+          traitId: 1, 
+          totalGames: 1, 
+          wins: 1, 
+          averagePlacement: 1,
+          ranks: 1 
+        } 
+      }
+    );
 
     const globalStats = this.calculateGlobalStats(existingTrait, trait);
     const rankStats = this.calculateRankStats(existingTrait, trait, rank);
 
-    // Fix: Use updateOne instead of deprecated update
     await collection.updateOne(
       { traitId: trait.traitId },
       {
@@ -145,11 +182,93 @@ export class TraitRepository {
   private static async updateTotalGamesCount(db: any, increment: number) {
     const totalGamesCollection = db.db("SET15").collection("totalGames");
 
-    // Fix: Use updateOne instead of deprecated update
     await totalGamesCollection.updateOne(
       { id: "totalGames" },
       { $inc: { count: increment } },
       { upsert: true }
     );
+  }
+
+  static async getByTraitIds(traitIds: string[], rank: string) {
+    try {
+      const db = await connectDB();
+      const traitsCollection = db.db("SET15").collection("traits");
+
+      const traitDocs = await traitsCollection
+        .find(
+          { traitId: { $in: traitIds } }, 
+          { 
+            projection: { 
+              traitId: 1, 
+              totalGames: 1, 
+              wins: 1, 
+              winrate: 1, 
+              averagePlacement: 1,
+              [`ranks.${rank}`]: 1
+            } 
+          }
+        )
+        .toArray();
+
+      return { traitData: traitDocs };
+    } catch (error) {
+      console.error("Error fetching specific traits:", error);
+      return { traitData: [] };
+    }
+  }
+
+  static async getTopPerformers(rank: string, limit: number = 10) {
+    try {
+      const db = await connectDB();
+      const traitsCollection = db.db("SET15").collection("traits");
+
+      const isAllRanks = rank === "all";
+      
+      if (isAllRanks) {
+        const topTraits = await traitsCollection
+          .find(
+            { averagePlacement: { $exists: true, $gt: 0 } },
+            { 
+              projection: { 
+                traitId: 1, 
+                averagePlacement: 1, 
+                winrate: 1, 
+                totalGames: 1
+              } 
+            }
+          )
+          .sort({ averagePlacement: 1 }) 
+          .limit(limit)
+          .toArray();
+
+        return { traitData: topTraits };
+      } else {
+        const topTraits = await traitsCollection
+          .aggregate([
+            { $match: { [`ranks.${rank}`]: { $exists: true } } },
+            { 
+              $project: {
+                traitId: 1,
+                rankStats: `$ranks.${rank}`,
+                averagePlacement: `$ranks.${rank}.averagePlacement`
+              }
+            },
+            { $match: { averagePlacement: { $gt: 0 } } },
+            { $sort: { averagePlacement: 1 } },
+            { $limit: limit }
+          ])
+          .toArray();
+
+        return { traitData: topTraits };
+      }
+    } catch (error) {
+      console.error("Error fetching top performing traits:", error);
+      return { traitData: [] };
+    }
+  }
+
+  static clearCache() {
+    this.cache.clear();
+    console.log("Trait cache cleared");
   }
 }

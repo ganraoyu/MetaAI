@@ -4,6 +4,7 @@ import { getTierBackgroundColors } from "../utilities/tierColors";
 import { getCostBorderColors } from "../utilities/costBorderColors";
 import { ChampionCardProps, ChampionCellProps } from "./types";
 import { getRankColor } from "../utilities/rankFontColors";
+import { itemMap } from "../../simulators/battle/utilities/ItemMapping";
 
 const ChampionCell = ({ children, width, index }: ChampionCellProps) => (
   <div
@@ -110,8 +111,7 @@ export const ChampionCard = ({
         {popularItems.map((item, index) => (
           <img
             key={index}
-            src={`../assets/items/combined/${item}.png`}
-            alt={item}
+            src={itemMap[item.itemId.toUpperCase()]?.image}
             className="w-6 h-6 m-1"
           />
         ))}
