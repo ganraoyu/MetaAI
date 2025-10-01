@@ -1,16 +1,36 @@
 import { connectDB } from "../../database/db";
 
 export class ItemRepository {
+  private static cache = new Map<string, { data: any; timestamp: number }>();
+  private static CACHE_TTL = 2 * 60 * 1000; 
+
   static async getAll(rank: string) {
+    const cacheKey = `items:${rank}`;
+    const cached = this.cache.get(cacheKey);
+    
+    if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
+      return cached.data;
+    }
+
     try {
       const db = await connectDB();
-
       const itemsCollection = db.db("SET15").collection("items");
       const totalGamesCollection = db.db("SET15").collection("totalGames");
 
-      const itemsDocs = await itemsCollection.find().toArray();
-      let itemsData;
+      const isAllRanks = rank === "all";
+      const projection = isAllRanks 
+        ? { itemId: 1, totalGames: 1, wins: 1, winrate: 1, averagePlacement: 1 }
+        : { 
+            itemId: 1, 
+            [`ranks.${rank}`]: 1 
+          };
 
+      const [itemsDocs, totalGamesDoc] = await Promise.all([
+        itemsCollection.find({}, { projection }).toArray(),
+        totalGamesCollection.findOne({ id: "totalGames" }, { projection: { count: 1 } })
+      ]);
+
+      let itemsData;
       if (rank !== "all") {
         itemsData = itemsDocs.map((item) => ({
           itemId: item.itemId,
@@ -25,13 +45,21 @@ export class ItemRepository {
         itemsData = itemsDocs;
       }
 
-      const totalGamesDoc = await totalGamesCollection.findOne({ id: "totalGames" });
-
       const sortedItemRanking = itemsData.sort(
         (a, b) => Number(a.averagePlacement) - Number(b.averagePlacement)
       );
 
-      return { totalGames: totalGamesDoc?.count || 0, itemData: sortedItemRanking };
+      const result = { 
+        totalGames: totalGamesDoc?.count || 0, 
+        itemData: sortedItemRanking 
+      };
+
+      this.cache.set(cacheKey, {
+        data: result,
+        timestamp: Date.now()
+      });
+
+      return result;
     } catch (error) {
       console.error("Error fetching item data from DB:", error);
       return { itemData: [], totalGames: 0 };
@@ -40,6 +68,8 @@ export class ItemRepository {
 
   static async updateMany(rank: string, itemRanking: any[]) {
     try {
+      this.cache.clear();
+      
       const db = await connectDB();
       const itemsCollection = db.db("SET15").collection("items");
 
@@ -66,7 +96,18 @@ export class ItemRepository {
   }
 
   private static async updateSingleItem(collection: any, rank: string, item: any) {
-    const existingItem = await collection.findOne({ itemId: item.itemId });
+    const existingItem = await collection.findOne(
+      { itemId: item.itemId },
+      { 
+        projection: { 
+          itemId: 1, 
+          totalGames: 1, 
+          wins: 1, 
+          averagePlacement: 1,
+          ranks: 1 
+        } 
+      }
+    );
 
     const globalStats = this.calculateGlobalStats(existingItem, item);
     const rankStats = this.calculateRankStats(existingItem, item, rank);
@@ -147,5 +188,89 @@ export class ItemRepository {
       { $inc: { count: increment } },
       { upsert: true }
     );
+  }
+
+  static async getByItemIds(itemIds: string[], rank: string) {
+    try {
+      const db = await connectDB();
+      const itemsCollection = db.db("SET15").collection("items");
+
+ 
+      const itemDocs = await itemsCollection
+        .find(
+          { itemId: { $in: itemIds } }, 
+          { 
+            projection: { 
+              itemId: 1, 
+              totalGames: 1, 
+              wins: 1, 
+              winrate: 1, 
+              averagePlacement: 1,
+              [`ranks.${rank}`]: 1
+            } 
+          }
+        )
+        .toArray();
+
+      return { itemData: itemDocs };
+    } catch (error) {
+      console.error("Error fetching specific items:", error);
+      return { itemData: [] };
+    }
+  }
+
+  static async getTopPerformers(rank: string, limit: number = 10) {
+    try {
+      const db = await connectDB();
+      const itemsCollection = db.db("SET15").collection("items");
+
+      const isAllRanks = rank === "all";
+      
+      if (isAllRanks) {
+        const topItems = await itemsCollection
+          .find(
+            { averagePlacement: { $exists: true, $gt: 0 } },
+            { 
+              projection: { 
+                itemId: 1, 
+                averagePlacement: 1, 
+                winrate: 1, 
+                totalGames: 1
+              } 
+            }
+          )
+          .sort({ averagePlacement: 1 }) 
+          .limit(limit)
+          .toArray();
+
+        return { itemData: topItems };
+      } else {
+        const topItems = await itemsCollection
+          .aggregate([
+            { $match: { [`ranks.${rank}`]: { $exists: true } } },
+            { 
+              $project: {
+                itemId: 1,
+                rankStats: `$ranks.${rank}`,
+                averagePlacement: `$ranks.${rank}.averagePlacement`
+              }
+            },
+            { $match: { averagePlacement: { $gt: 0 } } },
+            { $sort: { averagePlacement: 1 } },
+            { $limit: limit }
+          ])
+          .toArray();
+
+        return { itemData: topItems };
+      }
+    } catch (error) {
+      console.error("Error fetching top performing items:", error);
+      return { itemData: [] };
+    }
+  }
+
+  static clearCache() {
+    this.cache.clear();
+    console.log("Item cache cleared");
   }
 }

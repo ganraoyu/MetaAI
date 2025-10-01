@@ -50,7 +50,7 @@ export type Cost = 1 | 2 | 3 | 4 | 5 | 6;
 
 export type TotalGames = number;
 
-export interface ChampionData {
+export interface ChampionStats {
   championId: string;
   averagePlacement: number;
   win: number;
@@ -64,7 +64,21 @@ export interface ChampionData {
 
 export interface ChampionStatsWithTotalGames {
   totalGames: TotalGames;
-  championData: ChampionData[];
+  championData: ChampionStats[];
+};
+
+export interface Item {
+  itemId: string;
+  totalGames: number;
+  wins: number;
+  winrate: number;
+  averagePlacement: number;
+};
+
+export interface ChampionItemStats {
+  championId: string;
+  [key: string]: Item[] | string; // BIS, masterBIS, grandmasterBIS, challengerBIS
+  items: Item[]
 };
 
 export interface ChampionDataContextProps {
@@ -83,11 +97,14 @@ export interface ChampionDataContextProps {
   totalGames: TotalGames;
   setTotalGames: React.Dispatch<React.SetStateAction<TotalGames>>;
 
-  championData: ChampionData[]
-  setChampionData: React.Dispatch<React.SetStateAction<ChampionData[]>>
+  championStats: ChampionStats[]
+  setChampionStats: React.Dispatch<React.SetStateAction<ChampionStats[]>>
 
   championStatsWithTotalGames: ChampionStatsWithTotalGames | null;
   setChampionStatsWithTotalGames: React.Dispatch<React.SetStateAction<ChampionStatsWithTotalGames | null>>;
+
+  championItemStats : ChampionItemStats[];
+  setChampionItemStats: React.Dispatch<React.SetStateAction<ChampionItemStats[]>>
 
   updateChampionData: () => Promise<void>; 
 };

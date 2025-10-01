@@ -13,7 +13,6 @@ export const updateAllStatistics = async (req: Request, res: Response) => {
       updatedTraits,
       traitTotalGames,
       updatedChampionItems,
-      championItemTotalGames,
     } = await StatisticsService.updateAllStatistics(rank);
 
     res.json({
@@ -24,9 +23,8 @@ export const updateAllStatistics = async (req: Request, res: Response) => {
       updatedTraits,
       traitTotalGames,
       updatedChampionItems,
-      championItemTotalGames,
     });
-    
+
   } catch (error: any) {
     console.error(`Error fetching ${rank} players:`, error.message);
     res.status(500).send(`Error fetching ${rank} players`);

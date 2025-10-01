@@ -1,21 +1,43 @@
 import { connectDB } from "../../database/db";
 
 export class ChampionRepository {
+  private static cache = new Map<string, { data: any; timestamp: number }>();
+  private static CACHE_TTL = 2 * 60 * 1000; 
+
   static async getAll(rank: string) {
+    const cacheKey = `champions:${rank}`;
+    const cached = this.cache.get(cacheKey);
+    
+    if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
+      return cached.data;
+    }
+
     try {
       const db = await connectDB();
       const championCollection = db.db("SET15").collection("champions");
       const totalGamesCollection = db.db("SET15").collection("totalGames");
 
-      // Get all champions
-      const championsDocs = await championCollection.find().toArray();
-      const totalGamesDoc = await totalGamesCollection.findOne({ id: "totalGames" });
+      const isAllRanks = rank === "all";
+      const projection = isAllRanks 
+        ? { championId: 1, totalGames: 1, wins: 1, winrate: 1, averagePlacement: 1, cost: 1 }
+        : { 
+            championId: 1, 
+            cost: 1,
+            [`ranks.${rank}`]: 1 
+          };
+
+      const [championsDocs, totalGamesDoc] = await Promise.all([
+        championCollection.find({}, { projection }).toArray(),
+        totalGamesCollection.findOne({ id: "totalGames" }, { projection: { count: 1 } })
+      ]);
+
       const totalGames = totalGamesDoc?.count || 0;
 
       let championsData;
       if (rank !== "all") {
         championsData = championsDocs.map((champion) => ({
           championId: champion.championId,
+          cost: champion.cost,
           ...(champion.ranks?.[rank] || {
             totalGames: 0,
             wins: 0,
@@ -32,18 +54,27 @@ export class ChampionRepository {
         (a, b) => Number(a.averagePlacement) - Number(b.averagePlacement)
       );
 
-      return {
+      const result = {
         totalGames: totalGames,
         championData: sortedChampions,
       };
+
+      this.cache.set(cacheKey, {
+        data: result,
+        timestamp: Date.now()
+      });
+
+      return result;
     } catch (error) {
       console.error("Error fetching champion data from DB:", error);
-      return { champions: [], totalGames: 0 };
+      return { championData: [], totalGames: 0 };
     }
   }
 
   static async updateMany(rank: string, championsRanking: any[]) {
     try {
+      this.cache.clear();
+      
       const db = await connectDB();
       const championsCollection = db.db("SET15").collection("champions");
 
@@ -66,18 +97,32 @@ export class ChampionRepository {
     }
   }
 
-  // Extract champion update logic
   private static async updateSingleChampion(collection: any, rank: string, champion: any) {
-    const existingChampion = await collection.findOne({ championId: champion.championId });
+    const existingChampion = await collection.findOne(
+      { championId: champion.championId },
+      { 
+        projection: { 
+          championId: 1, 
+          totalGames: 1, 
+          wins: 1, 
+          averagePlacement: 1,
+          ranks: 1,
+          cost: 1
+        } 
+      }
+    );
 
     const globalStats = this.calculateGlobalStats(existingChampion, champion);
     const rankStats = this.calculateRankStats(existingChampion, champion, rank);
 
     // Single update operation combining both global and rank stats
+    // This uses the championId index for the update
     await collection.updateOne(
       { championId: champion.championId },
       {
         $set: {
+          championId: champion.championId,
+          cost: champion.cost || existingChampion?.cost || 1,
           ...globalStats,
           [`ranks.${rank}`]: rankStats,
         },
@@ -92,7 +137,6 @@ export class ChampionRepository {
     };
   }
 
-  // Extract global stats calculation
   private static calculateGlobalStats(existingChampion: any, champion: any) {
     const totalGames = (existingChampion?.totalGames || 0) + champion.totalGames;
     const wins = (existingChampion?.wins || 0) + champion.wins;
@@ -110,7 +154,7 @@ export class ChampionRepository {
     return { totalGames, wins, winrate, averagePlacement };
   }
 
-  // Extract rank-specific stats calculation
+
   private static calculateRankStats(existingChampion: any, champion: any, rank: string) {
     const winsRank = (existingChampion?.ranks?.[rank]?.wins || 0) + champion.wins;
     const totalGamesRank = (existingChampion?.ranks?.[rank]?.totalGames || 0) + champion.totalGames;
@@ -134,7 +178,6 @@ export class ChampionRepository {
     };
   }
 
-  // Extract total games update logic
   private static async updateTotalGamesCount(db: any, increment: number) {
     const totalGamesCollection = db.db("SET15").collection("totalGames");
 
@@ -143,5 +186,123 @@ export class ChampionRepository {
       { $inc: { count: increment } },
       { upsert: true }
     );
+  }
+
+  // Additional helper methods for better performance
+  static async getByChampionIds(championIds: string[], rank: string) {
+    try {
+      const db = await connectDB();
+      const championCollection = db.db("SET15").collection("champions");
+
+      const championDocs = await championCollection
+        .find(
+          { championId: { $in: championIds } }, // Uses championId index
+          { 
+            projection: { 
+              championId: 1, 
+              totalGames: 1, 
+              wins: 1, 
+              winrate: 1, 
+              averagePlacement: 1,
+              cost: 1,
+              [`ranks.${rank}`]: 1
+            } 
+          }
+        )
+        .toArray();
+
+      return { championData: championDocs };
+    } catch (error) {
+      console.error("Error fetching specific champions:", error);
+      return { championData: [] };
+    }
+  }
+
+  // Get top performing champions using averagePlacement index
+  static async getTopPerformers(rank: string, limit: number = 10) {
+    try {
+      const db = await connectDB();
+      const championCollection = db.db("SET15").collection("champions");
+
+      const isAllRanks = rank === "all";
+      
+      if (isAllRanks) {
+        // For "all" ranks, sort by global averagePlacement
+        const topChampions = await championCollection
+          .find(
+            { averagePlacement: { $exists: true, $gt: 0 } },
+            { 
+              projection: { 
+                championId: 1, 
+                averagePlacement: 1, 
+                winrate: 1, 
+                totalGames: 1,
+                cost: 1
+              } 
+            }
+          )
+          .sort({ averagePlacement: 1 }) // Uses averagePlacement index
+          .limit(limit)
+          .toArray();
+
+        return { championData: topChampions };
+      } else {
+        // For specific ranks, use aggregation
+        const topChampions = await championCollection
+          .aggregate([
+            { $match: { [`ranks.${rank}`]: { $exists: true } } },
+            { 
+              $project: {
+                championId: 1,
+                cost: 1,
+                rankStats: `$ranks.${rank}`,
+                averagePlacement: `$ranks.${rank}.averagePlacement`
+              }
+            },
+            { $match: { averagePlacement: { $gt: 0 } } },
+            { $sort: { averagePlacement: 1 } },
+            { $limit: limit }
+          ])
+          .toArray();
+
+        return { championData: topChampions };
+      }
+    } catch (error) {
+      console.error("Error fetching top performers:", error);
+      return { championData: [] };
+    }
+  }
+
+
+  static clearCache() {
+    this.cache.clear();
+    console.log("🗑️ Champion cache cleared");
+  }
+
+  // Get champion statistics by cost (useful for meta analysis)
+  static async getChampionsByCost(cost: number, rank: string) {
+    try {
+      const db = await connectDB();
+      const championCollection = db.db("SET15").collection("champions");
+
+      const isAllRanks = rank === "all";
+      const projection = isAllRanks 
+        ? { championId: 1, cost: 1, totalGames: 1, wins: 1, winrate: 1, averagePlacement: 1 }
+        : { 
+            championId: 1, 
+            cost: 1,
+            [`ranks.${rank}`]: 1 
+          };
+
+      const champions = await championCollection
+        .find({ cost: cost }, { projection })
+        .sort({ averagePlacement: 1 })
+        .toArray();
+
+      return { championData: champions };
+    } catch (error) {
+      console.error("Error fetching champions by cost:", error);
+      return { championData: [] };
+    }
   }
 }

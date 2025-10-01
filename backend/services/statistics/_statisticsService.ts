@@ -109,7 +109,7 @@ export class StatisticsService {
       const { updatedChampions, totalGames: championTotalGames } = await ChampionRepository.updateMany(rank, championRanking);
       const { updatedItems, totalGames: itemTotalGames } = await ItemRepository.updateMany(rank, itemRanking);
       const { updatedTraits, totalGames: traitTotalGames } = await TraitRepository.updateMany(rank, traitRanking);
-      const { updatedChampionItems: updatedChampionItems, totalGames: championItemTotalGames} = await ChampionItemRepository.updateMany(rank, championItemRanking);
+      const { updatedChampionItems: updatedChampionItems } = await ChampionItemRepository.updateMany(rank, championItemRanking);
 
       console.log(
         `Updated all statistics for ${rank} ${division}: ${updatedChampions?.length} champions, ${updatedItems.length} items, ${updatedTraits.length} traits`
@@ -123,7 +123,6 @@ export class StatisticsService {
         updatedTraits,
         traitTotalGames,
         updatedChampionItems,
-        championItemTotalGames
       };
     } catch
     

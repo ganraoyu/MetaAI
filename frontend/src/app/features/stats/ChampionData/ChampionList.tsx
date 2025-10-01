@@ -19,9 +19,9 @@ const HeaderCell = ({
 
 
 export const ChampionList = () => {
-  const { totalGames, championData } = useChampionDataContext(); 
+  const { totalGames, championStats, championItemStats } = useChampionDataContext(); 
   console.log("Total games in ChampionList:", totalGames);
-  console.log(championData)
+  console.log(championStats)
 
   return (
     <div className="flex flex-col justify-center items-center w-full mt-[-0.4rem]">
@@ -39,7 +39,7 @@ export const ChampionList = () => {
 
       {/* Champion Rows */}
       <div className="w-full">  
-        {championData.map((champion, index) => (
+        {championStats.map((champion, index) => (
           <ChampionCard 
             key={index} 
             champion={champion.championId}  
@@ -50,7 +50,7 @@ export const ChampionList = () => {
             averagePlacement={champion.averagePlacement}
             totalGames={champion.totalGames}
             frequency={champion.totalGames / totalGames }
-            popularItems={champion.popularItems || []} 
+            popularItems={[]} 
           />
         ))}
       </div>

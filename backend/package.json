@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "setup-db": "ts-node scripts/setup.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node-dev --respawn --transpile-only server.ts"
   },

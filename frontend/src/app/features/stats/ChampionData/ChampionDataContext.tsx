@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { Cost, Rank, ChampionData, ChampionDataContextProps, ChampionStatsWithTotalGames } from "./types";
+import { Cost, Rank, ChampionStats, ChampionDataContextProps, ChampionStatsWithTotalGames, ChampionItemStats } from "./types";
 
 const ChampionDataContext = createContext<ChampionDataContextProps | null>(null);
 
@@ -14,17 +14,22 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
   const [table, setTable] = useState<boolean>(true);
   const [chart, setChart] = useState<boolean>(false);
   const [totalGames, setTotalGames] = useState<number>(0);
-  const [championData, setChampionData] = useState<ChampionData[]>([]);
+  const [championStats, setChampionStats] = useState<ChampionStats[]>([]);
   const [championStatsWithTotalGames, setChampionStatsWithTotalGames] = useState<ChampionStatsWithTotalGames | null>(null);
+  const [championItemStats, setChampionItemStats] = useState<ChampionItemStats[]>([]);
 
   // fetch data on mount
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/statistics/all/champions");
-        setTotalGames(response.data.totalGames);
-        setChampionData(response.data.championData);
-        setChampionStatsWithTotalGames(response.data.championStatsWithTotalGames);
+        const championStats = await axios.get(`http://localhost:3000/statistics/all/champions`);
+        const championItemStats = await axios.get(`http://localhost:3000/statistics/all/championItems`);
+        
+        setTotalGames(championStats.data.totalGames);
+        setChampionStats(championStats.data.championData);
+        setChampionStatsWithTotalGames(championStats.data.championStatsWithTotalGames);
+        setChampionItemStats(championItemStats.data.championData);
+        console.log(championItemStats.data.championData)
       } catch (error) {
         console.error("Error fetching champion data:", error);
       }
@@ -38,7 +43,7 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
       const response = await axios.get("http://localhost:3000/statistics/challenger/allStatistics");
 
       setTotalGames(response.data.totalGames.count);
-      setChampionData(response.data.updatedChampions);  
+      setChampionStats(response.data.updatedChampions);  
       setChampionStatsWithTotalGames(response.data);
     } catch (error) {
       console.error("Error updating champion data:", error);
@@ -57,8 +62,10 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
       setChart,
       totalGames,
       setTotalGames,
-      championData,
-      setChampionData,
+      championStats,
+      setChampionStats,
+      championItemStats,
+      setChampionItemStats,
       championStatsWithTotalGames,
       setChampionStatsWithTotalGames,
       updateChampionData
