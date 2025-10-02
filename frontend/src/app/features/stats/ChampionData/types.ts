@@ -82,6 +82,9 @@ export interface ChampionItemStats {
 };
 
 export interface ChampionDataContextProps {
+  searchValue: string;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  
   rank: Rank[];
   setRank: React.Dispatch<React.SetStateAction<Rank[]>>;
 

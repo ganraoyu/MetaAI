@@ -9,7 +9,8 @@ interface ChampionDataProviderProps {
 }
 
 export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) => {
-  const [rank, setRank] = useState<Rank[]>(["Challenger"]);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [rank, setRank] = useState<Rank[]>(["Challenger", "Grandmaster", "Master", "Diamond", "Platinum", "Gold", "Silver","Bronze", "Iron"]);
   const [cost, setCost] = useState<Cost[]>([]);
   const [table, setTable] = useState<boolean>(true);
   const [chart, setChart] = useState<boolean>(false);
@@ -18,25 +19,24 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
   const [championStatsWithTotalGames, setChampionStatsWithTotalGames] = useState<ChampionStatsWithTotalGames | null>(null);
   const [championItemStats, setChampionItemStats] = useState<ChampionItemStats[]>([]);
 
-  // fetch data on mount
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const championStats = await axios.get(`http://localhost:3000/statistics/all/champions`);
-        const championItemStats = await axios.get(`http://localhost:3000/statistics/all/championItems`);
-        
-        setTotalGames(championStats.data.totalGames);
-        setChampionStats(championStats.data.championData);
-        setChampionStatsWithTotalGames(championStats.data.championStatsWithTotalGames);
-        setChampionItemStats(championItemStats.data.championData);
-        console.log(championItemStats.data.championData)
-      } catch (error) {
-        console.error("Error fetching champion data:", error);
-      }
-    };
+    useEffect(() => {
+      const fetchData = async (rank: string[]) => {
+        try {
+          const championStats = await axios.get(`http://localhost:3000/statistics/${rank[0]}/champions`);
+          const championItemStats = await axios.get(`http://localhost:3000/statistics/${rank[0]}/championItems`);
+          
+          setTotalGames(championStats.data.totalGames);
+          setChampionStats(championStats.data.championData);
+          setChampionStatsWithTotalGames(championStats.data.championStatsWithTotalGames);
+          setChampionItemStats(championItemStats.data.championData);
+          console.log(championItemStats.data.championData)
+        } catch (error) {
+          console.error("Error fetching champion data:", error);
+        }
+      };
 
-    fetchData();
-  }, []);
+    fetchData(rank);
+  }, [rank]);
 
   const updateChampionData = async () => {
     try { 
@@ -52,6 +52,8 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
 
   return (
     <ChampionDataContext.Provider value={{
+      searchValue,
+      setSearchValue,
       rank, 
       setRank, 
       cost, 

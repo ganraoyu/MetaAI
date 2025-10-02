@@ -29,15 +29,11 @@ export const RankToggle = () => {
     return (
       <div
         key={r}
-        className="flex items-center justify-between p-2 hover:bg-[#2d2d2d] cursor-pointer"
+        className="flex items-center justify-between p-2 h-[2.5rem] hover:bg-[#2d2d2d] cursor-pointer"
         onClick={toggleRank}
       >
         <div className="flex items-center">
-          <img
-            src={`../assets/ranks/${r}.png`}
-            alt={r}
-            className="w-6 h-6"
-          />
+          <img src={`../assets/ranks/${r}.png`} alt={r} className="w-6 h-6" />
           <p className="text-[0.8rem] px-1 whitespace-nowrap">{r}</p>
         </div>
         <div className="w-4 h-4 border border-gray-400 flex items-center justify-center mr-2">
@@ -49,7 +45,6 @@ export const RankToggle = () => {
 
   return (
     <div className="relative hover:cursor-pointer w-fit">
-      
       {/* Toggle Button */}
       <div
         className="flex items-center justify-between bg-[#272525] hover:bg-[#3a3838] min-w-[9rem] h-[2rem] rounded-md px-2"
@@ -61,7 +56,7 @@ export const RankToggle = () => {
             alt={lowestSelectedRank}
             className="w-6 h-6"
           />
-            <p className="text-[0.8rem] px-2 whitespace-nowrap overflow-hidden text-ellipsis flex-1 text-center">
+          <p className="text-[0.8rem] px-2 whitespace-nowrap overflow-hidden text-ellipsis flex-1 text-center">
             {lowestSelectedRank}
             {rank.length > 1 ? "+" : ""}
           </p>
@@ -72,7 +67,17 @@ export const RankToggle = () => {
       {/* Dropdown Menu */}
       {openDropDown && (
         <div className="absolute top-full min-w-[12rem] mt-1 bg-[#272525] rounded-md shadow-lg z-10">
-          {ranks.map(renderRankItem)}
+          <div>
+            {ranks.map(renderRankItem)}
+          </div>
+          <div className="flex items-center justify-center hover:bg-[#2d2d2d]">
+            <button className="min-w-[12rem] h-[2.5rem]" onClick={() => {
+              setRank(["Challenger"]);
+              setOpenDropDown(false);
+              }}>
+              <p className="text-[0.7rem]">Apply</p>
+            </button>
+          </div>
         </div>
       )}
     </div>

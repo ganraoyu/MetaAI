@@ -14,9 +14,13 @@ const HeaderCell = ({ children, width, isFirst = false }: HeaderCellProps) => (
 );
 
 export const ChampionList = () => {
-  const { totalGames, championStats, championItemStats } = useChampionDataContext();
+  const { totalGames, championStats, championItemStats, searchValue } = useChampionDataContext();
   console.log("Total games in ChampionList:", totalGames);
   console.log(championStats);
+
+  const filteredChampions = championStats.filter((champion) => 
+     champion.championId.toLowerCase().includes(searchValue.toLowerCase())
+  );
 
   return (
     <div className="flex flex-col justify-center items-center w-full mt-[-0.4rem]">
@@ -35,7 +39,7 @@ export const ChampionList = () => {
 
       {/* Champion Rows */}
       <div className="w-full">
-        {championStats.map((champion, index) => (
+        {filteredChampions.map((champion, index) => (
           <ChampionCard
             key={index}
             champion={champion.championId}
