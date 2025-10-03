@@ -8,19 +8,19 @@ import { getChampionItemData, getUpdatedChampionItemData } from "../../controlle
 
 const router: Router = express.Router();
 
-router.get("/:rank/allStatistics", updateAllStatistics);
+router.get("/allStatistics", updateAllStatistics);
 
 // Above Master endpoints
-router.get("/:rank/champions", getAboveMasterChampionData);
-router.get("/update/:rank/champions", getUpdatedAboveMasterChampionData);
+router.get("/champions", getAboveMasterChampionData);
+router.get("/update/champions", getUpdatedAboveMasterChampionData);
 
-router.get("/:rank/traits", getAboveMasterTraitsData);
-router.get("/update/:rank/traits", getUpdatedAboveMasterTraitsData);
+router.get("/traits", getAboveMasterTraitsData);
+router.get("/update/traits", getUpdatedAboveMasterTraitsData);
 
-router.get("/:rank/items", getAboveMasterItemsData);
-router.get("/update/:rank/items", getUpdatedAboveMasterItemsData);
+router.get("/items", getAboveMasterItemsData);
+router.get("/update/items", getUpdatedAboveMasterItemsData);
 
-router.get("/:rank/championItems" , getChampionItemData);
-router.get("/update/:rank/championItems", getUpdatedChampionItemData);
+router.get("/championItems" , getChampionItemData);
+router.get("/update/championItems", getUpdatedChampionItemData);
 
 export default router;

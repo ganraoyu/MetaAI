@@ -5,31 +5,33 @@ import { TraitProcessor } from "./traitProcessor";
 import { TraitRepository } from "../database/traitRepository";
 import { ItemProcessor } from "./itemProcessor";
 import { ItemRepository } from "../database/itemRepository";
-import { ChampionItemProcessor } from "./championItemProcessor"
+import { ChampionItemProcessor } from "./championItemProcessor";
 import { ChampionItemRepository } from "../database/championItemRepository";
+
 // Generic data service for fetch → process → DB operations
 class DataService {
   constructor(
     private processor: { processMatches: (matches: any[]) => any[] },
-    private repository: { getAll: (rank: string) => any; updateMany: (rank: string, data: any[]) => any }
+    private repository: {
+      getAll: (ranks: string[]) => any;
+      updateMany: (ranks: string[], data: any[]) => any;
+    }
   ) {}
 
   // Fetch + process live match data
-  async getData(rank: string, division: string = "") {
-    const matches = await MatchFetcher.fetchMatches(rank, division);
+  async getData(ranks: string[], division: string = "") {
+    const matches = await MatchFetcher.fetchMatches(ranks.slice(0, 1), division);
     return this.processor.processMatches(matches);
   }
 
-  // Get data from DB
-  async getDataFromDB(rank: string) {
-    return this.repository.getAll(rank);
+  async getDataFromDB(ranks: string[]) {
+    return this.repository.getAll(ranks);
   }
 
   // Fetch live data and update DB
-  async updateDBData(rank: string, typeRanking: any[]) {
-    return this.repository.updateMany(rank, typeRanking);
+  async updateDBData(ranks: string[], typeRanking: any[]) {
+    return this.repository.updateMany(ranks, typeRanking);
   }
-
 }
 
 export const ChampionService = new DataService(ChampionProcessor, ChampionRepository);
@@ -39,80 +41,91 @@ export const ChampionItemService = new DataService(ChampionItemProcessor, Champi
 
 export class StatisticsService {
   // Champion methods
-  static async getChampionData(rank: string, division: string = "") {
-    return ChampionService.getData(rank, division);
+  static async getChampionData(ranks: string[], division: string = "") {
+    return ChampionService.getData(ranks, division);
   }
 
-  static async getChampionDataFromDB(rank: string) {
-    return ChampionService.getDataFromDB(rank);
+  static async getChampionDataFromDB(ranks: string[]) {
+    return ChampionService.getDataFromDB(ranks);
   }
 
-  static async updateChampionStatistics(rank: string, championData: any[]) {
-    return ChampionService.updateDBData(rank, championData);
+  static async updateChampionStatistics(ranks: string[], championData: any[]) {
+    return ChampionService.updateDBData(ranks, championData);
   }
 
   // Trait methods
-  static async getTraitData(rank: string, division: string = "") {
-    return TraitService.getData(rank, division);
+  static async getTraitData(ranks: string[], division: string = "") {
+    return TraitService.getData(ranks, division);
   }
 
-  static async getTraitDataFromDB(rank: string) {
-    return TraitService.getDataFromDB(rank);
+  static async getTraitDataFromDB(ranks: string[]) {
+    return TraitService.getDataFromDB(ranks);
   }
 
-  static async updateTraitStatistics(rank:string, traitData: any[]) {
-    return TraitService.updateDBData(rank, traitData);
+  static async updateTraitStatistics(ranks: string[], traitData: any[]) {
+    return TraitService.updateDBData(ranks, traitData);
   }
 
   // Item methods
-  static async getItemData(rank: string, division: string = "") {
-    return ItemService.getData(rank, division);
+  static async getItemData(ranks: string[], division: string = "") {
+    return ItemService.getData(ranks, division);
   }
 
-  static async getItemDataFromDB(rank: string) {
-    return ItemService.getDataFromDB(rank);
+  static async getItemDataFromDB(ranks: string[]) {
+    return ItemService.getDataFromDB(ranks);
   }
 
-  static async updateItemStatistics(rank:string, itemData: any[]) {
-    return ItemService.updateDBData(rank, itemData);
-  }
-  static async getChampionItemData(rank: string, division: string = "") {
-    return ChampionItemService.getData(rank, division);
+  static async updateItemStatistics(ranks: string[], itemData: any[]) {
+    return ItemService.updateDBData(ranks, itemData);
   }
 
-  static async getChampionItemDataFromDB(rank: string) {
-    return ChampionItemService.getDataFromDB(rank);
+  // Champion Item methods
+  static async getChampionItemData(ranks: string[], division: string = "") {
+    return ChampionItemService.getData(ranks, division);
   }
 
-  static async updateChampionItemStatistics(rank: string, championData: any[]) {
-    return ChampionItemService.updateDBData(rank, championData);
+  static async getChampionItemDataFromDB(ranks: string[]) {
+    return ChampionItemService.getDataFromDB(ranks);
   }
 
-  static async updateAllStatistics(rank: string, division: string = "") {
+  static async updateChampionItemStatistics(ranks: string[], championData: any[]) {
+    return ChampionItemService.updateDBData(ranks, championData);
+  }
+
+  // Update all statistics
+  static async updateAllStatistics(ranks: string[], division: string = "") {
     try {
-      
-      // Fetch live match data for this rank/division
-      const matches = await MatchFetcher.fetchMatches(rank, division);
+      const matches = await MatchFetcher.fetchMatches(ranks.slice(0, 1), division);
 
       if (!matches || !matches.length) {
-        console.log(`No matches found for ${rank} ${division}`);
+        console.log(`No matches found for ${ranks.join(", ")} ${division}`);
         return { updatedChampions: [], updatedTraits: [], totalGames: 0 };
       }
 
-      // Process champion and trait data
       const championRanking = ChampionProcessor.processMatches(matches);
       const itemRanking = ItemProcessor.processMatches(matches);
       const traitRanking = TraitProcessor.processMatches(matches);
       const championItemRanking = ChampionItemProcessor.processMatches(matches);
-   
-      // Update DB for both
-      const { updatedChampions, totalGames: championTotalGames } = await ChampionRepository.updateMany(rank, championRanking);
-      const { updatedItems, totalGames: itemTotalGames } = await ItemRepository.updateMany(rank, itemRanking);
-      const { updatedTraits, totalGames: traitTotalGames } = await TraitRepository.updateMany(rank, traitRanking);
-      const { updatedChampionItems: updatedChampionItems } = await ChampionItemRepository.updateMany(rank, championItemRanking);
+
+      const { updatedChampions, totalGames: championTotalGames } =
+        await ChampionRepository.updateMany(ranks, championRanking);
+      const { updatedItems, totalGames: itemTotalGames } = await ItemRepository.updateMany(
+        ranks,
+        itemRanking
+      );
+      const { updatedTraits, totalGames: traitTotalGames } = await TraitRepository.updateMany(
+        ranks,
+        traitRanking
+      );
+      const { updatedChampionItems } = await ChampionItemRepository.updateMany(
+        ranks,
+        championItemRanking
+      );
 
       console.log(
-        `Updated all statistics for ${rank} ${division}: ${updatedChampions?.length} champions, ${updatedItems.length} items, ${updatedTraits.length} traits`
+        `Updated all statistics for ${ranks.join(", ")} ${division}: ${
+          updatedChampions?.length
+        } champions, ${updatedItems.length} items, ${updatedTraits.length} traits`
       );
 
       return {
@@ -124,11 +137,9 @@ export class StatisticsService {
         traitTotalGames,
         updatedChampionItems,
       };
-    } catch
-    
-    (error: any) {
+    } catch (error: any) {
       console.error("Error updating all statistics:", error.message);
       throw new Error("Failed to update all statistics");
     }
   }
-};
+}

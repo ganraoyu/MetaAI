@@ -3,12 +3,12 @@ import { regions, regionMapping } from "../../utilities/regionMappings";
 import { SummonerData, PuuidData, MatchIdData } from "./types";
 
 export class MatchFetcher {
-  static async fetchMatches(rank: string, division: string = ""): Promise<any[]> {
+  static async fetchMatches(rank: string[], division: string = ""): Promise<any[]> {
     try {
-      const puuidData = await this.fetchPuuids(rank, division);
+      const puuidData = await this.fetchPuuids(rank[0], division);
       if (!puuidData.length) throw new Error(`No ${rank} players found`);
 
-      const summonerPuuids = ["master", "grandmaster", "challenger"].includes(rank.toLowerCase())
+      const summonerPuuids = ["master", "grandmaster", "challenger"].includes(rank[0].toLowerCase())
         ? puuidData
         : await this.fetchSummonerPuuids(puuidData as any);
 

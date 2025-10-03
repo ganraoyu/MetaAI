@@ -1,13 +1,13 @@
 import { connectDB } from "../../database/db";
 
 export class TraitRepository {
-  private static cache = new Map<string, { data: any; timestamp: number}>();
+  private static cache = new Map<string, { data: any; timestamp: number }>();
   private static CACHE_TTL = 2 * 60 * 1000;
 
-  static async getAll(rank: string): Promise<{ totalGames: number; traitData: any[] }> {
-    const cacheKey = `traits:${rank}`
+  static async getAll(ranks: string[]): Promise<{ totalGames: number; traitData: any[] }> {
+    const cacheKey = `traits:${ranks.join(",")}`;
     const cached = this.cache.get(cacheKey);
-    
+
     if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
       return cached.data;
     }
@@ -17,47 +17,38 @@ export class TraitRepository {
       const traitsCollection = db.db("SET15").collection("traits");
       const totalGamesCollection = db.db("SET15").collection("totalGames");
 
-      const isAllRanks = rank === "all";
-      const projection = isAllRanks 
-        ? { traitId: 1, totalGames: 1, wins: 1, winrate: 1, averagePlacement: 1 }
-        : { 
-            traitId: 1, 
-            [`ranks.${rank}`]: 1 
-          };
+      const projection: any = { traitId: 1, totalGames: 1, wins: 1, winrate: 1, averagePlacement: 1 };
+      ranks.forEach(rank => projection[`ranks.${rank}`] = 1);
 
       const [traitsDocs, totalGamesDoc] = await Promise.all([
         traitsCollection.find({}, { projection }).toArray(),
-        totalGamesCollection.findOne({ id: "totalGames" }, { projection: { count: 1 } })
+        totalGamesCollection.findOne({ id: "totalGames" }, { projection: { count: 1 } }),
       ]);
 
-      let traitsData;
-      if (rank !== "all") {
-        traitsData = traitsDocs.map((trait) => ({
-          traitId: trait.traitId,
-          ...(trait.ranks?.[rank] || {
+      const traitsData = traitsDocs.map(trait => {
+        const rankData: Record<string, any> = {};
+        ranks.forEach(rank => {
+          rankData[rank] = trait.ranks?.[rank] || {
             totalGames: 0,
             wins: 0,
             winrate: 0,
             averagePlacement: 0,
-          }),
-        }));
-      } else {
-        traitsData = traitsDocs;
-      }
+          };
+        });
+
+        return { traitId: trait.traitId, ...rankData };
+      });
 
       const sortedTraitRanking = traitsData.sort(
-        (a, b) => Number(a.averagePlacement) - Number(b.averagePlacement)
+        (a, b) => {
+          const aAvgPlacement = ranks.length > 0 ? (a as any)[ranks[0]]?.averagePlacement || 0 : 0;
+          const bAvgPlacement = ranks.length > 0 ? (b as any)[ranks[0]]?.averagePlacement || 0 : 0;
+          return Number(aAvgPlacement) - Number(bAvgPlacement);
+        }
       );
 
-      const result = { 
-        totalGames: totalGamesDoc?.count || 0, 
-        traitData: sortedTraitRanking 
-      };
-
-      this.cache.set(cacheKey, {
-        data: result,
-        timestamp: Date.now()
-      });
+      const result = { totalGames: totalGamesDoc?.count || 0, traitData: sortedTraitRanking };
+      this.cache.set(cacheKey, { data: result, timestamp: Date.now() });
 
       return result;
     } catch (error) {
@@ -66,26 +57,23 @@ export class TraitRepository {
     }
   }
 
-  static async updateMany(rank: string, traitRanking: any[]) {
+  static async updateMany(ranks: string[], traitRanking: any[]) {
     try {
       this.cache.clear();
-      
       const db = await connectDB();
       const traitCollection = db.db("SET15").collection("traits");
-      
+
       const updatedTraits = await Promise.all(
-        traitRanking.map((trait) => this.updateSingleTrait(traitCollection, rank, trait))
+        traitRanking.map(trait =>
+          Promise.all(ranks.map(rank => this.updateSingleTrait(traitCollection, rank, trait)))
+            .then(() => trait)
+        )
       );
 
-      const totalGamesProcessed = traitRanking.reduce(
-        (sum, trait) => sum + (trait.totalGames || 0), 0
-      );
-
+      const totalGamesProcessed = traitRanking.reduce((sum, trait) => sum + (trait.totalGames || 0), 0);
       await this.updateTotalGamesCount(db, totalGamesProcessed);
 
-      const sortedUpdatedTraits = updatedTraits.sort(
-        (a, b) => Number(a.averagePlacement) - Number(b.averagePlacement)
-      );
+      const sortedUpdatedTraits = updatedTraits.sort((a, b) => Number(a.averagePlacement) - Number(b.averagePlacement));
 
       return { updatedTraits: sortedUpdatedTraits, totalGames: totalGamesProcessed };
     } catch (error: any) {
@@ -97,15 +85,7 @@ export class TraitRepository {
   private static async updateSingleTrait(collection: any, rank: string, trait: any) {
     const existingTrait = await collection.findOne(
       { traitId: trait.traitId },
-      { 
-        projection: { 
-          traitId: 1, 
-          totalGames: 1, 
-          wins: 1, 
-          averagePlacement: 1,
-          ranks: 1 
-        } 
-      }
+      { projection: { traitId: 1, totalGames: 1, wins: 1, averagePlacement: 1, ranks: 1 } }
     );
 
     const globalStats = this.calculateGlobalStats(existingTrait, trait);
@@ -113,40 +93,27 @@ export class TraitRepository {
 
     await collection.updateOne(
       { traitId: trait.traitId },
-      {
-        $set: {
-          traitId: trait.traitId,
-          ...globalStats,
-          [`ranks.${rank}`]: rankStats,
-        },
-      },
+      { $set: { traitId: trait.traitId, ...globalStats, [`ranks.${rank}`]: rankStats } },
       { upsert: true }
     );
-    
-    console.log(`Updated stats for trait ${trait.traitId}`);
+
+    console.log(`Updated stats for trait ${trait.traitId} (rank: ${rank})`);
     return { traitId: trait.traitId, ...globalStats };
   }
 
   private static calculateGlobalStats(existingTrait: any, newTrait: any) {
-    const prevStats = {
-      wins: existingTrait?.wins || 0,
-      totalGames: existingTrait?.totalGames || 0,
-      averagePlacement: existingTrait?.averagePlacement || 0,
-    };
+    const wins = (existingTrait?.wins || 0) + (newTrait.wins || 0);
+    const totalGames = (existingTrait?.totalGames || 0) + (newTrait.totalGames || 0);
 
-    const wins = prevStats.wins + (newTrait.wins || 0);
-    const totalGames = prevStats.totalGames + (newTrait.totalGames || 0);
-
-    const averagePlacement =
-      totalGames > 0
-        ? Number(
-            (
-              ((newTrait.placement ?? newTrait.averagePlacement ?? 0) * (newTrait.totalGames || 0) +
-                prevStats.averagePlacement * prevStats.totalGames) /
-              totalGames
-            ).toFixed(2)
-          )
-        : 0;
+    const averagePlacement = totalGames > 0
+      ? Number(
+          (
+            ((newTrait.placement ?? newTrait.averagePlacement ?? 0) * (newTrait.totalGames || 0) +
+              (existingTrait?.averagePlacement || 0) * (existingTrait?.totalGames || 0)) /
+            totalGames
+          ).toFixed(2)
+        )
+      : 0;
 
     const winrate = totalGames > 0 ? Number(((wins / totalGames) * 100).toFixed(2)) : 0;
 
@@ -154,25 +121,19 @@ export class TraitRepository {
   }
 
   private static calculateRankStats(existingTrait: any, newTrait: any, rank: string) {
-    const prevStats = {
-      wins: existingTrait?.ranks?.[rank]?.wins || 0,
-      totalGames: existingTrait?.ranks?.[rank]?.totalGames || 0,
-      averagePlacement: existingTrait?.ranks?.[rank]?.averagePlacement || 0,
-    };
+    const prev = existingTrait?.ranks?.[rank] || { wins: 0, totalGames: 0, averagePlacement: 0 };
+    const wins = prev.wins + (newTrait.wins || 0);
+    const totalGames = prev.totalGames + (newTrait.totalGames || 0);
 
-    const wins = prevStats.wins + (newTrait.wins || 0);
-    const totalGames = prevStats.totalGames + (newTrait.totalGames || 0);
-
-    const averagePlacement =
-      totalGames > 0
-        ? Number(
-            (
-              ((newTrait.placement ?? newTrait.averagePlacement ?? 0) * (newTrait.totalGames || 0) +
-                prevStats.averagePlacement * prevStats.totalGames) /
-              totalGames
-            ).toFixed(2)
-          )
-        : 0;
+    const averagePlacement = totalGames > 0
+      ? Number(
+          (
+            ((newTrait.placement ?? newTrait.averagePlacement ?? 0) * (newTrait.totalGames || 0) +
+              prev.averagePlacement * prev.totalGames) /
+            totalGames
+          ).toFixed(2)
+        )
+      : 0;
 
     const winrate = totalGames > 0 ? Number(((wins / totalGames) * 100).toFixed(2)) : 0;
 
@@ -181,90 +142,7 @@ export class TraitRepository {
 
   private static async updateTotalGamesCount(db: any, increment: number) {
     const totalGamesCollection = db.db("SET15").collection("totalGames");
-
-    await totalGamesCollection.updateOne(
-      { id: "totalGames" },
-      { $inc: { count: increment } },
-      { upsert: true }
-    );
-  }
-
-  static async getByTraitIds(traitIds: string[], rank: string) {
-    try {
-      const db = await connectDB();
-      const traitsCollection = db.db("SET15").collection("traits");
-
-      const traitDocs = await traitsCollection
-        .find(
-          { traitId: { $in: traitIds } }, 
-          { 
-            projection: { 
-              traitId: 1, 
-              totalGames: 1, 
-              wins: 1, 
-              winrate: 1, 
-              averagePlacement: 1,
-              [`ranks.${rank}`]: 1
-            } 
-          }
-        )
-        .toArray();
-
-      return { traitData: traitDocs };
-    } catch (error) {
-      console.error("Error fetching specific traits:", error);
-      return { traitData: [] };
-    }
-  }
-
-  static async getTopPerformers(rank: string, limit: number = 10) {
-    try {
-      const db = await connectDB();
-      const traitsCollection = db.db("SET15").collection("traits");
-
-      const isAllRanks = rank === "all";
-      
-      if (isAllRanks) {
-        const topTraits = await traitsCollection
-          .find(
-            { averagePlacement: { $exists: true, $gt: 0 } },
-            { 
-              projection: { 
-                traitId: 1, 
-                averagePlacement: 1, 
-                winrate: 1, 
-                totalGames: 1
-              } 
-            }
-          )
-          .sort({ averagePlacement: 1 }) 
-          .limit(limit)
-          .toArray();
-
-        return { traitData: topTraits };
-      } else {
-        const topTraits = await traitsCollection
-          .aggregate([
-            { $match: { [`ranks.${rank}`]: { $exists: true } } },
-            { 
-              $project: {
-                traitId: 1,
-                rankStats: `$ranks.${rank}`,
-                averagePlacement: `$ranks.${rank}.averagePlacement`
-              }
-            },
-            { $match: { averagePlacement: { $gt: 0 } } },
-            { $sort: { averagePlacement: 1 } },
-            { $limit: limit }
-          ])
-          .toArray();
-
-        return { traitData: topTraits };
-      }
-    } catch (error) {
-      console.error("Error fetching top performing traits:", error);
-      return { traitData: [] };
-    }
+    await totalGamesCollection.updateOne({ id: "totalGames" }, { $inc: { count: increment } }, { upsert: true });
   }
 
   static clearCache() {
