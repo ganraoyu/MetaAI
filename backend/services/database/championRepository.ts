@@ -18,8 +18,16 @@ export class ChampionRepository {
       const championCollection = db.db("SET15").collection("champions");
       const totalGamesCollection = db.db("SET15").collection("totalGames");
 
-      const projection: any = { championId: 1, totalGames: 1, wins: 1, winrate: 1, averagePlacement: 1, cost: 1 };
-      ranks.forEach(rank => projection[`ranks.${rank}`] = 1);
+      // Always get all the data since we need both global and rank-specific stats
+      const projection: any = {
+        championId: 1,
+        totalGames: 1,
+        wins: 1,
+        winrate: 1,
+        averagePlacement: 1,
+        cost: 1,
+        ranks: 1,
+      };
 
       const [championsDocs, totalGamesDoc] = await Promise.all([
         championCollection.find({}, { projection }).toArray(),
@@ -29,27 +37,39 @@ export class ChampionRepository {
       const totalGames = totalGamesDoc?.count || 0;
 
       // Map champion data for each rank
-      const championsData = championsDocs.map(champion => {
-        const rankData: Record<string, any> = {};
-        ranks.forEach(rank => {
-          rankData[rank] = champion.ranks?.[rank] || {
-            totalGames: 0,
-            wins: 0,
-            winrate: 0,
-            averagePlacement: 0,
-          };
-        });
-
-        return {
+      const championsData = championsDocs.map((champion) => {
+        let result: any = {
           championId: champion.championId,
           cost: champion.cost,
+          totalGames: champion.totalGames || 0,
+          wins: champion.wins || 0,
+          winrate: champion.winrate || 0,
           averagePlacement: champion.averagePlacement || 0,
-          ...rankData,
         };
+
+        if (!ranks.includes("all")) {
+          // For specific ranks, get data from ranks object
+          ranks.forEach((rank) => {
+            result = {
+              championId: champion.championId,
+              cost: champion.cost,
+              ...(champion.ranks?.[rank] || {
+                totalGames: 0,
+                wins: 0,
+                winrate: 0,
+                averagePlacement: 0,
+              })
+            };
+          });
+        }
+
+        return result;
       });
 
       // Sort by global averagePlacement
-      const sortedChampions = championsData.sort((a, b) => Number(a.averagePlacement) - Number(b.averagePlacement));
+      const sortedChampions = championsData.sort(
+        (a, b) => Number(a.averagePlacement) - Number(b.averagePlacement)
+      );
 
       const result = { totalGames, championData: sortedChampions };
       this.cache.set(cacheKey, { data: result, timestamp: Date.now() });
@@ -68,20 +88,31 @@ export class ChampionRepository {
       const db = await connectDB();
       const championsCollection = db.db("SET15").collection("champions");
 
+      // Filter out "all" since it's not a real rank to update
+      const actualRanks = ranks.filter((rank) => rank !== "all");
+
+      if (actualRanks.length === 0) {
+        console.warn("No valid ranks to update (received 'all' but no specific ranks)");
+        return { updatedChampions: [], totalGames: 0 };
+      }
+
       const updatedChampions = await Promise.all(
-        championsRanking.map(champion =>
-          Promise.all(ranks.map(rank => this.updateSingleChampion(championsCollection, rank, champion)))
-            .then(() => champion)
+        championsRanking.map((champion) =>
+          Promise.all(
+            actualRanks.map((rank) =>
+              this.updateSingleChampion(championsCollection, rank, champion)
+            )
+          ).then(() => champion)
         )
       );
 
-      await this.updateTotalGamesCount(db, 5);
+      await this.updateTotalGamesCount(db, championsRanking.length);
 
       const sortedUpdatedChampions = updatedChampions.sort(
         (a, b) => a.averagePlacement - b.averagePlacement
       );
 
-      return { updatedChampions: sortedUpdatedChampions, totalGames: 0 };
+      return { updatedChampions: sortedUpdatedChampions, totalGames: championsRanking.length };
     } catch (error) {
       console.error("Error updating champion data in DB:", error);
       return { updatedChampions: [], totalGames: 0 };
@@ -91,7 +122,17 @@ export class ChampionRepository {
   private static async updateSingleChampion(collection: any, rank: string, champion: any) {
     const existingChampion = await collection.findOne(
       { championId: champion.championId },
-      { projection: { championId: 1, totalGames: 1, wins: 1, averagePlacement: 1, ranks: 1, cost: 1 } }
+      {
+        projection: {
+          championId: 1,
+          totalGames: 1,
+          wins: 1,
+          winrate: 1,
+          averagePlacement: 1,
+          ranks: 1,
+          cost: 1,
+        },
+      }
     );
 
     const globalStats = this.calculateGlobalStats(existingChampion, champion);
@@ -103,7 +144,12 @@ export class ChampionRepository {
         $set: {
           championId: champion.championId,
           cost: champion.cost || existingChampion?.cost || 1,
-          ...globalStats,
+          // Update global stats at root level
+          totalGames: globalStats.totalGames,
+          wins: globalStats.wins,
+          winrate: globalStats.winrate,
+          averagePlacement: globalStats.averagePlacement,
+          // Update rank-specific stats
           [`ranks.${rank}`]: rankStats,
         },
       },
@@ -119,7 +165,8 @@ export class ChampionRepository {
     const wins = (existingChampion?.wins || 0) + champion.wins;
     const averagePlacement = Number(
       (
-        (champion.placement * champion.totalGames + (existingChampion?.averagePlacement || 0) * (existingChampion?.totalGames || 0)) /
+        (champion.placement * champion.totalGames +
+          (existingChampion?.averagePlacement || 0) * (existingChampion?.totalGames || 0)) /
         totalGames
       ).toFixed(2)
     );
@@ -133,17 +180,28 @@ export class ChampionRepository {
     const winrateRank = Number(((winsRank / totalGamesRank) * 100).toFixed(2));
     const averagePlacementRank = Number(
       (
-        (champion.placement * champion.totalGames + (existingChampion?.ranks?.[rank]?.averagePlacement || 0) * (existingChampion?.ranks?.[rank]?.totalGames || 0)) /
+        (champion.placement * champion.totalGames +
+          (existingChampion?.ranks?.[rank]?.averagePlacement || 0) *
+            (existingChampion?.ranks?.[rank]?.totalGames || 0)) /
         totalGamesRank
       ).toFixed(2)
     );
 
-    return { totalGames: totalGamesRank, wins: winsRank, winrate: winrateRank, averagePlacement: averagePlacementRank };
+    return {
+      totalGames: totalGamesRank,
+      wins: winsRank,
+      winrate: winrateRank,
+      averagePlacement: averagePlacementRank,
+    };
   }
 
   private static async updateTotalGamesCount(db: any, increment: number) {
     const totalGamesCollection = db.db("SET15").collection("totalGames");
-    await totalGamesCollection.updateOne({ id: "totalGames" }, { $inc: { count: increment } }, { upsert: true });
+    await totalGamesCollection.updateOne(
+      { id: "totalGames" },
+      { $inc: { count: increment } },
+      { upsert: true }
+    );
   }
 
   static clearCache() {
