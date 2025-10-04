@@ -56,8 +56,7 @@ export class ChampionItemRepository {
               });
             }
             return acc;
-          },
-          {}
+          }, {}
         );
 
         for (const item of Object.values(specifiedRankTotals) as any[]) {

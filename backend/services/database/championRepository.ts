@@ -36,34 +36,43 @@ export class ChampionRepository {
 
       const totalGames = totalGamesDoc?.count || 0;
 
-      // Map champion data for each rank
-      const championsData = championsDocs.map((champion) => {
-        let result: any = {
+      const championsData: any[] = championsDocs.map((champion) => {
+        // Create rank-specific champion data
+        const rankChampionData: Record<string, any> = {};
+        ranks.forEach((rank) => {
+          const rankChampion = rank.toLowerCase();
+          rankChampionData[rankChampion] = champion.ranks?.[rankChampion] || {};
+        });
+
+        const specifiedRankTotals = Object.values(rankChampionData).reduce(
+          (acc: any, rankStats: any) => {
+            if (!rankStats) return acc;
+
+            acc.wins += rankStats.wins ?? 0;
+            acc.totalGames += rankStats.totalGames ?? 0;
+            acc.totalPlacement += (rankStats.averagePlacement ?? 0) * (rankStats.totalGames ?? 0);
+
+            return acc;
+          },
+          { wins: 0, totalGames: 0, totalPlacement: 0 }
+        );
+
+        const winrate = specifiedRankTotals.totalGames
+          ? Number(((specifiedRankTotals.wins / specifiedRankTotals.totalGames) * 100).toFixed(2))
+          : 0;
+
+        const averagePlacement = specifiedRankTotals.totalGames
+          ? Number((specifiedRankTotals.totalPlacement / specifiedRankTotals.totalGames).toFixed(2))
+          : 0;
+          
+        return {
           championId: champion.championId,
-          cost: champion.cost,
-          totalGames: champion.totalGames || 0,
-          wins: champion.wins || 0,
-          winrate: champion.winrate || 0,
-          averagePlacement: champion.averagePlacement || 0,
+          wins: specifiedRankTotals.wins,
+          totalGames: specifiedRankTotals.totalGames,
+          averagePlacement: averagePlacement,
+          winrate: winrate,
+          
         };
-
-        if (!ranks.includes("all")) {
-          // For specific ranks, get data from ranks object
-          ranks.forEach((rank) => {
-            result = {
-              championId: champion.championId,
-              cost: champion.cost,
-              ...(champion.ranks?.[rank] || {
-                totalGames: 0,
-                wins: 0,
-                winrate: 0,
-                averagePlacement: 0,
-              })
-            };
-          });
-        }
-
-        return result;
       });
 
       // Sort by global averagePlacement
