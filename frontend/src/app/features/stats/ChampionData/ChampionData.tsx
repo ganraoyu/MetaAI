@@ -1,6 +1,6 @@
 import { ChampionDataProvider, useChampionDataContext } from "./ChampionDataContext";
 import { ChampionDataOverview } from "./ChampionDataOverview";
-import { ChampionList } from "./ChampionList";
+import { ChampionListContainer } from "./ChampionList/ChampionListContainer";
 import { FilterContainer } from "./Filters/_FilterContainer";
 
 const ChampionDataContent = () => {
@@ -10,7 +10,7 @@ const ChampionDataContent = () => {
     <>
       <ChampionDataOverview />
       <FilterContainer /> 
-      {table && <ChampionList />}
+      {table && <ChampionListContainer />}
       {chart && <div className="text-white">Chart View Coming Soon!</div>}
     </>
   );  

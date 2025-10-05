@@ -1,6 +1,13 @@
 import axios from "axios";
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { Cost, Rank, ChampionStats, ChampionDataContextProps, ChampionStatsWithTotalGames, ChampionItemStats } from "./types";
+import {
+  Cost,
+  Rank,
+  ChampionStats,
+  ChampionDataContextProps,
+  ChampionStatsWithTotalGames,
+  ChampionItemStats,
+} from "./types";
 
 const ChampionDataContext = createContext<ChampionDataContextProps | null>(null);
 
@@ -10,76 +17,149 @@ interface ChampionDataProviderProps {
 
 export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) => {
   const [searchValue, setSearchValue] = useState<string>("");
-  const [rank, setRank] = useState<Rank[]>(["Challenger", "Grandmaster", "Master", "Diamond", "Platinum", "Gold", "Silver","Bronze", "Iron"]);
+  const [rank, setRank] = useState<Rank[]>(["Challenger", "Grandmaster"]);
   const [cost, setCost] = useState<Cost[]>([]);
   const [table, setTable] = useState<boolean>(true);
   const [chart, setChart] = useState<boolean>(false);
+  const [championLoading, setChampionLoading] = useState<boolean>(false);
+  const [championItemLoading, setChampionItemLoading] = useState<boolean>(false);
   const [totalGames, setTotalGames] = useState<number>(0);
   const [championStats, setChampionStats] = useState<ChampionStats[]>([]);
   const [championStatsWithTotalGames, setChampionStatsWithTotalGames] = useState<ChampionStatsWithTotalGames | null>(null);
   const [championItemStats, setChampionItemStats] = useState<ChampionItemStats[]>([]);
 
-    useEffect(() => {
-      const fetchData = async (rank: string[]) => {
-        try {
-          const championStats = await axios.get(`http://localhost:3000/statistics/${rank[0]}/champions`);
-          const championItemStats = await axios.get(`http://localhost:3000/statistics/${rank[0]}/championItems`);
-          
-          setTotalGames(championStats.data.totalGames);
-          setChampionStats(championStats.data.championData);
-          setChampionStatsWithTotalGames(championStats.data.championStatsWithTotalGames);
-          setChampionItemStats(championItemStats.data.championData);
-          console.log(championItemStats.data.championData)
-        } catch (error) {
-          console.error("Error fetching champion data:", error);
-        }
-      };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setChampionLoading(true);
+        setChampionItemLoading(true);
 
-    fetchData(rank);
+        const params = new URLSearchParams();
+        if (rank.length === 0 || rank.length === 9) {
+          params.append("rank", "all");
+        } else {
+          rank.forEach((r) => params.append("rank", r.toLowerCase()));
+        }
+
+        // Fetch both in parallel
+        const [championStatsRes, championItemStatsRes] = await Promise.all([
+          axios.get(`http://localhost:3000/statistics/champions?${params.toString()}`),
+          axios.get(`http://localhost:3000/statistics/championItems?${params.toString()}`),
+        ]);
+
+        // Set champion data
+        setTotalGames(championStatsRes.data.totalGames);
+        setChampionStats(championStatsRes.data.championData);
+        setChampionStatsWithTotalGames(championStatsRes.data.championStatsWithTotalGames);
+
+        // Set champion item data
+        setChampionItemStats(championItemStatsRes.data.championData);
+
+        // Set loading states to false after successful data fetch
+        setChampionLoading(false);
+        setChampionItemLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setChampionLoading(false);
+        setChampionItemLoading(false);
+      }
+    };
+
+    fetchData();
   }, [rank]);
 
   const updateChampionData = async () => {
-    try { 
-      const response = await axios.get("http://localhost:3000/statistics/challenger/allStatistics");
+    try {
+      // Convert current ranks to lowercase for the update call
+      const lowercaseRanks = rank.map((r) => r.toLowerCase());
+      const rankQuery =
+        lowercaseRanks.length === 0 || lowercaseRanks.length === 9
+          ? "all"
+          : lowercaseRanks.join(",");
 
-      setTotalGames(response.data.totalGames.count);
-      setChampionStats(response.data.updatedChampions);  
-      setChampionStatsWithTotalGames(response.data);
+      console.log("Updating champion data for ranks:", rankQuery);
+
+      // Use the correct update endpoint
+      const response = await axios.get(
+        `http://localhost:3000/statistics/update/champions?rank=${rankQuery}`
+      );
+
+      console.log("Update response:", response.data);
+
+      // Handle the response structure from your backend
+      if (Array.isArray(response.data)) {
+        // If multiple ranks, combine the results
+        let totalGamesSum = 0;
+        let allChampions: any[] = [];
+
+        response.data.forEach((rankResult: any) => {
+          if (rankResult.totalGames) {
+            totalGamesSum += rankResult.totalGames;
+          }
+          if (rankResult.updatedChampions) {
+            allChampions.push(...rankResult.updatedChampions);
+          }
+        });
+
+        setTotalGames(totalGamesSum);
+        setChampionStats(allChampions);
+      } else {
+        // Single rank result
+        setTotalGames(response.data.totalGames || 0);
+        setChampionStats(response.data.updatedChampions || []);
+      }
+
+      // Refresh the data after update
+      const updatedChampionStats = await axios.get(
+        `http://localhost:3000/statistics/champions?rank=${rankQuery}`
+      );
+      const updatedChampionItemStats = await axios.get(
+        `http://localhost:3000/statistics/championItems?rank=${rankQuery}`
+      );
+
+      setTotalGames(updatedChampionStats.data.totalGames);
+      setChampionStats(updatedChampionStats.data.championData);
+      setChampionItemStats(updatedChampionItemStats.data.championData);
     } catch (error) {
       console.error("Error updating champion data:", error);
     }
-  }
+  };
 
   return (
-    <ChampionDataContext.Provider value={{
-      searchValue,
-      setSearchValue,
-      rank, 
-      setRank, 
-      cost, 
-      setCost, 
-      table, 
-      setTable, 
-      chart, 
-      setChart,
-      totalGames,
-      setTotalGames,
-      championStats,
-      setChampionStats,
-      championItemStats,
-      setChampionItemStats,
-      championStatsWithTotalGames,
-      setChampionStatsWithTotalGames,
-      updateChampionData
-    }}>
+    <ChampionDataContext.Provider
+      value={{
+        searchValue,
+        setSearchValue,
+        rank,
+        setRank,
+        cost,
+        setCost,
+        table,
+        setTable,
+        chart,
+        setChart,
+        championLoading,
+        setChampionLoading,
+        championItemLoading,
+        setChampionItemLoading,
+        totalGames,
+        setTotalGames,
+        championStats,
+        setChampionStats,
+        championItemStats,
+        setChampionItemStats,
+        championStatsWithTotalGames,
+        setChampionStatsWithTotalGames,
+        updateChampionData,
+      }}
+    >
       {children}
     </ChampionDataContext.Provider>
-  )
+  );
 };
-
 
 export const useChampionDataContext = () => {
   const context = useContext(ChampionDataContext);
-  if (!context) throw new Error("useChat must be used inside ChatProvider");
+  if (!context) throw new Error("useChampionDataContext must be used inside ChampionDataProvider");
   return context;
 };

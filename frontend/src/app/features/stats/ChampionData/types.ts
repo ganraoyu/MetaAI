@@ -33,7 +33,6 @@ export type Rank =
   | "Master"
   | "Grandmaster"
   | "Challenger";
-
 export const ranks: Rank[] = [
   "Iron",
   "Bronze",
@@ -43,7 +42,7 @@ export const ranks: Rank[] = [
   "Diamond",
   "Master",
   "Grandmaster",
-  "Challenger"
+  "Challenger",
 ];
 
 export type Cost = 1 | 2 | 3 | 4 | 5 | 6;
@@ -93,6 +92,13 @@ export interface ChampionDataContextProps {
 
   table: boolean;
   setTable: React.Dispatch<React.SetStateAction<boolean>>;
+
+  championLoading: boolean;
+  setChampionLoading: React.Dispatch<React.SetStateAction<boolean>>;
+
+  championItemLoading: boolean;
+  setChampionItemLoading: React.Dispatch<React.SetStateAction<boolean>>;
+
 
   chart: boolean;
   setChart: React.Dispatch<React.SetStateAction<boolean>>;

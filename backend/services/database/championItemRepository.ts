@@ -28,56 +28,67 @@ export class ChampionItemRepository {
       const totalGames = totalGamesDoc?.count || 0;
 
       const championData: any[] = championItemDocs.map((champion) => {
-        // Create rank-specific BIS data
-        const rankBISData: Record<string, any> = {};
-        ranks.forEach((rank) => {
-          const rankBIS = `${rank.toLowerCase()}BIS`;
-          rankBISData[rankBIS] = champion?.[rankBIS];
-        });
+        if (!ranks.includes("all")) {
+          // Create rank-specific BIS data
+          const rankBISData: Record<string, any> = {};
+          ranks.forEach((rank) => {
+            const rankBIS = `${rank.toLowerCase()}BIS`;
+            rankBISData[rankBIS] = champion?.[rankBIS];
+          });
 
-        const specifiedRankTotals = Object.values(rankBISData).reduce(
-          (acc: any, bisArray: any) => {
-            if (Array.isArray(bisArray)) {
-              bisArray.forEach((item: any) => {
-                if (!item) return;
+          const specifiedRankTotals = Object.values(rankBISData).reduce(
+            (acc: any, bisArray: any) => {
+              if (Array.isArray(bisArray)) {
+                bisArray.forEach((item: any) => {
+                  if (!item) return;
 
-                if (!acc[item.itemId]) {
-                  acc[item.itemId] = {
-                    itemId: item.itemId,
-                    wins: 0,
-                    totalGames: 0,
-                    totalPlacement: 0,
-                  };
-                }
-                acc[item.itemId].wins += item.wins ?? 0;
-                acc[item.itemId].totalGames += item.totalGames ?? 0;
-                acc[item.itemId].totalPlacement +=
-                  (item.averagePlacement ?? 0) * (item.totalGames ?? 0);
-              });
-            }
-            return acc;
-          }, {}
-        );
+                  if (!acc[item.itemId]) {
+                    acc[item.itemId] = {
+                      itemId: item.itemId,
+                      wins: 0,
+                      totalGames: 0,
+                      totalPlacement: 0,
+                    };
+                  }
+                  acc[item.itemId].wins += item.wins ?? 0;
+                  acc[item.itemId].totalGames += item.totalGames ?? 0;
+                  acc[item.itemId].totalPlacement +=
+                    (item.averagePlacement ?? 0) * (item.totalGames ?? 0);
+                });
+              }
+              return acc;
+            },
+            {}
+          );
 
-        for (const item of Object.values(specifiedRankTotals) as any[]) {
-          item.winrate = item.totalGames ? ((item.wins / item.totalGames) * 100).toFixed(2) : 0;
-          item.averagePlacement = item.totalGames ? (item.totalPlacement / item.totalGames).toFixed(2) : 0;
+          for (const item of Object.values(specifiedRankTotals) as any[]) {
+            item.winrate = item.totalGames ? ((item.wins / item.totalGames) * 100).toFixed(2) : 0;
+            item.averagePlacement = item.totalGames
+              ? (item.totalPlacement / item.totalGames).toFixed(2)
+              : 0;
+          }
+
+          return {
+            championId: champion.championId,
+            ...(ranks.includes("all") && { BIS: champion.BIS }),
+            ...rankBISData,
+            rankBISTotal: Object.values(specifiedRankTotals).slice(0, 6),
+            items: champion.items?.map((item: any) => ({
+              itemId: item.itemId,
+              ranks: item.ranks,
+              wins: item.wins,
+              totalGames: item.totalGames,
+              winrate: item.winrate,
+              averagePlacement: item.averagePlacement,
+            })),
+          };
+        } else {
+          return {
+            championId: champion.championId,
+            BIS: champion.BIS,
+            items: champion.items
+          }
         }
-
-        return {
-          championId: champion.championId,
-          ...(ranks.includes("all") && { BIS: champion.BIS }),
-          ...rankBISData,
-          rankBISTotal: Object.values(specifiedRankTotals).slice(0, 6),
-          items: champion.items?.map((item: any) => ({
-            itemId: item.itemId,
-            ranks: item.ranks,
-            wins: item.wins,
-            totalGames: item.totalGames,
-            winrate: item.winrate,
-            averagePlacement: item.averagePlacement,
-          })),
-        };
       });
 
       const result = { championData };

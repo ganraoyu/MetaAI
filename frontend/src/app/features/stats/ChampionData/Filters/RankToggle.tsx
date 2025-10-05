@@ -8,7 +8,8 @@ export const RankToggle = () => {
   const { rank, setRank } = useChampionDataContext();
   const [openDropDown, setOpenDropDown] = useState<boolean>(false);
 
-  const lowestSelectedRank = ranks.find((r) => rank.includes(r)) || ranks[0];
+  const highestSelectedRank = ranks.find((r) => rank.includes(r)) || ranks[0];
+  const lowestSelectedRank = ranks.reverse().find((r) => rank.includes(r)) || ranks[-1];
 
   const renderRankItem = (r: Rank) => {
     const isSelected = rank.includes(r);
@@ -16,11 +17,17 @@ export const RankToggle = () => {
     const toggleRank = (e: React.MouseEvent) => {
       e.stopPropagation();
 
+      const filteredRanks: Rank[] = rank.filter((r: Rank) => r.toLowerCase() !== "all");
+
+      if (rank.length === 1 && isSelected) {
+        return;
+      }
+
       let newRanks;
       if (isSelected) {
-        newRanks = rank.filter((selectedRank) => selectedRank !== r);
+        newRanks = filteredRanks.filter((selectedRank) => selectedRank !== r);
       } else {
-        newRanks = [...rank, r];
+        newRanks = [...filteredRanks, r];
       }
 
       setRank(newRanks);
@@ -42,40 +49,54 @@ export const RankToggle = () => {
       </div>
     );
   };
-
   return (
     <div className="relative hover:cursor-pointer w-fit">
       {/* Toggle Button */}
       <div
-        className="flex items-center justify-between bg-[#272525] hover:bg-[#3a3838] min-w-[9rem] h-[2rem] rounded-md px-2"
+        className="flex items-center justify-between bg-[#272525] hover:bg-[#3a3838] min-w-[15rem] h-[2rem] rounded-md px-2"
         onClick={() => setOpenDropDown(!openDropDown)}
       >
-        <div className="flex items-center overflow-hidden">
+        <div className="flex items-center justify-center w-full space-x-2">
           <img
             src={`../assets/ranks/${lowestSelectedRank}.png`}
             alt={lowestSelectedRank}
             className="w-6 h-6"
           />
-          <p className="text-[0.8rem] px-2 whitespace-nowrap overflow-hidden text-ellipsis flex-1 text-center">
-            {lowestSelectedRank}
-            {rank.length > 1 ? "+" : ""}
-          </p>
+          <p className="text-[0.8rem] whitespace-nowrap">{lowestSelectedRank}</p>
+          <span className="mx-2">——</span>
+          <img
+            src={`../assets/ranks/${highestSelectedRank}.png`}
+            alt={highestSelectedRank}
+            className="w-6 h-6"
+          />
+          <p className="text-[0.8rem] whitespace-nowrap">{highestSelectedRank}</p>
         </div>
         <FontAwesomeIcon icon={faAngleDown} className="text-[0.8rem] ml-2" />
       </div>
 
       {/* Dropdown Menu */}
       {openDropDown && (
-        <div className="absolute top-full min-w-[12rem] mt-1 bg-[#272525] rounded-md shadow-lg z-10">
-          <div>
-            {ranks.map(renderRankItem)}
-          </div>
+        <div className="absolute top-full min-w-[15rem] mt-1 bg-[#272525] rounded-md shadow-lg z-10">
+          <div>{ranks.map(renderRankItem)}</div>
           <div className="flex items-center justify-center hover:bg-[#2d2d2d]">
-            <button className="min-w-[12rem] h-[2.5rem]" onClick={() => {
-              setRank(["Challenger"]);
-              setOpenDropDown(false);
-              }}>
-              <p className="text-[0.7rem]">Apply</p>
+            <button
+              className="min-w-[15rem] h-[2.5rem]"
+              onClick={() => {
+                setRank([
+                  "Iron",
+                  "Bronze",
+                  "Silver",
+                  "Gold",
+                  "Platinum",
+                  "Diamond",
+                  "Master",
+                  "Grandmaster",
+                  "Challenger",
+                ]);
+                setOpenDropDown(false);
+              }}
+            >
+              <p className="text-[0.7rem]">ALL</p>
             </button>
           </div>
         </div>
