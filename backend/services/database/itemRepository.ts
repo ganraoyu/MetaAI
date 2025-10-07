@@ -21,6 +21,7 @@ export class ItemRepository {
         winrate: 1,
         averagePlacement: 1,
       };
+
       ranks.forEach((rank) => (projection[`ranks.${rank}`] = 1));
 
       const [itemsDocs, totalGamesDoc] = await Promise.all([
@@ -28,28 +29,53 @@ export class ItemRepository {
         totalGamesCollection.findOne({ id: "totalGames" }, { projection: { count: 1 } }),
       ]);
 
-      const itemsData = itemsDocs.map((item) => {
-        const rankData: Record<string, any> = {};
-        ranks.forEach((rank) => {
-          rankData[rank] = item.ranks?.[rank] || {
-            totalGames: 0,
-            wins: 0,
-            winrate: 0,
-            averagePlacement: 0,
+      const itemData: any[] = itemsDocs.map((item) => {
+        if (!ranks.includes("all")) {
+          const rankItemData: Record<string, any> = {};
+
+          ranks.forEach((rank) => {
+            const rankItem = rank.toLowerCase();
+            rankItemData[rankItem] = item.ranks?.[rankItem];
+          });
+
+          const specifiedRankTotals = Object.values(rankItemData).reduce(
+            (acc: any, rankStats: any) => {
+              if (!rankStats) return acc;
+
+              acc.wins += rankStats.wins ?? 0;
+              acc.totalGames += rankStats.totalGames ?? 0;
+              acc.totalPlacement += (rankStats.averagePlacement ?? 0) * (rankStats.totalGames ?? 0);
+              return acc;
+            },
+            { wins: 0, totalGames: 0, totalPlacement: 0 }
+          );
+          const winrate = specifiedRankTotals.totalGames
+            ? Number(((specifiedRankTotals.wins / specifiedRankTotals.totalGames) * 100).toFixed(2))
+            : 0;
+
+          const averagePlacement = specifiedRankTotals.totalGames
+            ? Number(
+                (specifiedRankTotals.totalPlacement / specifiedRankTotals.totalGames).toFixed(2)
+              )
+            : 0;
+
+          return {
+            itemId: item.itemId,
+            wins: specifiedRankTotals.wins,
+            totalGames: specifiedRankTotals.totalGames,
+            averagePlacement: averagePlacement,
+            winrate: winrate,
           };
-        });
-        return { itemId: item.itemId, ...rankData };
+        } else {
+          return item;
+        }
       });
 
-      const sortedItemRanking = itemsData.sort((a, b) => {
-        const aAvgPlacement =
-          ranks.length > 0 ? Number((a as any)[ranks[0]]?.averagePlacement || 0) : 0;
-        const bAvgPlacement =
-          ranks.length > 0 ? Number((b as any)[ranks[0]]?.averagePlacement || 0) : 0;
-        return aAvgPlacement - bAvgPlacement;
-      });
+      const filteredItems = itemData
+        .sort((a, b) => Number(a.averagePlacement) - Number(b.averagePlacement))
+        .filter((item) => item.totalGames > 0);
 
-      const result = { totalGames: totalGamesDoc?.count || 0, itemData: sortedItemRanking };
+      const result = { totalGames: totalGamesDoc?.count || 0, itemData: filteredItems };
       this.cache.set(cacheKey, { data: result, timestamp: Date.now() });
 
       return result;
