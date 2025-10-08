@@ -76,13 +76,7 @@ export class ChampionRepository {
             winrate: winrate,
           };
         } else {
-          return {
-            championId: champion.championId,
-            wins: champion.wins,
-            totalGames: champion.totalGames,
-            averagePlacement: champion.averagePlacement,
-            winrate: champion.winrate,
-          };
+          return champion
         }
       });
 

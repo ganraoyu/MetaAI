@@ -7,22 +7,24 @@ export class ItemRepository {
   static async getAll(ranks: string[]) {
     const cacheKey = `items:${ranks.join(",")}`;
     const cached = this.cache.get(cacheKey);
-    if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) return cached.data;
+    if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
+      return cached.data;
+    }
 
     try {
       const db = await connectDB();
       const itemsCollection = db.db("SET15").collection("items");
       const totalGamesCollection = db.db("SET15").collection("totalGames");
 
+      // Match traitRepository style: request whole ranks object (no nested + parent collision)
       const projection: any = {
         itemId: 1,
         totalGames: 1,
         wins: 1,
         winrate: 1,
         averagePlacement: 1,
+        ranks: 1,
       };
-
-      ranks.forEach((rank) => (projection[`ranks.${rank}`] = 1));
 
       const [itemsDocs, totalGamesDoc] = await Promise.all([
         itemsCollection.find({}, { projection }).toArray(),
@@ -32,10 +34,9 @@ export class ItemRepository {
       const itemData: any[] = itemsDocs.map((item) => {
         if (!ranks.includes("all")) {
           const rankItemData: Record<string, any> = {};
-
+          // follow traitRepository pattern: use ranks array as given to pick fields from item.ranks
           ranks.forEach((rank) => {
-            const rankItem = rank.toLowerCase();
-            rankItemData[rankItem] = item.ranks?.[rankItem];
+            rankItemData[rank] = item.ranks?.[rank] || {};
           });
 
           const specifiedRankTotals = Object.values(rankItemData).reduce(
@@ -49,6 +50,7 @@ export class ItemRepository {
             },
             { wins: 0, totalGames: 0, totalPlacement: 0 }
           );
+
           const winrate = specifiedRankTotals.totalGames
             ? Number(((specifiedRankTotals.wins / specifiedRankTotals.totalGames) * 100).toFixed(2))
             : 0;
@@ -63,8 +65,8 @@ export class ItemRepository {
             itemId: item.itemId,
             wins: specifiedRankTotals.wins,
             totalGames: specifiedRankTotals.totalGames,
-            averagePlacement: averagePlacement,
-            winrate: winrate,
+            averagePlacement,
+            winrate,
           };
         } else {
           return item;
@@ -83,7 +85,7 @@ export class ItemRepository {
       console.error("Error fetching item data from DB:", error);
       return { itemData: [], totalGames: 0 };
     }
-  }
+  };
 
   static async updateMany(ranks: string[], itemRanking: any[]) {
     try {

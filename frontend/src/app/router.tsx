@@ -9,7 +9,6 @@ import ItemsTierlist from "./features/tierLists/ItemsTierlist.tsx";
 import AugmentsTierlist from "./features/tierLists/AugmentsTierlist.tsx";
 
 import { ChampionsData } from "./features/stats/ChampionData/ChampionData.tsx";
-import ItemsData from "./features/stats/ItemsData/ItemsData.tsx";
 import AugmentsData from "./features/stats/AugmentsData/AugmentsData.tsx";
 
 import ChampionsStatistics from "./features/statistics/ChampionsStatistics.tsx";
@@ -18,6 +17,7 @@ import ItemsStatistics from "./features/statistics/ItemsStatistics.tsx";
 import RollingOdds from "./features/simulators/RollingOdds.tsx";
 import Battle from "./features/simulators/battle/Battle.tsx";
 import { ChatPage } from "./features/aiCoach/ChatPage.tsx";
+import { ItemData } from "./features/stats/ItemsData/ItemData.tsx";
 
 function Router() {
   return (
@@ -34,7 +34,7 @@ function Router() {
       </Route>
       <Route path="/data">
         <Route path="champions" element={<ChampionsData />} />
-        <Route path="items" element={<ItemsData />} />
+        <Route path="items" element={<ItemData />} />
         <Route path="augments" element={<AugmentsData />} />
       </Route>
       <Route path="/statistics">

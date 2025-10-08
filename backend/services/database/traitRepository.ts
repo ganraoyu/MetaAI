@@ -23,8 +23,8 @@ export class TraitRepository {
         wins: 1,
         winrate: 1,
         averagePlacement: 1,
+        ranks: 1,
       };
-      ranks.forEach((rank) => (projection[`ranks.${rank}`] = 1));
 
       const [traitsDocs, totalGamesDoc] = await Promise.all([
         traitsCollection.find({}, { projection }).toArray(),
@@ -33,12 +33,12 @@ export class TraitRepository {
 
       const traitsData = traitsDocs.map((trait): any => {
         if (!ranks.includes("all")) {
-          const rankItemData: Record<string, any> = {};
+          const rankTraitData: Record<string, any> = {};
           ranks.forEach((rank) => {
-            rankItemData[rank] = trait.ranks?.[rank] || {};
+            rankTraitData[rank] = trait.ranks?.[rank] || {};
           });
 
-          const specifiedRankTotals = Object.values(rankItemData).reduce(
+          const specifiedRankTotals = Object.values(rankTraitData).reduce(
             (acc: any, rankStats: any) => {
               if (!rankStats) return acc;
 
@@ -123,16 +123,18 @@ export class TraitRepository {
       { projection: { traitId: 1, totalGames: 1, wins: 1, averagePlacement: 1, ranks: 1 } }
     );
 
+    const rankKey = String(rank).toLowerCase();
+
     const globalStats = this.calculateGlobalStats(existingTrait, trait);
-    const rankStats = this.calculateRankStats(existingTrait, trait, rank);
+    const rankStats = this.calculateRankStats(existingTrait, trait, rankKey);
 
     await collection.updateOne(
       { traitId: trait.traitId },
-      { $set: { traitId: trait.traitId, ...globalStats, [`ranks.${rank}`]: rankStats } },
+      { $set: { traitId: trait.traitId, ...globalStats, [`ranks.${rankKey}`]: rankStats } },
       { upsert: true }
     );
 
-    console.log(`Updated stats for trait ${trait.traitId} (rank: ${rank})`);
+    console.log(`Updated stats for trait ${trait.traitId} (rank: ${rankKey})`);
     return { traitId: trait.traitId, ...globalStats };
   }
 
