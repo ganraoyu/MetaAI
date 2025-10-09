@@ -1,7 +1,7 @@
 
 import { FilterContainer } from "./Filters/FilterContainer";
 import { ItemDataProvider, useItemDataContext } from "./ItemDataContext";
-import { ItemDataOverView } from "./ItemDataOverView";
+import { ItemDataOverview } from "./ItemDataOverView";
 import { ItemListContainer } from "./ItemList/ItemListContainer";
 
 const ItemDataContent = () => {
@@ -9,7 +9,7 @@ const ItemDataContent = () => {
 
   return (
     <>
-      <ItemDataOverView />
+      <ItemDataOverview />
       <FilterContainer /> 
       {table && <ItemListContainer />}
       {chart && <div className="text-white">Chart View Coming Soon!</div>}

@@ -1,3 +1,27 @@
+export interface ItemCardProps {
+  item: string;
+  tier: string;
+  averagePlacement: number;
+  winRate: number;
+  totalGames: number;
+  frequency: number;
+  popularItems: any[];
+  index: number;
+};
+
+export interface ItemCellProps {
+  children: React.ReactNode;
+  width: string;
+  index: number;
+};
+
+export interface HeaderCellProps {
+  children: React.ReactNode;
+  width: string;
+  isFirst?: boolean;
+  isLast?: boolean;
+}
+
 interface ItemStats {
   itemId: string;
   averagePlacement: number;
