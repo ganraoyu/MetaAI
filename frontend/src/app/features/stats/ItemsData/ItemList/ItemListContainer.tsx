@@ -1,3 +1,4 @@
+import { getTier } from "../../utilities/tierLetter";
 import { ItemCard } from "./ItemCard";
 import { useItemDataContext } from "../ItemDataContext";
 import { HeaderCellProps } from "../types";
@@ -14,7 +15,7 @@ const HeaderCell = ({ children, width, isFirst = false }: HeaderCellProps) => (
 );
 
 export const ItemListContainer = () => {
-  const { totalGames: totalGamesCtx, itemStats = [], searchValue = "", rank = [] } =
+  const { totalGames, itemStats, searchValue, rank} =
     useItemDataContext();
 
   const normalizedRankBIS =
@@ -24,10 +25,12 @@ export const ItemListContainer = () => {
         : "BIS"
       : "rankBISTotal";
 
-  const filteredItems = (itemStats || []).filter((raw: any) => {
-    const id = String(raw?.itemStats?.itemId ?? raw?.itemId ?? "").toLowerCase();
-    return id.includes((searchValue || "").toLowerCase());
-  });
+  const normalizedItems = (itemStats || []).map((item: any) => item.itemStats ?? item);
+  const filteredItems = normalizedItems.filter((item: any) =>
+    String(item?.itemId ?? "").toLowerCase().includes((searchValue || "").toLowerCase())
+  );
+
+  console.log(filteredItems[0])
 
   return (
     <div className="flex flex-col justify-center items-center w-full mt-[-0.4rem]">
@@ -47,11 +50,10 @@ export const ItemListContainer = () => {
       {/* Item Rows */}
       <div className="w-full">
         {itemStats && itemStats.length > 0 ? (
-          filteredItems.map((raw: any, index: number) => {
-            const item = raw.itemStats ?? raw;
+          filteredItems.map((item: any, index: number) => {
             const itemId = item.itemId ?? "";
             const winRate = item.winrate ?? 0;
-            const tier = item.tier ?? "";
+            const tier = item.tier ?? getTier(item.averagePlacement ?? 0);
             const averagePlacement = item.averagePlacement ?? 0;
             const total = item.totalGames ?? 0;
             const ranks = item.ranks ?? {};
@@ -65,7 +67,7 @@ export const ItemListContainer = () => {
                 index={index}
                 averagePlacement={averagePlacement}
                 totalGames={total}
-                frequency={totalGamesCtx ? (total / totalGamesCtx) * 100 : 0}
+                frequency={totalGames ? (total / totalGames) * 100 : 0}
                 popularItems={ranks?.[normalizedRankBIS] || []}
               />
             );

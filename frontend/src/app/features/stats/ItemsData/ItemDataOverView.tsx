@@ -10,12 +10,12 @@ export const ItemDataOverview = () => {
       <div>
         {/* Title */}
         <div className="text-2xl font-bold mb-2">
-          <p>TFT Champion Tier List</p>
+          <p>TFT Item Tier List</p>
         </div>
 
         {/* Description */}
         <div className="text-[0.8rem] max-w-full">
-          <p>Stats on the best tft champions to play in set 15. Click on a champion for more details.</p>
+          <p>Stats on the best tft items to play in set 15. Click on a champion for more details.</p>
         </div>
       </div>
 

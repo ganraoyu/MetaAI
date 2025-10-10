@@ -2,7 +2,7 @@ import { getAveragePlaceColors } from "../../utilities/averagePlaceColors";
 import { getTierBackgroundColors } from "../../utilities/tierColors";
 import { ItemCardProps, ItemCellProps } from "../types";
 import { getRankColor } from "../../utilities/rankFontColors";
-import { itemMap } from "../../../simulators/battle/utilities/ItemMapping";
+import { itemMap } from "../../../../utilities/ItemMapping";
 import { useItemDataContext } from "../ItemDataContext";
 import { LoadingBar } from "./LoadingBar";
 import "./_ItemList.css";
@@ -27,11 +27,13 @@ export const ItemCard = ({
   popularItems = [],
   index,
 }: ItemCardProps): JSX.Element => {
-  const { itemLoading } = useItemDataContext();
-  const isLoading = !!itemLoading;
+  const { itemLoading, itemStats } = useItemDataContext();
+  const hasData = !!item && (totalGames > 0 || (Array.isArray(itemStats) && itemStats.length > 0));
+  const isLoading = !!itemLoading && !hasData;
 
   const itemKey = String(item ?? "").toUpperCase();
   const itemImage = itemMap[itemKey]?.image;
+  const itemName = itemMap[itemKey]?.name
 
   return (
     <div className="flex flex-row items-center justify-center hover:bg-[#0a0a0a] hover:cursor-pointer group">
@@ -44,20 +46,15 @@ export const ItemCard = ({
       </ItemCell>
 
       {/* Item Image & Name */}
-      <ItemCell
-        width="w-[20rem] border-r border-[#363636] group-hover:bg-[#2a2a2a]"
-        index={index}
-      >
+      <ItemCell width="w-[20rem] border-r border-[#363636] group-hover:bg-[#2a2a2a]" index={index}>
         {isLoading ? (
           <div className="flex gap-2 items-center m-1">
             <LoadingBar width="w-32" height="h-[1.5rem]" className="rounded" />
           </div>
         ) : (
           <>
-            {itemImage && (
-              <img src={itemImage} alt={itemKey} className="w-8 h-8 m-1" />
-            )}
-            <p className="text-[#bcbcbc] text-[0.9rem]">{itemKey}</p>
+            {itemImage && <img src={itemImage} alt={itemKey} className="w-8 h-8 m-1" />}
+            <p className="text-[#bcbcbc] text-[0.9rem]">{itemName}</p>
           </>
         )}
       </ItemCell>

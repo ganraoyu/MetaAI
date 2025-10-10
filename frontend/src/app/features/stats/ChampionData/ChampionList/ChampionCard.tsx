@@ -4,7 +4,7 @@ import { getTierBackgroundColors } from "../../utilities/tierColors";
 import { getCostBorderColors } from "../../utilities/costBorderColors";
 import { ChampionCardProps, ChampionCellProps } from "../types";
 import { getRankColor } from "../../utilities/rankFontColors";
-import { itemMap } from "../../../simulators/battle/utilities/ItemMapping";
+import { itemMap } from "../../../../utilities/ItemMapping";
 import { useChampionDataContext } from "../ChampionDataContext";
 import { LoadingBar } from "./LoadingBar";
 import "./_ChampionList.css";
@@ -37,6 +37,7 @@ export const ChampionCard = ({
   const splitChampionName = (champion: string) =>
     champion
       .replace("TFT15_", "")
+      .replace("TFT", "")
       .replace(/_/g, "")
       .toLowerCase()
       .replace(/^./, (c) => c.toUpperCase());

@@ -1,23 +1,22 @@
-// ChampionList.tsx
 import { ItemCard } from "./ItemCard";
 import { getTier } from "../../utilities/tierLetter";
 
 interface ChampionListProps {
-  items: any[];
+  itemsStats: any[];
   championStats: any[];
   totalGames: number;
   normalizedRankBIS: string;
 }
 
 export const ChampionList = ({
-  items,
+  itemsStats,
   championStats,
   totalGames,
   normalizedRankBIS,
 }: ChampionListProps) => {
   return (
     <div className="w-full">
-      {(items ?? []).map((item, index) => (
+      {(itemsStats ?? []).map((item, index) => (
         <ItemCard
           key={item.championId}
           item={item.championId}

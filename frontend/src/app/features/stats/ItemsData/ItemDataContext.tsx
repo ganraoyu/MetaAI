@@ -31,7 +31,7 @@ export const ItemDataProvider = ({ children }: ItemDataProvider) => {
       try {
         setItemLoading(true);
         setChampionLoading(true);
-
+    
         const params = new URLSearchParams();
         if (rank.length === 0 || rank.length === 9) {
           params.append("rank", "all");
@@ -53,6 +53,7 @@ export const ItemDataProvider = ({ children }: ItemDataProvider) => {
     };
     fetchData()
   }, [rank]);
+  
   return (
     <ItemDataContext.Provider
       value={{
