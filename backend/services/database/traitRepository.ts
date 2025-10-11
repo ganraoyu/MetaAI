@@ -16,7 +16,7 @@ export class TraitRepository {
       const db = await connectDB();
       const traitsCollection = db.db("SET15").collection("traits");
       const totalGamesCollection = db.db("SET15").collection("totalGames");
-
+ 
       const projection: any = {
         traitId: 1,
         totalGames: 1,

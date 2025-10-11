@@ -1,4 +1,4 @@
-export const basicItem = {
+export const basicItems = {
   "TFT_ITEM_BFSWORD": { name: "B.F. Sword", image: "/assets/items/basic/BFSword.png" },
   "B.F. Sword": { name: "B.F. Sword", image: "/assets/items/basic/BFSword.png" },
   "BFSword": { name: "B.F. Sword", image: "/assets/items/basic/BFSword.png" },
