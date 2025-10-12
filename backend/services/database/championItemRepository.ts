@@ -86,8 +86,8 @@ export class ChampionItemRepository {
           return {
             championId: champion.championId,
             BIS: champion.BIS,
-            items: champion.items
-          }
+            items: champion.items,
+          };
         }
       });
 
@@ -167,8 +167,20 @@ export class ChampionItemRepository {
       { projection: { championId: 1, items: 1 } }
     );
 
-    const existingItems = existingChampion?.items || [];
-    const newItems = champion?.items || [];
+    // Ensure only valid items and capitalize itemId
+    const existingItems = (existingChampion?.items || [])
+      .filter((item: any) => item && item.itemId)
+      .map((item: any) => ({
+        ...item,
+        itemId: item.itemId.toUpperCase(),
+      }));
+
+    const newItems = (champion?.items || [])
+      .filter((item: any) => item && item.itemId)
+      .map((item: any) => ({
+        ...item,
+        itemId: item.itemId.toUpperCase(),
+      }));
 
     const mergedItems = newItems.map((newItem: any) => {
       const existingItem = existingItems.find((item: any) => item.itemId === newItem.itemId);
