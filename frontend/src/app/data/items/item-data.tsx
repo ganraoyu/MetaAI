@@ -167,7 +167,7 @@ export const combinedItems = [
     componentsImages: ["../assets/items/basic/BFSword.png", "../assets/items/basic/BFSword.png"],
   },
   {
-    name: "Bloodthrister",
+    name: "Bloodthirster",
     description:
       "Once per combat at 40% Health, gain a 25% max Health Shield that lasts up to 5 seconds.",
     additionalAttackDamage: 1.15, // 15% more attack damage
@@ -177,7 +177,7 @@ export const combinedItems = [
     shieldAmount: 0.25, // 25% max health shield
     shieldDuration: 5, // 5 seconds
     omnivamp: 25, // 25% omnivamp
-    image: "../assets/items/combined/Bloodthrister.png",
+    image: "../assets/items/combined/Bloodthirster.png",
     components: ["B.F. Sword", "Negatron Cloak"],
     componentsImages: [
       "../assets/items/basic/BFSword.png",

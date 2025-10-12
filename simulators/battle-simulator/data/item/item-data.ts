@@ -108,7 +108,7 @@ export const combinedItems = [
     additionalDamageAmp: 0.1, // 10% more damage
   }),
   new Item({
-    name: "Bloodthrister",
+    name: "Bloodthirster",
     description:
       "Once per combat at 40% Health, gain a 25% max Health Shield that lasts up to 5 seconds.",
     additionalAttackDamage: 1.15, // 15% more attack damage
@@ -400,7 +400,7 @@ export const radiantItems = [
     additionalDamageAmp: 0.25, // 25% more damage
   }),
   new Item({
-    name: "Blessed Bloodthrister",
+    name: "Blessed Bloodthirster",
     description:
       "Once per combat at 40% Health, gain a 50% max Health Shield that lasts up to 5 seconds.",
     additionalAttackDamage: 1.4, // 40% more attack damage

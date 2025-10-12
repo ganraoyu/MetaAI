@@ -5,7 +5,7 @@ export interface ItemCardProps {
   winRate: number;
   totalGames: number;
   frequency: number;
-  popularItems: any[];
+  popularChampions: any[];
   index: number;
 };
 

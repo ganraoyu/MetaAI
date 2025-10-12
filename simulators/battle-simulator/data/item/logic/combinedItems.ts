@@ -40,24 +40,24 @@ export function dragonsClawEffect(champion: Champion, battleTime: number) {
   });
 }
 
-const bloodthristerStateMap = new Map();
+const bloodthirsterStateMap = new Map();
 
-export function bloodthristerEffect(champion: Champion, battleTime: number) {
+export function BloodthirsterEffect(champion: Champion, battleTime: number) {
   if (!champion?.items?.length || !battleTime) return;
 
   let formattedTime = getFormattedTime(champion);
 
-  if (!bloodthristerStateMap.has(champion.id)) {
-    bloodthristerStateMap.set(champion.id, {
+  if (!bloodthirsterStateMap.has(champion.id)) {
+    bloodthirsterStateMap.set(champion.id, {
       effectUsed: false,
     });
   }
 
-  const state = bloodthristerStateMap.get(champion.id);
+  const state = bloodthirsterStateMap.get(champion.id);
 
   champion.items.forEach((item: ItemProps) => {
     if (
-      item.name === "Bloodthrister" &&
+      item.name === "Bloodthirster" &&
       item.shield &&
       item.shieldAmount &&
       item.shieldDuration &&
@@ -75,7 +75,7 @@ export function bloodthristerEffect(champion: Champion, battleTime: number) {
             shieldAmount: shieldAmount,
             item: item.name,
             type: "item",
-            source: "Bloodthrister",
+            source: "Bloodthirster",
             message: `${champion.name} gained a shield for ${shieldAmount} hp`,
           },
           battleTime,

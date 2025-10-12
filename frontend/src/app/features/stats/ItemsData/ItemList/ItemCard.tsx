@@ -2,7 +2,7 @@ import { getAveragePlaceColors } from "../../utilities/averagePlaceColors";
 import { getTierBackgroundColors } from "../../utilities/tierColors";
 import { ItemCardProps, ItemCellProps } from "../types";
 import { getRankColor } from "../../utilities/rankFontColors";
-import { itemMap } from "../../../../utilities/ItemMapping";
+import { itemMap } from "../../../../data/SET15/itemData/_ItemMapping";
 import { useItemDataContext } from "../ItemDataContext";
 import { LoadingBar } from "./LoadingBar";
 import "./_ItemList.css";
@@ -24,7 +24,7 @@ export const ItemCard = ({
   winRate,
   totalGames,
   frequency,
-  popularItems = [],
+  popularChampions,
   index,
 }: ItemCardProps): JSX.Element => {
   const { itemLoading, itemStats } = useItemDataContext();
@@ -33,7 +33,7 @@ export const ItemCard = ({
 
   const itemKey = String(item ?? "").toUpperCase();
   const itemImage = itemMap[itemKey]?.image;
-  const itemName = itemMap[itemKey]?.name
+  const itemName = itemMap[itemKey]?.name;
 
   return (
     <div className="flex flex-row items-center justify-center hover:bg-[#0a0a0a] hover:cursor-pointer group">
@@ -126,7 +126,7 @@ export const ItemCard = ({
         )}
       </ItemCell>
 
-      {/* Popular With */}
+      {/* Popular Champions */}
       <ItemCell
         width="w-[17rem] justify-center border-r border-[#363636] text-[0.9rem] group-hover:bg-[#2a2a2a]"
         index={index}
@@ -136,7 +136,7 @@ export const ItemCard = ({
             <LoadingBar width="w-[10rem]" height="h-[1.7rem]" />
           </div>
         ) : (
-          (popularItems || []).map((p: any, i: number) => (
+          (popularChampions || []).map((p: any, i: number) => (
             <img
               key={i}
               src={itemMap[String(p.itemId ?? "").toUpperCase()]?.image}

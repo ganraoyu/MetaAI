@@ -2,7 +2,7 @@ import { Champion } from "../../champion/champion";
 import {
   dragonsClawEffect,
   brambleVestEffect,
-  bloodthristerEffect,
+  BloodthirsterEffect,
   archangelsStaffEffect,
   giantSlayerEffect,
   steraksGageEffect,
@@ -52,7 +52,7 @@ import {
 } from "./radiantItems";
 
 export function applyStaticEffects(champion: Champion) {
-  runaansHurricaneEffect(champion);
+runaansHurricaneEffect(champion);
 }
 
 export function applySimpleEffects(champion: Champion, battleTime: number) {
@@ -60,7 +60,7 @@ export function applySimpleEffects(champion: Champion, battleTime: number) {
   steraksGageEffect(champion, battleTime);
   steadfastHeartEffect(champion, battleTime);
   dragonsClawEffect(champion, battleTime);
-  bloodthristerEffect(champion, battleTime);
+  BloodthirsterEffect(champion, battleTime);
   archangelsStaffEffect(champion, battleTime);
   titansResolveEffect(champion, battleTime);
   crownguardEffect(champion, battleTime);

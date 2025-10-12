@@ -4,7 +4,7 @@ import { getTierBackgroundColors } from "../../utilities/tierColors";
 import { getCostBorderColors } from "../../utilities/costBorderColors";
 import { ChampionCardProps, ChampionCellProps } from "../types";
 import { getRankColor } from "../../utilities/rankFontColors";
-import { itemMap } from "../../../../utilities/ItemMapping";
+import { itemMap } from "../../../../data/SET15/itemData/_ItemMapping";
 import { useChampionDataContext } from "../ChampionDataContext";
 import { LoadingBar } from "./LoadingBar";
 import "./_ChampionList.css";
