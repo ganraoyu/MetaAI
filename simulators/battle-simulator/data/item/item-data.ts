@@ -338,6 +338,12 @@ export const combinedItems = [
     additionalAbilityPower: 15,
     additionalDamageAmp: 0.05,
   }),
+  new Item({
+    name: "Thiefs Gloves",
+    description: "Each round: Equip 2 random items.",
+    additionalHealth: 150,
+    additionalCritChance: 0.2,
+  })
 ];
 
 export const radiantItems = [

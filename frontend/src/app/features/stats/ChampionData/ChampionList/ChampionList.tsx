@@ -1,6 +1,7 @@
 // ChampionList.tsx
 import { ChampionCard } from "./ChampionCard";
 import { getTier } from "../../utilities/tierLetter";
+import { useChampionDataContext } from "../ChampionDataContext";
 
 interface ChampionListProps {
   champions: any[];
@@ -15,9 +16,16 @@ export const ChampionList = ({
   totalGames,
   normalizedRankBIS,
 }: ChampionListProps) => {
+  const { searchValue } = useChampionDataContext();
+
+  const filteredChampions =
+    champions?.filter((champion) =>
+      champion.championId.toLowerCase().includes(searchValue.toLowerCase())
+    ) || [];
+
   return (
     <div className="w-full">
-      {(champions ?? []).map((champion, index) => (
+      {(filteredChampions ?? []).map((champion, index) => (
         <ChampionCard
           key={champion.championId}
           champion={champion.championId}

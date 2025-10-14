@@ -32,8 +32,8 @@ export const ItemCard = ({
   const isLoading = !!itemLoading && !hasData;
 
   const itemKey = String(item ?? "").toUpperCase();
-  const itemImage = itemMap[itemKey]?.image;
-  const itemName = itemMap[itemKey]?.name;
+  const itemImage = itemMap[itemKey]?.image || "../assets/items/basic/Spatula.png";
+  const itemName = itemMap[itemKey]?.name || itemKey;
 
   return (
     <div className="flex flex-row items-center justify-center hover:bg-[#0a0a0a] hover:cursor-pointer group">

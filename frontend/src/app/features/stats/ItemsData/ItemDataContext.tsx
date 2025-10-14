@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, ReactNode, useEffect, useState } from "react";
 import { ChampionDocument, ItemDataContextProps, ItemsDocument } from "./types";
+import { nonPlayableItems } from "../../../data/SET15/itemData/nonPlayableItems";
 
 const ItemDataContext = createContext<ItemDataContextProps | null>(null);
 
@@ -44,9 +45,12 @@ export const ItemDataProvider = ({ children }: ItemDataProvider) => {
           axios.get(`http://localhost:3000/statistics/items?${params.toString()}`),
           axios.get(`http://localhost:3000/statistics/championItems?${params.toString()}`),
         ]);
-        setItemStats(itemStatsResponse.data.itemData)
-        console.log(itemStatsResponse.data.itemData)
-        setChampionStats(championItemStatsResponse.data.championData)
+
+        const filteredItemStatsResponse = itemStatsResponse.data.itemData.filter((item: any) => !nonPlayableItems.includes(item.itemId));
+
+        setItemStats(filteredItemStatsResponse);
+        setTotalGames(itemStatsResponse.data.totalGames);
+        setChampionStats(championItemStatsResponse.data.championData);
       } catch (error) {
 
       }

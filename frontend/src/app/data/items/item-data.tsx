@@ -556,4 +556,16 @@ export const combinedItems = [
       "../assets/items/basic/TearOfTheGoddess.png",
     ],
   },
+  {
+    name: "Thief's Gloves",
+    description: "Each round: Equip 2 random items.",
+    additionalHealth: 150,
+    additionalCritChance: 0.2,
+    image: "../assets/items/combined/ThiefsGloves.png",
+    components: ["Sparring Gloves", "Sparring Gloves"],
+    componentsImages: [
+      "../assets/items/basic/SparringGloves.png",
+      "../assets/items/basic/SparringGloves.png",
+    ],
+  },
 ];

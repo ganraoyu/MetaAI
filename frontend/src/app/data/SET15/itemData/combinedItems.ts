@@ -31,17 +31,29 @@ export const combinedItems = {
   "Death Blade": { name: "Deathblade", image: "../assets/items/combined/DeathBlade.png" },
   "DeathBlade": { name: "Deathblade", image: "../assets/items/combined/DeathBlade.png" },
 
+  "TFT_ITEM_LASTWHISPER": { name: "Last Whisper", image: "../assets/items/combined/LastWhisper.png" },
+  "Last Whisper": { name: "Last Whisper", image: "../assets/items/combined/LastWhisper.png" },
+  "LastWhisper": { name: "Last Whisper", image: "../assets/items/combined/LastWhisper.png" },
+
   "TFT_ITEM_BRAMBLEVEST": { name: "Bramble Vest", image: "../assets/items/combined/BrambleVest.png" },
   "Bramble Vest": { name: "Bramble Vest", image: "../assets/items/combined/BrambleVest.png" },
   "BrambleVest": { name: "Bramble Vest", image: "../assets/items/combined/BrambleVest.png" },
+
+  "TFT_ITEM_EVENSHROUD": { name: "Evenshroud", image: "../assets/items/combined/Evenshroud.png" },
+  "Evenshroud": { name: "Evenshroud", image: "../assets/items/combined/Evenshroud.png" },
+  "EvenShroud": { name: "Evenshroud", image: "../assets/items/combined/Evenshroud.png" },
 
   "TFT_ITEM_INFINITYEDGE": { name: "Infinity Edge", image: "../assets/items/combined/InfinityEdge.png" },
   "Infinity Edge": { name: "Infinity Edge", image: "../assets/items/combined/InfinityEdge.png" },
   "InfinityEdge": { name: "Infinity Edge", image: "../assets/items/combined/InfinityEdge.png" },
 
-  "TFT_ITEM_BLOODTHIRSTER": { name: "Bloodthirster", image: "../assets/items/combined/BloodThirster.png" },
-  "Bloodthirster": { name: "Bloodthirster", image: "../assets/items/combined/BloodThirster.png" },
-  "BloodThirster": { name: "Bloodthirster", image: "../assets/items/combined/BloodThirster.png" },
+  "TFT_ITEM_BLOODTHIRSTER": { name: "Bloodthirster", image: "../assets/items/combined/Bloodthirster.png" },
+  "Bloodthirster": { name: "Bloodthirster", image: "../assets/items/combined/Bloodthirster.png" },
+  "BloodThirster": { name: "Bloodthirster", image: "../assets/items/combined/Bloodthirster.png" },
+
+  "TFT_ITEM_STERAKSGAGE": { name: "Sterak's Gage", image: "../assets/items/combined/SteraksGage.png" },
+  "Sterak's Gage": { name: "Sterak's Gage", image: "../assets/items/combined/SteraksGage.png" },
+  "SteraksGage": { name: "Sterak's Gage", image: "../assets/items/combined/SteraksGage.png" },
 
   "TFT_ITEM_RABADONSDEATHCAP": { name: "Rabadon's Deathcap", image: "../assets/items/combined/RabadonsDeathcap.png" },
   "Rabadon's Deathcap": { name: "Rabadon's Deathcap", image: "../assets/items/combined/RabadonsDeathcap.png" },
@@ -51,9 +63,17 @@ export const combinedItems = {
   "Dragon's Claw": { name: "Dragon's Claw", image: "../assets/items/combined/DragonsClaw.png" },
   "DragonsClaw": { name: "Dragon's Claw", image: "../assets/items/combined/DragonsClaw.png" },
 
+  "TFT_ITEM_STEADFASTHEART": { name: "Steadfast Heart", image: "../assets/items/combined/SteadfastHeart.png" },
+  "Steadfast Heart": { name: "Steadfast Heart", image: "../assets/items/combined/SteadfastHeart.png" },
+  "SteadfastHeart": { name: "Steadfast Heart", image: "../assets/items/combined/SteadfastHeart.png" },
+
   "TFT_ITEM_ARCHANGELSSTAFF": { name: "Archangel's Staff", image: "../assets/items/combined/ArchangelsStaff.png" },
   "Archangel's Staff": { name: "Archangel's Staff", image: "../assets/items/combined/ArchangelsStaff.png" },
-  "ArchangelsStaff": { name: "Archangel's Staff", image: "../assets/items/combined/ArchangelsStaff.png" },
+"ArchangelsStaff": { name: "Archangel's Staff", image: "../assets/items/combined/ArchangelsStaff.png" },
+
+  "TFT_ITEM_HANDOFJUSTICE": { name: "Hand of Justice", image: "../assets/items/combined/HandOfJustice.png" },
+  "Hand of Justice": { name: "Hand of Justice", image: "../assets/items/combined/HandOfJustice.png" },
+  "HandOfJustice": { name: "Hand of Justice", image: "../assets/items/combined/HandOfJustice.png" },
 
   "TFT_ITEM_HEXTECHGUNBLADE": { name: "Hextech Gunblade", image: "../assets/items/combined/HextechGunblade.png" },
   "Hextech Gunblade": { name: "Hextech Gunblade", image: "../assets/items/combined/HextechGunblade.png" },
@@ -61,6 +81,10 @@ export const combinedItems = {
 
   "TFT_ITEM_REDEMPTION": { name: "Redemption", image: "../assets/items/combined/Redemption.png" },
   "Redemption": { name: "Redemption", image: "../assets/items/combined/Redemption.png" },
+
+  "TFT_ITEM_REDBUFF": { name: "Red Buff", image: "../assets/items/combined/RedBuff.png" },
+  "Red Buff": { name: "Red Buff", image: "../assets/items/combined/RedBuff.png" },
+  "RedBuff": { name: "Red Buff", image: "../assets/items/combined/RedBuff.png" },
 
   "TFT_ITEM_STATIKKSHIV": { name: "Statikk Shiv", image: "../assets/items/combined/StatikkShiv.png" },
   "Statikk Shiv": { name: "Statikk Shiv", image: "../assets/items/combined/StatikkShiv.png" },
@@ -99,4 +123,17 @@ export const combinedItems = {
 
   "TFT_ITEM_CROWNGUARD": { name: "Crownguard", image: "../assets/items/combined/Crownguard.png" },
   "Crownguard": { name: "Crownguard", image: "../assets/items/combined/Crownguard.png" },
+
+  "TFT_ITEM_GUARDBREAKER": { name: "Guardbreaker", image: "../assets/items/combined/GuardBreaker.png" },
+  "Guardbreaker": { name: "Guardbreaker", image: "../assets/items/combined/GuardBreaker.png" },
+  "GuardBreaker": { name: "Guardbreaker", image: "../assets/items/combined/GuardBreaker.png" },
+
+  "TFT_ITEM_THIEFSGLOVES": { name: "Thief's Gloves", image: "../assets/items/combined/ThiefsGloves.png" },
+  "Thief's Gloves": { name: "Thief's Gloves", image: "../assets/items/combined/ThiefsGloves.png" },
+  "ThiefsGloves": { name: "Thief's Gloves", image: "../assets/items/combined/ThiefsGloves.png" },
+
+  "TFT_ITEM_NASHORSTOOTH": { name: "Nashor's Tooth", image: "../assets/items/combined/NashorsTooth.png" },
+  "Nashor's Tooth": { name: "Nashor's Tooth", image: "../assets/items/combined/NashorsTooth.png" },
+  "NashorsTooth": { name: "Nashor's Tooth", image: "../assets/items/combined/NashorsTooth.png" },
+
 };

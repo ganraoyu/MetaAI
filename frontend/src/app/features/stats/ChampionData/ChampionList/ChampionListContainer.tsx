@@ -1,8 +1,7 @@
-import { getTier } from "../../utilities/tierLetter";
-import { ChampionCard } from "./ChampionCard";
 import { useChampionDataContext } from "../ChampionDataContext";
 import { HeaderCellProps } from "../types";
 import { ChampionListSkeleton } from "./ChampionListSkeleton";
+import { ChampionList } from "./ChampionList";
 
 const HeaderCell = ({ children, width, isFirst = false }: HeaderCellProps) => (
   <div
@@ -15,7 +14,7 @@ const HeaderCell = ({ children, width, isFirst = false }: HeaderCellProps) => (
 );
 
 export const ChampionListContainer = () => {
-  const { totalGames, championStats, championItemStats, searchValue, rank } =
+  const { totalGames, championStats, championItemStats, rank } =
     useChampionDataContext();
 
   const normalizedRankBIS =
@@ -25,16 +24,14 @@ export const ChampionListContainer = () => {
         : "BIS"
       : "rankBISTotal";
   console.log(normalizedRankBIS);
-  
-  const filteredChampions = championStats?.filter((champion) =>
-    champion.championId.toLowerCase().includes(searchValue.toLowerCase())
-  ) || [];
 
   return (
     <div className="flex flex-col justify-center items-center w-full mt-[-0.4rem]">
       {/* Header */}
       <div className="flex flex-row items-center justify-center text-[0.9rem]">
-        <HeaderCell width="flex items-center justify-center w-[5rem]" isFirst>Rank</HeaderCell>
+        <HeaderCell width="flex items-center justify-center w-[5rem]" isFirst>
+          Rank
+        </HeaderCell>
         <HeaderCell width="flex items-center justify-start w-[20rem] pl-2">Unit</HeaderCell>
         <HeaderCell width="flex items-center justify-center w-[5rem]">Tier</HeaderCell>
         <HeaderCell width="flex items-center justify-center w-[8rem]">Avg. Place</HeaderCell>
@@ -46,25 +43,12 @@ export const ChampionListContainer = () => {
       {/* Champion Rows */}
       <div className="w-full">
         {championStats && championStats.length > 0 ? (
-          // Render actual champion cards
-          filteredChampions.map((champion, index) => (
-            <ChampionCard
-              key={champion.championId}
-              champion={champion.championId}
-              winRate={champion.winrate}
-              index={index}
-              cost={champion.cost || 1}
-              tier={getTier(champion.averagePlacement)}
-              averagePlacement={champion.averagePlacement}
-              totalGames={champion.totalGames}
-              frequency={champion.totalGames / totalGames}
-              popularItems={
-                championItemStats.find((item) => item.championId === champion.championId)?.[
-                  normalizedRankBIS
-                ] || []
-              }
-            />
-          ))
+          <ChampionList
+            champions={championStats}
+            championItemStats={championItemStats}
+            totalGames={totalGames}
+            normalizedRankBIS={normalizedRankBIS}
+          />
         ) : (
           // Render skeleton
           <ChampionListSkeleton />

@@ -1,0 +1,1 @@
+export const nonPlayableItems = ["TFT_ITEM_EMPTYBAG", "TFTEVENT_PM_ITEM_BOSSBADGE"]

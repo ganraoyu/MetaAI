@@ -1,8 +1,7 @@
-import { getTier } from "../../utilities/tierLetter";
-import { ItemCard } from "./ItemCard";
 import { useItemDataContext } from "../ItemDataContext";
 import { HeaderCellProps } from "../types";
 import { ItemListSkeleton } from "./ItemSkeleton";
+import { ChampionList } from "./ItemList";
 
 const HeaderCell = ({ children, width, isFirst = false }: HeaderCellProps) => (
   <div
@@ -15,22 +14,14 @@ const HeaderCell = ({ children, width, isFirst = false }: HeaderCellProps) => (
 );
 
 export const ItemListContainer = () => {
-  const { totalGames, itemStats, searchValue, rank} =
-    useItemDataContext();
-
-  const normalizedRankBIS =
-    rank.length === 1
-      ? String(rank[0]) !== "all"
-        ? `${String(rank[0]).toLowerCase()}BIS`
-        : "BIS"
-      : "rankBISTotal";
+  const { totalGames, itemStats, championStats, searchValue, rank } = useItemDataContext();
 
   const normalizedItems = (itemStats || []).map((item: any) => item.itemStats ?? item);
   const filteredItems = normalizedItems.filter((item: any) =>
-    String(item?.itemId ?? "").toLowerCase().includes((searchValue || "").toLowerCase())
+    String(item?.itemId ?? "")
+      .toLowerCase()
+      .includes((searchValue || "").toLowerCase())
   );
-
-  console.log(filteredItems[0])
 
   return (
     <div className="flex flex-col justify-center items-center w-full mt-[-0.4rem]">
@@ -49,30 +40,13 @@ export const ItemListContainer = () => {
 
       {/* Item Rows */}
       <div className="w-full">
-        {itemStats && itemStats.length > 0 ? (
-          filteredItems.map((item: any, index: number) => {
-            const itemId = item.itemId ?? "";
-            const winRate = item.winrate ?? 0;
-            const tier = item.tier ?? getTier(item.averagePlacement ?? 0);
-            const averagePlacement = item.averagePlacement ?? 0;
-            const total = item.totalGames ?? 0;
-            const ranks = item.ranks ?? {};
-
-            return (
-              <ItemCard
-                key={itemId || index}
-                item={itemId}
-                winRate={winRate}
-                tier={tier}
-                index={index}
-                averagePlacement={averagePlacement}
-                totalGames={total}
-                frequency={totalGames ? (total / totalGames) * 100 : 0}
-                popularItems={ranks?.[normalizedRankBIS] || []}
-              />
-            );
-          })
-        ) : (
+        {filteredItems.length > 0 ? (
+          <ChampionList
+            itemsStats={itemStats}
+            championStats={championStats}
+            totalGames={totalGames}
+          />
+        ) : ( 
           <ItemListSkeleton />
         )}
       </div>
