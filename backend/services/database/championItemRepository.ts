@@ -105,6 +105,7 @@ export class ChampionItemRepository {
     try {
       this.cache.clear();
       const db = await connectDB();
+      const itemCollection = db.db("SET15").collection("items");
       const championItemCollection = db.db("SET15").collection("championItems");
 
       let updatedChampionItems: any[] = [];
@@ -128,6 +129,7 @@ export class ChampionItemRepository {
       );
 
       const BISItems = await this.calculateBISItems(championItemCollection, updatedChampionItems);
+      const BISChampions = await this.calculateBISChampions(itemCollection, updatedChampionItems);
 
       // Update BIS items for each champion and each rank
       await Promise.all(
@@ -136,6 +138,14 @@ export class ChampionItemRepository {
             ranks.map((rank) =>
               this.updateBISItems(championItemCollection, champion.championId, BISItems, rank)
             )
+          )
+        )
+      );
+
+      await Promise.all(
+        Array.from(BISChampions.entries()).map(([itemId, topChampions]) =>
+          Promise.all(
+            ranks.map((rank) => this.updateBISChampions(itemCollection, itemId, topChampions, rank))
           )
         )
       );
@@ -272,6 +282,7 @@ export class ChampionItemRepository {
     };
   }
 
+  // Champion -> Item
   private static async calculateBISItems(collection: any, updatedChampionItems: any[]) {
     const bisMap = new Map();
     for (const champion of updatedChampionItems) {
@@ -288,6 +299,41 @@ export class ChampionItemRepository {
     return bisMap;
   }
 
+  // Item -> champion
+  private static async calculateBISChampions(collection: any, updatedChampionItems: any[]) {
+    try {
+      const bisMap = new Map();
+      for (const champion of updatedChampionItems) {
+        const items = champion.items;
+
+        for (const item of items) {
+          const existing = bisMap.get(item.itemId);
+
+          if (!bisMap.has(item.itemId)) {
+            bisMap.set(item.itemId, []);
+          }
+
+          const topChampions = bisMap.get(item.itemId);
+
+          topChampions.push({
+            championId: champion.championId,
+            wins: item.wins,
+            totalGames: item.totalGames,
+            winrate: item.winrate,
+            averagePlacement: item.averagePlacement,
+          });
+
+          topChampions.sort((a: any, b: any) => b.averagePlacement - a.averagePlacement);
+          bisMap.set(item.itemId, topChampions.slice(0, 6));
+        }
+      }
+      return bisMap;
+    } catch (error) {
+      console.error("Error calculating BIS champions:", error);
+      return new Map();
+    }
+  }
+
   private static async updateBISItems(
     collection: any,
     championId: string,
@@ -298,6 +344,21 @@ export class ChampionItemRepository {
     const update = { BIS: championBIS, [`${rank.toLowerCase()}BIS`]: championBIS };
     await collection.updateOne({ championId }, { $set: update });
   }
+
+  private static async updateBISChampions(
+    collection: any,
+    itemId: string,
+    topChampions: any[],
+    rank: string
+  ) {
+    const update = {
+      BIS: topChampions,
+      [`${rank.toLowerCase()}BIS`]: topChampions,
+      championBIS: topChampions, // Add championBIS field
+    };
+    await collection.updateOne({ itemId }, { $set: update }, { upsert: true });
+  }
+
 
   private static async updateTotalGamesCount(db: any, increment: number) {
     const totalGamesCollection = db.db("SET15").collection("totalGames");
