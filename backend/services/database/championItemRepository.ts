@@ -145,7 +145,7 @@ export class ChampionItemRepository {
       await Promise.all(
         Array.from(BISChampions.entries()).map(([itemId, topChampions]) =>
           Promise.all(
-            ranks.map((rank) => this.updateBISChampions(itemCollection, itemId, topChampions, rank))
+            ranks.map((rank) => this.updateBISChampions(itemCollection, itemId.toUpperCase(), topChampions, rank))
           )
         )
       );
@@ -307,8 +307,6 @@ export class ChampionItemRepository {
         const items = champion.items;
 
         for (const item of items) {
-          const existing = bisMap.get(item.itemId);
-
           if (!bisMap.has(item.itemId)) {
             bisMap.set(item.itemId, []);
           }
@@ -323,8 +321,7 @@ export class ChampionItemRepository {
             averagePlacement: item.averagePlacement,
           });
 
-          topChampions.sort((a: any, b: any) => b.averagePlacement - a.averagePlacement);
-          bisMap.set(item.itemId, topChampions.slice(0, 6));
+          topChampions.sort((a: any, b: any) => a.averagePlacement - b.averagePlacement);
         }
       }
       return bisMap;
@@ -342,7 +339,7 @@ export class ChampionItemRepository {
   ) {
     const championBIS = bisMap.get(championId) || [];
     const update = { BIS: championBIS, [`${rank.toLowerCase()}BIS`]: championBIS };
-    await collection.updateOne({ championId }, { $set: update });
+    await collection.updateOne({ championId }, { $set: update }, { upsert: true });
   }
 
   private static async updateBISChampions(
@@ -354,11 +351,9 @@ export class ChampionItemRepository {
     const update = {
       BIS: topChampions,
       [`${rank.toLowerCase()}BIS`]: topChampions,
-      championBIS: topChampions, // Add championBIS field
     };
-    await collection.updateOne({ itemId }, { $set: update }, { upsert: true });
+    await collection.updateOne({ itemId: { $exists: true } }, { $set: update }, { upsert: true });
   }
-
 
   private static async updateTotalGamesCount(db: any, increment: number) {
     const totalGamesCollection = db.db("SET15").collection("totalGames");
