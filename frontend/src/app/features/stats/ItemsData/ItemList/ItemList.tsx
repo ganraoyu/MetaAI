@@ -1,13 +1,14 @@
 import { ItemCard } from "./ItemCard";
 import { getTier } from "../../utilities/tierLetter";
+import { useItemDataContext } from "../ItemDataContext";
 
 interface ItemListProps {
   itemsStats: any[];
-  championStats: any[];
   totalGames: number;
 }
 
-export const ChampionList = ({ itemsStats, championStats, totalGames }: ItemListProps) => {
+export const ItemList = ({ itemsStats, totalGames }: ItemListProps) => {
+  const { rank } = useItemDataContext();
 
   return (
     <div className="w-full">
@@ -21,7 +22,7 @@ export const ChampionList = ({ itemsStats, championStats, totalGames }: ItemList
           averagePlacement={item.averagePlacement}
           totalGames={item.totalGames}
           frequency={item.totalGames / totalGames}
-          popularChampions={[]}
+          popularChampions={item.BIS.slice(0,6)}
         />
       ))}
     </div>

@@ -1,7 +1,7 @@
 import { useItemDataContext } from "../ItemDataContext";
 import { HeaderCellProps } from "../types";
 import { ItemListSkeleton } from "./ItemSkeleton";
-import { ChampionList } from "./ItemList";
+import { ItemList } from "./ItemList";
 
 const HeaderCell = ({ children, width, isFirst = false }: HeaderCellProps) => (
   <div
@@ -14,7 +14,7 @@ const HeaderCell = ({ children, width, isFirst = false }: HeaderCellProps) => (
 );
 
 export const ItemListContainer = () => {
-  const { totalGames, itemStats, championStats, searchValue, rank } = useItemDataContext();
+  const { totalGames, itemStats, searchValue } = useItemDataContext();
 
   const normalizedItems = (itemStats || []).map((item: any) => item.itemStats ?? item);
   const filteredItems = normalizedItems.filter((item: any) =>
@@ -41,9 +41,8 @@ export const ItemListContainer = () => {
       {/* Item Rows */}
       <div className="w-full">
         {filteredItems.length > 0 ? (
-          <ChampionList
+          <ItemList
             itemsStats={itemStats}
-            championStats={championStats}
             totalGames={totalGames}
           />
         ) : ( 

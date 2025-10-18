@@ -16,7 +16,6 @@ export class ItemRepository {
       const itemsCollection = db.db("SET15").collection("items");
       const totalGamesCollection = db.db("SET15").collection("totalGames");
 
-      // Match traitRepository style: request whole ranks object (no nested + parent collision)
       const projection: any = {
         itemId: 1,
         totalGames: 1,
@@ -24,6 +23,10 @@ export class ItemRepository {
         winrate: 1,
         averagePlacement: 1,
         ranks: 1,
+        BIS: 1,
+        masterBIS: 1,
+        grandmasterBIS: 1,
+        challengerBIS: 1,
       };
 
       const [itemsDocs, totalGamesDoc] = await Promise.all([
@@ -34,7 +37,6 @@ export class ItemRepository {
       const itemData: any[] = itemsDocs.map((item) => {
         if (!ranks.includes("all")) {
           const rankItemData: Record<string, any> = {};
-          // follow traitRepository pattern: use ranks array as given to pick fields from item.ranks
           ranks.forEach((rank) => {
             rankItemData[rank] = item.ranks?.[rank] || {};
           });
@@ -67,6 +69,10 @@ export class ItemRepository {
             totalGames: specifiedRankTotals.totalGames,
             averagePlacement,
             winrate,
+            BIS: item.BIS,
+            masterBIS: item.masterBIS,
+            grandmasterBIS: item.grandmasterBIS,
+            challengerBIS: item.challengerBIS,
           };
         } else {
           return item;

@@ -352,7 +352,7 @@ export class ChampionItemRepository {
       BIS: topChampions,
       [`${rank.toLowerCase()}BIS`]: topChampions,
     };
-    await collection.updateOne({ itemId: { $exists: true } }, { $set: update }, { upsert: true });
+    await collection.updateOne({ itemId }, { $set: update }, { upsert: true });
   }
 
   private static async updateTotalGamesCount(db: any, increment: number) {

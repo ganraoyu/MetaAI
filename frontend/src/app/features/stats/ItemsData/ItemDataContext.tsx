@@ -11,7 +11,7 @@ interface ItemDataProvider {
 
 export const ItemDataProvider = ({ children }: ItemDataProvider) => {
   const [searchValue, setSearchValue] = useState<string>("");
-  const [rank, setRank] = useState<string[]>(["Challenger", "Grandmaster"]);
+  const [rank, setRank] = useState<string[]>(["Master"]);
 
   const [table, setTable] = useState<boolean>(true);
   const [chart, setChart] = useState<boolean>(false);
@@ -40,7 +40,6 @@ export const ItemDataProvider = ({ children }: ItemDataProvider) => {
           rank.forEach((r) => params.append("rank", r.toLowerCase()));
         }
 
-        // Fetch both in parallel
         const [itemStatsResponse, championItemStatsResponse] = await Promise.all([
           axios.get(`http://localhost:3000/statistics/items?${params.toString()}`),
           axios.get(`http://localhost:3000/statistics/championItems?${params.toString()}`),
@@ -49,13 +48,17 @@ export const ItemDataProvider = ({ children }: ItemDataProvider) => {
         const filteredItemStatsResponse = itemStatsResponse.data.itemData.filter((item: any) => !nonPlayableItems.includes(item.itemId));
 
         setItemStats(filteredItemStatsResponse);
+        console.log(filteredItemStatsResponse);
         setTotalGames(itemStatsResponse.data.totalGames);
         setChampionStats(championItemStatsResponse.data.championData);
       } catch (error) {
-
+        console.error("Error fetching item data:", error);
+      } finally {
+        setItemLoading(false);
+        setChampionLoading(false);
       }
     };
-    fetchData()
+    fetchData();
   }, [rank]);
   
   return (
