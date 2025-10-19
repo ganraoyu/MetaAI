@@ -1,5 +1,5 @@
 
-import { FilterContainer } from "./Filters/FilterContainer";
+import { FilterContainer } from "./Filters/_FilterContainer";
 import { ItemDataProvider, useItemDataContext } from "./ItemDataContext";
 import { ItemDataOverview } from "./ItemDataOverView";
 import { ItemListContainer } from "./ItemList/ItemListContainer";

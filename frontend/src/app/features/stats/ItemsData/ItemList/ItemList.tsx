@@ -1,15 +1,12 @@
 import { ItemCard } from "./ItemCard";
 import { getTier } from "../../utilities/tierLetter";
-import { useItemDataContext } from "../ItemDataContext";
 
 interface ItemListProps {
   itemsStats: any[];
   totalGames: number;
 }
 
-export const ItemList = ({ itemsStats, totalGames }: ItemListProps) => {
-  const { rank } = useItemDataContext();
-
+export const ItemList = ({ itemsStats, totalGames }: ItemListProps) => { 
   return (
     <div className="w-full">
       {(itemsStats ?? []).map((item, index) => (
