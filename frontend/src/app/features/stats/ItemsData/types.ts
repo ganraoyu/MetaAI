@@ -1,3 +1,25 @@
+export type Rank = 
+  | "Iron"
+  | "Bronze"
+  | "Silver"
+  | "Gold"
+  | "Platinum"
+  | "Diamond"
+  | "Master"
+  | "Grandmaster"
+  | "Challenger";
+export const ranks: Rank[] = [
+  "Iron",
+  "Bronze",
+  "Silver",
+  "Gold",
+  "Platinum",
+  "Diamond",
+  "Master",
+  "Grandmaster",
+  "Challenger",
+];
+
 export interface ItemCardProps {
   item: string;
   tier: string;
@@ -47,6 +69,9 @@ interface ItemDataContextProps {
   searchValue: string;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
 
+  itemType: string[];
+  setItemType: React.Dispatch<React.SetStateAction<string[]>>;
+  
   rank: string[];
   setRank: React.Dispatch<React.SetStateAction<string[]>>;
 
