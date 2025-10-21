@@ -13,7 +13,7 @@ export const ItemDataProvider = ({ children }: ItemDataProvider) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [rank, setRank] = useState<string[]>(["Master"]);
 
-  const [itemType, setItemType] = useState<string[]>(["Basic", "Combined"]);
+  const [itemType, setItemType] = useState<string[]>(["Basic", "Combined", "Radiant", "Artifact", "Emblem"]);
 
   const [table, setTable] = useState<boolean>(true);
   const [chart, setChart] = useState<boolean>(false);

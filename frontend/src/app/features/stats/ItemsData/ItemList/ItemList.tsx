@@ -19,7 +19,7 @@ export const ItemList = ({ itemsStats, totalGames }: ItemListProps) => {
           averagePlacement={item.averagePlacement}
           totalGames={item.totalGames}
           frequency={item.totalGames / totalGames}
-          popularChampions={item.BIS.slice(0,6)}
+          popularChampions={item?.BIS?.slice(0,6)}
         />
       ))}
     </div>

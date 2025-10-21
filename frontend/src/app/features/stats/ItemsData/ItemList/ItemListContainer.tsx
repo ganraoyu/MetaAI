@@ -3,6 +3,10 @@ import { HeaderCellProps } from "../types";
 import { ItemListSkeleton } from "./ItemSkeleton";
 import { ItemList } from "./ItemList";
 import { basicItems } from "../../../../data/SET15/itemData/basicItems";
+import { combinedItems } from "../../../../data/SET15/itemData/combinedItems";
+import { radiantItems } from "../../../../data/SET15/itemData/radiantItems";
+import { artifactItems } from "../../../../data/SET15/itemData/artifactItems";
+import { emblemItems } from "../../../../data/SET15/itemData/emblemItems";
 
 const HeaderCell = ({ children, width, isFirst = false }: HeaderCellProps) => (
   <div
@@ -14,34 +18,31 @@ const HeaderCell = ({ children, width, isFirst = false }: HeaderCellProps) => (
   </div>
 );
 
+const itemTypeMapping: any = {
+  Basic: basicItems,
+  Combined: combinedItems,
+  Radiant: radiantItems,
+  Artifact: artifactItems,
+  Emblem: emblemItems,
+};
+
 export const ItemListContainer = () => {
   const { totalGames, itemStats, searchValue, itemType } = useItemDataContext();
 
   const normalizedItems = (itemStats || []).map((item: any) => item.itemStats ?? item);
-
-  const filteredItems = normalizedItems.filter((item: any) =>
+  const searchFilteredItems = normalizedItems.filter((item: any) =>
     String(item?.itemId ?? "")
       .toLowerCase()
       .includes((searchValue || "").toLowerCase())
   );
 
-  const finalItems = filteredItems.filter((item: any) => {
-    const name = item?.name ?? item?.itemName ?? item?.itemId;
-    const basicItem = basicItems[name as keyof typeof basicItems];
-    const isBasic = basicItem?.image.includes("/basic/");
-
-    // ✅ if no filter selected, show all
-    if (!itemType?.length) return true;
-
-    // ✅ if user selected "basic", include basic items
-    if (itemType.includes("basic") && isBasic) return true;
-
-    // ✅ if user selected "combined", include non-basic items
-    if (itemType.includes("combined") && !isBasic) return true;
-
-    // otherwise, filter out
-    return false;
+  const itemTypeFilteredItems = itemType.flatMap((type) => {
+    return searchFilteredItems.filter((item) => {
+      return itemTypeMapping[type][item.itemId];
+    });
   });
+
+  const rankedItems = itemTypeFilteredItems.sort((a, b) => a.averagePlacement - b.averagePlacement);
 
   return (
     <div className="flex flex-col justify-center items-center w-full mt-[-0.4rem]">
@@ -60,8 +61,8 @@ export const ItemListContainer = () => {
 
       {/* Item Rows */}
       <div className="w-full">
-        {finalItems.length > 0 ? (
-          <ItemList itemsStats={finalItems} totalGames={totalGames} />
+        {itemTypeFilteredItems.length > 0 ? (
+          <ItemList itemsStats={searchFilteredItems} totalGames={totalGames} />
         ) : (
           <ItemListSkeleton />
         )}

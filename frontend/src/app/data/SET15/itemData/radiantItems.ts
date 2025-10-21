@@ -51,7 +51,7 @@ export const radiantItems = {
   "Radiant Bloodthirster": { name: "Radiant Bloodthirster", image: "../assets/items/radiant/RadiantBloodthirster.png" },
   "RadiantBloodThirster": { name: "Radiant Bloodthirster", image: "../assets/items/radiant/RadiantBloodthirster.png" },
 
-  "RadiantTFT_ITEM_ARCHANGELSSTAFF": { name: "Radiant Archangel's Staff", image: "../assets/items/radiant/RadiantArchangelsStaff.png" },
+  "TFT5_ITEM_ARCHANGELSSTAFFRADIANT": { name: "Radiant Archangel's Staff", image: "../assets/items/radiant/RadiantArchangelsStaff.png" },
   "Radiant Archangel's Staff": { name: "Radiant Archangel's Staff", image: "../assets/items/radiant/RadiantArchangelsStaff.png" },
   "RadiantArchangelsStaff": { name: "Radiant Archangel's Staff", image: "../assets/items/radiant/RadiantArchangelsStaff.png" },
 
@@ -133,5 +133,9 @@ export const radiantItems = {
   "TFT5_ITEM_RABADONSDEATHCAPRADIANT": { name: "Radiant Rabadon's Deathcap", image: "../assets/items/radiant/RadiantRabadonsDeathcap.png" },
   "Radiant Rabadon's Deathcap": { name: "Radiant Rabadon's Deathcap", image: "../assets/items/radiant/RadiantRabadonsDeathcap.png" },
   "RadiantRabadonsDeathcap": { name: "Radiant Rabadon's Deathcap", image: "../assets/items/radiant/RadiantRabadonsDeathcap.png" },
+
+  "TFT5_ITEM_CROWNGUARDRADIANT": { name: "Radiant Crownguard", image: "../assets/items/radiant/RadiantCrownguard.png" },
+  "RadiantCrownguard": { name: "Radiant Crownguard", image: "../assets/items/radiant/RadiantCrownguard.png" },
+  "Radiant CrownGuard": { name: "Radiant Crownguard", image: "../assets/items/radiant/RadiantCrownguard.png" },
 
 };

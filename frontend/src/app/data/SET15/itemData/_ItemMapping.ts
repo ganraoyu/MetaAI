@@ -1,6 +1,7 @@
 import { artifactItems } from "./artifactItems";
 import { basicItems } from "./basicItems";
 import { combinedItems } from "./combinedItems";
+import { emblemItems } from "./emblemItems";
 import { radiantItems } from "./radiantItems";
 
 export interface ItemMap {
@@ -15,4 +16,5 @@ export const itemMap: ItemMap = {
   ...combinedItems,
   ...radiantItems,
   ...artifactItems,
+  ...emblemItems,
 };
