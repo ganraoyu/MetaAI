@@ -13,6 +13,7 @@ const navigationItems: NavProps[] = [
     champions: "/data/champions",
     items: "/data/items",
     augments: "/data/augments",
+    traits: "/data/traits",
   }, icon: faAngleDown },
   { label: "Simulators", icon: faAngleDown },
   { label: "About", icon: faAngleDown },
@@ -70,7 +71,7 @@ const Header = () => {
                         <Link to={item.endPoint.champions}>Champion</Link>
                       </div>
                       <div className="p-2 flex text-white text-sm hover:bg-gray-800 cursor-pointer justify-center items-center border-t border-[#313131]">
-                        <Link to={item.endPoint.augments}>Trait</Link>
+                        <Link to={item.endPoint.traits}>Trait</Link>
                       </div>
                       <div className="p-2 flex text-white text-sm hover:bg-gray-800 cursor-pointer justify-center items-center border-t border-b border-[#313131]">
                         <Link to={item.endPoint.items}>Item</Link>

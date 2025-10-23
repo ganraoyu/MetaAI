@@ -19,7 +19,7 @@ const HeaderCell = ({ children, width, isFirst = false }: HeaderCellProps) => (
 );
 
 const itemTypeMapping: any = {
-  Basic: basicItems,
+  Basic: basicItems, 
   Combined: combinedItems,
   Radiant: radiantItems,
   Artifact: artifactItems,
@@ -61,8 +61,8 @@ export const ItemListContainer = () => {
 
       {/* Item Rows */}
       <div className="w-full">
-        {itemTypeFilteredItems.length > 0 ? (
-          <ItemList itemsStats={searchFilteredItems} totalGames={totalGames} />
+        {rankedItems.length > 0 ? (
+          <ItemList itemsStats={rankedItems} totalGames={totalGames} />
         ) : (
           <ItemListSkeleton />
         )}

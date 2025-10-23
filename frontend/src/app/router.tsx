@@ -18,6 +18,7 @@ import RollingOdds from "./features/simulators/RollingOdds.tsx";
 import Battle from "./features/simulators/battle/Battle.tsx";
 import { ChatPage } from "./features/aiCoach/ChatPage.tsx";
 import { ItemData } from "./features/stats/ItemsData/ItemData.tsx";
+import { TraitData } from "./features/stats/TraitsData/TraitData.tsx";
 
 function Router() {
   return (
@@ -36,6 +37,7 @@ function Router() {
         <Route path="champions" element={<ChampionsData />} />
         <Route path="items" element={<ItemData />} />
         <Route path="augments" element={<AugmentsData />} />
+        <Route path="traits" element={<TraitData />} />
       </Route>
       <Route path="/statistics">
         <Route path="champions" element={<ChampionsStatistics />} />
