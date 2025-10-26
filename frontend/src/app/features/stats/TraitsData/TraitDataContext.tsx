@@ -1,40 +1,36 @@
 import axios from "axios";
 import { createContext, useContext, ReactNode, useEffect, useState } from "react";
 import { TraitDocument, TraitDataContextProps } from "./types";
-import { nonPlayableItems } from "../../../data/SET15/itemData/nonPlayableItems";
 
-const ItemDataContext = createContext<TraitDataContextProps | null>(null);
+const TraitDataContext = createContext<TraitDataContextProps | null>(null);
 
-interface ItemDataProvider {
+interface TraitDataProvider {
   children: ReactNode;
 }
 
-export const ItemDataProvider = ({ children }: ItemDataProvider) => {
+export const TraitDataProvider = ({ children }: TraitDataProvider) => {
   const [searchValue, setSearchValue] = useState<string>("");
+
   const [rank, setRank] = useState<string[]>(["Master"]);
 
-  const [itemType, setItemType] = useState<string[]>(["Basic", "Combined", "Radiant", "Artifact", "Emblem"]);
+  const [levelType, setLevelType] = useState<string>("Overall");
 
   const [table, setTable] = useState<boolean>(true);
   const [chart, setChart] = useState<boolean>(false);
 
-  const [itemLoading, setItemLoading] = useState<boolean>(false);
-  const [championLoading, setChampionLoading] = useState<boolean>(false);
-
+  const [traitLoading, setTraitLoading] = useState<boolean>(false);
+  
   const [totalGames, setTotalGames] = useState<number>(0);
 
-  const [itemStats, setItemStats] = useState<TraitDocument[]>([]);
+  const [traitStats, setTraitStats] = useState<TraitDocument[]>([]);
 
-  const [championStats, setChampionStats] = useState<ChampionDocument[]>([]);
-
-  const updateItemData = () => {};
+  const updateTraitData = () => {};
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setItemLoading(true);
-        setChampionLoading(true);
-    
+        setTraitLoading(true);
+
         const params = new URLSearchParams();
         if (rank.length === 0 || rank.length === 9) {
           params.append("rank", "all");
@@ -42,58 +38,51 @@ export const ItemDataProvider = ({ children }: ItemDataProvider) => {
           rank.forEach((r) => params.append("rank", r.toLowerCase()));
         }
 
-        const [itemStatsResponse, championItemStatsResponse] = await Promise.all([
+        const [traitStatsResponse] = await Promise.all([
           axios.get(`http://localhost:3000/statistics/traits?${params.toString()}`),
         ]);
 
-        const filteredItemStatsResponse = itemStatsResponse.data.itemData.filter((item: any) => !nonPlayableItems.includes(item.itemId));
-
-        setItemStats(filteredItemStatsResponse);
-        console.log(filteredItemStatsResponse);
-        setTotalGames(itemStatsResponse.data.totalGames);  
+        setTraitStats(traitStatsResponse.data.traitData);
+        console.log(traitStatsResponse.data);
+        setTotalGames(traitStatsResponse.data.totalGames);
       } catch (error) {
-        console.error("Error fetching item data:", error);
+        console.error("Error fetching trait data:", error);
       } finally {
-        setItemLoading(false);
-        setChampionLoading(false);
+        setTraitLoading(false);
       }
     };
     fetchData();
   }, [rank]);
-  
+
   return (
-    <ItemDataContext.Provider
+    <TraitDataContext.Provider
       value={{
         searchValue,
         setSearchValue,
         rank,
         setRank,
-        itemType,
-        setItemType,
+        levelType,
+        setLevelType,
         table,
         setTable,
         chart,
         setChart,
-        itemLoading,
-        setItemLoading,
-        championLoading,
-        setChampionLoading,
+        traitLoading,
+        setTraitLoading,
         totalGames,
         setTotalGames,
-        itemStats,
-        setItemStats,
-        championStats,
-        setChampionStats,
-        updateItemData,
+        traitStats,
+        setTraitStats,
+        updateTraitData,
       }}
     >
       {children}
-    </ItemDataContext.Provider>
+    </TraitDataContext.Provider>
   );
 };
 
-export const useItemDataContext = () => {
-  const context = useContext(ItemDataContext);
-    if (!context) throw new Error("useChampionDataContext must be used inside ChampionDataProvider");
+export const useTraitDataContext = () => {
+  const context = useContext(TraitDataContext);
+  if (!context) throw new Error("useChampionDataContext must be used inside ChampionDataProvider");
   return context;
 };

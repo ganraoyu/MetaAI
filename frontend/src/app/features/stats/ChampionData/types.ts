@@ -99,7 +99,6 @@ export interface ChampionDataContextProps {
   championItemLoading: boolean;
   setChampionItemLoading: React.Dispatch<React.SetStateAction<boolean>>;
 
-
   chart: boolean;
   setChart: React.Dispatch<React.SetStateAction<boolean>>;
 

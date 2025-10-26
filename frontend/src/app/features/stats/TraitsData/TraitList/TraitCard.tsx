@@ -1,13 +1,13 @@
 import { getAveragePlaceColors } from "../../utilities/averagePlaceColors";
 import { getTierBackgroundColors } from "../../utilities/tierColors";
-import { ItemCardProps, ItemCellProps } from "../types";
+import { TraitCardProps, TraitCellProps } from "../types";
 import { getRankColor } from "../../utilities/rankFontColors";
-import { itemMap } from "../../../../data/SET15/itemData/_ItemMapping";
-import { useItemDataContext } from "../ItemDataContext";
+import { traitMap } from "../../../../data/SET15/traitMapping";
+import { useTraitDataContext } from "../TraitDataContext";
 import { LoadingBar } from "./LoadingBar";
-import "./_ItemList.css";
+import "./_TraitList.css";
 
-const ItemCell = ({ children, width, index }: ItemCellProps) => (
+const TraitCell = ({ children, width, index }: TraitCellProps) => (
   <div
     className={`h-[2.4rem] flex items-center ${width} ${
       index % 2 === 1 ? "bg-[#141212]" : "bg-[#1e1d1d]"
@@ -17,50 +17,51 @@ const ItemCell = ({ children, width, index }: ItemCellProps) => (
   </div>
 );
 
-export const ItemCard = ({
-  item,
+export const TraitCard = ({
+  trait,
   tier,
   averagePlacement,
   winRate,
   totalGames,
+  levels,
   frequency,
-  popularChampions,
   index,
-}: ItemCardProps): JSX.Element => {
-  const { itemLoading, itemStats } = useItemDataContext();
-  const hasData = !!item && (totalGames > 0 || (Array.isArray(itemStats) && itemStats.length > 0));
-  const isLoading = !!itemLoading && !hasData;
+}: TraitCardProps): JSX.Element => {
+  const { traitLoading, traitStats } = useTraitDataContext();
+  const hasData =
+    !!trait && (totalGames > 0 || (Array.isArray(traitStats) && traitStats.length > 0));
+  const isLoading = !!traitLoading && !hasData;
 
-  const itemKey = String(item ?? "").toUpperCase();
-  const itemImage = itemMap[itemKey]?.image || "../assets/items/basic/Spatula.png";
-  const itemName = itemMap[itemKey]?.name || itemKey;
+  const traitKey = String(trait ?? "").toUpperCase();
+  const traitImage = traitMap[traitKey]?.image || "../assets/traits/default.png";
+  const traitName = traitMap[traitKey]?.name || traitKey;
 
   return (
     <div className="flex flex-row items-center justify-center hover:bg-[#0a0a0a] hover:cursor-pointer group">
       {/* Rank */}
-      <ItemCell
+      <TraitCell
         width="w-[5rem] justify-center border-l border-r border-[#363636] text-[0.9rem] text-[#bcbcbc] group-hover:bg-[#2a2a2a]"
         index={index}
       >
         <p className={`font-medium ${getRankColor(index)}`}>{index + 1}</p>
-      </ItemCell>
+      </TraitCell>
 
-      {/* Item Image & Name */}
-      <ItemCell width="w-[20rem] border-r border-[#363636] group-hover:bg-[#2a2a2a]" index={index}>
+      {/* Trait Icon & Name */}
+      <TraitCell width="w-[20rem] border-r border-[#363636] group-hover:bg-[#2a2a2a]" index={index}>
         {isLoading ? (
           <div className="flex gap-2 items-center m-1">
             <LoadingBar width="w-32" height="h-[1.5rem]" className="rounded" />
           </div>
         ) : (
           <>
-            {itemImage && <img src={itemImage} alt={itemKey} className="w-8 h-8 m-1" />}
-            <p className="text-[#bcbcbc] text-[0.9rem]">{itemName}</p>
+            {traitImage && <img src={traitImage} alt={traitKey} className="w-8 h-8 m-1" />}
+            <p className="text-[#bcbcbc] text-[0.9rem]">{traitName}</p>
           </>
         )}
-      </ItemCell>
+      </TraitCell>
 
       {/* Tier */}
-      <ItemCell
+      <TraitCell
         width="w-[5rem] justify-center border-r border-[#363636] group-hover:bg-[#2a2a2a]"
         index={index}
       >
@@ -77,10 +78,10 @@ export const ItemCard = ({
             {tier}
           </div>
         )}
-      </ItemCell>
+      </TraitCell>
 
       {/* Average Placement */}
-      <ItemCell
+      <TraitCell
         width={`w-[8rem] justify-center border-r border-[#363636] text-[0.9rem] ${getAveragePlaceColors(
           averagePlacement
         )} group-hover:bg-[#2a2a2a]`}
@@ -93,10 +94,10 @@ export const ItemCard = ({
         ) : (
           averagePlacement
         )}
-      </ItemCell>
+      </TraitCell>
 
       {/* Win Rate */}
-      <ItemCell
+      <TraitCell
         width="w-[10rem] justify-center border-r border-[#363636] text-[0.9rem] group-hover:bg-[#2a2a2a]"
         index={index}
       >
@@ -107,10 +108,24 @@ export const ItemCard = ({
         ) : (
           `${winRate}%`
         )}
-      </ItemCell>
+      </TraitCell>
+
+      {/* Levels */}
+      <TraitCell
+        width="w-[17rem] justify-center border-r border-[#363636] text-[0.9rem] group-hover:bg-[#2a2a2a]"
+        index={index}
+      >
+        {isLoading ? (
+          <div className="p-1">
+            <LoadingBar width="w-[10rem]" height="h-[1.7rem]" />
+          </div>
+        ) : (
+          <div></div>
+        )}
+      </TraitCell>
 
       {/* Frequency */}
-      <ItemCell
+      <TraitCell
         width="w-[10rem] justify-end border-r border-[#363636] text-[0.9rem] group-hover:bg-[#2a2a2a]"
         index={index}
       >
@@ -124,29 +139,7 @@ export const ItemCard = ({
             <p className="text-[0.6rem] text-[#bcbcbc]">{frequency?.toFixed(2)}%</p>
           </div>
         )}
-      </ItemCell>
-
-      {/* Popular Champions */}
-      <ItemCell
-        width="w-[17rem] justify-center border-r border-[#363636] text-[0.9rem] group-hover:bg-[#2a2a2a]"
-        index={index}
-      >
-        {isLoading ? (
-          <div className="p-1">
-            <LoadingBar width="w-[10rem]" height="h-[1.7rem]" />
-          </div>
-        ) : (
-          (popularChampions || []).map((p: any, i: number) => (
-            <img
-              key={i}
-              src={itemMap[String(p.itemId ?? "").toUpperCase()]?.image}
-              className="w-6 h-6 m-1"
-              alt={p.itemId}
-            />
-          ))
-        )}
-      </ItemCell>
+      </TraitCell>
     </div>
   );
 };
-// ...existing code...

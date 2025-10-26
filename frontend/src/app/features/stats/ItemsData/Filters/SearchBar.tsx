@@ -10,7 +10,7 @@ export const SearchBar = () => {
       <div className="relative flex items-center cursor-text">
         <input 
           className="bg-[#272525] hover:bg-[#3a3838] rounded-md outline-none px-3 py-1 pr-8 text-[0.75rem] w-[15rem] h-[2rem]"
-          placeholder="Search Units"
+          placeholder="Search Items"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
         />

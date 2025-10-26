@@ -20,12 +20,13 @@ export const ranks: Rank[] = [
   "Challenger",
 ];
 
-export interface TraitItem {
-  item: string;
+export interface TraitCardProps {
+  trait: string;
   tier: string;
   averagePlacement: number;
   winRate: number;
   totalGames: number;
+  level: any;
   frequency: number;
   index: number;
 };
@@ -44,14 +45,14 @@ export interface HeaderCellProps {
 }
 
 interface TraitStats {
-  itemId: string;
+  traitId: string;
   averagePlacement: number;
   totalGames: number;
   wins: number;
 }
 
 interface TraitDocument {
-  itemStats: TraitStats;
+  traitStatsFe: TraitStats;
   ranks: Record<string, TraitStats>;
 }
 
@@ -59,8 +60,8 @@ interface TraitDataContextProps {
   searchValue: string;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
 
-  itemType: string[];
-  setItemType: React.Dispatch<React.SetStateAction<string[]>>;
+  levelType: string;
+  setLevelType: React.Dispatch<React.SetStateAction<string>>;
   
   rank: string[];
   setRank: React.Dispatch<React.SetStateAction<string[]>>;
@@ -71,22 +72,18 @@ interface TraitDataContextProps {
   chart: boolean;
   setChart: React.Dispatch<React.SetStateAction<boolean>>;
 
-  itemLoading: boolean;
-  setItemLoading: React.Dispatch<React.SetStateAction<boolean>>;
-
-  championLoading: boolean;
-  setChampionLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  traitLoading: boolean;
+  setTraitLoading: React.Dispatch<React.SetStateAction<boolean>>;
 
   totalGames: number;
   setTotalGames: React.Dispatch<React.SetStateAction<number>>;
 
-  itemStats: TraitDocument[];
-  setItemStats: React.Dispatch<React.SetStateAction<TraitDocument[]>>;
+  traitStats: TraitDocument[];
+  setTraitStats: React.Dispatch<React.SetStateAction<TraitDocument[]>>;
 
-
-  updateItemData: () => void;
+  updateTraitData: () => void;
 }
-p
+
 export type {
   TraitStats,
   TraitDocument,
