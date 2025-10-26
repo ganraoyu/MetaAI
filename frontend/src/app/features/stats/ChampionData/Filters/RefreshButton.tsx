@@ -15,7 +15,7 @@ export const RefreshButton = () => {
   return (
     <div className='flex items-center justify-center'>
       <button 
-        className="flex items-center justify-center bg-[#272525] rounded-md h-8 w-8 hover:bg-[#3a3838] transition-colors" 
+        className="flex items-center justify-center bg-[#272525] rounded-md h-8 w-8 hover:bg-[#3a3838] transition-colors outline outline-lightGray outline-1 " 
         onClick={handleRefresh}
       >
         <GrFormRefresh 
@@ -26,4 +26,4 @@ export const RefreshButton = () => {
       </button>
     </div>
   )
-}
+};  

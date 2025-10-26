@@ -18,14 +18,14 @@ export const TypeFilter = () => {
   };
 
   return (
-    <div className="flex flex-row gap-2 mt-3">
+    <div className="flex flex-row justify-center items-center gap-2">
       {["Basic", "Combined", "Radiant", "Artifact", "Emblem"].map((itemValue) => (
         <div
           key={itemValue}
-          className={`text-[0.6rem] flex flex-row items-center justify-center cursor-pointer rounded-xl w-[7rem] h-6 bg-[#1e1d1d] hover:bg-[#3a3838] gap-1 ${setOpacity(itemValue)}`}
+          className={`outline outline-lightGray outline-1 text-[0.8rem] flex flex-row items-center justify-center cursor-pointer rounded-md w-[7rem] h-[2rem] bg-[#272525] hover:bg-[#3a3838]gap-1 ${setOpacity(itemValue)}`}
           onClick={() => toggleItemType(itemValue)}
         >
-          <p className="text-sm font-medium">{itemValue}</p>
+          <p className="text-sm font-medium mr-1">{itemValue}</p>
           <img src={`../assets/icons/${itemValue}Anvil.png`} alt="cost" className="w-5 h-5" />
         </div>
       ))}

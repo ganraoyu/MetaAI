@@ -41,7 +41,7 @@ export const RankToggle = () => {
       >
         <div className="flex items-center">
           <img src={`../assets/ranks/${r}.png`} alt={r} className="w-6 h-6" />
-          <p className="text-[0.8rem] px-1 whitespace-nowrap">{r}</p>
+          <p className="text-[0.75rem] px-1 whitespace-nowrap">{r}</p>
         </div>
         <div className="w-4 h-4 border border-gray-400 flex items-center justify-center mr-2">
           {isSelected && <span className="text-white text-xs">✓</span>}
@@ -53,7 +53,7 @@ export const RankToggle = () => {
     <div className="relative hover:cursor-pointer w-fit">
       {/* Toggle Button */}
       <div
-        className="flex items-center justify-between bg-[#272525] hover:bg-[#3a3838] min-w-[15rem] h-[2rem] rounded-md px-2"
+        className="flex items-center justify-between bg-[#272525] hover:bg-[#3a3838] min-w-[15rem] h-[2rem] rounded-md outline outline-lightGray outline-1  px-2"
         onClick={() => setOpenDropDown(!openDropDown)}
       >
         <div className="flex items-center justify-center w-full space-x-2">
@@ -62,16 +62,16 @@ export const RankToggle = () => {
             alt={lowestSelectedRank}
             className="w-6 h-6"
           />
-          <p className="text-[0.8rem] whitespace-nowrap">{lowestSelectedRank}</p>
+          <p className="text-[0.75rem] whitespace-nowrap">{lowestSelectedRank}</p>
           <span className="mx-2">——</span>
           <img
             src={`../assets/ranks/${highestSelectedRank}.png`}
             alt={highestSelectedRank}
             className="w-6 h-6"
           />
-          <p className="text-[0.8rem] whitespace-nowrap">{highestSelectedRank}</p>
+          <p className="text-[0.75rem] whitespace-nowrap">{highestSelectedRank}</p>
         </div>
-        <FontAwesomeIcon icon={faAngleDown} className="text-[0.8rem] ml-2" />
+        <FontAwesomeIcon icon={faAngleDown} className="text-[0.75rem] ml-2" />
       </div>
 
       {/* Dropdown Menu */}
@@ -96,7 +96,7 @@ export const RankToggle = () => {
                 setOpenDropDown(false);
               }}
             >
-              <p className="text-[0.7rem]">ALL</p>
+              <p className="text-[0.75rem]">ALL</p>
             </button>
           </div>
         </div>

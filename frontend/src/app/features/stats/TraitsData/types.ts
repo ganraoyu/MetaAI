@@ -8,6 +8,7 @@ export type Rank =
   | "Master"
   | "Grandmaster"
   | "Challenger";
+  
 export const ranks: Rank[] = [
   "Iron",
   "Bronze",

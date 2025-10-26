@@ -7,12 +7,13 @@ interface TraitListProps {
 }
 
 export const TraitList = ({ traitStats, totalGames }: TraitListProps) => { 
+  console.log(traitStats)
   return (
     <div className="w-full">
       {(traitStats ?? []).map((trait, index) => (
         <TraitCard
-          key={trait.traitId}
-          trait={trait.traitId}
+          key={trait.trait}
+          trait={trait.trait}
           winRate={trait.winrate}
           index={index}
           tier={getTier(trait.averagePlacement)}
