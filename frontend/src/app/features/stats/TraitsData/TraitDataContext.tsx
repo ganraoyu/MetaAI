@@ -37,7 +37,6 @@ export const TraitDataProvider = ({ children }: TraitDataProvider) => {
         } else {
           rank.forEach((r) => params.append("rank", r.toLowerCase()));
         }
-
         const [traitStatsResponse] = await Promise.all([
           axios.get(`http://localhost:3000/statistics/traits?${params.toString()}`),
         ]);

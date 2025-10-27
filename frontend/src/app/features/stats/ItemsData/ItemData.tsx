@@ -20,7 +20,7 @@ const ItemDataContent = () => {
 export const ItemData = () => {
   return (
     <div className="flex flex-row justify-center items-center bg-mainBackground min-h-screen pt-[4.5rem] w-full">
-      <div className="">
+      <div>
         <ItemDataProvider>
           <ItemDataContent />
         </ItemDataProvider>
