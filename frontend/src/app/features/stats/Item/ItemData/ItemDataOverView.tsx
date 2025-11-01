@@ -1,6 +1,6 @@
-import { useItemDataContext } from "../ItemDataContext";
+import { useItemDataContext } from "../ItemContext";
 
-export const ItemPageOverView = () => {
+export const ItemDataOverview = () => {
   const { totalGames } = useItemDataContext();
 
   return (
@@ -9,7 +9,7 @@ export const ItemPageOverView = () => {
       {/* Title and Description */}
       <div>
         {/* Title */}
-        <div className="text-2xl font-bold mb-2">
+        <div className="text-[1.5rem] font-bold mb-2">
           <p>TFT Item Tier List</p>
         </div>
 

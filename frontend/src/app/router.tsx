@@ -8,8 +8,8 @@ import ChampionsTierlist from "./features/tierLists/ChampionsTierlist.tsx";
 import ItemsTierlist from "./features/tierLists/ItemsTierlist.tsx";
 import AugmentsTierlist from "./features/tierLists/AugmentsTierlist.tsx";
 
-import { ChampionsData } from "./features/stats/ChampionData/ChampionData.tsx";
-import AugmentsData from "./features/stats/AugmentsData/AugmentsData.tsx";
+import { ChampionsData } from "./features/stats/Champion/ChampionData.tsx";
+import AugmentsData from "./features/stats/Augment/AugmentsData.tsx";
 
 import ChampionsStatistics from "./features/statistics/ChampionsStatistics.tsx";
 import ItemsStatistics from "./features/statistics/ItemsStatistics.tsx";
@@ -17,9 +17,9 @@ import ItemsStatistics from "./features/statistics/ItemsStatistics.tsx";
 import RollingOdds from "./features/simulators/RollingOdds.tsx";
 import Battle from "./features/simulators/battle/Battle.tsx";
 import { ChatPage } from "./features/aiCoach/ChatPage.tsx";
-import { ItemData } from "./features/stats/ItemsData/ItemData.tsx";
-import { TraitData } from "./features/stats/TraitsData/TraitData.tsx";
-import { ItemPage } from "./features/stats/ItemsData/ItemPage/ItemPage.tsx";
+import { ItemData } from "./features/stats/Item/ItemData/ItemData.tsx";
+import { TraitData } from "./features/stats/Trait/TraitData.tsx";
+import { ItemPage } from "./features/stats/Item/ItemStats/ItemPage.tsx";
 
 function Router() {
   return (

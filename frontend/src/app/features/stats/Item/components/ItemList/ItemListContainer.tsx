@@ -1,12 +1,12 @@
-import { useItemDataContext } from "../ItemDataContext";
-import { HeaderCellProps } from "../types";
+import { useItemDataContext } from "../../ItemContext";
+import { HeaderCellProps } from "../../types";
 import { ItemListSkeleton } from "./ItemSkeleton";
 import { ItemList } from "./ItemList";
-import { basicItems } from "../../../../data/SET15/itemData/basicItems";
-import { combinedItems } from "../../../../data/SET15/itemData/combinedItems";
-import { radiantItems } from "../../../../data/SET15/itemData/radiantItems";
-import { artifactItems } from "../../../../data/SET15/itemData/artifactItems";
-import { emblemItems } from "../../../../data/SET15/itemData/emblemItems";
+import { basicItems } from "../../../../../data/SET15/itemData/basicItems";
+import { combinedItems } from "../../../../../data/SET15/itemData/combinedItems";
+import { radiantItems } from "../../../../../data/SET15/itemData/radiantItems";
+import { artifactItems } from "../../../../../data/SET15/itemData/artifactItems";
+import { emblemItems } from "../../../../../data/SET15/itemData/emblemItems";
 
 const HeaderCell = ({ children, width, isFirst = false }: HeaderCellProps) => (
   <div

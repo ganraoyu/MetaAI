@@ -3,7 +3,7 @@ import { RankToggle } from "./RankToggle";
 import { RefreshButton } from "./RefreshButton";
 import { SearchBar } from "./SearchBar";
 import { TableChartToggle } from "./TableChartToggle";
-import { FilterBarWrapper } from "../../utilities/FilterBarWrapper";
+import { FilterBarWrapper } from "../../../utilities/FilterBarWrapper";
 
 export const FilterContainer = () => {
   return (

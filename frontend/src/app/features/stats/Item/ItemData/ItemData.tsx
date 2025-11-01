@@ -1,8 +1,8 @@
 
-import { FilterContainer } from "./Filters/_FilterContainer";
-import { ItemDataProvider, useItemDataContext } from "./ItemDataContext";
+import { FilterContainer } from "../components/Filters/_FilterContainer";
+import { ItemDataProvider, useItemDataContext } from "../ItemContext";
 import { ItemDataOverview } from "./ItemDataOverView";
-import { ItemListContainer } from "./ItemList/ItemListContainer";
+import { ItemListContainer } from "../components/ItemList/ItemListContainer";
 
 const ItemDataContent = () => {
   const { table, chart } = useItemDataContext();

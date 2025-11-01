@@ -1,6 +1,6 @@
-import { useItemDataContext } from "./ItemDataContext";
+import { useItemDataContext } from "../ItemContext";
 
-export const ItemDataOverview = () => {
+export const ItemPageOverView = () => {
   const { totalGames } = useItemDataContext();
 
   return (
@@ -9,18 +9,18 @@ export const ItemDataOverview = () => {
       {/* Title and Description */}
       <div>
         {/* Title */}
-        <div className="text-2xl font-bold mb-2">
-          <p>TFT Item Tier List</p>
+        <div className="text-[1.5rem] font-bold mb-2">
+          <p>{"Mittens"} TFT Item Stats</p>
         </div>
 
         {/* Description */}
         <div className="text-[0.8rem] max-w-full">
-          <p>Stats on the best tft items to play in set 15. Click on a champion for more details.</p>
+          <p>Stats on the how {"Mittens"} performs in the current TFT Meta. Find performance by stage and the best units to put {"name"} on.</p>
         </div>
       </div>
 
       {/* Total matches aggregated tracker */}
-      <div className="flex flex-col items-center justify-center bg-[#1f1e1e] w-[15rem] h-[4rem] text-[0.7rem] rounded-lg">
+      <div className="flex flex-col items-center justify-center bg-[#171717] w-[15rem] h-[4rem] text-[0.7rem] rounded-lg">
         <div className="flex flex-row justify-between w-full px-4">
           <p>Matches Analyzed:</p>
           <p>{Math.floor(totalGames * 13.5)} </p>

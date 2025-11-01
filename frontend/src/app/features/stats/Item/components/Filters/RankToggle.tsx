@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { useItemDataContext } from "../ItemDataContext";
-import { Rank, ranks } from "../types";
+import { useItemDataContext } from "../../ItemContext";
+import { Rank, ranks } from "../../types";
 
 export const RankToggle = () => {
   const { rank, setRank } = useItemDataContext();

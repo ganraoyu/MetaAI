@@ -1,6 +1,6 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useItemDataContext } from "../ItemDataContext";
+import { useItemDataContext } from "../../ItemContext";
 
 export const SearchBar = () => {
   const { searchValue, setSearchValue } = useItemDataContext();

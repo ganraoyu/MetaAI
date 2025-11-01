@@ -1,9 +1,9 @@
-import { getAveragePlaceColors } from "../../utilities/averagePlaceColors";
-import { getTierBackgroundColors } from "../../utilities/tierColors";
-import { ItemCardProps, ItemCellProps } from "../types";
-import { getRankColor } from "../../utilities/rankFontColors";
-import { itemMap } from "../../../../data/SET15/itemData/_ItemMapping";
-import { useItemDataContext } from "../ItemDataContext";
+import { getAveragePlaceColors } from "../../../utilities/averagePlaceColors";
+import { getTierBackgroundColors } from "../../../utilities/tierColors";
+import { ItemCardProps, ItemCellProps } from "../../types";
+import { getRankColor } from "../../../utilities/rankFontColors";
+import { itemMap } from "../../../../../data/SET15/itemData/_ItemMapping";
+import { useItemDataContext } from "../../ItemContext";
 import { LoadingBar } from "./LoadingBar";
 import "./_ItemList.css";
 
@@ -32,7 +32,7 @@ export const ItemCard = ({
   const isLoading = !!itemLoading && !hasData;
 
   const itemKey = String(item ?? "").toUpperCase();
-  const itemImage = itemMap[itemKey]?.image || "../assets/items/basic/Spatula.png";
+  const itemImage = itemMap[itemKey]?.image || "../assets/items/artifact/Manazane.png";
   const itemName = itemMap[itemKey]?.name || itemKey;
 
   return (

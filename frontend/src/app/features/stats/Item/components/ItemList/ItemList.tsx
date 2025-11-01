@@ -1,5 +1,5 @@
 import { ItemCard } from "./ItemCard";
-import { getTier } from "../../utilities/tierLetter";
+import { getTier } from "../../../utilities/tierLetter";
 
 interface ItemListProps {
   itemsStats: any[];

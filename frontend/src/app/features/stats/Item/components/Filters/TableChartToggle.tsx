@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTable } from '@fortawesome/free-solid-svg-icons';
 import { MdOutlineShowChart } from 'react-icons/md';
-import { useItemDataContext } from '../ItemDataContext';
+import { useItemDataContext } from '../../ItemContext';
 
 export const TableChartToggle = () => {
   const { table, setTable, chart, setChart } = useItemDataContext();
