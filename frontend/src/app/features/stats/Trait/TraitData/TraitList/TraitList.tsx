@@ -1,5 +1,5 @@
 import { TraitCard } from "./TraitCard";
-import { getTier } from "../../utilities/tierLetter";
+import { getTier } from "../../../utilities/tierLetter";
 
 interface TraitListProps {
   traitStats: any[];

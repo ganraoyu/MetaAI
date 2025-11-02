@@ -1,15 +1,15 @@
 import axios from "axios";
 import { createContext, useContext, ReactNode, useEffect, useState } from "react";
-import { ChampionDocument, ItemDataContextProps, ItemsDocument } from "./types";
+import { ChampionDocument, ItemDataContextProps, ItemsDocument } from "../Item/types";
 import { nonPlayableItems } from "../../../data/SET15/itemData/nonPlayableItems";
 
-const ItemDataContext = createContext<ItemDataContextProps | null>(null);
+const ItemContext = createContext<ItemDataContextProps | null>(null);
 
 interface ItemDataProvider {
   children: ReactNode;
 }
 
-export const ItemDataProvider = ({ children }: ItemDataProvider) => {
+export const ItemProvider = ({ children }: ItemDataProvider) => {
   const [searchValue, setSearchValue] = useState<string>("");
   
   const [rank, setRank] = useState<string[]>(["Master"]);
@@ -65,7 +65,7 @@ export const ItemDataProvider = ({ children }: ItemDataProvider) => {
   }, [rank]);
   
   return (
-    <ItemDataContext.Provider
+    <ItemContext.Provider
       value={{
         searchValue,
         setSearchValue,
@@ -91,12 +91,12 @@ export const ItemDataProvider = ({ children }: ItemDataProvider) => {
       }}
     >
       {children}
-    </ItemDataContext.Provider>
+    </ItemContext.Provider>
   );
 };
 
-export const useItemDataContext = () => {
-  const context = useContext(ItemDataContext);
+export const useItemContext = () => {
+  const context = useContext(ItemContext);
     if (!context) throw new Error("useChampionDataContext must be used inside ChampionDataProvider");
   return context;
 };

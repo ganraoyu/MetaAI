@@ -1,7 +1,7 @@
-import { useItemDataContext } from "../ItemContext";
+import { useItemContext } from "../../contexts/ItemContext";
 
 export const ItemDataOverview = () => {
-  const { totalGames } = useItemDataContext();
+  const { totalGames } = useItemContext();
 
   return (
     <div className="flex flex-row items-center justify-between w-full pt-6 pb-4">

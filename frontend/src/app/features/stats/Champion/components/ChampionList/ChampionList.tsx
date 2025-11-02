@@ -1,7 +1,7 @@
 // ChampionList.tsx
 import { ChampionCard } from "./ChampionCard";
-import { getTier } from "../../utilities/tierLetter";
-import { useChampionDataContext } from "../ChampionDataContext";
+import { getTier } from "../../../utilities/tierLetter";
+import { useChampionContext } from "../../../contexts/ChampionContext";
 
 interface ChampionListProps {
   champions: any[];
@@ -16,7 +16,7 @@ export const ChampionList = ({
   totalGames,
   normalizedRankBIS,
 }: ChampionListProps) => {
-  const { searchValue } = useChampionDataContext();
+  const { searchValue } = useChampionContext();
 
   const filteredChampions =
     champions?.filter((champion) =>

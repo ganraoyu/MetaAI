@@ -1,5 +1,5 @@
-import { FilterBarWrapper } from "../../utilities/FilterBarWrapper";
-import { CostFilter } from "./CostFilter";
+import { FilterBarWrapper } from "../../../utilities/FilterBarWrapper";
+import { LevelToggle } from "./LevelToggle";
 import { RankToggle } from "./RankToggle";
 import { RefreshButton } from "./RefreshButton";
 import { SearchBar } from "./SearchBar";
@@ -16,7 +16,7 @@ export const FilterContainer = () => {
         </FilterBarWrapper>
       </div>
       <div className="flex flex-row gap-2">
-        <CostFilter />
+        <LevelToggle />
         <TableChartToggle />
       </div>
     </div>

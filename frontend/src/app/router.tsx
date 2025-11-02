@@ -8,9 +8,6 @@ import ChampionsTierlist from "./features/tierLists/ChampionsTierlist.tsx";
 import ItemsTierlist from "./features/tierLists/ItemsTierlist.tsx";
 import AugmentsTierlist from "./features/tierLists/AugmentsTierlist.tsx";
 
-import { ChampionsData } from "./features/stats/Champion/ChampionData.tsx";
-import AugmentsData from "./features/stats/Augment/AugmentsData.tsx";
-
 import ChampionsStatistics from "./features/statistics/ChampionsStatistics.tsx";
 import ItemsStatistics from "./features/statistics/ItemsStatistics.tsx";
 
@@ -18,8 +15,9 @@ import RollingOdds from "./features/simulators/RollingOdds.tsx";
 import Battle from "./features/simulators/battle/Battle.tsx";
 import { ChatPage } from "./features/aiCoach/ChatPage.tsx";
 import { ItemData } from "./features/stats/Item/ItemData/ItemData.tsx";
-import { TraitData } from "./features/stats/Trait/TraitData.tsx";
+import { TraitData } from "./features/stats/Trait/TraitData/TraitData.tsx";
 import { ItemPage } from "./features/stats/Item/ItemStats/ItemPage.tsx";
+import { ChampionsData } from "./features/stats/Champion/ChampionData/ChampionData.tsx";
 
 function Router() {
   return (
@@ -35,10 +33,9 @@ function Router() {
         <Route path="augments" element={<AugmentsTierlist />} />
       </Route>
       <Route path="/data">
-        <Route path="champions" element={<ChampionsData />} />
+        <Route path="champions" element={<ChampionsData/>} />
         <Route path="items" element={<ItemData />} />
-        <Route path="items/itemName" element={<ItemPage />} />
-        <Route path="augments" element={<AugmentsData />} />
+        <Route path="itemsName" element={<ItemPage />} />
         <Route path="traits" element={<TraitData />} />
       </Route>
       <Route path="/statistics">

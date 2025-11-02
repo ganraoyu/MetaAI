@@ -1,7 +1,7 @@
-import { useTraitContext } from "../../contexts/TraitContext";
-import { HeaderCellProps } from "../types";
-import { TraitListSkeleton } from "../TraitData/TraitList/TraitSkeleton";
-import { TraitList } from "../TraitData/TraitList/TraitList";
+import { useTraitContext } from "../../../contexts/TraitContext";
+import { HeaderCellProps } from "../../types";
+import { TraitListSkeleton } from "./TraitSkeleton";
+import { TraitList } from "./TraitList";
 
 const HeaderCell = ({ children, width, isFirst = false }: HeaderCellProps) => (
   <div

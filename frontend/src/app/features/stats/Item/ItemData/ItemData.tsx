@@ -1,11 +1,11 @@
 
 import { FilterContainer } from "../components/Filters/_FilterContainer";
-import { ItemDataProvider, useItemDataContext } from "../ItemContext";
+import { ItemProvider, useItemContext } from "../../contexts/ItemContext";
 import { ItemDataOverview } from "./ItemDataOverView";
 import { ItemListContainer } from "../components/ItemList/ItemListContainer";
 
 const ItemDataContent = () => {
-  const { table, chart } = useItemDataContext();
+  const { table, chart } = useItemContext();
 
   return (
     <>
@@ -21,9 +21,9 @@ export const ItemData = () => {
   return (
     <div className="flex flex-row justify-center items-center bg-mainBackground min-h-screen pt-[4.5rem] w-full">
       <div>
-        <ItemDataProvider>
+        <ItemProvider>
           <ItemDataContent />
-        </ItemDataProvider>
+        </ItemProvider>
       </div>
     </div>
   );

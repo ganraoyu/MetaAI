@@ -7,15 +7,15 @@ import {
   ChampionDataContextProps,
   ChampionStatsWithTotalGames,
   ChampionItemStats,
-} from "./types";
+} from "../Champion/types";
 
-const ChampionDataContext = createContext<ChampionDataContextProps | null>(null);
+const ChampionContext = createContext<ChampionDataContextProps | null>(null);
 
 interface ChampionDataProviderProps {
   children: ReactNode;
 }
 
-export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) => {
+export const ChampionProvider = ({ children }: ChampionDataProviderProps) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [rank, setRank] = useState<Rank[]>(["Challenger", "Grandmaster"]);
   const [cost, setCost] = useState<Cost[]>([]);
@@ -50,10 +50,12 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
         // Set champion data
         setTotalGames(championStatsRes.data.totalGames);
         setChampionStats(championStatsRes.data.championData);
+        console.log(championStatsRes.data.championData)
         setChampionStatsWithTotalGames(championStatsRes.data.championStatsWithTotalGames);
 
         // Set champion item data
         setChampionItemStats(championItemStatsRes.data.championData);
+        console.log(championItemStatsRes.data.championData)
 
         // Set loading states to false after successful data fetch
         setChampionLoading(false);
@@ -126,7 +128,7 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
   };
 
   return (
-    <ChampionDataContext.Provider
+    <ChampionContext.Provider
       value={{
         searchValue,
         setSearchValue,
@@ -154,12 +156,12 @@ export const ChampionDataProvider = ({ children }: ChampionDataProviderProps) =>
       }}
     >
       {children}
-    </ChampionDataContext.Provider>
+    </ChampionContext.Provider>
   );
 };
 
-export const useChampionDataContext = () => {
-  const context = useContext(ChampionDataContext);
+export const useChampionContext = () => {
+  const context = useContext(ChampionContext);
   if (!context) throw new Error("useChampionDataContext must be used inside ChampionDataProvider");
   return context;
 };

@@ -1,13 +1,40 @@
 import { itemMap } from "../../../../../data/SET15/itemData/_ItemMapping";
 import { FaCaretUp, FaCaretDown } from "react-icons/fa6";
+import { Stat } from "./types";
+
+const StatCard = ({ label, value, change }: Stat) => {
+  const isPositive = parseFloat(change) > 0;
+  const ArrowIcon = isPositive ? FaCaretUp : FaCaretDown;
+  const arrowColor = isPositive ? "text-[#58d76b]" : "text-[#f94e4e]";
+
+  return (
+    <div className="flex items-center justify-between rounded-md">
+      {/* Stat label + value */}
+      <div>
+        <p className={`font-semibold text-[1rem] text-[#e6e6e6]`}>{value}</p>
+        <p className="text-[#b8b8b8] text-[0.7rem]">{label}</p>
+      </div>
+
+      {/* Stat change + vs baseline */}
+      <div className="flex flex-col items-end">
+        <div className="flex items-center gap-1">
+          <ArrowIcon className={arrowColor} />
+          <p className={`${arrowColor} text-[0.7rem]`}>{change}</p>
+        </div>
+        <p className="text-[#b8b8b8] text-[0.6rem]">vs 15.7</p>
+      </div>
+    </div>
+  );
+};
 
 export const ItemInfo = () => {
   const item = itemMap["Mittens"];
-
   const recipeAvailable = false;
-  const description = "Shrinks the holder, granting them increased movement speed and immunity to Chill.";
 
-  const stats = [
+  const description =
+    "Shrinks the holder, granting them increased movement speed and immunity to Chill.";
+
+  const stats: Stat[] = [
     { label: "Avg Place", value: "3.17", change: "-0.81" },
     { label: "Win Rate", value: "52%", change: "+6.4%" },
     { label: "Pick Rate", value: "18%", change: "-1.8%" },
@@ -18,14 +45,19 @@ export const ItemInfo = () => {
     <div className="col-span-1 rounded-md text-[#cfcfcf]">
       {/* Item image + recipe */}
       <div className="flex items-start gap-4">
-        <img className="h-20 w-20 rounded-md" src={`../${item.image}`} alt={item.name ?? "Item"} />
+        <img
+          className="h-20 w-20 rounded-md object-cover"
+          src={`${item.image}`}
+          alt={item.name ?? "Item"}
+        />
+
         <div>
           <p className="text-[0.8rem] font-semibold mb-1">Recipe</p>
           {recipeAvailable ? (
             <div className="flex items-center gap-2">
-              <img className="h-12 w-12 rounded-md" src="" alt="" />
-              <p>+</p>
-              <img className="h-12 w-12 rounded-md" src="" alt="" />
+              <img className="h-12 w-12 rounded-md" src="" alt="Component 1" />
+              <span className="font-semibold text-[#e6e6e6]">+</span>
+              <img className="h-12 w-12 rounded-md" src="" alt="Component 2" />
             </div>
           ) : (
             <p className="text-[0.8rem] text-[#f94e4e] italic">Cannot be Crafted</p>
@@ -34,29 +66,12 @@ export const ItemInfo = () => {
       </div>
 
       {/* Description */}
-      <p className="mt-3 leading-snug text-[0.7rem]">{description}</p>
+      <p className="mt-3 leading-snug text-[0.75rem] italic">{description}</p>
 
       {/* Stats grid */}
-      <div className="mt-3 grid grid-cols-2 gap-2 text-center text-[0.75rem]">
-        {stats.map((s) => (
-          <div key={s.label} className="flex flex-row rounded-md p-2">
-            <div>
-              <p className="font-semibold text-[0.85rem] text-[#e6e6e6]">{s.value}</p>
-              <p className="text-[#b8b8b8]">{s.label}</p>
-            </div>
-            <div>
-              {parseFloat(s.change) > 0 ? (
-                <div>
-                  <FaCaretUp className={`text-[#761111]`} />
-                </div>
-              ) : (
-                <div>
-                  <FaCaretDown className={`text-[#9eb430]`} />
-                </div>
-              )}
-              <p></p>
-            </div>
-          </div>
+      <div className="mt-4 grid grid-cols-2 gap-5 p-2 text-[0.75rem]">
+        {stats.map((stat) => (
+          <StatCard key={stat.label} {...stat} />
         ))}
       </div>
     </div>

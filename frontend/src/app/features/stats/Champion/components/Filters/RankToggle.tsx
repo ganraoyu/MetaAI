@@ -1,11 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { useChampionDataContext } from "../ChampionDataContext";
-import { Rank, ranks } from "../types";
+import { useChampionContext } from "../../../contexts/ChampionContext";
+import { Rank, ranks } from "../../types";
 
 export const RankToggle = () => {
-  const { rank, setRank } = useChampionDataContext();
+  const { rank, setRank } = useChampionContext();
   const [openDropDown, setOpenDropDown] = useState<boolean>(false);
 
   const highestSelectedRank = ranks.find((r) => rank.includes(r)) || ranks[0];
@@ -53,7 +53,7 @@ export const RankToggle = () => {
     <div className="relative hover:cursor-pointer w-fit">
       {/* Toggle Button */}
       <div
-        className="flex items-center justify-between outline outline-lightGray outline-1 bg-[#272525] hover:bg-[#3a3838] min-w-[15rem] h-[2rem] rounded-md px-2"
+        className="flex items-center justify-between outline outline-lightGray outline-1 bg-[#1c1a1a] hover:bg-[#3a3838] min-w-[15rem] h-[2rem] rounded-md px-2"
         onClick={() => setOpenDropDown(!openDropDown)}
       >
         <div className="flex items-center justify-center w-full space-x-2">

@@ -1,8 +1,8 @@
-import { getCostBorderColors } from "../../utilities/costBorderColors";
-import { useChampionDataContext } from "../ChampionDataContext";
+import { getCostBorderColors } from "../../../utilities/costBorderColors";
+import { useChampionContext } from "../../../contexts/ChampionContext";
 
 export const CostFilter = () => {
-  const { cost, setCost } = useChampionDataContext();
+  const { cost, setCost } = useChampionContext();
 
   const toggleCost = (c: number) => {
     const newCosts = cost.includes(c as any)

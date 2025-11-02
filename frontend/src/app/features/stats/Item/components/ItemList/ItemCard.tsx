@@ -3,7 +3,7 @@ import { getTierBackgroundColors } from "../../../utilities/tierColors";
 import { ItemCardProps, ItemCellProps } from "../../types";
 import { getRankColor } from "../../../utilities/rankFontColors";
 import { itemMap } from "../../../../../data/SET15/itemData/_ItemMapping";
-import { useItemDataContext } from "../../ItemContext";
+import { useItemContext } from "../../../contexts/ItemContext";
 import { LoadingBar } from "./LoadingBar";
 import "./_ItemList.css";
 
@@ -27,7 +27,7 @@ export const ItemCard = ({
   popularChampions,
   index,
 }: ItemCardProps): JSX.Element => {
-  const { itemLoading, itemStats } = useItemDataContext();
+  const { itemLoading, itemStats } = useItemContext();
   const hasData = !!item && (totalGames > 0 || (Array.isArray(itemStats) && itemStats.length > 0));
   const isLoading = !!itemLoading && !hasData;
 

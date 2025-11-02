@@ -1,4 +1,5 @@
-import { ItemDataProvider } from "../ItemContext";
+import { ChampionProvider } from "../../contexts/ChampionContext";
+import { ItemProvider } from "../../contexts/ItemContext";
 import { ItemPageOverView } from "./ItemPageOverView";
 import { ItemStats } from "./ItemStats";
 
@@ -13,10 +14,12 @@ const ItemPageContainer = () => {
 export const ItemPage = () => {
   return (
     <div className="flex flex-row justify-center items-center bg-[#111111] min-h-screen pt-[4.5rem] w-full">
-      <div>
-        <ItemDataProvider>
-          <ItemPageContainer />
-        </ItemDataProvider>
+      <div className="min-h-[200rem]">
+        <ChampionProvider>
+          <ItemProvider>
+            <ItemPageContainer />
+          </ItemProvider>
+        </ChampionProvider>
       </div>
     </div>
   );

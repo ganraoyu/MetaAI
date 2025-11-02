@@ -1,5 +1,5 @@
-import { useChampionDataContext } from "../ChampionDataContext";
-import { HeaderCellProps } from "../types";
+import { useChampionContext } from "../../../contexts/ChampionContext";
+import { HeaderCellProps } from "../../types";
 import { ChampionListSkeleton } from "./ChampionListSkeleton";
 import { ChampionList } from "./ChampionList";
 
@@ -14,8 +14,7 @@ const HeaderCell = ({ children, width, isFirst = false }: HeaderCellProps) => (
 );
 
 export const ChampionListContainer = () => {
-  const { totalGames, championStats, championItemStats, rank } =
-    useChampionDataContext();
+  const { totalGames, championStats, championItemStats, rank } = useChampionContext();
 
   const normalizedRankBIS =
     rank.length === 1

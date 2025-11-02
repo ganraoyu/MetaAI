@@ -1,14 +1,14 @@
 import { GrFormRefresh } from 'react-icons/gr'
-import { useItemContext } from '../../../contexts/ItemContext'
+import { useTraitContext } from '../../../contexts/TraitContext'
 import { useState } from 'react'
 
 export const RefreshButton = () => {
-  const { updateItemData } = useItemContext();
+  const { updateTraitData } = useTraitContext();
   const [isRotating, setIsRotating] = useState(false);
 
   const handleRefresh = async () => {
     setIsRotating(true);
-    await updateItemData();
+    await updateTraitData();
     setTimeout(() => setIsRotating(false), 1000);
   };
 

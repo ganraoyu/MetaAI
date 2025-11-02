@@ -1,9 +1,9 @@
 import { GrFormRefresh } from 'react-icons/gr'
-import { useTraitDataContext } from '../TraitDataContext'
+import { useTraitContext } from '../../contexts/TraitContext'
 import { useState } from 'react'
 
 export const RefreshButton = () => {
-  const { updateTraitData } = useTraitDataContext();
+  const { updateTraitData } = useTraitContext();
   const [isRotating, setIsRotating] = useState(false);
 
   const handleRefresh = async () => {

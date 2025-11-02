@@ -1,7 +1,7 @@
-import { useItemDataContext } from "../../ItemContext";
+import { useItemContext } from "../../../contexts/ItemContext";
 
 export const TypeFilter = () => {
-  const { itemType, setItemType } = useItemDataContext();
+  const { itemType, setItemType } = useItemContext();
 
   const toggleItemType = (itemValue: string) => {
     const newItemTypes = itemType.includes(itemValue)

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Footer = () => {
   return (
-    <div className="bg-mainBackground h-30 ">
+    <div className="flow-root bg-mainBackground h-30 ">
       <div className="align-middle text-center pt-5">
         <FontAwesomeIcon
           icon={faGithub}

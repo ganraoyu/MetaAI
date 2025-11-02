@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTable } from '@fortawesome/free-solid-svg-icons';
 import { MdOutlineShowChart } from 'react-icons/md';
-import { useChampionDataContext } from '../ChampionDataContext';
+import { useChampionContext } from '../../../contexts/ChampionContext';
 
 export const TableChartToggle = () => {
-  const { table, setTable, chart, setChart } = useChampionDataContext();
+  const { table, setTable, chart, setChart } = useChampionContext();
 
   return (
     <div className="flex flex-col">

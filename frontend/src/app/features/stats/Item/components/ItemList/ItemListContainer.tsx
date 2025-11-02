@@ -1,4 +1,4 @@
-import { useItemDataContext } from "../../ItemContext";
+import { useItemContext } from "../../../contexts/ItemContext";
 import { HeaderCellProps } from "../../types";
 import { ItemListSkeleton } from "./ItemSkeleton";
 import { ItemList } from "./ItemList";
@@ -27,7 +27,7 @@ const itemTypeMapping: any = {
 };
 
 export const ItemListContainer = () => {
-  const { totalGames, itemStats, searchValue, itemType } = useItemDataContext();
+  const { totalGames, itemStats, searchValue, itemType } = useItemContext();
 
   const normalizedItems = (itemStats || []).map((item: any) => item.itemStats ?? item);
   const searchFilteredItems = normalizedItems.filter((item: any) =>

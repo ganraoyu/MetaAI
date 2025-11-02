@@ -1,11 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { useItemDataContext } from "../../ItemContext";
+import { useItemContext } from "../../../contexts/ItemContext";
 import { Rank, ranks } from "../../types";
 
 export const RankToggle = () => {
-  const { rank, setRank } = useItemDataContext();
+  const { rank, setRank } = useItemContext();
   const [openDropDown, setOpenDropDown] = useState<boolean>(false);
 
   const highestSelectedRank = ranks.find((r) => rank.includes(r)) || ranks[0];

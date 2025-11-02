@@ -1,14 +1,14 @@
 import axios from "axios";
 import { createContext, useContext, ReactNode, useEffect, useState } from "react";
-import { TraitDocument, TraitDataContextProps } from "./types";
+import { TraitDataContextProps, TraitDocument } from "../Trait/types";
 
-const TraitDataContext = createContext<TraitDataContextProps | null>(null);
+const TraitContext = createContext<TraitDataContextProps | null>(null);
 
 interface TraitDataProvider {
   children: ReactNode;
 }
 
-export const TraitDataProvider = ({ children }: TraitDataProvider) => {
+export const TraitProvder = ({ children }: TraitDataProvider) => {
   const [searchValue, setSearchValue] = useState<string>("");
 
   const [rank, setRank] = useState<string[]>(["Master"]);
@@ -54,7 +54,7 @@ export const TraitDataProvider = ({ children }: TraitDataProvider) => {
   }, [rank]);
 
   return (
-    <TraitDataContext.Provider
+    <TraitContext.Provider
       value={{
         searchValue,
         setSearchValue,
@@ -76,12 +76,12 @@ export const TraitDataProvider = ({ children }: TraitDataProvider) => {
       }}
     >
       {children}
-    </TraitDataContext.Provider>
+    </TraitContext.Provider>
   );
 };
 
-export const useTraitDataContext = () => {
-  const context = useContext(TraitDataContext);
+export const useTraitContext = () => {
+  const context = useContext(TraitContext);
   if (!context) throw new Error("useChampionDataContext must be used inside ChampionDataProvider");
   return context;
 };

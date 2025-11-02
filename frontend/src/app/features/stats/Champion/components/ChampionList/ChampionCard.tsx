@@ -1,18 +1,18 @@
-import { useTFTSetContext } from "../../../../utilities/TFTSetContext";
-import { getAveragePlaceColors } from "../../utilities/averagePlaceColors";
-import { getTierBackgroundColors } from "../../utilities/tierColors";
-import { getCostBorderColors } from "../../utilities/costBorderColors";
-import { ChampionCardProps, ChampionCellProps } from "../types";
-import { getRankColor } from "../../utilities/rankFontColors";
-import { itemMap } from "../../../../data/SET15/itemData/_ItemMapping";
-import { useChampionDataContext } from "../ChampionDataContext";
+import { useTFTSetContext } from "../../../../../utilities/TFTSetContext";
+import { getAveragePlaceColors } from "../../../utilities/averagePlaceColors";
+import { getTierBackgroundColors } from "../../../utilities/tierColors";
+import { getCostBorderColors } from "../../../utilities/costBorderColors";
+import { ChampionCardProps, ChampionCellProps } from "../../types";
+import { getRankColor } from "../../../utilities/rankFontColors";
+import { itemMap } from "../../../../../data/SET15/itemData/_ItemMapping";
+import { useChampionContext } from "../../../contexts/ChampionContext";
 import { LoadingBar } from "./LoadingBar";
 import "./_ChampionList.css";
 
 const ChampionCell = ({ children, width, index }: ChampionCellProps) => (
   <div
     className={`h-[2.4rem] flex items-center ${width} ${
-      index % 2 === 1 ? "bg-[#141212]" : "bg-[#1e1d1d]"
+      index % 2 === 1 ? "bg-[#141212]" : "bg-[#171717]"
     }`}
   >
     {children}
@@ -31,7 +31,7 @@ export const ChampionCard = ({
   index,
 }: ChampionCardProps): JSX.Element => {
   const { set } = useTFTSetContext();
-  const { championItemLoading, championLoading, championStats, championItemStats } = useChampionDataContext();
+  const { championItemLoading, championLoading, championStats, championItemStats } = useChampionContext();
   const isLoading = championLoading || championItemLoading || !championStats.length || !championItemStats.length;
 
   const splitChampionName = (champion: string) =>
@@ -64,7 +64,7 @@ export const ChampionCard = ({
         ) : (
           <>
             <img
-              src={`../assets/${set}/champions/centered/${champion}.png`}
+              src={`../../assets/${set}/champions/centered/${champion}.png`}
               alt={champion}
               className={`w-8 h-8 m-1 border border-${getCostBorderColors(cost)}`}
             />
@@ -153,7 +153,7 @@ export const ChampionCard = ({
           popularItems.map((item, index) => (
             <img
               key={index}
-              src={itemMap[item.itemId.toUpperCase()]?.image}
+              src={`${itemMap[item.itemId.toUpperCase()]?.image}`}
               className="w-6 h-6 m-1"
             />
           ))

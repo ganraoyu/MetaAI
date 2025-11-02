@@ -1,4 +1,4 @@
-import { useTraitContext } from "../../contexts/TraitContext";
+import { useTraitContext } from "../../../contexts/TraitContext";
 
 export const LevelToggle = () => {
   const { levelType, setLevelType } = useTraitContext();

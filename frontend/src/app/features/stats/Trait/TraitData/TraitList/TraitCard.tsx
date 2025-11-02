@@ -1,10 +1,10 @@
-import { getAveragePlaceColors } from "../../utilities/averagePlaceColors";
-import { getTierBackgroundColors } from "../../utilities/tierColors";
-import { TraitCardProps, TraitCellProps } from "../types";
-import { getRankColor } from "../../utilities/rankFontColors";
-import { traitMap } from "../../../../data/SET15/traitMapping";
-import { useTraitContext } from "../../contexts/TraitContext";
-import { LoadingBar } from "../TraitData/TraitList/LoadingBar";
+import { getAveragePlaceColors } from "../../../utilities/averagePlaceColors";
+import { getTierBackgroundColors } from "../../../utilities/tierColors";
+import { TraitCardProps, TraitCellProps } from "../../types";
+import { getRankColor } from "../../../utilities/rankFontColors";
+import { traitMap } from "../../../../../data/SET15/traitMapping";
+import { useTraitContext } from "../../../contexts/TraitContext";
+import { LoadingBar } from "./LoadingBar";
 import "./_TraitList.css";
 
 const TraitCell = ({ children, width, index }: TraitCellProps) => (

@@ -1,9 +1,9 @@
 import { GrFormRefresh } from 'react-icons/gr'
-import { useChampionDataContext } from '../ChampionDataContext'
+import { useChampionContext } from '../../../contexts/ChampionContext';
 import { useState } from 'react'
 
 export const RefreshButton = () => {
-  const { updateChampionData } = useChampionDataContext();
+  const { updateChampionData } = useChampionContext();
   const [isRotating, setIsRotating] = useState(false);
 
   const handleRefresh = async () => {
@@ -15,7 +15,7 @@ export const RefreshButton = () => {
   return (
     <div className='flex items-center justify-center'>
       <button 
-        className="flex items-center justify-center bg-[#272525] rounded-md h-8 w-8 hover:bg-[#3a3838] transition-colors outline outline-lightGray outline-1 " 
+        className="flex items-center justify-center bg-[#1c1a1a] rounded-md h-8 w-8 hover:bg-[#3a3838] transition-colors outline outline-lightGray outline-1 " 
         onClick={handleRefresh}
       >
         <GrFormRefresh 

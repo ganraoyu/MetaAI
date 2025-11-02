@@ -1,9 +1,9 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useTraitDataContext } from "../TraitDataContext";
+import { useTraitContext } from "../../contexts/TraitContext";
 
 export const SearchBar = () => {
-  const { searchValue, setSearchValue } = useTraitDataContext();
+  const { searchValue, setSearchValue } = useTraitContext();
 
   return (
     <div className="flex flex-row justify-center">

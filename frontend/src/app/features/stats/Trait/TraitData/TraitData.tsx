@@ -1,11 +1,11 @@
 
+import { TraitProvder, useTraitContext } from "../../contexts/TraitContext";
 import { FilterContainer } from "./Filters.tsx/_FilterContainer";
-import { TraitDataProvider, useTraitDataContext } from "./TraitDataContext";
 import { TraitDataOverView } from "./TraitDataOverView";
 import { TraitListContainer } from "./TraitList/TraitListContainer";
 
 const TraitDataContent = () => {
-  const { table, chart } = useTraitDataContext();
+  const { table, chart } = useTraitContext();
 
   return (
     <>
@@ -21,9 +21,9 @@ export const TraitData = () => {
   return (
     <div className="flex flex-row justify-center items-center bg-mainBackground min-h-screen pt-[4.5rem] w-full">
       <div className="">
-        <TraitDataProvider>
+        <TraitProvder>
           <TraitDataContent />
-        </TraitDataProvider>
+        </TraitProvder>
       </div>
     </div>
   );
