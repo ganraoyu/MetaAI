@@ -1,4 +1,4 @@
-export type Rank = 
+export type Rank =
   | "Iron"
   | "Bronze"
   | "Silver"
@@ -29,13 +29,13 @@ export interface ItemCardProps {
   frequency: number;
   popularChampions: any[];
   index: number;
-};
+}
 
 export interface ItemCellProps {
   children: React.ReactNode;
   width: string;
   index: number;
-};
+}
 
 export interface HeaderCellProps {
   children: React.ReactNode;
@@ -52,7 +52,10 @@ interface ItemStats {
 }
 
 interface ItemsDocument {
-  itemStats: ItemStats;
+  itemId: string;
+  averagePlacement: number;
+  totalGames: number;
+  wins: number;
   ranks: Record<string, ItemStats>;
 }
 
@@ -71,7 +74,7 @@ interface ItemDataContextProps {
 
   itemType: string[];
   setItemType: React.Dispatch<React.SetStateAction<string[]>>;
-  
+
   rank: string[];
   setRank: React.Dispatch<React.SetStateAction<string[]>>;
 
@@ -100,10 +103,4 @@ interface ItemDataContextProps {
 }
 
 // Export everything in a single statement
-export type {
-  ItemStats,
-  ItemsDocument,
-  ChampionStats,
-  ChampionDocument,
-  ItemDataContextProps
-};
+export type { ItemStats, ItemsDocument, ChampionStats, ChampionDocument, ItemDataContextProps };

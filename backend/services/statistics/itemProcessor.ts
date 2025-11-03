@@ -61,7 +61,8 @@ export class ItemProcessor {
         itemId: itemId.toUpperCase(),
         wins,
         winrate: ((wins / totalGames) * 100).toFixed(2),
-        placement: (placements.reduce((sum, p) => sum + p, 0) / totalGames).toFixed(2),
+        placementArray: [...placements],
+        placement: ([...placements].reduce((sum, p) => sum + p, 0) / totalGames).toFixed(2),
         totalGames,
       }))
       .sort((a, b) => parseFloat(a.placement) - parseFloat(b.placement));

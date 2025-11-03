@@ -22,6 +22,7 @@ export class ItemRepository {
         wins: 1,
         winrate: 1,
         averagePlacement: 1,
+        placementArray: 1,
         ranks: 1,
         BIS: 1,
         masterBIS: 1,
@@ -48,9 +49,13 @@ export class ItemRepository {
               acc.wins += rankStats.wins ?? 0;
               acc.totalGames += rankStats.totalGames ?? 0;
               acc.totalPlacement += (rankStats.averagePlacement ?? 0) * (rankStats.totalGames ?? 0);
+              acc.placementArray = [
+                ...(acc.placementArray || []),
+                ...(rankStats.placementArray || []),
+              ];
               return acc;
             },
-            { wins: 0, totalGames: 0, totalPlacement: 0 }
+            { wins: 0, totalGames: 0, totalPlacement: 0, placementArray: [] }
           );
 
           const winrate = specifiedRankTotals.totalGames
@@ -67,8 +72,8 @@ export class ItemRepository {
             itemId: item.itemId,
             wins: specifiedRankTotals.wins,
             totalGames: specifiedRankTotals.totalGames,
-            averagePlacement,
-            winrate,
+            averagePlacement: averagePlacement,
+            winrate: winrate,
             BIS: item.BIS,
             masterBIS: item.masterBIS,
             grandmasterBIS: item.grandmasterBIS,
@@ -91,7 +96,7 @@ export class ItemRepository {
       console.error("Error fetching item data from DB:", error);
       return { itemData: [], totalGames: 0 };
     }
-  };
+  }
 
   static async updateMany(ranks: string[], itemRanking: any[]) {
     try {
@@ -127,7 +132,16 @@ export class ItemRepository {
   private static async updateSingleItem(collection: any, rank: string, item: any) {
     const existingItem = await collection.findOne(
       { itemId: item.itemId },
-      { projection: { itemId: 1, totalGames: 1, wins: 1, averagePlacement: 1, ranks: 1 } }
+      {
+        projection: {
+          itemId: 1,
+          totalGames: 1,
+          wins: 1,
+          averagePlacement: 1,
+          placementArray: 1,
+          ranks: 1,
+        },
+      }
     );
 
     const globalStats = this.calculateGlobalStats(existingItem, item);
@@ -147,6 +161,7 @@ export class ItemRepository {
     const wins = (existingItem?.wins || 0) + (newItem.wins || 0);
     const totalGames = (existingItem?.totalGames || 0) + (newItem.totalGames || 0);
 
+    const placementArray = [...(existingItem?.placementArray || []), ...(newItem?.placementArray)];
     const averagePlacement =
       totalGames > 0
         ? Number(
@@ -159,14 +174,17 @@ export class ItemRepository {
         : 0;
 
     const winrate = totalGames > 0 ? Number(((wins / totalGames) * 100).toFixed(2)) : 0;
-    return { wins, winrate, averagePlacement, totalGames };
+    return { wins, winrate, averagePlacement, placementArray, totalGames };
   }
 
   private static calculateRankStats(existingItem: any, newItem: any, rank: string) {
     const prev = existingItem?.ranks?.[rank] || { wins: 0, totalGames: 0, averagePlacement: 0 };
     const wins = prev.wins + (newItem.wins || 0);
     const totalGames = prev.totalGames + (newItem.totalGames || 0);
-
+    const placementArray = [
+      ...(existingItem?.ranks?.[rank]?.placementArray || []),
+      ...(newItem.placementArray),
+    ];
     const averagePlacement =
       totalGames > 0
         ? Number(
@@ -179,9 +197,9 @@ export class ItemRepository {
         : 0;
 
     const winrate = totalGames > 0 ? Number(((wins / totalGames) * 100).toFixed(2)) : 0;
-    return { wins, winrate, averagePlacement, totalGames };
+    return { wins, winrate, averagePlacement, placementArray, totalGames };
   }
-
+ 
   private static async updateTotalGamesCount(db: any, increment: number) {
     const totalGamesCollection = db.db("SET15").collection("totalGames");
     await totalGamesCollection.updateOne(

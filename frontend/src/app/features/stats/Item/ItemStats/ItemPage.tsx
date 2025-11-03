@@ -15,11 +15,11 @@ export const ItemPage = () => {
   return (
     <div className="flex flex-row justify-center items-center bg-[#111111] min-h-screen pt-[4.5rem] w-full">
       <div className="min-h-[200rem]">
-        <ChampionProvider>
-          <ItemProvider>
+        <ItemProvider>
+          <ChampionProvider>
             <ItemPageContainer />
-          </ItemProvider>
-        </ChampionProvider>
+          </ChampionProvider>
+        </ItemProvider>
       </div>
     </div>
   );

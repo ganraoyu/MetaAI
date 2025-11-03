@@ -35,7 +35,7 @@ function Router() {
       <Route path="/data">
         <Route path="champions" element={<ChampionsData/>} />
         <Route path="items" element={<ItemData />} />
-        <Route path="itemsName" element={<ItemPage />} />
+        <Route path=":itemName" element={<ItemPage />} />
         <Route path="traits" element={<TraitData />} />
       </Route>
       <Route path="/statistics">

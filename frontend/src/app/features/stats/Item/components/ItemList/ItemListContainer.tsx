@@ -27,7 +27,7 @@ const itemTypeMapping: any = {
 };
 
 export const ItemListContainer = () => {
-  const { totalGames, itemStats, searchValue, itemType } = useItemContext();
+  const { totalGames, itemStats, searchValue, itemType, rank } = useItemContext();
 
   const normalizedItems = (itemStats || []).map((item: any) => item.itemStats ?? item);
   const searchFilteredItems = normalizedItems.filter((item: any) =>
@@ -35,6 +35,11 @@ export const ItemListContainer = () => {
       .toLowerCase()
       .includes((searchValue || "").toLowerCase())
   );
+
+    const normalizedRankBIS =
+    rank.length === 1
+        ? `${rank[0].toLowerCase()}BIS`
+        : "BIS"
 
   const itemTypeFilteredItems = itemType.flatMap((type) => {
     return searchFilteredItems.filter((item) => {
@@ -62,7 +67,7 @@ export const ItemListContainer = () => {
       {/* Item Rows */}
       <div className="w-full">
         {rankedItems.length > 0 ? (
-          <ItemList itemsStats={rankedItems} totalGames={totalGames} />
+          <ItemList itemsStats={rankedItems} totalGames={totalGames} normalizedRankBIS={normalizedRankBIS} />
         ) : (
           <ItemListSkeleton />
         )}

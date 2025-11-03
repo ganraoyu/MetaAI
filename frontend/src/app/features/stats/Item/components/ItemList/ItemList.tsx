@@ -4,9 +4,11 @@ import { getTier } from "../../../utilities/tierLetter";
 interface ItemListProps {
   itemsStats: any[];
   totalGames: number;
+  normalizedRankBIS: any;
 }
 
-export const ItemList = ({ itemsStats, totalGames }: ItemListProps) => { 
+export const ItemList = ({ itemsStats, totalGames, normalizedRankBIS }: ItemListProps) => { 
+  console.log(normalizedRankBIS)
   return (
     <div className="w-full">
       {(itemsStats ?? []).map((item, index) => (
@@ -19,7 +21,7 @@ export const ItemList = ({ itemsStats, totalGames }: ItemListProps) => {
           averagePlacement={item.averagePlacement}
           totalGames={item.totalGames}
           frequency={item.totalGames / totalGames}
-          popularChampions={item?.BIS?.slice(0,6)}
+          popularChampions={item?.[normalizedRankBIS]?.slice(0,6)}
         />
       ))}
     </div>

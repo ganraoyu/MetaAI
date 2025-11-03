@@ -23,6 +23,7 @@ export class TraitRepository {
         wins: 1,
         winrate: 1,
         averagePlacement: 1,
+        placementArray: 1,
         ranks: 1,
       };
 
@@ -45,9 +46,13 @@ export class TraitRepository {
               acc.wins += rankStats.wins ?? 0;
               acc.totalGames += rankStats.totalGames ?? 0;
               acc.totalPlacement += (rankStats.averagePlacement ?? 0) * (rankStats.totalGames ?? 0);
+              acc.placementArray = [
+                ...(acc.placementArray || []),
+                ...(rankStats.placementArray || []),
+              ];
               return acc;
             },
-            { wins: 0, totalGames: 0, totalPlacement: 0 }
+            { wins: 0, totalGames: 0, totalPlacement: 0, placementArray: [] }
           );
 
           const winrate = specifiedRankTotals.totalGames
@@ -120,7 +125,7 @@ export class TraitRepository {
   private static async updateSingleTrait(collection: any, rank: string, trait: any) {
     const existingTrait = await collection.findOne(
       { traitId: trait.traitId },
-      { projection: { traitId: 1, totalGames: 1, wins: 1, averagePlacement: 1, ranks: 1 } }
+      { projection: { traitId: 1, totalGames: 1, wins: 1, averagePlacement: 1, placementArray: 1, ranks: 1 } }
     );
 
     const rankKey = String(rank).toLowerCase();
@@ -154,8 +159,9 @@ export class TraitRepository {
         : 0;
 
     const winrate = totalGames > 0 ? Number(((wins / totalGames) * 100).toFixed(2)) : 0;
+    const placementArray = [...(existingTrait?.placementArray || []), ...newTrait.placementArray];
 
-    return { wins, winrate, averagePlacement, totalGames };
+    return { wins, winrate, averagePlacement, placementArray, totalGames };
   }
 
   private static calculateRankStats(existingTrait: any, newTrait: any, rank: string) {
@@ -175,8 +181,9 @@ export class TraitRepository {
         : 0;
 
     const winrate = totalGames > 0 ? Number(((wins / totalGames) * 100).toFixed(2)) : 0;
+    const placementArray = [...(existingTrait?.ranks?.[rank]?.placementArray || []), ...newTrait.placementArray];
 
-    return { wins, winrate, averagePlacement, totalGames };
+    return { wins, winrate, averagePlacement, placementArray, totalGames };
   }
 
   private static async updateTotalGamesCount(db: any, increment: number) {

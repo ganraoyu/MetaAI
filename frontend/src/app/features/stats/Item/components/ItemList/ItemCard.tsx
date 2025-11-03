@@ -57,7 +57,7 @@ export const ItemCard = ({
             <p className="text-[#bcbcbc] text-[0.9rem]">{itemName}</p>
           </>
         )}
-      </ItemCell>
+      </ItemCell> 
 
       {/* Tier */}
       <ItemCell

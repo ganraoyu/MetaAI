@@ -1,6 +1,6 @@
 interface Stat {
   label: string;
-  value: string;
+  value: string | number | undefined;
   change: string;
 }
 

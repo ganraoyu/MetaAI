@@ -12,7 +12,7 @@ interface ItemDataProvider {
 export const ItemProvider = ({ children }: ItemDataProvider) => {
   const [searchValue, setSearchValue] = useState<string>("");
   
-  const [rank, setRank] = useState<string[]>(["Master"]);
+  const [rank, setRank] = useState<string[]>(["Challenger"]);
 
   const [itemType, setItemType] = useState<string[]>(["Basic", "Combined", "Radiant", "Artifact", "Emblem"]);
 
@@ -49,9 +49,10 @@ export const ItemProvider = ({ children }: ItemDataProvider) => {
         ]);
 
         const filteredItemStatsResponse = itemStatsResponse.data.itemData.filter((item: any) => !nonPlayableItems.includes(item.itemId));
-
+``
         setItemStats(filteredItemStatsResponse);
         console.log(filteredItemStatsResponse);
+        console.log(filteredItemStatsResponse)
         setTotalGames(itemStatsResponse.data.totalGames);
         setChampionStats(championItemStatsResponse.data.championData);
       } catch (error) {

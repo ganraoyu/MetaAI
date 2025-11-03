@@ -25,6 +25,7 @@ export class ChampionRepository {
         wins: 1,
         winrate: 1,
         averagePlacement: 1,
+        placementArray: 1,
         cost: 1,
         ranks: 1,
       };
@@ -52,11 +53,16 @@ export class ChampionRepository {
               acc.wins += rankStats.wins ?? 0;
               acc.totalGames += rankStats.totalGames ?? 0;
               acc.totalPlacement += (rankStats.averagePlacement ?? 0) * (rankStats.totalGames ?? 0);
-
+              acc.placementArray = [
+                ...(acc.placementArray || []),
+                ...(rankStats.placementArray || []),
+              ];
               return acc;
             },
-            { wins: 0, totalGames: 0, totalPlacement: 0 }
+            { wins: 0, totalGames: 0, totalPlacement: 0, placementArray: [] }
           );
+
+          const championId = champion.championId;
 
           const winrate = specifiedRankTotals.totalGames
             ? Number(((specifiedRankTotals.wins / specifiedRankTotals.totalGames) * 100).toFixed(2))
@@ -68,17 +74,23 @@ export class ChampionRepository {
               )
             : 0;
 
+          const wins = specifiedRankTotals.wins;
+          const placementArray = specifiedRankTotals.placementArray;
+          console.log(placementArray)
+          const top4rate = [1];
           return {
-            championId: champion.championId,
-            wins: specifiedRankTotals.wins,
-            totalGames: specifiedRankTotals.totalGames,
+            championId: championId,
+            wins: wins,
+            totalGames: totalGames,
             averagePlacement: averagePlacement,
+            placementArray: placementArray,
             winrate: winrate,
+            top4rate: top4rate,
           };
         } else {
-          return champion
+          return champion;
         }
-      });
+      });  
 
       // Sort by global averagePlacement
       const sortedChampions = championsData.sort(
@@ -143,6 +155,7 @@ export class ChampionRepository {
           wins: 1,
           winrate: 1,
           averagePlacement: 1,
+          placementArray: 1,
           ranks: 1,
           cost: 1,
         },
@@ -162,7 +175,9 @@ export class ChampionRepository {
           totalGames: globalStats.totalGames,
           wins: globalStats.wins,
           winrate: globalStats.winrate,
+          placementArray: globalStats.placementArray,
           averagePlacement: globalStats.averagePlacement,
+
           // Update rank-specific stats
           [`ranks.${rank}`]: rankStats,
         },
@@ -177,6 +192,11 @@ export class ChampionRepository {
   private static calculateGlobalStats(existingChampion: any, champion: any) {
     const totalGames = (existingChampion?.totalGames || 0) + champion.totalGames;
     const wins = (existingChampion?.wins || 0) + champion.wins;
+    const placementArray = [
+      ...(existingChampion?.placementArray || []),
+      champion.placement,
+    ];
+
     const averagePlacement = Number(
       (
         (champion.placement * champion.totalGames +
@@ -185,7 +205,7 @@ export class ChampionRepository {
       ).toFixed(2)
     );
     const winrate = Number(((wins / totalGames) * 100).toFixed(2));
-    return { totalGames, wins, winrate, averagePlacement };
+    return { totalGames, wins, winrate, averagePlacement, placementArray };
   }
 
   private static calculateRankStats(existingChampion: any, champion: any, rank: string) {
@@ -194,18 +214,23 @@ export class ChampionRepository {
     const winrateRank = Number(((winsRank / totalGamesRank) * 100).toFixed(2));
     const averagePlacementRank = Number(
       (
-        (champion.placement * champion.totalGames +
+        (champion?.placement * champion?.totalGames +
           (existingChampion?.ranks?.[rank]?.averagePlacement || 0) *
             (existingChampion?.ranks?.[rank]?.totalGames || 0)) /
         totalGamesRank
       ).toFixed(2)
     );
+    const placementArray = [
+      ...(existingChampion?.ranks?.[rank]?.placementArray || []),
+      champion.placement,
+    ];
 
-    return {
+    return {   
       totalGames: totalGamesRank,
       wins: winsRank,
       winrate: winrateRank,
       averagePlacement: averagePlacementRank,
+      placementArray: placementArray,
     };
   }
 
@@ -220,6 +245,6 @@ export class ChampionRepository {
 
   static clearCache() {
     this.cache.clear();
-    console.log("🗑️ Champion cache cleared");
+    console.log("Champion cache cleared");
   }
 }
