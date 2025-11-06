@@ -57,6 +57,9 @@ export interface ChampionStats {
   cost: number | 1;
   totalGames: number | 1;
   frequency: number | 1;
+  placementArray: number;
+  top4Rate: number;
+  playRate: number;
   tier: string | '';
   popularItems: string[] | [];
 };

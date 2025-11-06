@@ -17,12 +17,14 @@ export const ChampionList = ({
   normalizedRankBIS,
 }: ChampionListProps) => {
   const { searchValue } = useChampionContext();
-
   const filteredChampions =
-    champions?.filter((champion) =>
-      champion.championId.toLowerCase().includes(searchValue.toLowerCase())
-    ) || [];
+    champions?.filter((champion) => {
+      const id = champion.championId.toLowerCase();
+      const search = searchValue.toLowerCase();
 
+      return id.includes(search) && !id.startsWith("7");
+    }) || [];
+    
   return (
     <div className="w-full">
       {(filteredChampions ?? []).map((champion, index) => (

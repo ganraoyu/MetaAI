@@ -35,6 +35,7 @@ export interface ItemCellProps {
   children: React.ReactNode;
   width: string;
   index: number;
+  onClick?: any;
 }
 
 export interface HeaderCellProps {
@@ -54,8 +55,12 @@ interface ItemStats {
 interface ItemsDocument {
   itemId: string;
   averagePlacement: number;
+  placementArray: number;
   totalGames: number;
   wins: number;
+  winrate: number;
+  top4Rate: number;
+  playRate: number;
   ranks: Record<string, ItemStats>;
 }
 

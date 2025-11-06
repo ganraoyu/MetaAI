@@ -1,7 +1,12 @@
+import { useParams } from "react-router-dom";
 import { useItemContext } from "../../contexts/ItemContext";
+import { itemMap } from "../../../../data/SET15/itemData/_ItemMapping";
 
 export const ItemPageOverView = () => {
+  const { itemName } = useParams();
   const { totalGames } = useItemContext();
+
+  const displayName = itemMap[itemName || ""].name
 
   return (
     <div className="flex flex-row items-center justify-between w-full pt-6 pb-4">
@@ -10,12 +15,13 @@ export const ItemPageOverView = () => {
       <div>
         {/* Title */}
         <div className="text-[1.5rem] font-bold mb-2">
-          <p>{"Mittens"} TFT Item Stats</p>
+          <p>{displayName} TFT Item Stats</p>
         </div>
 
         {/* Description */}
-        <div className="text-[0.8rem] max-w-full">
-          <p>Stats on the how {"Mittens"} performs in the current TFT Meta. Find performance by stage and the best units to put {"name"} on.</p>
+        <div className="text-[0.8rem] max-w-[60rem]">
+          <p>Stats on the how {displayName} performs in the current TFT Meta.</p>
+          <p>Find performance by stage and the best units to put {displayName} on.</p>
         </div>
       </div>
 
@@ -23,7 +29,7 @@ export const ItemPageOverView = () => {
       <div className="flex flex-col items-center justify-center bg-[#171717] w-[15rem] h-[4rem] text-[0.7rem] rounded-lg">
         <div className="flex flex-row justify-between w-full px-4">
           <p>Matches Analyzed:</p>
-          <p>{Math.floor(totalGames * 13.5)} </p>
+          <p>{totalGames * 13.5} </p>
         </div>
         <div className="flex flex-row justify-between w-full px-4 pt-2">
           <p>Last updated:</p>

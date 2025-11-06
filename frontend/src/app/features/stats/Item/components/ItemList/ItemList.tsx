@@ -8,7 +8,6 @@ interface ItemListProps {
 }
 
 export const ItemList = ({ itemsStats, totalGames, normalizedRankBIS }: ItemListProps) => { 
-  console.log(normalizedRankBIS)
   return (
     <div className="w-full">
       {(itemsStats ?? []).map((item, index) => (

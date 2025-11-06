@@ -39,9 +39,9 @@ export const ItemInfo = () => {
 
   const stats: Stat[] = [
     { label: "Avg Place", value: targetItem?.averagePlacement, change: "-0.81" },
-    { label: "Win Rate", value: targetItem?.wins, change: "+6.4%" },
-    { label: "Pick Rate", value: targetItem?.wins, change: "-1.8%" },
-    { label: "Top 4 Rate", value: targetItem?.wins, change: "+5.4%" },
+    { label: "Win Rate", value: targetItem?.winrate, change: "+6.4%" },
+    { label: "Play Rate", value: targetItem?.playRate, change: "-1.8%" },
+    { label: "Top 4 Rate", value: targetItem?.top4Rate, change: "+5.4%" },
   ];
 
   return (

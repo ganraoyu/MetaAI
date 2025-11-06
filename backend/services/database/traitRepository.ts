@@ -105,17 +105,14 @@ export class TraitRepository {
         )
       );
 
-      const totalGamesProcessed = traitRanking.reduce(
-        (sum, trait) => sum + (trait.totalGames || 0),
-        0
-      );
-      await this.updateTotalGamesCount(db, totalGamesProcessed);
+
+      await this.updateTotalGamesCount(db, 7);
 
       const sortedUpdatedTraits = updatedTraits.sort(
         (a, b) => Number(a.averagePlacement) - Number(b.averagePlacement)
       );
 
-      return { updatedTraits: sortedUpdatedTraits, totalGames: totalGamesProcessed };
+      return { updatedTraits: sortedUpdatedTraits, totalGames: 0 };
     } catch (error: any) {
       console.error("Error updating traits:", error);
       return { updatedTraits: [], totalGames: 0 };

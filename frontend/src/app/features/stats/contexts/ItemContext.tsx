@@ -47,9 +47,8 @@ export const ItemProvider = ({ children }: ItemDataProvider) => {
           axios.get(`http://localhost:3000/statistics/items?${params.toString()}`),
           axios.get(`http://localhost:3000/statistics/championItems?${params.toString()}`),
         ]);
-
         const filteredItemStatsResponse = itemStatsResponse.data.itemData.filter((item: any) => !nonPlayableItems.includes(item.itemId));
-``
+
         setItemStats(filteredItemStatsResponse);
         console.log(filteredItemStatsResponse);
         console.log(filteredItemStatsResponse)

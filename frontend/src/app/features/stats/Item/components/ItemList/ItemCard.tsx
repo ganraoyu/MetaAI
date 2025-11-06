@@ -6,8 +6,9 @@ import { itemMap } from "../../../../../data/SET15/itemData/_ItemMapping";
 import { useItemContext } from "../../../contexts/ItemContext";
 import { LoadingBar } from "./LoadingBar";
 import "./_ItemList.css";
+import { Link } from "react-router-dom";
 
-const ItemCell = ({ children, width, index }: ItemCellProps) => (
+const ItemCell = ({ children, width, index, onClick }: ItemCellProps) => (
   <div
     className={`h-[2.4rem] flex items-center ${width} ${
       index % 2 === 1 ? "bg-[#141212]" : "bg-[#1e1d1d]"
@@ -34,7 +35,7 @@ export const ItemCard = ({
   const itemKey = String(item ?? "").toUpperCase();
   const itemImage = itemMap[itemKey]?.image || "../assets/items/artifact/Manazane.png";
   const itemName = itemMap[itemKey]?.name || itemKey;
-
+  
   return (
     <div className="flex flex-row items-center justify-center hover:bg-[#0a0a0a] hover:cursor-pointer group">
       {/* Rank */}
@@ -46,18 +47,23 @@ export const ItemCard = ({
       </ItemCell>
 
       {/* Item Image & Name */}
-      <ItemCell width="w-[20rem] border-r border-[#363636] group-hover:bg-[#2a2a2a]" index={index}>
-        {isLoading ? (
-          <div className="flex gap-2 items-center m-1">
-            <LoadingBar width="w-32" height="h-[1.5rem]" className="rounded" />
-          </div>
-        ) : (
-          <>
-            {itemImage && <img src={itemImage} alt={itemKey} className="w-8 h-8 m-1" />}
-            <p className="text-[#bcbcbc] text-[0.9rem]">{itemName}</p>
-          </>
-        )}
-      </ItemCell> 
+      <Link to={`/data/${itemKey}`}>
+        <ItemCell
+          width="w-[20rem] border-r border-[#363636] group-hover:bg-[#2a2a2a]"
+          index={index}
+        >
+          {isLoading ? (
+            <div className="flex gap-2 items-center m-1">
+              <LoadingBar width="w-32" height="h-[1.5rem]" className="rounded" />
+            </div>
+          ) : (
+            <>
+              {itemImage && <img src={itemImage} alt={itemKey} className="w-8 h-8 m-1" />}
+              <p className="text-[#bcbcbc] text-[0.9rem]">{itemName}</p>
+            </>
+          )}
+        </ItemCell>
+      </Link>
 
       {/* Tier */}
       <ItemCell

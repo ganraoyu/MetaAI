@@ -1,5 +1,6 @@
 import { PlayerData, ChampionStats } from "../types";
 
+// Pulls data from riot games api, logic in repository
 export class ChampionProcessor {
   static processMatches(matches: any[]) {
     const playerData = this.processPlayerData(matches);
@@ -31,7 +32,7 @@ export class ChampionProcessor {
         if (existing) {
           existing.totalGames += 1;
           existing.placements.push(player.placement);
-          existing.wins += (player.placement === 1 ? 1 : 0);
+          existing.wins += player.placement === 1 ? 1 : 0;
         } else {
           acc[unit.character_id] = {
             totalGames: 1,
@@ -43,19 +44,33 @@ export class ChampionProcessor {
       return acc;
     }, {});
   }
-
-  // Generate champion ranking based on average placement, winrate, and total games, then sort them
+  
   private static calculateChampionRanking(championData: Record<string, ChampionStats>) {
     return Object.entries(championData)
-      .map(([id, { totalGames, wins, placements }]) => ({
-        championId: id.toUpperCase(),
-        wins,
-        winrate: ((wins / totalGames) * 100).toFixed(2),
-        placement: (
-          placements.reduce((sum, p) => sum + p, 0) / totalGames
-        ).toFixed(2),
-        totalGames,
-      }))
-      .sort((a, b) => Number(a.placement) - Number(b.placement));
+      .map(([championId, stats]) => {
+        const { totalGames, wins, placements } = stats;
+
+        const placementArray = [...placements];
+
+        const winrate = totalGames ? Number(((wins / totalGames) * 100).toFixed(2)) : 0;
+
+        const averagePlacement = totalGames
+          ? Number((placementArray.reduce((sum, p) => sum + p, 0) / totalGames).toFixed(2))
+          : 0;
+
+        const top4count = placementArray.reduce((acc, p) => acc + (p <= 4 ? 1 : 0), 0);
+        const top4rate = totalGames ? Number(((top4count / totalGames) * 100).toFixed(2)) : 0;
+
+        return {
+          championId: championId.toUpperCase(),
+          wins,
+          winrate,
+          placement: averagePlacement,
+          top4rate,
+          placementArray,
+          totalGames,
+        };
+      })
+      .sort((a, b) => a.placement - b.placement);
   }
-};
+}
