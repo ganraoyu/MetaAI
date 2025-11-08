@@ -4,12 +4,13 @@ import {
   calculateWinrate,
   calculateAveragePlacement,
   calculatePlayRate,
-  calculateTop4Rate
+  calculateTop4Rate,
 } from "../utils/calculateStats";
 
 export class ItemRepository {
-  private static cache = new Map<string, { data: any; timestamp: number }>();
-  private static CACHE_TTL = 2 * 60 * 1000;
+  private static readonly cache = new Map<string, { data: any; timestamp: number }>();
+  private static readonly CACHE_TTL = 2 * 60 * 1000;
+  private static readonly TOTAL_GAMES_COUNT: number = 7;
 
   static async getAll(ranks: string[]) {
     const cacheKey = `items:${ranks.join(",")}`;
@@ -49,10 +50,13 @@ export class ItemRepository {
           ranks.forEach((rank) => {
             rankItemData[rank] = item.ranks?.[rank] || {};
           });
-          const totals = sumRankStats(rankStatsList)
+          const totals = sumRankStats(rankStatsList);
           const specifiedRankTotals = sumRankStats(Object.values(rankItemData));
 
-          const winrate = calculateWinrate(specifiedRankTotals.wins, specifiedRankTotals.totalGames);
+          const winrate = calculateWinrate(
+            specifiedRankTotals.wins,
+            specifiedRankTotals.totalGames
+          );
           const averagePlacement = calculateAveragePlacement(
             specifiedRankTotals.totalPlacement,
             specifiedRankTotals.totalGames
@@ -98,32 +102,49 @@ export class ItemRepository {
       this.cache.clear();
       const db = await connectDB();
       const itemsCollection = db.db("SET15").collection("items");
-      const totalGamesCollection = db.db("SET15").collection("totalGames")
+
+      const totalGamesCollection = db.db("SET15").collection("totalGames");
       const totalGamesDoc = await totalGamesCollection.findOne({ id: "totalGames" });
       const globalTotalGames = totalGamesDoc?.count || 0;
 
+      const totalItemsCollection = db.db("SET15").collection("totalItems");
+
+      let newTotalItems = 0;
+
       const updatedItems = await Promise.all(
-        itemRanking.map((item) =>
-          Promise.all(ranks.map((rank) => this.updateSingleItem(itemsCollection, rank, item, globalTotalGames))).then(
-            () => item
+        itemRanking.map((item) => {
+          Promise.all(
+            ranks.map((rank) =>
+              this.updateSingleItem(itemsCollection, rank, item, globalTotalGames)
+            )
           )
-        )
+          const globalStats = this.calculateGlobalStats({}, item, globalTotalGames);
+          newTotalItems += globalStats.totalGames || 0;
+          
+          return item
+        })
       );
 
-      await this.updateTotalGamesCount(db, 7);
+      await this.updateTotalGamesCount(db, ItemRepository.TOTAL_GAMES_COUNT);
+      await this.updateTotalItemCount(db, newTotalItems);
 
       const sortedUpdatedItems = updatedItems.sort(
         (a, b) => Number(a.averagePlacement) - Number(b.averagePlacement)
       );
 
-      return { updatedItems: sortedUpdatedItems, totalGames: 7 };
+      return { updatedItems: sortedUpdatedItems, totalGames: ItemRepository.TOTAL_GAMES_COUNT };
     } catch (error) {
       console.error("Error updating items:", error);
       return { updatedItems: [], totalGames: 0 };
     }
   }
 
-  private static async updateSingleItem(collection: any, rank: string, item: any, globalTotalGames: number) {
+  private static async updateSingleItem(
+    collection: any,
+    rank: string,
+    item: any,
+    globalTotalGames: number
+  ) {
     const existingItem = await collection.findOne(
       { itemId: item.itemId },
       {
@@ -133,7 +154,7 @@ export class ItemRepository {
           wins: 1,
           averagePlacement: 1,
           placementArray: 1,
-          ranks: 1, 
+          ranks: 1,
         },
       }
     );
@@ -155,7 +176,7 @@ export class ItemRepository {
     const wins = (existingItem?.wins || 0) + (newItem.wins || 0);
     const totalGames = (existingItem?.totalGames || 0) + (newItem.totalGames || 0);
 
-    const placementArray = [...(existingItem?.placementArray || []), ...(newItem?.placementArray)];
+    const placementArray = [...(existingItem?.placementArray || []), ...newItem?.placementArray];
     const totalPlacement = placementArray.reduce((sum, p) => sum + p, 0);
 
     const averagePlacement = calculateAveragePlacement(totalPlacement, totalGames);
@@ -163,10 +184,24 @@ export class ItemRepository {
     const top4Rate = calculateTop4Rate(placementArray, totalGames);
     const playRate = calculatePlayRate(totalGames, globalTotalGames);
 
-    return { wins, winrate, averagePlacement, placementArray, totalGames, top4Rate, playRate };
+    return {
+      wins,
+      winrate,
+      averagePlacement,
+      placementArray,
+      totalGames,
+      top4Rate,
+      playRate,
+      newItemTotalGames: newItem.totalGames,
+    };
   }
 
-  private static calculateRankStats(existingItem: any, newItem: any, rank: string, globalTotalGames: number) {
+  private static calculateRankStats(
+    existingItem: any,
+    newItem: any,
+    rank: string,
+    globalTotalGames: number
+  ) {
     const prev = existingItem?.ranks?.[rank] || { wins: 0, totalGames: 0, placementArray: [] };
     const wins = prev.wins + (newItem.wins || 0);
     const totalGames = prev.totalGames + (newItem.totalGames || 0);
@@ -188,6 +223,15 @@ export class ItemRepository {
       { $inc: { count: increment } },
       { upsert: true }
     );
+  }
+
+  private static async updateTotalItemCount(db: any, increment: number) {
+    const totalItemsCollection = db.db("SET15").collection("totalItems");
+    await totalItemsCollection.updateOne(
+      { id: "totalItems"},
+      { $set: { count: increment } },
+      { upsert: true },
+    )
   }
 
   static clearCache() {
