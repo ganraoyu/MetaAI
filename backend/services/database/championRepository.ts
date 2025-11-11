@@ -1,4 +1,5 @@
 import { connectDB } from "../../database/db";
+import { VERSION } from "../../utilities/versionSetType";
 import {
   sumRankStats,
   calculateWinrate,
@@ -17,12 +18,12 @@ export class ChampionRepository {
 
     if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
       return cached.data;
-    }
+    };
 
     try {
       const db = await connectDB();
-      const championCollection = db.db("SET15").collection("champions");
-      const totalGamesCollection = db.db("SET15").collection("totalGames");
+      const championCollection = db.db(VERSION).collection("champions");
+      const totalGamesCollection = db.db(VERSION).collection("totalGames");
 
       const projection: any = {
         championId: 1,
@@ -30,7 +31,7 @@ export class ChampionRepository {
         wins: 1,
         winrate: 1,
         averagePlacement: 1,
-        placementArray: 1,
+        placementArray: 1,  
         cost: 1,
         ranks: 1,
       };
@@ -96,8 +97,8 @@ export class ChampionRepository {
     try {
       this.cache.clear();
       const db = await connectDB();
-      const championsCollection = db.db("SET15").collection("champions");
-      const totalGamesCollection = db.db("SET15").collection("totalGames");
+      const championsCollection = db.db(VERSION).collection("champions");
+      const totalGamesCollection = db.db(VERSION).collection("totalGames");
       const totalGamesDoc = await totalGamesCollection.findOne({ id: "totalGames" });
       const globalTotalGames = totalGamesDoc?.count || 0;
 
@@ -227,7 +228,7 @@ export class ChampionRepository {
 
   private static async updateTotalGamesCount(db: any, increment: number) {
     await db
-      .db("SET15")
+      .db(VERSION)
       .collection("totalGames")
       .updateOne({ id: "totalGames" }, { $inc: { count: increment } }, { upsert: true });
   }

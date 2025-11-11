@@ -32,3 +32,8 @@ export const calculateTop4Rate = (placementArray: number[], totalGames: number) 
 
 export const calculatePlayRate = (totalGames: number, globalTotalGames: number) =>
   globalTotalGames ? Number(((totalGames / globalTotalGames) * 100).toFixed(2)) : 0;
+
+export const calculateChange = (currPercent: number, prevPercent: number) => {
+  return currPercent - prevPercent;
+};  
+

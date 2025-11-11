@@ -1,4 +1,5 @@
 import { connectDB } from "../../database/db";
+import { VERSION } from "../../utilities/versionSetType";
 
 export class ChampionItemRepository {
   private static cache = new Map<string, { data: any; timestamp: number }>();
@@ -14,8 +15,8 @@ export class ChampionItemRepository {
 
     try {
       const db = await connectDB();
-      const championItemCollection = db.db("SET15").collection("championItems");
-      const totalGamesCollection = db.db("SET15").collection("totalGames");
+      const championItemCollection = db.db(VERSION).collection("championItems");
+      const totalGamesCollection = db.db(VERSION).collection("totalGames");
 
       const projection: any = { championId: 1, items: 1, BIS: 1 };
       ranks.forEach((rank) => (projection[`${rank.toLowerCase()}BIS`] = 1));
@@ -105,8 +106,8 @@ export class ChampionItemRepository {
     try {
       this.cache.clear();
       const db = await connectDB();
-      const itemCollection = db.db("SET15").collection("items");
-      const championItemCollection = db.db("SET15").collection("championItems");
+      const itemCollection = db.db(VERSION).collection("items");
+      const championItemCollection = db.db(VERSION).collection("championItems");
 
       let updatedChampionItems: any[] = [];
       await Promise.all(
@@ -356,7 +357,7 @@ export class ChampionItemRepository {
   }
 
   private static async updateTotalGamesCount(db: any, increment: number) {
-    const totalGamesCollection = db.db("SET15").collection("totalGames");
+    const totalGamesCollection = db.db(VERSION).collection("totalGames");
     await totalGamesCollection.updateOne(
       { id: "totalGames" },
       { $inc: { count: increment } },
@@ -367,7 +368,7 @@ export class ChampionItemRepository {
   static async getByChampionIds(championIds: string[], ranks: string[]) {
     try {
       const db = await connectDB();
-      const championItemCollection = db.db("SET15").collection("championItems");
+      const championItemCollection = db.db(VERSION).collection("championItems");
 
       const projection: any = { championId: 1, items: 1, BIS: 1 };
       ranks.forEach((rank) => (projection[`${rank.toLowerCase()}BIS`] = 1));

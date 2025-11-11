@@ -1,4 +1,5 @@
 import { connectDB } from "../../database/db";
+import { VERSION } from "../../utilities/versionSetType";
 
 export class TraitRepository {
   private static cache = new Map<string, { data: any; timestamp: number }>();
@@ -14,8 +15,8 @@ export class TraitRepository {
 
     try {
       const db = await connectDB();
-      const traitsCollection = db.db("SET15").collection("traits");
-      const totalGamesCollection = db.db("SET15").collection("totalGames");
+      const traitsCollection = db.db(VERSION).collection("traits");
+      const totalGamesCollection = db.db(VERSION).collection("totalGames");
  
       const projection: any = {
         traitId: 1,
@@ -95,7 +96,7 @@ export class TraitRepository {
     try {
       this.cache.clear();
       const db = await connectDB();
-      const traitCollection = db.db("SET15").collection("traits");
+      const traitCollection = db.db(VERSION).collection("traits");
 
       const updatedTraits = await Promise.all(
         traitRanking.map((trait) =>
@@ -184,7 +185,7 @@ export class TraitRepository {
   }
 
   private static async updateTotalGamesCount(db: any, increment: number) {
-    const totalGamesCollection = db.db("SET15").collection("totalGames");
+    const totalGamesCollection = db.db(VERSION).collection("totalGames");
     await totalGamesCollection.updateOne(
       { id: "totalGames" },
       { $inc: { count: increment } },

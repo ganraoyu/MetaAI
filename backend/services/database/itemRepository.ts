@@ -1,10 +1,13 @@
 import { connectDB } from "../../database/db";
+import { SET, VERSION } from "../../utilities/versionSetType";
+import { calculatePrevVersion } from "../utils/calculatePrevVersion";
 import {
   sumRankStats,
   calculateWinrate,
   calculateAveragePlacement,
   calculatePlayRate,
   calculateTop4Rate,
+  calculateChange,
 } from "../utils/calculateStats";
 
 export class ItemRepository {
@@ -21,8 +24,8 @@ export class ItemRepository {
 
     try {
       const db = await connectDB();
-      const itemsCollection = db.db("SET15").collection("items");
-      const totalGamesCollection = db.db("SET15").collection("totalGames");
+      const itemsCollection = db.db(VERSION).collection("items");
+      const totalGamesCollection = db.db(VERSION).collection("totalGames");
 
       const projection: any = {
         itemId: 1,
@@ -100,28 +103,52 @@ export class ItemRepository {
   static async updateMany(ranks: string[], itemRanking: any[]) {
     try {
       this.cache.clear();
+
+      const prevVersion = calculatePrevVersion(VERSION);
       const db = await connectDB();
-      const itemsCollection = db.db("SET15").collection("items");
 
-      const totalGamesCollection = db.db("SET15").collection("totalGames");
-      const totalGamesDoc = await totalGamesCollection.findOne({ id: "totalGames" });
+      const currItems = db.db(VERSION).collection("items");
+      const currTotalGames = db.db(VERSION).collection("totalGames");
+      const currTotalItems = db.db(VERSION).collection("totalItems");
+
+      const prevItems = db.db(prevVersion).collection("items");
+      const prevTotalGames = db.db(prevVersion).collection("totalGames");
+      const prevTotalItems = db.db(prevVersion).collection("totalItems");
+
+      const totalGamesDoc = await currTotalGames.findOne({ id: "totalGames" });
+      const prevTotalGamesDoc = await prevTotalGames.findOne({ id: "totalGames" });
+
       const globalTotalGames = totalGamesDoc?.count || 0;
-
-      const totalItemsCollection = db.db("SET15").collection("totalItems");
+      const prevGlobalTotalGames = prevTotalGamesDoc?.count || 0;
 
       let newTotalItems = 0;
 
       const updatedItems = await Promise.all(
-        itemRanking.map((item) => {
-          Promise.all(
+        itemRanking.map(async (item) => {
+          const prevItem = await prevItems.findOne(
+            { itemId: item.itemId },
+            {
+              projection: {
+                itemId: 1,
+                averagePlacement: 1,
+                winrate: 1,
+                playRate: 1,
+                top4Rate: 1,
+                ranks: 1,
+              },
+            }
+          );
+
+          await Promise.all(
             ranks.map((rank) =>
-              this.updateSingleItem(itemsCollection, rank, item, globalTotalGames)
+              this.updateSingleItem(currItems, rank, item, prevItem, globalTotalGames)
             )
-          )
+          );
+
           const globalStats = this.calculateGlobalStats({}, item, globalTotalGames);
           newTotalItems += globalStats.totalGames || 0;
-          
-          return item
+
+          return { ...item, ...globalStats };
         })
       );
 
@@ -143,6 +170,7 @@ export class ItemRepository {
     collection: any,
     rank: string,
     item: any,
+    prevVersionItem: any,
     globalTotalGames: number
   ) {
     const existingItem = await collection.findOne(
@@ -161,6 +189,41 @@ export class ItemRepository {
 
     const globalStats = this.calculateGlobalStats(existingItem, item, globalTotalGames);
     const rankStats = this.calculateRankStats(existingItem, item, rank, globalTotalGames);
+
+    const prevGlobal = prevVersionItem || {};
+    const prevRank = prevVersionItem?.ranks?.[rank] || {};
+
+    const globalChanges = this.percentChange(
+      globalStats.averagePlacement,
+      prevGlobal.averagePlacement || 0,
+      globalStats.winrate,
+      prevGlobal.winrate || 0,
+      globalStats.playRate,
+      prevGlobal.playRate || 0,
+      globalStats.top4Rate,
+      prevGlobal.top4Rate || 0
+    );
+
+    const rankChanges = this.percentChange(
+      rankStats.averagePlacement,
+      prevRank.averagePlacement || 0,
+      rankStats.winrate,
+      prevRank.winrate || 0,
+      rankStats.playRate,
+      prevRank.playRate || 0,
+      rankStats.top4Rate,
+      prevRank.top4Rate || 0
+    );
+
+    globalStats.averagePlacementChange = globalChanges.averagePlacementChange;
+    globalStats.winRateChange = globalChanges.winRateChange;
+    globalStats.playRateChange = globalChanges.playRateChange;
+    globalStats.top4RateChange = globalChanges.top4RateChange;
+
+    rankStats.averagePlacementChange = rankChanges.averagePlacementChange;
+    rankStats.winRateChange = rankChanges.winRateChange;
+    rankStats.playRateChange = rankChanges.playRateChange;
+    rankStats.top4RateChange = rankChanges.top4RateChange;
 
     await collection.updateOne(
       { itemId: item.itemId },
@@ -193,12 +256,17 @@ export class ItemRepository {
       top4Rate,
       playRate,
       newItemTotalGames: newItem.totalGames,
+      averagePlacementChange: 0,
+      winRateChange: 0,
+      playRateChange: 0,
+      top4RateChange: 0,
     };
   }
 
   private static calculateRankStats(
     existingItem: any,
     newItem: any,
+
     rank: string,
     globalTotalGames: number
   ) {
@@ -213,11 +281,41 @@ export class ItemRepository {
     const top4Rate = calculateTop4Rate(placementArray, totalGames);
     const playRate = calculatePlayRate(totalGames, globalTotalGames);
 
-    return { wins, winrate, averagePlacement, placementArray, totalGames, top4Rate, playRate };
+    return {
+      wins,
+      winrate,
+      averagePlacement,
+      placementArray,
+      totalGames,
+      top4Rate,
+      playRate,
+      averagePlacementChange: 0,
+      winRateChange: 0,
+      playRateChange: 0,
+      top4RateChange: 0,
+    };
+  }
+
+  private static percentChange(
+    averagePlacement: number,
+    prevAveragePlacement: number,
+    winRate: number,
+    prevWinRate: number,
+    playRate: number,
+    prevPlayRate: number,
+    top4Rate: number,
+    prevTop4Rate: number
+  ) {
+    const averagePlacementChange = calculateChange(averagePlacement, prevAveragePlacement);
+    const winRateChange = calculateChange(winRate, prevWinRate);
+    const playRateChange = calculateChange(playRate, prevPlayRate);
+    const top4RateChange = calculateChange(top4Rate, prevTop4Rate);
+
+    return { averagePlacementChange, winRateChange, playRateChange, top4RateChange };
   }
 
   private static async updateTotalGamesCount(db: any, increment: number) {
-    const totalGamesCollection = db.db("SET15").collection("totalGames");
+    const totalGamesCollection = db.db(VERSION).collection("totalGames");
     await totalGamesCollection.updateOne(
       { id: "totalGames" },
       { $inc: { count: increment } },
@@ -226,12 +324,12 @@ export class ItemRepository {
   }
 
   private static async updateTotalItemCount(db: any, increment: number) {
-    const totalItemsCollection = db.db("SET15").collection("totalItems");
+    const totalItemsCollection = db.db(VERSION).collection("totalItems");
     await totalItemsCollection.updateOne(
-      { id: "totalItems"},
+      { id: "totalItems" },
       { $set: { count: increment } },
-      { upsert: true },
-    )
+      { upsert: true }
+    );
   }
 
   static clearCache() {
